@@ -26,6 +26,41 @@ public partial class YatTerminal : Control
 		Input.TextSubmitted += OnCommandSubmitted;
 	}
 
+	public override void _Input(InputEvent @event)
+	{
+		// Handle history navigation if the Terminal window is open.
+		if (IsInsideTree())
+		{
+			if (@event.IsActionPressed("yat_history_previous"))
+			{
+				if (_yat.HistoryNode == null && _yat.History.Count > 0)
+				{
+					_yat.HistoryNode = _yat.History.Last;
+					Input.Text = _yat.HistoryNode.Value;
+				}
+				else if (_yat.HistoryNode?.Previous != null)
+				{
+					_yat.HistoryNode = _yat.HistoryNode.Previous;
+					Input.Text = _yat.HistoryNode.Value;
+				}
+			}
+
+			if (@event.IsActionPressed("yat_history_next"))
+			{
+				if (_yat.HistoryNode != null && _yat.HistoryNode.Next != null)
+				{
+					_yat.HistoryNode = _yat.HistoryNode.Next;
+					Input.Text = _yat.HistoryNode.Value;
+				}
+				else
+				{
+					_yat.HistoryNode = null;
+					Input.Text = string.Empty;
+				}
+			}
+		}
+	}
+
 	private void UpdateOptions(YatOptions options)
 	{
 		_promptLabel.Text = options.Prompt;

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhbvghhlqawa4"]
+[gd_scene load_steps=3 format=3 uid="uid://dhbvghhlqawa4"]
 
 [ext_resource type="Script" path="res://addons/yat/YAT.cs" id="1_683p6"]
+[ext_resource type="PackedScene" uid="uid://cgcaidamikcnr" path="res://addons/yat/yat_overlay/YatOverlay.tscn" id="2_t3qp1"]
 
 [node name="YAT" type="Control"]
 z_index = 1
@@ -12,3 +13,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_683p6")
+
+[node name="YatOverlay" parent="." instance=ExtResource("2_t3qp1")]
+layout_mode = 1

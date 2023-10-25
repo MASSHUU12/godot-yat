@@ -14,7 +14,7 @@ public partial class YatOptionsWindow : Control
 
 	public override void _Ready()
 	{
-		_options = GetNode<YAT>("/root/GlobalUI/YAT").Options;
+		_options = GetNode<YAT>("/root/YAT").Options;
 		_window = GetNode<YatWindow>("YatWindow");
 		_window.CloseRequested += () => QueueFree();
 

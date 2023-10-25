@@ -12,7 +12,7 @@ public partial class Options : IYatCommand
 
 	private static Node _optionsWindowInstance;
 	private static readonly PackedScene _optionsWindow = GD.Load<PackedScene>(
-		"res://globals/yat/yat_overlay/components/yat_options_window/YatOptionsWindow.tscn"
+		"res://addons/yat/yat_overlay/components/yat_options_window/YatOptionsWindow.tscn"
 	);
 
 	public void Execute(string[] args, YAT yat)
