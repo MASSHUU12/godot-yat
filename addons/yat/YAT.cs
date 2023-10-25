@@ -7,7 +7,7 @@ public partial class YAT : Control
 	[Export] public YatOptions Options { get; set; } = new();
 
 	public Control Overlay;
-	public TerminalWindow Cli;
+	public YatTerminal Cli;
 	public Dictionary<string, IYatCommand> Commands = new();
 
 	private Node _root;
@@ -23,7 +23,7 @@ public partial class YAT : Control
 		Overlay = GD.Load<PackedScene>("res://addons/yat/yat_overlay/YatOverlay.tscn").Instantiate() as Control;
 		Overlay.Ready += OnOverlayReady;
 
-		Cli = Overlay.GetNode<TerminalWindow>("TerminalWindow");
+		Cli = Overlay.GetNode<YatTerminal>("YatTerminal");
 
 		// Set options at startup.
 		Options.EmitSignal(nameof(Options.OptionsChanged), Options);

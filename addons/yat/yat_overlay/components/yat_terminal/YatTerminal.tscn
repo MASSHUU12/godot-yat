@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://8moeu8x68ywt"]
 
 [ext_resource type="PackedScene" uid="uid://c0e5ehgrroudb" path="res://addons/yat/yat_overlay/components/yat_window/YatWindow.tscn" id="1_mwluu"]
-[ext_resource type="Script" path="res://addons/yat/yat_overlay/components/terminal_window/TerminalWindow.cs" id="2_wss08"]
+[ext_resource type="Script" path="res://addons/yat/yat_overlay/components/yat_terminal/YatTerminal.cs" id="2_wss08"]
 [ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/yat_overlay/components/yat_window/themes/label_theme.tres" id="3_kgtnq"]
 
-[node name="TerminalWindow" type="Control"]
+[node name="YatTerminal" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("2_wss08")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cgcaidamikcnr"]
 
-[ext_resource type="PackedScene" uid="uid://8moeu8x68ywt" path="res://addons/yat/yat_overlay/components/terminal_window/TerminalWindow.tscn" id="1_3ou4c"]
+[ext_resource type="PackedScene" uid="uid://8moeu8x68ywt" path="res://addons/yat/yat_overlay/components/yat_terminal/YatTerminal.tscn" id="1_3ou4c"]
 
 [node name="YatOverlay" type="Control"]
 layout_mode = 3
@@ -10,5 +10,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TerminalWindow" parent="." instance=ExtResource("1_3ou4c")]
+[node name="YatTerminal" parent="." instance=ExtResource("1_3ou4c")]
 layout_mode = 0

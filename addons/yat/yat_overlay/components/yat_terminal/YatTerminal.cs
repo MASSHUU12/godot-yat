@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class TerminalWindow : Control
+public partial class YatTerminal : Control
 {
 	public LineEdit Input;
 	public RichTextLabel Output;
