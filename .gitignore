@@ -1,2 +1,55 @@
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,godot,dotnetcore,blender
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,godot,dotnetcore,blender
+
+### Blender ###
+# Ignore temporary Blender files.
+*.blend[0-9]*
+
+### DotnetCore ###
+# .NET Core build folders
+bin/
+obj/
+
+# Common node modules locations
+/node_modules
+/wwwroot/node_modules
+
+### Godot ###
 # Godot 4+ specific ignores
 .godot/
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_presets.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,godot,dotnetcore,blender
+
+out
