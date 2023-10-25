@@ -12,7 +12,6 @@ public partial class YAT : Control
 	public Dictionary<string, IYatCommand> Commands = new();
 
 	private Window _root;
-	private const ushort HISTORY_LIMIT = 25;
 
 	public override void _Ready()
 	{
