@@ -29,7 +29,6 @@ To use this extension, you need to create these keybindings in your project:
 | cls                                | clear        | Clears the console.                |
 | man <command_name>                 | -            | Displays the manual for a command. |
 | quit                               | -            | Quits the game.                    |
-| notify <message> <duration> <icon> | alert, toast | Sends a notification to the user.  |
 | echo <text>                        | -            | Displays the given text.           |
 | restart                            | reboot       | Restarts the level.                |
 
