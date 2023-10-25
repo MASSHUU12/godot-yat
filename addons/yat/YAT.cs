@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Godot;
 
 public partial class YAT : Control
@@ -8,21 +7,18 @@ public partial class YAT : Control
 
 	public Control Overlay;
 	public YatTerminal Cli;
+	public LinkedListNode<string> HistoryNode = null;
+	public readonly LinkedList<string> History = new();
 	public Dictionary<string, IYatCommand> Commands = new();
 
-	private Node _root;
-
+	private Window _root;
 	private const ushort HISTORY_LIMIT = 25;
-	private LinkedListNode<string> _historyNode = null;
-	private readonly LinkedList<string> _history = new();
 
 	public override void _Ready()
 	{
-		_root = GetTree().Get("root").As<Node>();
+		_root = GetTree().Root;
 
 		Overlay = GD.Load<PackedScene>("res://addons/yat/yat_overlay/YatOverlay.tscn").Instantiate() as Control;
-		Overlay.Ready += OnOverlayReady;
-
 		Cli = Overlay.GetNode<YatTerminal>("YatTerminal");
 
 		// Set options at startup.
@@ -61,26 +57,26 @@ public partial class YAT : Control
 		{
 			if (@event.IsActionPressed("yat_history_previous"))
 			{
-				if (_historyNode == null && _history.Count > 0)
+				if (HistoryNode == null && History.Count > 0)
 				{
-					_historyNode = _history.Last;
-					Cli.Input.Text = _historyNode.Value;
+					HistoryNode = History.Last;
+					Cli.Input.Text = HistoryNode.Value;
 				}
-				else if (_historyNode?.Previous != null)
+				else if (HistoryNode?.Previous != null)
 				{
-					_historyNode = _historyNode.Previous;
-					Cli.Input.Text = _historyNode.Value;
+					HistoryNode = HistoryNode.Previous;
+					Cli.Input.Text = HistoryNode.Value;
 				}
 			}
 
 			if (@event.IsActionPressed("yat_history_next"))
 			{
-				if (_historyNode != null && _historyNode.Next != null)
+				if (HistoryNode != null && HistoryNode.Next != null)
 				{
-					_historyNode = _historyNode.Next;
-					Cli.Input.Text = _historyNode.Value;
+					HistoryNode = HistoryNode.Next;
+					Cli.Input.Text = HistoryNode.Value;
 				} else {
-					_historyNode = null;
+					HistoryNode = null;
 					Cli.Input.Text = string.Empty;
 				}
 			}
@@ -98,66 +94,5 @@ public partial class YAT : Control
 		{
 			Commands[alias] = command;
 		}
-	}
-
-	private void OnOverlayReady()
-	{
-		Cli.Input.TextSubmitted += OnCommandSubmitted;
-	}
-
-	/// <summary>
-	/// Executes the given CLI command.
-	/// </summary>
-	/// <param name="input">The input arguments for the command.</param>
-	private void ExecuteCommand(string[] input)
-	{
-		if (input.Length == 0)
-		{
-			Cli.Println("Invalid input.");
-			return;
-		}
-
-		string commandName = input[0];
-		if (!Commands.ContainsKey(commandName))
-		{
-			Cli.Println($"Unknown command: {commandName}");
-			return;
-		}
-
-		IYatCommand command = Commands[commandName];
-		command.Execute(input, this);
-	}
-
-	/// <summary>
-	/// Handles the submission of a command by sanitizing the input,
-	/// executing the command, and clearing the input buffer.
-	/// </summary>
-	/// <param name="command">The command to be submitted.</param>
-	private void OnCommandSubmitted(string command)
-	{
-		var input = SanitizeInput(command);
-
-		if (input.Length == 0) return;
-
-		_historyNode = null;
-		_history.AddLast(command);
-		if (_history.Count > HISTORY_LIMIT) _history.RemoveFirst();
-
-		ExecuteCommand(input);
-		Cli.Input.Clear();
-	}
-
-	/// <summary>
-	/// Sanitizes the input command by removing leading/trailing white space
-	/// and extra spaces between words.
-	/// </summary>
-	/// <param name="command">The command to sanitize.</param>
-	/// <returns>The sanitized command.</returns>
-	private static string[] SanitizeInput(string command)
-	{
-		command = command.Trim();
-		return command.Split(' ').Where(
-			s => !string.IsNullOrWhiteSpace(s)
-		).ToArray();
 	}
 }
