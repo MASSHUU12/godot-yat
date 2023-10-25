@@ -1,0 +1,9 @@
+[gd_resource type="StyleBoxFlat" format=3 uid="uid://dron3rskgcrdd"]
+
+[resource]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
+border_color = Color(0.113725, 0.133333, 0.160784, 0.752941)
+corner_radius_bottom_right = 6
+anti_aliasing = false

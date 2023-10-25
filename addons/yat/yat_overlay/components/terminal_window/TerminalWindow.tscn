@@ -1,0 +1,59 @@
+[gd_scene load_steps=4 format=3 uid="uid://8moeu8x68ywt"]
+
+[ext_resource type="PackedScene" uid="uid://c0e5ehgrroudb" path="res://addons/yat/yat_overlay/components/yat_window/YatWindow.tscn" id="1_mwluu"]
+[ext_resource type="Script" path="res://addons/yat/yat_overlay/components/terminal_window/TerminalWindow.cs" id="2_wss08"]
+[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/yat_overlay/components/yat_window/themes/label_theme.tres" id="3_kgtnq"]
+
+[node name="TerminalWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_wss08")
+
+[node name="YatWindow" parent="." instance=ExtResource("1_mwluu")]
+layout_mode = 2
+Title = "Yet Another Terminal"
+CanClose = false
+
+[node name="PanelContainer" parent="YatWindow" index="0"]
+offset_right = 720.0
+offset_bottom = 320.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="YatWindow/PanelContainer/VBoxContainer/Content" index="0"]
+layout_mode = 2
+
+[node name="Output" type="RichTextLabel" parent="YatWindow/PanelContainer/VBoxContainer/Content/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
+text = "YAT - Yet Another Terminal
+MIT 2023 - MASSHUU12
+"
+shortcut_keys_enabled = false
+selection_enabled = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="YatWindow/PanelContainer/VBoxContainer/Content/VBoxContainer"]
+layout_mode = 2
+
+[node name="PromptLabel" type="Label" parent="YatWindow/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = ExtResource("3_kgtnq")
+text = ">"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+max_lines_visible = 1
+
+[node name="Input" type="LineEdit" parent="YatWindow/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+caret_blink = true
+
+[editable path="YatWindow"]
