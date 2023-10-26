@@ -2,7 +2,7 @@ using Godot;
 
 namespace YAT
 {
-	public partial class YatOverlay : Control
+	public partial class Overlay : Control
 	{
 		public Terminal Terminal;
 
@@ -12,7 +12,7 @@ namespace YAT
 		{
 			_yat = GetNode<YAT>("..");
 			Terminal = GD.Load<PackedScene>(
-				"res://addons/yat/yat_overlay/components/terminal/Terminal.tscn"
+				"res://addons/yat/overlay/components/terminal/Terminal.tscn"
 			).Instantiate<Terminal>();
 		}
 

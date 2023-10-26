@@ -11,7 +11,7 @@ namespace YAT
 
 		[Export] public YatOptions Options { get; set; } = new();
 
-		public YatOverlay Overlay { get; private set; }
+		public Overlay Overlay { get; private set; }
 		public Terminal Terminal;
 		public OptionsManager OptionsManager;
 		public LinkedListNode<string> HistoryNode = null;
@@ -24,7 +24,7 @@ namespace YAT
 		{
 			_root = GetTree().Root;
 
-			Overlay = GetNode<YatOverlay>("YatOverlay");
+			Overlay = GetNode<Overlay>("Overlay");
 			Terminal = Overlay.Terminal;
 			OptionsManager = new(this);
 

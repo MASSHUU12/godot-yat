@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ck3llb6jpptbd"]
 
-[ext_resource type="PackedScene" uid="uid://c0e5ehgrroudb" path="res://addons/yat/yat_overlay/components/yat_window/YatWindow.tscn" id="1_8h47c"]
-[ext_resource type="Script" path="res://addons/yat/yat_overlay/components/yat_options_window/YatOptionsWindow.cs" id="1_twe7k"]
+[ext_resource type="PackedScene" uid="uid://c0e5ehgrroudb" path="res://addons/yat/overlay/components/yat_window/YatWindow.tscn" id="1_8h47c"]
+[ext_resource type="Script" path="res://addons/yat/overlay/components/yat_options_window/YatOptionsWindow.cs" id="1_twe7k"]
 
 [node name="YatOptionsWindow" type="Control"]
 layout_mode = 3
