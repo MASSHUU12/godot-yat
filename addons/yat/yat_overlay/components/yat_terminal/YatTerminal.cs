@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text;
 using Godot;
 
 public partial class YatTerminal : Control
@@ -22,6 +23,8 @@ public partial class YatTerminal : Control
 		Output = GetNode<RichTextLabel>("%Output");
 		Input = GetNode<LineEdit>("%Input");
 		Input.TextSubmitted += OnCommandSubmitted;
+
+		PrintError("YAT is ready.");
 	}
 
 	public override void _Input(InputEvent @event)
@@ -83,6 +86,22 @@ public partial class YatTerminal : Control
 	{
 		Output.AppendText(text);
 		if (_yat.Options.AutoScroll) Output.ScrollToLine(Output.GetLineCount());
+	}
+
+	/// <summary>
+	/// Prints the specified error message to the terminal with the configured error color.
+	/// </summary>
+	/// <param name="text">The error message to print.</param>
+	public void PrintError(string text)
+	{
+		StringBuilder sb = new();
+		sb.Append("[color=");
+		sb.Append(_yat.Options.ErrorColor.ToHtml());
+		sb.Append("]");
+		sb.Append(text);
+		sb.Append("[/color]\n");
+
+		Print(sb.ToString());
 	}
 
 	/// <summary>
