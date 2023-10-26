@@ -24,39 +24,41 @@ To use this extension, you need to create these keybindings in your project:
 
 > More information about each command can be found in their manuals.
 
-| Command                            | Alias        | Description                        |
-| ---------------------------------- | ------------ | ---------------------------------- |
-| cls                                | clear        | Clears the console.                |
-| man <command_name>                 | -            | Displays the manual for a command. |
-| quit                               | -            | Quits the game.                    |
-| echo <text>                        | -            | Displays the given text.           |
-| restart                            | reboot       | Restarts the level.                |
+| Command            | Alias  | Description                        |
+| ------------------ | ------ | ---------------------------------- |
+| cls                | clear  | Clears the console.                |
+| man <command_name> | -      | Displays the manual for a command. |
+| quit               | -      | Quits the game.                    |
+| echo <text>        | -      | Displays the given text.           |
+| restart            | reboot | Restarts the level.                |
 
 ### Creating commands
 
 To create a command, you need to create C# file and implement `IYatCommand` interface.
 
+In addition, you must use the `Command` attribute to add the necessary metadata for the command.
+
+The `Command` attribute accepts the command `name`, its `description`, `manual` and `aliases`. The description and manual have BBCode support.
+
 As an example, let's look at `Cls` command:
 
 ```csharp
+[Command(
+	"cls",
+	"Clears the console.",
+	"[b]Usage[/b]: cls",
+	"clear"
+)]
 public partial class Cls : IYatCommand
 {
-	public string Name => "cls";
-
-	public string Description => "Clears the console.";
-
-	public string Usage => "cls";
-
-	public string[] Aliases => new string[] { "clear" };
-
-	public void Execute(string[] args, YAT yat)
+	public void Execute(YAT yat, params string[] args)
 	{
-		yat.Cli.Clear();
+		yat.Terminal.Clear();
 	}
 }
 ```
 
-#### Adding command to YAT
+#### Adding commands
 
 To add a command to the YAT all you have to do is call `AddCommand` method on YAT instance:
 

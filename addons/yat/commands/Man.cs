@@ -1,46 +1,40 @@
+using System;
 using System.Text;
 
+[Command("man", "Displays the manual for a command.", "[b]Usage[/b]: man [i]command_name[/i]")]
 public partial class Man : IYatCommand
 {
-    public string Name => "man";
+	public void Execute(YAT yat, params string[] args)
+	{
+		if (args.Length < 2)
+		{
+			yat.Terminal.Println("Invalid input.");
+			return;
+		}
 
-    public string Description => "Displays the manual for a command.";
+		var lookup = yat.Commands;
+		var commandName = args[1];
 
-    public string Usage => "man <command_name>";
+		if (lookup.ContainsKey(commandName))
+		{
+			var command = lookup[commandName];
+			CommandAttribute attribute = Attribute.GetCustomAttribute(command.GetType(), typeof(CommandAttribute)) as CommandAttribute;
+			StringBuilder sb = new();
 
-    public string[] Aliases => System.Array.Empty<string>();
+			sb.AppendLine($"[p align=center][font_size=22]{attribute.Name}[/font_size][/p]");
+			sb.AppendLine($"[p align=center]{attribute.Description}[/p]");
+			sb.AppendLine(attribute.Manual);
+			sb.AppendLine("\n[b]Aliases[/b]:");
 
-    public void Execute(string[] args, YAT yat)
-    {
-        var lookup = yat.Commands;
+			if (attribute.Aliases.Length > 0)
+			{
+				foreach (var alias in attribute.Aliases)
+					sb.Append($"[ul]\t{alias}[/ul]");
+			}
+			else sb.AppendLine("[ul]\tNone[/ul]");
 
-        if (args.Length < 2)
-        {
-            yat.Terminal.Println("Invalid input.");
-            return;
-        }
-
-        var commandName = args[1];
-
-        if (lookup.ContainsKey(commandName))
-        {
-            var command = lookup[commandName];
-            StringBuilder sb = new();
-
-            sb.AppendLine($"[p align=center][font_size=22]{command.Name}[/font_size][/p]");
-            sb.AppendLine($"[p align=center]{command.Description}[/p]");
-            sb.AppendLine($"[b]Usage[/b]: {command.Usage}");
-            sb.AppendLine("[b]Aliases[/b]:");
-
-            if (command.Aliases.Length > 0)
-            {
-                foreach (var alias in command.Aliases)
-                    sb.Append($"[ul]\t{alias}[/ul]");
-            }
-            else sb.AppendLine("[ul]\tNone[/ul]");
-
-            yat.Terminal.Println(sb.ToString());
-        }
-        else yat.Terminal.Println($"Unknown command: {commandName}");
-    }
+			yat.Terminal.Println(sb.ToString());
+		}
+		else yat.Terminal.Println($"Unknown command: {commandName}");
+	}
 }

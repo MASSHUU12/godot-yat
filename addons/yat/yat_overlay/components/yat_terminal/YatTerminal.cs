@@ -162,7 +162,7 @@ public partial class YatTerminal : Control
 		}
 
 		IYatCommand command = _yat.Commands[commandName];
-		command.Execute(input, _yat);
+		command.Execute(_yat, input);
 	}
 
 	/// <summary>
