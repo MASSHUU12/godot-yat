@@ -6,6 +6,7 @@ public partial class YatTerminal : Control
 {
 	public LineEdit Input;
 	public RichTextLabel Output;
+	public enum PrintType { Normal, Error, Warning, Success }
 
 	private YAT _yat;
 	private Label _promptLabel;
@@ -24,7 +25,10 @@ public partial class YatTerminal : Control
 		Input = GetNode<LineEdit>("%Input");
 		Input.TextSubmitted += OnCommandSubmitted;
 
-		PrintError("YAT is ready.");
+		Print("YAT is ready.", PrintType.Normal);
+		Print("YAT is ready.", PrintType.Error);
+		Print("YAT is ready.", PrintType.Warning);
+		Print("YAT is ready.", PrintType.Success);
 	}
 
 	public override void _Input(InputEvent @event)
@@ -89,15 +93,25 @@ public partial class YatTerminal : Control
 	}
 
 	/// <summary>
-	/// Prints the specified error message to the terminal with the configured error color.
+	/// Prints the specified text to the terminal with the specified print type.
 	/// </summary>
-	/// <param name="text">The error message to print.</param>
-	public void PrintError(string text)
+	/// <param name="text">The text to print.</param>
+	/// <param name="type">The type of print to use (e.g. error, warning, success, normal).</param>
+	public void Print(string text, PrintType type = PrintType.Normal)
 	{
 		StringBuilder sb = new();
+		var color = type switch
+		{
+			PrintType.Error => _yat.Options.ErrorColor,
+			PrintType.Warning => _yat.Options.WarningColor,
+			PrintType.Success => _yat.Options.SuccessColor,
+			PrintType.Normal => _yat.Options.OutputColor,
+			_ => _yat.Options.OutputColor,
+		};
+
 		sb.Append("[color=");
-		sb.Append(_yat.Options.ErrorColor.ToHtml());
-		sb.Append("]");
+		sb.Append(color.ToHtml());
+		sb.Append(']');
 		sb.Append(text);
 		sb.Append("[/color]\n");
 

@@ -20,6 +20,7 @@ public partial class YatOptions : Resource
 	[Export] public Color OutputColor { get; set; } = new("dfdfdf80");
 	[Export] public Color ErrorColor { get; set; } = new("ff786b");
 	[Export] public Color WarningColor { get; set; } = new("ffdd65");
+	[Export] public Color SuccessColor { get; set; } = new("a5ff8a");
 
 	[ExportGroup("Window")]
 	[Export] public bool WindowResizable { get; set; } = true;
