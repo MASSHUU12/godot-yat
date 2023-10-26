@@ -12,7 +12,7 @@ namespace YAT
 		[Export] public YatOptions Options { get; set; } = new();
 
 		public YatOverlay Overlay { get; private set; }
-		public YatTerminal Terminal;
+		public Terminal Terminal;
 		public OptionsManager OptionsManager;
 		public LinkedListNode<string> HistoryNode = null;
 		public readonly LinkedList<string> History = new();

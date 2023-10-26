@@ -1,15 +1,15 @@
 [gd_scene load_steps=4 format=3 uid="uid://8moeu8x68ywt"]
 
-[ext_resource type="PackedScene" uid="uid://c0e5ehgrroudb" path="res://addons/yat/yat_overlay/components/yat_window/YatWindow.tscn" id="1_mwluu"]
-[ext_resource type="Script" path="res://addons/yat/yat_overlay/components/yat_terminal/YatTerminal.cs" id="2_wss08"]
-[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/yat_overlay/components/yat_window/themes/label_theme.tres" id="3_kgtnq"]
+[ext_resource type="Script" path="res://addons/yat/yat_overlay/components/terminal/Terminal.cs" id="1_82ly0"]
+[ext_resource type="PackedScene" uid="uid://c0e5ehgrroudb" path="res://addons/yat/yat_overlay/components/yat_window/YatWindow.tscn" id="2_0wq7x"]
+[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/yat_overlay/components/yat_window/themes/label_theme.tres" id="3_o5e5l"]
 
-[node name="YatTerminal" type="Control"]
+[node name="Terminal" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("2_wss08")
+script = ExtResource("1_82ly0")
 
-[node name="YatWindow" parent="." instance=ExtResource("1_mwluu")]
+[node name="YatWindow" parent="." instance=ExtResource("2_0wq7x")]
 layout_mode = 2
 Title = "Yet Another Terminal"
 CanClose = false
@@ -43,7 +43,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = ExtResource("3_kgtnq")
+theme_override_styles/normal = ExtResource("3_o5e5l")
 text = ">"
 horizontal_alignment = 1
 vertical_alignment = 1

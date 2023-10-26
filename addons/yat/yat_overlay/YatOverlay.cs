@@ -4,7 +4,7 @@ namespace YAT
 {
 	public partial class YatOverlay : Control
 	{
-		public YatTerminal Terminal;
+		public Terminal Terminal;
 
 		private YAT _yat;
 
@@ -12,8 +12,8 @@ namespace YAT
 		{
 			_yat = GetNode<YAT>("..");
 			Terminal = GD.Load<PackedScene>(
-				"res://addons/yat/yat_overlay/components/yat_terminal/YatTerminal.tscn"
-			).Instantiate<YatTerminal>();
+				"res://addons/yat/yat_overlay/components/terminal/Terminal.tscn"
+			).Instantiate<Terminal>();
 		}
 
 		public override void _Input(InputEvent @event)
