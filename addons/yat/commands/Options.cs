@@ -1,6 +1,6 @@
 using Godot;
 
-namespace YAT
+namespace YAT.Commands
 {
 	[Command("options", "Creates a window with the available options.", "[b]Usage[/b]: options", "opts")]
 	public partial class Options : ICommand
