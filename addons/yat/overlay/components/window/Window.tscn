@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://c0e5ehgrroudb"]
 
-[ext_resource type="Theme" uid="uid://dgvvyeq7dbek1" path="res://addons/yat/yat_overlay/components/yat_window/themes/yat_theme.tres" id="1_rhj83"]
-[ext_resource type="Script" path="res://addons/yat/yat_overlay/components/yat_window/YatWindow.cs" id="2_1mdws"]
+[ext_resource type="Theme" uid="uid://dgvvyeq7dbek1" path="res://addons/yat/overlay/components/window/themes/yat_theme.tres" id="1_rhj83"]
+[ext_resource type="Script" path="res://addons/yat/overlay/components/window/Window.cs" id="2_1mdws"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v37hv"]
 
-[node name="YatWindow" type="Control"]
+[node name="Window" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 1
