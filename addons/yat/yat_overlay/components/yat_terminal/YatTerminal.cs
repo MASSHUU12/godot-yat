@@ -6,7 +6,28 @@ public partial class YatTerminal : Control
 {
 	public LineEdit Input;
 	public RichTextLabel Output;
-	public enum PrintType { Normal, Error, Warning, Success }
+	/// <summary>
+	/// The type of message to print in the YatTerminal.
+	/// </summary>
+	public enum PrintType
+	{
+		/// <summary>
+		/// Represents the normal state of the YatTerminal component.
+		/// </summary>
+		Normal,
+		/// <summary>
+		/// Displays a error message in the terminal.
+		/// </summary>
+		Error,
+		/// <summary>
+		/// Displays a warning message in the terminal.
+		/// </summary>
+		Warning,
+		/// <summary>
+		/// Displays a success message in the terminal.
+		/// </summary>
+		Success
+	}
 
 	private YAT _yat;
 	private Label _promptLabel;
@@ -24,11 +45,6 @@ public partial class YatTerminal : Control
 		Output = GetNode<RichTextLabel>("%Output");
 		Input = GetNode<LineEdit>("%Input");
 		Input.TextSubmitted += OnCommandSubmitted;
-
-		Print("YAT is ready.", PrintType.Normal);
-		Print("YAT is ready.", PrintType.Error);
-		Print("YAT is ready.", PrintType.Warning);
-		Print("YAT is ready.", PrintType.Success);
 	}
 
 	public override void _Input(InputEvent @event)
