@@ -7,6 +7,7 @@ public partial class YAT : Control
 
 	public YatOverlay Overlay { get; private set; }
 	public YatTerminal Terminal;
+	public YatOptionsManager OptionsManager;
 	public LinkedListNode<string> HistoryNode = null;
 	public readonly LinkedList<string> History = new();
 	public Dictionary<string, IYatCommand> Commands = new();
@@ -19,8 +20,10 @@ public partial class YAT : Control
 
 		Overlay = GetNode<YatOverlay>("YatOverlay");
 		Terminal = Overlay.Terminal;
+		OptionsManager = new YatOptionsManager(this);
 
 		// Set options at startup.
+		// OptionsManager.CallDeferred(nameof(OptionsManager.Load));
 		Options.EmitSignal(nameof(Options.OptionsChanged), Options);
 
 		AddCommand(new Cls());

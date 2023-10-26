@@ -4,9 +4,9 @@ public partial class YatOptionsWindow : Control
 {
 	private YAT _yat;
 	private YatWindow _window;
-	private YatOptions _options;
 
 	private Button _save;
+	private Button _load;
 
 	private LineEdit _prompt;
 	private CheckBox _movable;
@@ -15,103 +15,91 @@ public partial class YatOptionsWindow : Control
 	private CheckBox _autoScroll;
 	private CheckBox _showPrompt;
 
+	/// <summary>
+	/// <list type="unordered">
+	/// <item> The actual directory paths for user:// are: </item>
+	/// <item> Windows: %APPDATA%\Godot\app_userdata\[project_name] </item>
+	/// <item> Linux: ~/.local/share/godot/app_userdata/[project_name] </item>
+	/// <item> macOS: ~/Library/Application Support/Godot/app_userdata/[project_name] </item>
+	/// </list>
+	/// </summary>
 	private const string _optionsPath = "user://yat_options.tres";
 
 	public override void _Ready()
 	{
 		_yat = GetNode<YAT>("/root/YAT");
-		_options = _yat.Options;
 
 		_save = GetNode<Button>("%Save");
-		_save.Pressed += OnSaveButtonPressed;
+		_save.Pressed += _yat.OptionsManager.Save;
+
+		_load = GetNode<Button>("%Load");
+		_load.Pressed += _yat.OptionsManager.Load;
 
 		_window = GetNode<YatWindow>("YatWindow");
 		_window.CloseRequested += () => QueueFree();
 
 		_prompt = GetNode<LineEdit>("%Prompt");
-		_prompt.Text = _options.Prompt;
+		_prompt.Text = _yat.Options.Prompt;
 
 		_movable = GetNode<CheckBox>("%Movable");
-		_movable.ButtonPressed = _options.WindowMovable;
+		_movable.ButtonPressed = _yat.Options.WindowMovable;
 
 		_width = GetNode<SpinBox>("%Width");
-		_width.Value = _options.DefaultWidth;
+		_width.Value = _yat.Options.DefaultWidth;
 
 		_height = GetNode<SpinBox>("%Height");
-		_height.Value = _options.DefaultHeight;
+		_height.Value = _yat.Options.DefaultHeight;
 
 		_autoScroll = GetNode<CheckBox>("%AutoScroll");
-		_autoScroll.ButtonPressed = _options.AutoScroll;
+		_autoScroll.ButtonPressed = _yat.Options.AutoScroll;
 
 		_showPrompt = GetNode<CheckBox>("%ShowPrompt");
-		_showPrompt.ButtonPressed = _options.ShowPrompt;
+		_showPrompt.ButtonPressed = _yat.Options.ShowPrompt;
 
 		ConnectSignals();
-	}
-
-	/// <summary>
-	/// Called when the "Save" button is pressed. Saves the current options to a file.
-	/// </summary>
-	private void OnSaveButtonPressed()
-	{
-		// The actual directory paths for user:// are:
-		// Windows: %APPDATA%\Godot\app_userdata\[project_name]
-		// Linux: ~/.local/share/godot/app_userdata/[project_name]
-		// macOS: ~/Library/Application Support/Godot/app_userdata/[project_name]
-		switch (ResourceSaver.Save(_options, _optionsPath))
-		{
-			case Error.Ok:
-				_yat.Terminal.Println("Options saved successfully.");
-				GD.Print("Options saved successfully.");
-				break;
-			default:
-				_yat.Terminal.Println("Failed to save options.");
-				GD.PrintErr("Failed to save options.");
-				break;
-		}
 	}
 
 	private void ConnectSignals()
 	{
 		_prompt.TextSubmitted += (string text) =>
 		{
-			_options.Prompt = text;
+			_yat.Options.Prompt = text;
 			UpdateOptions();
 		};
 
 		_movable.Toggled += (bool pressed) =>
 		{
-			_options.WindowMovable = pressed;
+			_yat.Options.WindowMovable = pressed;
 			UpdateOptions();
 		};
 
 		_width.ValueChanged += (double value) =>
 		{
-			_options.DefaultWidth = (ushort)value;
+			_yat.Options.DefaultWidth = (ushort)value;
 			UpdateOptions();
 		};
 
 		_height.ValueChanged += (double value) =>
 		{
-			_options.DefaultHeight = (ushort)value;
+			_yat.Options.DefaultHeight = (ushort)value;
 			UpdateOptions();
 		};
 
 		_autoScroll.Toggled += (bool pressed) =>
 		{
-			_options.AutoScroll = pressed;
+			_yat.Options.AutoScroll = pressed;
 			UpdateOptions();
 		};
 
 		_showPrompt.Toggled += (bool pressed) =>
 		{
-			_options.ShowPrompt = pressed;
+			_yat.Options.ShowPrompt = pressed;
 			UpdateOptions();
 		};
 	}
 
 	private void UpdateOptions()
 	{
-		_options.EmitSignal(nameof(_options.OptionsChanged), _options);
+		_yat.Options.EmitSignal(nameof(_yat.Options.OptionsChanged), _yat.Options);
 	}
 }
