@@ -17,7 +17,7 @@ public partial class YatOptions : Resource
 	[ExportGroup("Colors")]
 	[Export] public Color BackgroundColor { get; set; } = new("1d2229");
 	[Export] public Color InputColor { get; set; } = new("15191fc0");
-	[Export] public Color OutputColor { get; set; } = new("1d2229c0");
+	[Export] public Color OutputColor { get; set; } = new("dfdfdf80");
 	[Export] public Color ErrorColor { get; set; } = new("ff786b");
 	[Export] public Color WarningColor { get; set; } = new("e5a347");
 
