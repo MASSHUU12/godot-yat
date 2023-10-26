@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using Godot;
 
 public partial class YAT : Control
@@ -43,8 +44,21 @@ public partial class YAT : Control
 	/// <param name="command">The CLICommand to add.</param>
 	public void AddCommand(IYatCommand command)
 	{
-		Commands[command.Name] = command;
-		foreach (string alias in command.Aliases)
+		if (Attribute.GetCustomAttribute(command.GetType(), typeof(CommandAttribute))
+			is not CommandAttribute attribute)
+		{
+			var message = string.Format(
+				"The command {0} does not have a CommandAttribute, and will not be added to the list of available commands.",
+				command.GetType().Name
+			);
+
+			GD.PrintErr(message);
+			// Terminal.Print(message, YatTerminal.PrintType.Warning);
+			return;
+		}
+
+		Commands[attribute.Name] = command;
+		foreach (string alias in attribute.Aliases)
 		{
 			Commands[alias] = command;
 		}
