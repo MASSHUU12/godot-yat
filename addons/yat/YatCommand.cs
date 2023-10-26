@@ -17,9 +17,9 @@ public partial interface IYatCommand
 	/// </summary>
 	public string[] Aliases { get; }
 	/// <summary>
-	/// Executes the command with the given arguments and CLI instance.
+	/// Executes the YAT command with the given arguments.
 	/// </summary>
+	/// <param name="yat">The YAT instance to execute the command on.</param>
 	/// <param name="args">The arguments to pass to the command.</param>
-	/// <param name="cli">The CLI instance to use for executing the command.</param>
-	public void Execute(string[] args, YAT yat);
+	public void Execute(YAT yat, params string[] args);
 }

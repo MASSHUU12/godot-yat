@@ -15,7 +15,7 @@ public partial class Options : IYatCommand
 		"res://addons/yat/yat_overlay/components/yat_options_window/YatOptionsWindow.tscn"
 	);
 
-	public void Execute(string[] args, YAT yat)
+	public void Execute(YAT yat, params string[] args)
 	{
 		var instanceValid = GodotObject.IsInstanceValid(_optionsWindowInstance);
 
