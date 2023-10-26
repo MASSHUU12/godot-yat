@@ -18,6 +18,8 @@ public partial class CommandAttribute : System.Attribute
 	public string Name { get; private set; }
 	/// <summary>
 	/// Short description of the Yat command.
+	///
+	/// Note: Supports BBCode.
 	/// </summary>
 	public string Description { get; private set; }
 	/// <summary>
