@@ -3,11 +3,11 @@ using Godot;
 namespace YAT
 {
 	[Command("options", "Creates a window with the available options.", "[b]Usage[/b]: options", "opts")]
-	public partial class Options : IYatCommand
+	public partial class Options : ICommand
 	{
 		private static Node _optionsWindowInstance;
 		private static readonly PackedScene _optionsWindow = GD.Load<PackedScene>(
-			"res://addons/yat/yat_overlay/components/yat_options_window/YatOptionsWindow.tscn"
+			"res://addons/yat/overlay/components/yat_options_window/YatOptionsWindow.tscn"
 		);
 
 		public void Execute(YAT yat, params string[] args)

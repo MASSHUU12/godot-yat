@@ -16,7 +16,7 @@ namespace YAT
 		public OptionsManager OptionsManager;
 		public LinkedListNode<string> HistoryNode = null;
 		public readonly LinkedList<string> History = new();
-		public Dictionary<string, IYatCommand> Commands = new();
+		public Dictionary<string, ICommand> Commands = new();
 
 		private Window _root;
 
@@ -44,7 +44,7 @@ namespace YAT
 		/// Adds a CLICommand to the list of available commands.
 		/// </summary>
 		/// <param name="command">The CLICommand to add.</param>
-		public void AddCommand(IYatCommand command)
+		public void AddCommand(ICommand command)
 		{
 			if (Attribute.GetCustomAttribute(command.GetType(), typeof(CommandAttribute))
 				is not CommandAttribute attribute)
