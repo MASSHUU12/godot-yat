@@ -1,13 +1,6 @@
+[Command("echo", "Displays the given text.", "[b]Usage[/b]: echo [i]text[/i]")]
 public partial class Echo : IYatCommand
 {
-	public string Name => "echo";
-
-	public string Description => "Displays the given text.";
-
-	public string Usage => "echo <text>";
-
-	public string[] Aliases => System.Array.Empty<string>();
-
 	public void Execute(YAT yat, params string[] args)
 	{
 		if (args.Length < 2)
