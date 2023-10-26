@@ -3,6 +3,9 @@ using Godot;
 
 public partial class YAT : Control
 {
+	[Signal]
+	public delegate void OptionsChangedEventHandler(YatOptions options);
+
 	[Export] public YatOptions Options { get; set; } = new();
 
 	public YatOverlay Overlay { get; private set; }
@@ -24,7 +27,7 @@ public partial class YAT : Control
 
 		// Set options at startup.
 		// OptionsManager.CallDeferred(nameof(OptionsManager.Load));
-		Options.EmitSignal(nameof(Options.OptionsChanged), Options);
+		EmitSignal(SignalName.OptionsChanged, Options);
 
 		AddCommand(new Cls());
 		AddCommand(new Man());

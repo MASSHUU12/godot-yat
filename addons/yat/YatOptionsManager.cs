@@ -45,7 +45,7 @@ public partial class YatOptionsManager : Node
 		if (ResourceLoader.Exists(_optionsPath))
 		{
 			_yat.Options = ResourceLoader.Load<YatOptions>(_optionsPath);
-			_yat.Options.EmitSignal(nameof(_yat.Options.OptionsChanged), _yat.Options);
+			_yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
 
 			_yat.Terminal.Println("Options loaded successfully.");
 			GD.Print("Options loaded successfully.");

@@ -2,9 +2,6 @@ using Godot;
 
 public partial class YatOptions : Resource
 {
-	[Signal]
-	public delegate void OptionsChangedEventHandler(YatOptions options);
-
 	[ExportGroup("Terminal")]
 	[Export] public string Prompt { get; set; } = ">";
 	[Export] public bool ShowPrompt { get; set; } = true;

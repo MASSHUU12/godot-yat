@@ -8,15 +8,13 @@ public partial class YatTerminal : Control
 
 	private YAT _yat;
 	private Label _promptLabel;
-	private YatOptions _options;
 	private string _prompt = "> ";
 	private PanelContainer _window;
 
 	public override void _Ready()
 	{
 		_yat = GetNode<YAT>("/root/YAT");
-		_options = _yat.Options;
-		_options.OptionsChanged += UpdateOptions;
+		_yat.OptionsChanged += UpdateOptions;
 
 		_window = GetNode<PanelContainer>("YatWindow/PanelContainer");
 		_promptLabel = GetNode<Label>("%PromptLabel");
@@ -84,7 +82,7 @@ public partial class YatTerminal : Control
 	public void Print(string text)
 	{
 		Output.AppendText(text);
-		if (_options.AutoScroll) Output.ScrollToLine(Output.GetLineCount());
+		if (_yat.Options.AutoScroll) Output.ScrollToLine(Output.GetLineCount());
 	}
 
 	/// <summary>
@@ -131,7 +129,7 @@ public partial class YatTerminal : Control
 
 		_yat.HistoryNode = null;
 		_yat.History.AddLast(command);
-		if (_yat.History.Count > _options.HistoryLimit) _yat.History.RemoveFirst();
+		if (_yat.History.Count > _yat.Options.HistoryLimit) _yat.History.RemoveFirst();
 
 		ExecuteCommand(input);
 		Input.Clear();

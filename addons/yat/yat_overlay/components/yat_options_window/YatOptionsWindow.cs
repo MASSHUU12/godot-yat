@@ -98,8 +98,5 @@ public partial class YatOptionsWindow : Control
 		};
 	}
 
-	private void UpdateOptions()
-	{
-		_yat.Options.EmitSignal(nameof(_yat.Options.OptionsChanged), _yat.Options);
-	}
+	private void UpdateOptions() => _yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
 }
