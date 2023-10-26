@@ -1,10 +1,33 @@
 using System.Linq;
+using System.Text;
 using Godot;
 
 public partial class YatTerminal : Control
 {
 	public LineEdit Input;
 	public RichTextLabel Output;
+	/// <summary>
+	/// The type of message to print in the YatTerminal.
+	/// </summary>
+	public enum PrintType
+	{
+		/// <summary>
+		/// Represents the normal state of the YatTerminal component.
+		/// </summary>
+		Normal,
+		/// <summary>
+		/// Displays a error message in the terminal.
+		/// </summary>
+		Error,
+		/// <summary>
+		/// Displays a warning message in the terminal.
+		/// </summary>
+		Warning,
+		/// <summary>
+		/// Displays a success message in the terminal.
+		/// </summary>
+		Success
+	}
 
 	private YAT _yat;
 	private Label _promptLabel;
@@ -83,6 +106,32 @@ public partial class YatTerminal : Control
 	{
 		Output.AppendText(text);
 		if (_yat.Options.AutoScroll) Output.ScrollToLine(Output.GetLineCount());
+	}
+
+	/// <summary>
+	/// Prints the specified text to the terminal with the specified print type.
+	/// </summary>
+	/// <param name="text">The text to print.</param>
+	/// <param name="type">The type of print to use (e.g. error, warning, success, normal).</param>
+	public void Print(string text, PrintType type = PrintType.Normal)
+	{
+		StringBuilder sb = new();
+		var color = type switch
+		{
+			PrintType.Error => _yat.Options.ErrorColor,
+			PrintType.Warning => _yat.Options.WarningColor,
+			PrintType.Success => _yat.Options.SuccessColor,
+			PrintType.Normal => _yat.Options.OutputColor,
+			_ => _yat.Options.OutputColor,
+		};
+
+		sb.Append("[color=");
+		sb.Append(color.ToHtml());
+		sb.Append(']');
+		sb.Append(text);
+		sb.Append("[/color]\n");
+
+		Print(sb.ToString());
 	}
 
 	/// <summary>

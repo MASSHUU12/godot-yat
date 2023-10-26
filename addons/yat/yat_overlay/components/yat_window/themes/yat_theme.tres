@@ -1,8 +1,8 @@
 [gd_resource type="Theme" load_steps=13 format=3 uid="uid://dgvvyeq7dbek1"]
 
-[ext_resource type="StyleBox" uid="uid://dron3rskgcrdd" path="res://globals/yat/yat_overlay/components/yat_window/themes/line_edit_theme.tres" id="1_vagcj"]
-[ext_resource type="StyleBox" uid="uid://bnyhnjgnbqxv6" path="res://globals/yat/yat_overlay/components/yat_window/themes/panel_container_theme.tres" id="2_q3eya"]
-[ext_resource type="StyleBox" uid="uid://cysgs5mb1c0jj" path="res://globals/yat/yat_overlay/components/yat_window/themes/text_edit_theme.tres" id="3_naapa"]
+[ext_resource type="StyleBox" uid="uid://dron3rskgcrdd" path="res://addons/yat/yat_overlay/components/yat_window/themes/line_edit_theme.tres" id="1_vagcj"]
+[ext_resource type="StyleBox" uid="uid://bnyhnjgnbqxv6" path="res://addons/yat/yat_overlay/components/yat_window/themes/panel_container_theme.tres" id="2_q3eya"]
+[ext_resource type="StyleBox" uid="uid://cysgs5mb1c0jj" path="res://addons/yat/yat_overlay/components/yat_window/themes/text_edit_theme.tres" id="3_naapa"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q7nso"]
 
