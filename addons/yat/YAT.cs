@@ -18,7 +18,7 @@ namespace YAT
 		public readonly LinkedList<string> History = new();
 		public Dictionary<string, ICommand> Commands = new();
 
-		private Window _root;
+		private Godot.Window _root;
 
 		public override void _Ready()
 		{

@@ -2,7 +2,7 @@ using Godot;
 
 namespace YAT
 {
-	public partial class YatWindow : Control
+	public partial class Window : Control
 	{
 		[Signal] public delegate void CloseRequestedEventHandler();
 
