@@ -1,25 +1,28 @@
 using Godot;
 
-[Command("options", "Creates a window with the available options.", "[b]Usage[/b]: options", "opts")]
-public partial class Options : IYatCommand
+namespace YAT
 {
-	private static Node _optionsWindowInstance;
-	private static readonly PackedScene _optionsWindow = GD.Load<PackedScene>(
-		"res://addons/yat/yat_overlay/components/yat_options_window/YatOptionsWindow.tscn"
-	);
-
-	public void Execute(YAT yat, params string[] args)
+	[Command("options", "Creates a window with the available options.", "[b]Usage[/b]: options", "opts")]
+	public partial class Options : IYatCommand
 	{
-		var instanceValid = GodotObject.IsInstanceValid(_optionsWindowInstance);
+		private static Node _optionsWindowInstance;
+		private static readonly PackedScene _optionsWindow = GD.Load<PackedScene>(
+			"res://addons/yat/yat_overlay/components/yat_options_window/YatOptionsWindow.tscn"
+		);
 
-		if (instanceValid)
+		public void Execute(YAT yat, params string[] args)
 		{
-			_optionsWindowInstance.QueueFree();
-			_optionsWindowInstance = null;
-			return;
-		}
+			var instanceValid = GodotObject.IsInstanceValid(_optionsWindowInstance);
 
-		_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate();
-		yat.Overlay.AddChild(_optionsWindowInstance);
+			if (instanceValid)
+			{
+				_optionsWindowInstance.QueueFree();
+				_optionsWindowInstance = null;
+				return;
+			}
+
+			_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate();
+			yat.Overlay.AddChild(_optionsWindowInstance);
+		}
 	}
 }

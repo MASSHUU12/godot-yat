@@ -1,15 +1,19 @@
-[Command("echo", "Displays the given text.", "[b]Usage[/b]: echo [i]text[/i]")]
-public partial class Echo : IYatCommand
+namespace YAT
 {
-	public void Execute(YAT yat, params string[] args)
+	[Command("echo", "Displays the given text.", "[b]Usage[/b]: echo [i]text[/i]")]
+	public partial class Echo : IYatCommand
 	{
-		if (args.Length < 2)
+		public void Execute(YAT yat, params string[] args)
 		{
-			yat.Terminal.Println("Invalid input.");
-			return;
-		}
+			if (args.Length < 2)
+			{
+				yat.Terminal.Println("Invalid input.");
+				return;
+			}
 
-		var text = string.Join(" ", args[1..^0]);
-		yat.Terminal.Println(text);
+			var text = string.Join(" ", args[1..^0]);
+			yat.Terminal.Println(text);
+		}
 	}
+
 }
