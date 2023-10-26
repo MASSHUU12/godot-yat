@@ -2,8 +2,11 @@ using Godot;
 
 public partial class YatOptionsWindow : Control
 {
+	private YAT _yat;
 	private YatWindow _window;
 	private YatOptions _options;
+
+	private Button _save;
 
 	private LineEdit _prompt;
 	private CheckBox _movable;
@@ -12,9 +15,16 @@ public partial class YatOptionsWindow : Control
 	private CheckBox _autoScroll;
 	private CheckBox _showPrompt;
 
+	private const string _optionsPath = "user://yat_options.tres";
+
 	public override void _Ready()
 	{
-		_options = GetNode<YAT>("/root/YAT").Options;
+		_yat = GetNode<YAT>("/root/YAT");
+		_options = _yat.Options;
+
+		_save = GetNode<Button>("%Save");
+		_save.Pressed += OnSaveButtonPressed;
+
 		_window = GetNode<YatWindow>("YatWindow");
 		_window.CloseRequested += () => QueueFree();
 
@@ -37,6 +47,28 @@ public partial class YatOptionsWindow : Control
 		_showPrompt.ButtonPressed = _options.ShowPrompt;
 
 		ConnectSignals();
+	}
+
+	/// <summary>
+	/// Called when the "Save" button is pressed. Saves the current options to a file.
+	/// </summary>
+	private void OnSaveButtonPressed()
+	{
+		// The actual directory paths for user:// are:
+		// Windows: %APPDATA%\Godot\app_userdata\[project_name]
+		// Linux: ~/.local/share/godot/app_userdata/[project_name]
+		// macOS: ~/Library/Application Support/Godot/app_userdata/[project_name]
+		switch (ResourceSaver.Save(_options, _optionsPath))
+		{
+			case Error.Ok:
+				_yat.Terminal.Println("Options saved successfully.");
+				GD.Print("Options saved successfully.");
+				break;
+			default:
+				_yat.Terminal.Println("Failed to save options.");
+				GD.PrintErr("Failed to save options.");
+				break;
+		}
 	}
 
 	private void ConnectSignals()
