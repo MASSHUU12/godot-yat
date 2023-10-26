@@ -41,7 +41,7 @@ namespace YAT
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 
-			_window = GetNode<PanelContainer>("YatWindow/PanelContainer");
+			_window = GetNode<PanelContainer>("Window/PanelContainer");
 			_promptLabel = GetNode<Label>("%PromptLabel");
 
 			Output = GetNode<RichTextLabel>("%Output");

@@ -3,10 +3,9 @@
 [ext_resource type="Theme" uid="uid://dgvvyeq7dbek1" path="res://addons/yat/overlay/components/window/themes/yat_theme.tres" id="1_rhj83"]
 [ext_resource type="Script" path="res://addons/yat/overlay/components/window/Window.cs" id="2_1mdws"]
 
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v37hv"]
 
-[node name="YatWindow" type="Control"]
+[node name="Window" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 1
