@@ -13,7 +13,7 @@ namespace YAT
 
 		public YatOverlay Overlay { get; private set; }
 		public YatTerminal Terminal;
-		public YatOptionsManager OptionsManager;
+		public OptionsManager OptionsManager;
 		public LinkedListNode<string> HistoryNode = null;
 		public readonly LinkedList<string> History = new();
 		public Dictionary<string, IYatCommand> Commands = new();
