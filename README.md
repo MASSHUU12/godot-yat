@@ -31,6 +31,8 @@ To use this extension, you need to create these keybindings in your project:
 | quit               | -      | Quits the game.                    |
 | echo <text>        | -      | Displays the given text.           |
 | restart            | reboot | Restarts the level.                |
+| options            | -      | Creates the options window.        |
+| pause              | -      | Toggles the game pause state.      |
 
 ### Creating commands
 

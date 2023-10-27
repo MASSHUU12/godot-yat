@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://8moeu8x68ywt" path="res://addons/yat/overlay/components/terminal/Terminal.tscn" id="2_8r83y"]
 
 [node name="Overlay" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
