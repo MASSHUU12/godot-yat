@@ -4,4 +4,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>godotyat</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="script_templates/**/*.cs" />
+  </ItemGroup>
 </Project>
