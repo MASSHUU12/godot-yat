@@ -33,6 +33,7 @@ namespace YAT
 			AddCommand(new Man());
 			AddCommand(new Quit());
 			AddCommand(new Echo());
+			AddCommand(new Pause());
 			AddCommand(new Options());
 			AddCommand(new Restart());
 		}
