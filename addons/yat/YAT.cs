@@ -29,10 +29,6 @@ namespace YAT
 			Overlay.Ready += OnOverlayReady;
 			OptionsManager = new(this);
 
-			// Set options at startup.
-			// OptionsManager.CallDeferred(nameof(OptionsManager.Load));
-			EmitSignal(SignalName.OptionsChanged, Options);
-
 			AddCommand(new Cls());
 			AddCommand(new Man());
 			AddCommand(new Quit());
@@ -90,6 +86,7 @@ namespace YAT
 		private void OnOverlayReady()
 		{
 			Terminal = Overlay.Terminal;
+			OptionsManager.Load();
 		}
 	}
 
