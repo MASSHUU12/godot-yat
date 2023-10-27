@@ -6,34 +6,9 @@ namespace YAT
 	{
 		public Terminal Terminal;
 
-		private YAT _yat;
-
 		public override void _Ready()
 		{
-			_yat = GetNode<YAT>("..");
-			Terminal = GD.Load<PackedScene>(
-				"res://addons/yat/overlay/components/terminal/Terminal.tscn"
-			).Instantiate<Terminal>();
-		}
-
-		public override void _Input(InputEvent @event)
-		{
-			if (@event.IsActionPressed("yat_toggle"))
-			{
-				// Toggle the CLI window.
-				if (Terminal.IsInsideTree())
-				{
-					Terminal.Input.ReleaseFocus();
-					RemoveChild(Terminal);
-				}
-				else
-				{
-					AddChild(Terminal);
-					// Grabbing focus this way prevents writing to the input field
-					// from the previous frame.
-					Terminal.Input.CallDeferred("grab_focus");
-				}
-			}
+			Terminal = GetNode<Terminal>("Terminal");
 		}
 	}
 }

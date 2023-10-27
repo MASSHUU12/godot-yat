@@ -25,8 +25,8 @@ namespace YAT
 		{
 			_root = GetTree().Root;
 
-			Overlay = GetNode<Overlay>("Overlay");
-			Terminal = Overlay.Terminal;
+			Overlay = GD.Load<PackedScene>("res://addons/yat/overlay/Overlay.tscn").Instantiate<Overlay>();
+			Overlay.Ready += OnOverlayReady;
 			OptionsManager = new(this);
 
 			// Set options at startup.
@@ -39,6 +39,26 @@ namespace YAT
 			AddCommand(new Echo());
 			AddCommand(new Options());
 			AddCommand(new Restart());
+		}
+
+		public override void _Input(InputEvent @event)
+		{
+			if (@event.IsActionPressed("yat_toggle"))
+			{
+				// Toggle the Overlay.
+				if (Overlay.IsInsideTree())
+				{
+					Terminal.Input.ReleaseFocus();
+					_root.RemoveChild(Overlay);
+				}
+				else
+				{
+					_root.AddChild(Overlay);
+					// Grabbing focus this way prevents writing to the input field
+					// from the previous frame.
+					Terminal.Input.CallDeferred("grab_focus");
+				}
+			}
 		}
 
 		/// <summary>
@@ -65,6 +85,11 @@ namespace YAT
 			{
 				Commands[alias] = command;
 			}
+		}
+
+		private void OnOverlayReady()
+		{
+			Terminal = Overlay.Terminal;
 		}
 	}
 

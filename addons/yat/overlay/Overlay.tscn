@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cgcaidamikcnr"]
+[gd_scene load_steps=3 format=3 uid="uid://cgcaidamikcnr"]
 
 [ext_resource type="Script" path="res://addons/yat/overlay/Overlay.cs" id="1_e6tk7"]
+[ext_resource type="PackedScene" uid="uid://8moeu8x68ywt" path="res://addons/yat/overlay/components/terminal/Terminal.tscn" id="2_8r83y"]
 
 [node name="Overlay" type="Control"]
 layout_mode = 3
@@ -10,3 +11,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_e6tk7")
+
+[node name="Terminal" parent="." instance=ExtResource("2_8r83y")]
