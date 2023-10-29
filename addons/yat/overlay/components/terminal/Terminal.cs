@@ -104,10 +104,8 @@ namespace YAT
 		/// Prints the specified text to the terminal window, followed by a newline character.
 		/// </summary>
 		/// <param name="text">The text to print.</param>
-		public void Println(string text)
-		{
-			Print(text + "\n");
-		}
+		/// <param name="type">The type of print to use (e.g. error, warning, success, normal).</param>
+		public void Println(string text, PrintType type = PrintType.Normal) => Print(text + "\n", type);
 
 		/// <summary>
 		/// Prints the specified text to the terminal with the specified print type.
