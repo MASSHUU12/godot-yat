@@ -110,16 +110,6 @@ namespace YAT
 		}
 
 		/// <summary>
-		/// Prints the specified text to the terminal window.
-		/// </summary>
-		/// <param name="text">The text to print.</param>
-		public void Print(string text)
-		{
-			Output.AppendText(text);
-			if (_yat.Options.AutoScroll) Output.ScrollToLine(Output.GetLineCount());
-		}
-
-		/// <summary>
 		/// Prints the specified text to the terminal with the specified print type.
 		/// </summary>
 		/// <param name="text">The text to print.</param>
@@ -142,7 +132,8 @@ namespace YAT
 			sb.Append(text);
 			sb.Append("[/color]\n");
 
-			Print(sb.ToString());
+			Output.AppendText(text);
+			if (_yat.Options.AutoScroll) Output.ScrollToLine(Output.GetLineCount());
 		}
 
 		/// <summary>
