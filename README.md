@@ -27,12 +27,12 @@ To use this extension, you need to create these keybindings in your project:
 | Command            | Alias  | Description                        |
 | ------------------ | ------ | ---------------------------------- |
 | cls                | clear  | Clears the console.                |
-| man <command_name> | -      | Displays the manual for a command. |
-| quit               | -      | Quits the game.                    |
-| echo <text>        | -      | Displays the given text.           |
+| man <command_name> | N/A    | Displays the manual for a command. |
+| quit               | N/A    | Quits the game.                    |
+| echo <text>        | N/A    | Displays the given text.           |
 | restart            | reboot | Restarts the level.                |
-| options            | -      | Creates the options window.        |
-| pause              | -      | Toggles the game pause state.      |
+| options            | N/A    | Creates the options window.        |
+| pause              | N/A    | Toggles the game pause state.      |
 
 ### Creating commands
 
@@ -59,6 +59,15 @@ public partial class Cls : IYatCommand
 	}
 }
 ```
+
+#### Signals
+
+| Name           | Arguments  | Description                                 |
+| -------------- | ---------- | ------------------------------------------- |
+| CloseRequested | N/A        | Send when user wants to close custom window |
+| OptionsChanged | YatOptions | Send when YAT options have changed          |
+| OverlayOpened  | N/A        | Send when overlay has been opened           |
+| OverlayClosed  | N/A        | Send when overlay has been closed           |
 
 #### Adding commands
 
