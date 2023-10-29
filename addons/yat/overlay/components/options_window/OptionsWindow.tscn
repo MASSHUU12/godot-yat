@@ -35,6 +35,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Load"
 
+[node name="RestoreDefaults" type="Button" parent="Window/PanelContainer/VBoxContainer/Content/VBoxContainer/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Restore Defaults"
+
 [node name="TabContainer" type="TabContainer" parent="Window/PanelContainer/VBoxContainer/Content/VBoxContainer"]
 layout_mode = 2
 

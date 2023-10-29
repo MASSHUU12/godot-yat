@@ -1,9 +1,9 @@
 <div align="center">
 	<h3>YAT</h1>
-	<p>Yet Another Terminal</p>
+	<p>YAT is an addon that provides a customizable, in-game terminal for your project.</p>
 </div>
 
-Terminal for Godot 4 allowing you to add your own commands to cheat, debug, or anything else.
+YAT stands for Yet Another Terminal, which allows you to add your own commands to cheat, debug, or anything else. This add-on allows you to create custom commands with support for displaying windows.
 
 ## Prerequisites
 

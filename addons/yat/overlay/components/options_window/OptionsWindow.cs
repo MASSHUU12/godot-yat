@@ -9,6 +9,7 @@ namespace YAT
 
 		private Button _save;
 		private Button _load;
+		private Button _restoreDefaults;
 
 		private LineEdit _prompt;
 		private CheckBox _movable;
@@ -16,16 +17,6 @@ namespace YAT
 		private SpinBox _height;
 		private CheckBox _autoScroll;
 		private CheckBox _showPrompt;
-
-		/// <summary>
-		/// <list type="unordered">
-		/// <item> The actual directory paths for user:// are: </item>
-		/// <item> Windows: %APPDATA%\Godot\app_userdata\[project_name] </item>
-		/// <item> Linux: ~/.local/share/godot/app_userdata/[project_name] </item>
-		/// <item> macOS: ~/Library/Application Support/Godot/app_userdata/[project_name] </item>
-		/// </list>
-		/// </summary>
-		private const string _optionsPath = "user://yat_options.tres";
 
 		public override void _Ready()
 		{
@@ -36,6 +27,9 @@ namespace YAT
 
 			_load = GetNode<Button>("%Load");
 			_load.Pressed += _yat.OptionsManager.Load;
+
+			_restoreDefaults = GetNode<Button>("%RestoreDefaults");
+			_restoreDefaults.Pressed += _yat.OptionsManager.RestoreDefaults;
 
 			_window = GetNode<Window>("Window");
 			_window.CloseRequested += () => QueueFree();

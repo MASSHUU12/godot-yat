@@ -5,16 +5,35 @@ using YAT.Commands;
 
 namespace YAT
 {
+	/// <summary>
+	/// YAT (Yet Another Terminal) is an addon that provides a customizable, in-game terminal for your project.
+	/// This class is the main entry point for the addon, and provides access to the terminal, options, and commands.
+	/// </summary>
 	public partial class YAT : Control
 	{
+		#region Signals
+		/// <summary>
+		/// Signal emitted when the YatOptions have been changed.
+		/// </summary>
+		/// <param name="options">The new YatOptions.</param>
 		[Signal]
 		public delegate void OptionsChangedEventHandler(YatOptions options);
+		/// <summary>
+		/// A signal that is emitted when the overlay is opened.
+		/// </summary>
 		[Signal]
 		public delegate void OverlayOpenedEventHandler();
+		/// <summary>
+		/// Signal that is emitted when the overlay is closed.
+		/// </summary>
 		[Signal]
 		public delegate void OverlayClosedEventHandler();
 		[Signal]
+		/// <summary>
+		/// A signal that is emitted when the YAT addon is ready.
+		/// </summary>
 		public delegate void YatReadyEventHandler();
+		#endregion
 
 		[Export] public YatOptions Options { get; set; } = new();
 
@@ -33,7 +52,7 @@ namespace YAT
 
 			Overlay = GD.Load<PackedScene>("res://addons/yat/overlay/Overlay.tscn").Instantiate<Overlay>();
 			Overlay.Ready += OnOverlayReady;
-			OptionsManager = new(this);
+			OptionsManager = new(this, Options);
 
 			AddCommand(new Cls());
 			AddCommand(new Man());

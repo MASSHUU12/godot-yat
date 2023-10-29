@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhbvghhlqawa4"]
+[gd_scene load_steps=3 format=3 uid="uid://dhbvghhlqawa4"]
 
 [ext_resource type="Script" path="res://addons/yat/YAT.cs" id="1_683p6"]
+[ext_resource type="Resource" uid="uid://dmg0237pdk1x6" path="res://addons/yat/options/YatOptions.tres" id="2_6miw0"]
 
 [node name="YAT" type="Control"]
 process_mode = 3
@@ -13,3 +14,4 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_683p6")
+Options = ExtResource("2_6miw0")
