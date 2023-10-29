@@ -62,13 +62,14 @@ public partial class Cls : IYatCommand
 
 #### Signals
 
-| Name           | Arguments  | Description                                 |
-| -------------- | ---------- | ------------------------------------------- |
-| CloseRequested | N/A        | Send when user wants to close custom window |
-| OptionsChanged | YatOptions | Send when YAT options have changed          |
-| OverlayOpened  | N/A        | Send when overlay has been opened           |
-| OverlayClosed  | N/A        | Send when overlay has been closed           |
-| YatReady       | N/A        | Send when YAT is ready                      |
+| Name            | Arguments     | Description                                 |
+| --------------- | ------------- | ------------------------------------------- |
+| CloseRequested  | N/A           | Sent when user wants to close custom window |
+| OptionsChanged  | YatOptions    | Sent when YAT options have changed          |
+| OverlayOpened   | N/A           | Sent when overlay has been opened           |
+| OverlayClosed   | N/A           | Sent when overlay has been closed           |
+| YatReady        | N/A           | Sent when YAT is ready                      |
+| CommandExecuted | command, args | Sent when the command was executed          |
 
 #### Adding commands
 

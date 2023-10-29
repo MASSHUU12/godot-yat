@@ -6,6 +6,16 @@ namespace YAT
 {
 	public partial class Terminal : Control
 	{
+		/// <summary>
+		/// Delegate for the CommandExecuted event.
+		///
+		/// TODO: Take as argument information if the command was successful or not.
+		/// </summary>
+		/// <param name="command">The command that was executed.</param>
+		/// <param name="args">The arguments passed to the command.</param>
+		[Signal]
+		public delegate void CommandExecutedEventHandler(string command, string[] args);
+
 		public LineEdit Input;
 		public RichTextLabel Output;
 		/// <summary>
@@ -165,6 +175,8 @@ namespace YAT
 
 			ICommand command = _yat.Commands[commandName];
 			command.Execute(_yat, input);
+
+			EmitSignal(SignalName.CommandExecuted, commandName, input);
 		}
 
 		/// <summary>
