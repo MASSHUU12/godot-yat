@@ -1,14 +1,15 @@
-using YAT.Commands;
-
-[Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
-public partial class Whereami : ICommand
+namespace YAT.Commands
 {
-	public CommandResult Execute(YAT.YAT yat, params string[] args)
+	[Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
+	public partial class Whereami : ICommand
 	{
-		var scene = yat.GetTree().CurrentScene;
+		public CommandResult Execute(YAT yat, params string[] args)
+		{
+			var scene = yat.GetTree().CurrentScene;
 
-		yat.Terminal.Println($"{scene.GetPath()} ({scene.SceneFilePath})");
+			yat.Terminal.Println($"{scene.GetPath()} ({scene.SceneFilePath})");
 
-		return CommandResult.Success;
+			return CommandResult.Success;
+		}
 	}
 }
