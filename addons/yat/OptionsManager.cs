@@ -5,6 +5,7 @@ namespace YAT
 	public partial class OptionsManager : Node
 	{
 		private readonly YAT _yat;
+		private YatOptions _defaultOptions;
 
 		/// <summary>
 		/// <list type="unordered">
@@ -16,9 +17,10 @@ namespace YAT
 		/// </summary>
 		private const string _optionsPath = "user://yat_options.tres";
 
-		public OptionsManager(YAT yat)
+		public OptionsManager(YAT yat, YatOptions defaultOptions)
 		{
 			_yat = yat;
+			_defaultOptions = defaultOptions;
 		}
 
 		/// <summary>
@@ -57,6 +59,18 @@ namespace YAT
 
 			_yat.Terminal.Println("Options file does not exist, leaving options unchanged.");
 			GD.Print("Options file does not exist, leaving options unchanged.");
+		}
+
+		/// <summary>
+		/// Restores the options to their default values.
+		/// </summary>
+		public void RestoreDefaults()
+		{
+			_yat.Options = _defaultOptions;
+			_yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
+
+			_yat.Terminal.Println("Options restored to default.");
+			GD.Print("Options restored to default.");
 		}
 	}
 }
