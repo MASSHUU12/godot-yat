@@ -20,7 +20,7 @@ namespace YAT
 		public OptionsManager(YAT yat, YatOptions defaultOptions)
 		{
 			_yat = yat;
-			_defaultOptions = defaultOptions;
+			_defaultOptions = defaultOptions.Duplicate() as YatOptions;
 		}
 
 		/// <summary>

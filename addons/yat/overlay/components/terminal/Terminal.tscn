@@ -29,6 +29,7 @@ focus_mode = 2
 bbcode_enabled = true
 text = "YAT - Yet Another Terminal
 MIT 2023 - MASSHUU12
+
 "
 shortcut_keys_enabled = false
 selection_enabled = true
