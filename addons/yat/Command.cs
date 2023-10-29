@@ -10,7 +10,6 @@ namespace YAT
 		public void Execute(YAT yat, params string[] args);
 	}
 
-
 	[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
 	public partial class CommandAttribute : System.Attribute
 	{
@@ -41,6 +40,23 @@ namespace YAT
 			Description = description;
 			Manual = manual;
 			Aliases = aliases;
+		}
+	}
+
+	/// <summary>
+	/// Contains methods and properties related to executing commands.
+	/// </summary>
+	public static partial class Command
+	{
+		/// <summary>
+		/// Represents the result of executing a command.
+		/// </summary>
+		public enum CommandResult
+		{
+			Success,
+			Failure,
+			InvalidArguments,
+			InvalidCommand,
 		}
 	}
 }
