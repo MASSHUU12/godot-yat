@@ -51,6 +51,7 @@ namespace YAT
 				{
 					Terminal.Input.ReleaseFocus();
 					_root.RemoveChild(Overlay);
+					EmitSignal(SignalName.OverlayClosed);
 				}
 				else
 				{
@@ -58,6 +59,7 @@ namespace YAT
 					// Grabbing focus this way prevents writing to the input field
 					// from the previous frame.
 					Terminal.Input.CallDeferred("grab_focus");
+					EmitSignal(SignalName.OverlayOpened);
 				}
 			}
 		}
