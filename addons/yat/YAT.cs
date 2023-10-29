@@ -7,6 +7,7 @@ namespace YAT
 {
 	public partial class YAT : Control
 	{
+		#region Signals
 		[Signal]
 		public delegate void OptionsChangedEventHandler(YatOptions options);
 		[Signal]
@@ -15,6 +16,7 @@ namespace YAT
 		public delegate void OverlayClosedEventHandler();
 		[Signal]
 		public delegate void YatReadyEventHandler();
+		#endregion
 
 		[Export] public YatOptions Options { get; set; } = new();
 
