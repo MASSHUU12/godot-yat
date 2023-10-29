@@ -6,12 +6,12 @@ namespace YAT.Commands
 	[Command("man", "Displays the manual for a command.", "[b]Usage[/b]: man [i]command_name[/i]")]
 	public partial class Man : ICommand
 	{
-		public void Execute(YAT yat, params string[] args)
+		public CommandResult Execute(YAT yat, params string[] args)
 		{
 			if (args.Length < 2)
 			{
 				yat.Terminal.Println("Invalid input.");
-				return;
+				return CommandResult.InvalidArguments;
 			}
 
 			var lookup = yat.Commands;
@@ -37,7 +37,13 @@ namespace YAT.Commands
 
 				yat.Terminal.Println(sb.ToString());
 			}
-			else yat.Terminal.Println($"Unknown command: {commandName}");
+			else
+			{
+				yat.Terminal.Println($"Unknown command: {commandName}");
+				return CommandResult.InvalidCommand;
+			}
+
+			return CommandResult.Success;
 		}
 	}
 }

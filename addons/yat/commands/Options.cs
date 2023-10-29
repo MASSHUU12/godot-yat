@@ -10,7 +10,7 @@ namespace YAT.Commands
 			"res://addons/yat/overlay/components/options_window/OptionsWindow.tscn"
 		);
 
-		public void Execute(YAT yat, params string[] args)
+		public CommandResult Execute(YAT yat, params string[] args)
 		{
 			var instanceValid = GodotObject.IsInstanceValid(_optionsWindowInstance);
 
@@ -18,11 +18,13 @@ namespace YAT.Commands
 			{
 				_optionsWindowInstance.QueueFree();
 				_optionsWindowInstance = null;
-				return;
+				return CommandResult.Success;
 			}
 
 			_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate();
 			yat.Overlay.AddChild(_optionsWindowInstance);
+
+			return CommandResult.Success;
 		}
 	}
 }
