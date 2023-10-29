@@ -51,11 +51,13 @@ As an example, let's look at `Cls` command:
 	"[b]Usage[/b]: cls",
 	"clear"
 )]
-public partial class Cls : IYatCommand
+public partial class Cls : ICommand
 {
-	public void Execute(YAT yat, params string[] args)
+	public CommandResult Execute(YAT yat, params string[] args)
 	{
 		yat.Terminal.Clear();
+
+		return CommandResult.Success;
 	}
 }
 ```
