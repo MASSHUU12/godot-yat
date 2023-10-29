@@ -8,9 +8,11 @@ namespace YAT.Commands
 )]
 	public partial class Cls : ICommand
 	{
-		public void Execute(YAT yat, params string[] args)
+		public CommandResult Execute(YAT yat, params string[] args)
 		{
 			yat.Terminal.Clear();
+
+			return CommandResult.Success;
 		}
 	}
 

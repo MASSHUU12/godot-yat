@@ -8,13 +8,12 @@ namespace YAT
 	{
 		/// <summary>
 		/// Delegate for the CommandExecuted event.
-		///
-		/// TODO: Take as argument information if the command was successful or not.
 		/// </summary>
 		/// <param name="command">The command that was executed.</param>
 		/// <param name="args">The arguments passed to the command.</param>
+		/// <param name="result">The result of the command execution.</param>
 		[Signal]
-		public delegate void CommandExecutedEventHandler(string command, string[] args);
+		public delegate void CommandExecutedEventHandler(string command, string[] args, CommandResult result);
 
 		public LineEdit Input;
 		public RichTextLabel Output;
@@ -174,9 +173,9 @@ namespace YAT
 			}
 
 			ICommand command = _yat.Commands[commandName];
-			command.Execute(_yat, input);
+			var result = command.Execute(_yat, input);
 
-			EmitSignal(SignalName.CommandExecuted, commandName, input);
+			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
 		}
 
 		/// <summary>
