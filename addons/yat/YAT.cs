@@ -9,6 +9,10 @@ namespace YAT
 	{
 		[Signal]
 		public delegate void OptionsChangedEventHandler(YatOptions options);
+		[Signal]
+		public delegate void OverlayOpenedEventHandler();
+		[Signal]
+		public delegate void OverlayClosedEventHandler();
 
 		[Export] public YatOptions Options { get; set; } = new();
 
