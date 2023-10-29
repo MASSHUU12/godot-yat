@@ -64,14 +64,14 @@ public partial class Cls : ICommand
 
 #### Signals
 
-| Name            | Arguments     | Description                                 |
-| --------------- | ------------- | ------------------------------------------- |
-| CloseRequested  | N/A           | Sent when user wants to close custom window |
-| OptionsChanged  | YatOptions    | Sent when YAT options have changed          |
-| OverlayOpened   | N/A           | Sent when overlay has been opened           |
-| OverlayClosed   | N/A           | Sent when overlay has been closed           |
-| YatReady        | N/A           | Sent when YAT is ready                      |
-| CommandExecuted | command, args | Sent when the command was executed          |
+| Name            | Arguments             | Description                                 |
+| --------------- | --------------------- | ------------------------------------------- |
+| CloseRequested  | N/A                   | Sent when user wants to close custom window |
+| OptionsChanged  | YatOptions            | Sent when YAT options have changed          |
+| OverlayOpened   | N/A                   | Sent when overlay has been opened           |
+| OverlayClosed   | N/A                   | Sent when overlay has been closed           |
+| YatReady        | N/A                   | Sent when YAT is ready                      |
+| CommandExecuted | command, args, result | Sent when the command was executed          |
 
 #### Adding commands
 
