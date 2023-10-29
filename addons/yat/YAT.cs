@@ -13,6 +13,8 @@ namespace YAT
 		public delegate void OverlayOpenedEventHandler();
 		[Signal]
 		public delegate void OverlayClosedEventHandler();
+		[Signal]
+		public delegate void YatReadyEventHandler();
 
 		[Export] public YatOptions Options { get; set; } = new();
 
@@ -40,6 +42,8 @@ namespace YAT
 			AddCommand(new Pause());
 			AddCommand(new Options());
 			AddCommand(new Restart());
+
+			EmitSignal(SignalName.YatReady);
 		}
 
 		public override void _Input(InputEvent @event)

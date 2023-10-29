@@ -68,6 +68,7 @@ public partial class Cls : IYatCommand
 | OptionsChanged | YatOptions | Send when YAT options have changed          |
 | OverlayOpened  | N/A        | Send when overlay has been opened           |
 | OverlayClosed  | N/A        | Send when overlay has been closed           |
+| YatReady       | N/A        | Send when YAT is ready                      |
 
 #### Adding commands
 
