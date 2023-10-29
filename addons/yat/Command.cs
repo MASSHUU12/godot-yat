@@ -7,7 +7,7 @@ namespace YAT
 		/// </summary>
 		/// <param name="yat">The YAT instance to execute the command on.</param>
 		/// <param name="args">The arguments to pass to the command.</param>
-		public void Execute(YAT yat, params string[] args);
+		public CommandResult Execute(YAT yat, params string[] args);
 	}
 
 	[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
@@ -44,19 +44,13 @@ namespace YAT
 	}
 
 	/// <summary>
-	/// Contains methods and properties related to executing commands.
+	/// Represents the result of executing a command.
 	/// </summary>
-	public static partial class Command
+	public enum CommandResult
 	{
-		/// <summary>
-		/// Represents the result of executing a command.
-		/// </summary>
-		public enum CommandResult
-		{
-			Success,
-			Failure,
-			InvalidArguments,
-			InvalidCommand,
-		}
+		Success,
+		Failure,
+		InvalidArguments,
+		InvalidCommand,
 	}
 }
