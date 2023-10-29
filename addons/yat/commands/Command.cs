@@ -1,4 +1,4 @@
-namespace YAT
+namespace YAT.Commands
 {
 	public partial interface ICommand
 	{

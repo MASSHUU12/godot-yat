@@ -1,4 +1,4 @@
-using YAT;
+using YAT.Commands;
 
 [Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
 public partial class Whereami : ICommand
