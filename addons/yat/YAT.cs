@@ -61,6 +61,7 @@ namespace YAT
 			AddCommand(new Pause());
 			AddCommand(new Options());
 			AddCommand(new Restart());
+			AddCommand(new Whereami());
 
 			EmitSignal(SignalName.YatReady);
 		}
