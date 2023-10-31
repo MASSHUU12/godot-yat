@@ -59,6 +59,7 @@ namespace YAT
 			AddCommand(new Quit());
 			AddCommand(new Echo());
 			AddCommand(new List());
+			AddCommand(new View());
 			AddCommand(new Pause());
 			AddCommand(new Options());
 			AddCommand(new Restart());
