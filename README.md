@@ -24,17 +24,18 @@ To use this extension, you need to create these keybindings in your project:
 
 > More information about each command can be found in their manuals.
 
-| Command            | Alias  | Description                             |
-| ------------------ | ------ | --------------------------------------- |
-| cls                | clear  | Clears the console.                     |
-| man <command_name> | N/A    | Displays the manual for a command.      |
-| quit               | N/A    | Quits the game.                         |
-| echo <text>        | N/A    | Displays the given text.                |
-| restart            | reboot | Restarts the level.                     |
-| options            | N/A    | Creates the options window.             |
-| pause              | N/A    | Toggles the game pause state.           |
-| whereami           | wai    | Prints the current scene name and path. |
-| list               | ls     | List all available commands.            |
+| Command            | Alias  | Description                                 |
+| ------------------ | ------ | ------------------------------------------- |
+| cls                | clear  | Clears the console.                         |
+| man <command_name> | N/A    | Displays the manual for a command.          |
+| quit               | N/A    | Quits the game.                             |
+| echo <text>        | N/A    | Displays the given text.                    |
+| restart            | reboot | Restarts the level.                         |
+| options            | N/A    | Creates the options window.                 |
+| pause              | N/A    | Toggles the game pause state.               |
+| whereami           | wai    | Prints the current scene name and path.     |
+| list               | ls     | List all available commands.                |
+| view               | -      | Changes the rendering mode of the viewport. |
 
 ### Creating commands
 
