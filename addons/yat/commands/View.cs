@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace YAT.Commands
@@ -10,7 +11,9 @@ namespace YAT.Commands
 		"- unshaded: Renders the viewport without shading.\n" +
 		"- lightning: Enables lighting debug draw.\n" +
 		"- overdraw: Enables overdraw debug draw.\n" +
-		"- wireframe: Renders the viewport in wireframe mode."
+		"- wireframe: Renders the viewport in wireframe mode.\n\n" +
+		"You can also use the integer value of the type " +
+		"[url=https://docs.godotengine.org/en/stable/classes/class_renderingserver.html#class-renderingserver-method-set-debug-generate-wireframes]ViewportDebugDraw[/url]."
 	)]
 	public partial class View : ICommand
 	{
@@ -39,13 +42,25 @@ namespace YAT.Commands
 					debugDraw = RenderingServer.ViewportDebugDraw.Wireframe;
 					break;
 				default:
+					var iMode = mode.ToInt();
+					var max = Enum.GetValues(typeof(RenderingServer.ViewportDebugDraw)).Length - 1;
+
+					if (iMode < 0 || iMode > max)
+					{
+						yat.Terminal.Println($"Invalid mode: {mode}.", Terminal.PrintType.Error);
+						return CommandResult.InvalidArguments;
+					}
+
+					debugDraw = (RenderingServer.ViewportDebugDraw)iMode;
 					break;
 			}
 
 			RenderingServer.ViewportSetDebugDraw(
-				yat.GetViewport().GetViewportRid(), debugDraw);
+				yat.GetViewport().GetViewportRid(),
+				debugDraw
+			);
 
-			yat.Terminal.Println($"Set viewport debug draw to {mode}.");
+			yat.Terminal.Println($"Set viewport debug draw to {debugDraw} ({(ulong)debugDraw}).");
 
 			return CommandResult.Success;
 		}
