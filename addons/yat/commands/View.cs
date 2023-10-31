@@ -42,7 +42,7 @@ namespace YAT.Commands
 					debugDraw = RenderingServer.ViewportDebugDraw.Wireframe;
 					break;
 				default:
-					var iMode = mode.ToInt();
+					var iMode = int.TryParse(mode, out var i) ? i : -1;
 					var max = Enum.GetValues(typeof(RenderingServer.ViewportDebugDraw)).Length - 1;
 
 					if (iMode < 0 || iMode > max)
