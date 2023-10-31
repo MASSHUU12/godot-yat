@@ -34,6 +34,7 @@ To use this extension, you need to create these keybindings in your project:
 | options            | N/A    | Creates the options window.             |
 | pause              | N/A    | Toggles the game pause state.           |
 | whereami           | wai    | Prints the current scene name and path. |
+| list               | ls     | List all available commands.            |
 
 ### Creating commands
 
