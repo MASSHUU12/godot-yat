@@ -55,6 +55,8 @@ namespace YAT
 			_promptLabel = GetNode<Label>("%PromptLabel");
 
 			Output = GetNode<RichTextLabel>("%Output");
+			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
+
 			Input = GetNode<LineEdit>("%Input");
 			Input.TextSubmitted += OnCommandSubmitted;
 		}
