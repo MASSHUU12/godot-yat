@@ -23,7 +23,7 @@ namespace YAT.Commands
 				return CommandResult.InvalidCommand;
 			}
 
-			CommandAttribute attribute = AttributeHelper.GetAttribute<CommandAttribute>(command);
+			CommandAttribute attribute = command.GetAttribute<CommandAttribute>();
 
 			if (attribute is null || string.IsNullOrEmpty(attribute.Manual))
 			{
@@ -32,6 +32,8 @@ namespace YAT.Commands
 			}
 
 			PrintManual(yat, attribute);
+
+			if (command is Extensible extensible) PrintExtensions(yat, extensible);
 
 			return CommandResult.Success;
 		}
@@ -52,6 +54,33 @@ namespace YAT.Commands
 			sb.AppendLine(attribute.Aliases.Length > 0
 					? string.Join("\n", attribute.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
 					: "[ul]\tNone[/ul]");
+
+			yat.Terminal.Println(sb.ToString());
+		}
+
+		/// <summary>
+		/// Prints the extensions of the given <see cref="Extensible"/> object to the terminal.
+		/// </summary>
+		/// <param name="yat">The <see cref="YAT"/> instance.</param>
+		/// <param name="extensible">The <see cref="Extensible"/> object whose extensions to print.</param>
+		private static void PrintExtensions(YAT yat, Extensible extensible)
+		{
+			StringBuilder sb = new();
+
+			sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
+
+			foreach (var extension in extensible.Extensions)
+			{
+				var attribute = extension.Value.GetAttribute<ExtensionAttribute>();
+
+				sb.AppendLine($"[font_size=18]{attribute.Name}[/font_size]");
+				sb.AppendLine(attribute.Description);
+				sb.AppendLine('\n' + attribute.Manual);
+				sb.AppendLine("\n[b]Aliases[/b]:");
+				sb.AppendLine(attribute.Aliases.Length > 0
+						? string.Join("\n", attribute.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
+						: "[ul]\tNone[/ul]");
+			}
 
 			yat.Terminal.Println(sb.ToString());
 		}
