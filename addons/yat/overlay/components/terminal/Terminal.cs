@@ -18,6 +18,7 @@ namespace YAT
 
 		public LineEdit Input;
 		public RichTextLabel Output;
+
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
 		/// </summary>
@@ -101,6 +102,7 @@ namespace YAT
 			_promptLabel.Text = options.Prompt;
 			_promptLabel.Visible = options.ShowPrompt;
 			_window.Size = new(options.DefaultWidth, options.DefaultHeight);
+			Output.ScrollFollowing = options.AutoScroll;
 		}
 
 		/// <summary>
@@ -108,7 +110,7 @@ namespace YAT
 		/// </summary>
 		/// <param name="text">The text to print.</param>
 		/// <param name="type">The type of print to use (e.g. error, warning, success, normal).</param>
-		public void Println(string text, PrintType type = PrintType.Normal) => Print(text + "\n", type);
+		public void Println(string text, PrintType type = PrintType.Normal) => Print(text + '\n', type);
 
 		/// <summary>
 		/// Prints the specified text to the terminal with the specified print type.
@@ -131,19 +133,15 @@ namespace YAT
 			sb.Append(color.ToHtml());
 			sb.Append(']');
 			sb.Append(text);
-			sb.Append("[/color]\n");
+			sb.Append("[/color]");
 
-			Output.AppendText(text);
-			if (_yat.Options.AutoScroll) Output.ScrollToLine(Output.GetLineCount());
+			Output.AppendText(sb.ToString());
 		}
 
 		/// <summary>
 		/// Clears the output text of the terminal window.
 		/// </summary>
-		public void Clear()
-		{
-			Output.Text = string.Empty;
-		}
+		public void Clear() => Output.Clear();
 
 		/// <summary>
 		/// Executes the given CLI command.
@@ -153,14 +151,14 @@ namespace YAT
 		{
 			if (input.Length == 0)
 			{
-				Println("Invalid input.");
+				Println("Invalid input.", PrintType.Error);
 				return;
 			}
 
 			string commandName = input[0];
 			if (!_yat.Commands.ContainsKey(commandName))
 			{
-				Println($"Unknown command: {commandName}");
+				Println($"Unknown command: {commandName}", PrintType.Error);
 				return;
 			}
 
