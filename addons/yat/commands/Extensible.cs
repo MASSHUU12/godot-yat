@@ -1,17 +1,23 @@
-using System;
 using System.Collections.Generic;
 using Godot;
+using YAT.Helpers;
 
 namespace YAT.Commands
 {
-	public interface IExtensible
+	public partial interface IExtensible
 	{
-		public static Dictionary<string, IExtension> Extensions { get; set; }
+		public Extensible Extension { get; }
+	}
 
-		public virtual void Register(IExtension extension)
+	public partial class Extensible
+	{
+		public Dictionary<string, IExtension> Extensions { get; private set; }
+
+		public void Register(IExtension extension)
 		{
-			if (Attribute.GetCustomAttribute(extension.GetType(), typeof(ExtensionAttribute))
-				is not ExtensionAttribute attribute)
+			if (AttributeHelper.GetAttribute<ExtensionAttribute>(extension)
+				is not ExtensionAttribute attribute
+			)
 			{
 				var message = string.Format(
 					"The extension {0} does not have a ExtensionAttribute, and will not be added to the list of available extensions.",
