@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text;
 using YAT.Helpers;
 
@@ -14,16 +15,13 @@ namespace YAT.Commands
 				return CommandResult.InvalidArguments;
 			}
 
-			var lookup = yat.Commands;
 			var commandName = args[1];
 
-			if (!lookup.ContainsKey(commandName))
+			if (!yat.Commands.TryGetValue(commandName, out var command))
 			{
 				yat.Terminal.Println($"Unknown command: {commandName}");
 				return CommandResult.InvalidCommand;
 			}
-
-			var command = lookup[commandName];
 
 			CommandAttribute attribute = AttributeHelper.GetAttribute<CommandAttribute>(command);
 
