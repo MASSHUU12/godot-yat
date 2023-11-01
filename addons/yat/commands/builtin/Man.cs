@@ -51,13 +51,9 @@ namespace YAT.Commands
 			sb.AppendLine($"[p align=center]{attribute.Description}[/p]");
 			sb.AppendLine(attribute.Manual);
 			sb.AppendLine("\n[b]Aliases[/b]:");
-
-			if (attribute.Aliases.Length > 0)
-			{
-				foreach (var alias in attribute.Aliases)
-					sb.Append($"[ul]\t{alias}[/ul]");
-			}
-			else sb.AppendLine("[ul]\tNone[/ul]");
+			sb.AppendLine(attribute.Aliases.Length > 0
+					? string.Join("\n", attribute.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
+					: "[ul]\tNone[/ul]");
 
 			yat.Terminal.Println(sb.ToString());
 		}
