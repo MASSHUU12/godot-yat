@@ -4,11 +4,6 @@ using YAT.Helpers;
 
 namespace YAT.Commands
 {
-	public partial interface IExtensible
-	{
-		public Extensible Extension { get; }
-	}
-
 	public partial class Extensible
 	{
 		public Dictionary<string, IExtension> Extensions { get; } = new();

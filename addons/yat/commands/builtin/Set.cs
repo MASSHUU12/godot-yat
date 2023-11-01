@@ -3,9 +3,9 @@ using Godot;
 namespace YAT.Commands
 {
 	[Command("set", "Sets a variable to a value.", "[b]Usage[/b]: set [i]variable[/i] [i]value[/i]")]
-	public partial class Set : ICommand, IExtensible
+	public partial class Set : ICommand
 	{
-		public Extensible Extension => new();
+		public Extensible Extension = new();
 
 		public CommandResult Execute(YAT yat, params string[] args)
 		{
@@ -17,14 +17,11 @@ namespace YAT.Commands
 
 			var variable = args[1];
 
-			GD.Print(variable);
-			GD.Print(Extension.Extensions);
-
-			// if (Extension.Extensions.ContainsKey(variable))
-			// {
-			// 	var extension = Extension.Extensions[variable];
-			// 	return extension.Execute(yat, this, args[2..]);
-			// }
+			if (Extension.Extensions.ContainsKey(variable))
+			{
+				var extension = Extension.Extensions[variable];
+				return extension.Execute(yat, this, args[2..]);
+			}
 
 			yat.Terminal.Println("Variable not found.", Terminal.PrintType.Error);
 			return CommandResult.Failure;
