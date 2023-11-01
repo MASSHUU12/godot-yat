@@ -20,24 +20,27 @@ To use this extension, you need to create these keybindings in your project:
 -   `yat_history_previous` - Displays the previous command from history.
 -   `yat_history_next` - Displays the next command from history.
 
-### Builtin commands
+### Commands
+
+#### Builtin commands
 
 > More information about each command can be found in their manuals.
 
-| Command            | Alias  | Description                                 |
-| ------------------ | ------ | ------------------------------------------- |
-| cls                | clear  | Clears the console.                         |
-| man <command_name> | N/A    | Displays the manual for a command.          |
-| quit               | N/A    | Quits the game.                             |
-| echo <text>        | N/A    | Displays the given text.                    |
-| restart            | reboot | Restarts the level.                         |
-| options            | N/A    | Creates the options window.                 |
-| pause              | N/A    | Toggles the game pause state.               |
-| whereami           | wai    | Prints the current scene name and path.     |
-| list               | ls     | List all available commands.                |
-| view               | -      | Changes the rendering mode of the viewport. |
+| Command  | Alias  | Description                                                                      |
+| -------- | ------ | -------------------------------------------------------------------------------- |
+| cls      | clear  | Clears the console.                                                              |
+| man      | N/A    | Displays the manual for a command.                                               |
+| quit     | N/A    | Quits the game.                                                                  |
+| echo     | N/A    | Displays the given text.                                                         |
+| restart  | reboot | Restarts the level.                                                              |
+| options  | N/A    | Creates the options window.                                                      |
+| pause    | N/A    | Toggles the game pause state.                                                    |
+| whereami | wai    | Prints the current scene name and path.                                          |
+| list     | ls     | List all available commands.                                                     |
+| view     | -      | Changes the rendering mode of the viewport.                                      |
+| set      | -      | Sets a variable to a value. Does nothing by default, requires adding extensions. |
 
-### Creating commands
+#### Creating commands
 
 To create a command, you need to create C# file and implement `IYatCommand` interface.
 
@@ -65,7 +68,40 @@ public partial class Cls : ICommand
 }
 ```
 
-#### Signals
+#### Adding commands
+
+To add a command to the YAT all you have to do is call `AddCommand` method on YAT instance:
+
+```csharp
+GetNode<YAT>("/root/YAT").AddCommand(new Cls());
+```
+
+#### Making commands extendable
+
+It is possible to extend existing commands under several conditions:
+
+1. an existing command must inherit from the class `Extensible`.
+2. The command must call the `Execute` method on a specific extension. Example below.
+
+```csharp
+var variable = args[1];
+
+if (Extensions.ContainsKey(variable))
+{
+   var extension = Extensions[variable];
+   return extension.Execute(yat, this, args[1..]);
+}
+```
+
+#### Extending commands
+
+To be able to extend a command, you first need to create an extension, which is a class that implements the `IExtension` interface, and contains the `Extension` attribute, the rest works just like a regular command.
+
+#### Creating custom windows
+
+Lorem ipsum dolor sit amet.
+
+### Signals
 
 | Name            | Arguments             | Description                                 |
 | --------------- | --------------------- | ------------------------------------------- |
@@ -75,18 +111,6 @@ public partial class Cls : ICommand
 | OverlayClosed   | N/A                   | Sent when overlay has been closed           |
 | YatReady        | N/A                   | Sent when YAT is ready                      |
 | CommandExecuted | command, args, result | Sent when the command was executed          |
-
-#### Adding commands
-
-To add a command to the YAT all you have to do is call `AddCommand` method on YAT instance:
-
-```csharp
-GetNode<YAT>("/root/YAT").AddCommand(new Cls());
-```
-
-#### Creating custom windows
-
-Lorem ipsum dolor sit amet.
 
 ## License
 

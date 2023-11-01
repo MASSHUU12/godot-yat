@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using Godot;
 using YAT.Commands;
+using YAT.Helpers;
 
 namespace YAT
 {
@@ -56,6 +57,7 @@ namespace YAT
 
 			AddCommand(new Cls());
 			AddCommand(new Man());
+			AddCommand(new Set());
 			AddCommand(new Quit());
 			AddCommand(new Echo());
 			AddCommand(new List());
@@ -96,7 +98,7 @@ namespace YAT
 		/// <param name="command">The CLICommand to add.</param>
 		public void AddCommand(ICommand command)
 		{
-			if (Attribute.GetCustomAttribute(command.GetType(), typeof(CommandAttribute))
+			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
 				is not CommandAttribute attribute)
 			{
 				var message = string.Format(

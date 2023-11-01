@@ -1,4 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://kbo36o18yx5r"]
+[gd_scene load_steps=12 format=3 uid="uid://kbo36o18yx5r"]
+
+[ext_resource type="Script" path="res://example/Main.cs" id="1_misij"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_uv2ih"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -100,6 +102,7 @@ _data = {
 }
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_misij")
 
 [node name="Env" type="Node3D" parent="."]
 
