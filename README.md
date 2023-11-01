@@ -76,6 +76,25 @@ To add a command to the YAT all you have to do is call `AddCommand` method on YA
 GetNode<YAT>("/root/YAT").AddCommand(new Cls());
 ```
 
+#### Making commands extendable
+
+It is possible to extend existing commands under several conditions:
+
+1. an existing command must inherit from the class `Extensible`.
+2. The command must call the `Execute` method on a specific extension. Example below.
+
+```csharp
+var variable = args[1];
+
+if (Extensions.ContainsKey(variable))
+{
+   var extension = Extensions[variable];
+   return extension.Execute(yat, this, args[1..]);
+}
+```
+
+#### Extending commands
+
 #### Creating custom windows
 
 Lorem ipsum dolor sit amet.
