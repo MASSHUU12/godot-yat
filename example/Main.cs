@@ -9,6 +9,6 @@ public partial class Main : Node3D
 		var set = GetNode<YAT.YAT>("/root/YAT").Commands["set"] as Set;
 
 		SetCube.Cube = cube;
-		set.Extension.Register(new SetCube());
+		set.Register(new SetCube());
 	}
 }

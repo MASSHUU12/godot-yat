@@ -1,10 +1,8 @@
 namespace YAT.Commands
 {
 	[Command("set", "Sets a variable to a value.", "[b]Usage[/b]: set [i]variable[/i] [i]value[/i]")]
-	public partial class Set : ICommand
+	public partial class Set : Extensible, ICommand
 	{
-		public Extensible Extension = new();
-
 		public CommandResult Execute(YAT yat, params string[] args)
 		{
 			if (args.Length < 3)
@@ -15,9 +13,9 @@ namespace YAT.Commands
 
 			var variable = args[1];
 
-			if (Extension.Extensions.ContainsKey(variable))
+			if (Extensions.ContainsKey(variable))
 			{
-				var extension = Extension.Extensions[variable];
+				var extension = Extensions[variable];
 				return extension.Execute(yat, this, args[1..]);
 			}
 
