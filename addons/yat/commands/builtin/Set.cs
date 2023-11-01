@@ -1,5 +1,3 @@
-using Godot;
-
 namespace YAT.Commands
 {
 	[Command("set", "Sets a variable to a value.", "[b]Usage[/b]: set [i]variable[/i] [i]value[/i]")]
@@ -20,7 +18,7 @@ namespace YAT.Commands
 			if (Extension.Extensions.ContainsKey(variable))
 			{
 				var extension = Extension.Extensions[variable];
-				return extension.Execute(yat, this, args[2..]);
+				return extension.Execute(yat, this, args[1..]);
 			}
 
 			yat.Terminal.Println("Variable not found.", Terminal.PrintType.Error);
