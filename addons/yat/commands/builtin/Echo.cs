@@ -1,3 +1,5 @@
+using static YAT.Terminal;
+
 namespace YAT.Commands
 {
 	[Command("echo", "Displays the given text.", "[b]Usage[/b]: echo [i]text[/i]")]
@@ -7,7 +9,7 @@ namespace YAT.Commands
 		{
 			if (args.Length < 2)
 			{
-				yat.Terminal.Println("Invalid input.");
+				yat.Terminal.Println("Invalid input.", PrintType.Error);
 				return CommandResult.InvalidArguments;
 			}
 
