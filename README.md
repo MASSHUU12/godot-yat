@@ -95,7 +95,11 @@ if (Extensions.ContainsKey(variable))
 
 #### Extending commands
 
-To be able to extend a command, you first need to create an extension, which is a class that implements the `IExtension` interface, and contains the `Extension` attribute, the rest works just like a regular command.
+To be able to extend a command, you first need to create an extension,
+which is a class that implements the `IExtension` interface,
+and contains the `Extension` attribute, the rest works just like a regular command.
+
+You can find an example of such a class in [example](./example) folder.
 
 #### Creating custom windows
 
