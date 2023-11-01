@@ -11,7 +11,7 @@ namespace YAT.Commands
 
 	public partial class Extensible
 	{
-		public Dictionary<string, IExtension> Extensions { get; private set; }
+		public Dictionary<string, IExtension> Extensions { get; } = new();
 
 		public void Register(IExtension extension)
 		{
