@@ -44,10 +44,10 @@ namespace YAT.Helpers
 		public static void MissingAttribute(string attribute, string name, bool useGDTerminal = true)
 		{
 			var message = string.Format(
-							"Missing attribute: {0} on {1}",
-							attribute,
-							name
-						);
+				"Missing attribute: {0} on {1}",
+				attribute,
+				name
+			);
 
 			PrintMessage(message, Terminal.PrintType.Error, useGDTerminal);
 		}
@@ -61,11 +61,11 @@ namespace YAT.Helpers
 		public static void InvalidArguments(string command, uint expected, uint actual)
 		{
 			var message = string.Format(
-							"Invalid number of arguments for: {0}. Expected {1}, got {2}.",
-							command,
-							expected,
-							actual
-						);
+				"Invalid number of arguments for: {0}. Expected {1}, got {2}.",
+				command,
+				expected,
+				actual
+			);
 
 			PrintMessage(message, Terminal.PrintType.Error);
 		}
