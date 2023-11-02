@@ -14,13 +14,7 @@ namespace YAT.Commands
 				is not ExtensionAttribute attribute
 			)
 			{
-				var message = string.Format(
-					"The extension {0} does not have a ExtensionAttribute, and will not be added to the list of available extensions.",
-					extension.GetType().Name
-				);
-
-				GD.PrintErr(message);
-				// Terminal.Print(message, YatTerminal.PrintType.Warning);
+				LogHelper.MissingAttribute("ExtensionAttribute", extension.GetType().Name);
 				return;
 			}
 

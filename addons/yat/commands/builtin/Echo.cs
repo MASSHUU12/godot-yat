@@ -1,4 +1,4 @@
-using static YAT.Terminal;
+using YAT.Helpers;
 
 namespace YAT.Commands
 {
@@ -9,7 +9,7 @@ namespace YAT.Commands
 		{
 			if (args.Length < 2)
 			{
-				yat.Terminal.Println("Invalid input.", PrintType.Error);
+				LogHelper.MissingArguments("echo", "text");
 				return CommandResult.InvalidArguments;
 			}
 

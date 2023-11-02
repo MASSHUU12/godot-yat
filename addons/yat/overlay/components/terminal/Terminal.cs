@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text;
 using Godot;
 using YAT.Commands;
+using YAT.Helpers;
 
 namespace YAT
 {
@@ -149,16 +150,10 @@ namespace YAT
 		/// <param name="input">The input arguments for the command.</param>
 		private void ExecuteCommand(string[] input)
 		{
-			if (input.Length == 0)
-			{
-				Println("Invalid input.", PrintType.Error);
-				return;
-			}
-
 			string commandName = input[0];
 			if (!_yat.Commands.ContainsKey(commandName))
 			{
-				Println($"Unknown command: {commandName}", PrintType.Error);
+				LogHelper.UnknownCommand(commandName);
 				return;
 			}
 
