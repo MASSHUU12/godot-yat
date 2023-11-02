@@ -1,3 +1,5 @@
+using YAT.Helpers;
+
 namespace YAT.Commands
 {
 	[Command("set", "Sets a variable to a value.", "[b]Usage[/b]: set [i]variable[/i] [i]value[/i]")]
@@ -7,7 +9,7 @@ namespace YAT.Commands
 		{
 			if (args.Length < 3)
 			{
-				yat.Terminal.Println("Invalid arguments.", Terminal.PrintType.Error);
+				LogHelper.MissingArguments("set", "variable", "value");
 				return CommandResult.InvalidArguments;
 			}
 
