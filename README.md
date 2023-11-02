@@ -1,4 +1,5 @@
 <div align="center">
+	<img src="./yat_icon_baner.png" />
 	<h3>YAT</h1>
 	<p>YAT is an addon that provides a customizable, in-game terminal for your project.</p>
 </div>
@@ -108,7 +109,7 @@ You can find an example of such a class in [example](./example) folder.
 
 #### Creating custom windows
 
-Lorem ipsum dolor sit amet.
+In progress.
 
 ### Signals
 
