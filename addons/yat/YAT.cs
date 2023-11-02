@@ -121,6 +121,7 @@ namespace YAT
 		private void OnOverlayReady()
 		{
 			Terminal = Overlay.Terminal;
+			LogHelper.Terminal = Terminal;
 			OptionsManager.Load();
 		}
 	}
