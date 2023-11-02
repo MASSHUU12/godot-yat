@@ -1,9 +1,15 @@
 <div align="center">
+	<img src="./yat_icon_baner.png" />
 	<h3>YAT</h1>
 	<p>YAT is an addon that provides a customizable, in-game terminal for your project.</p>
 </div>
 
 YAT stands for Yet Another Terminal, which allows you to add your own commands to cheat, debug, or anything else. This add-on allows you to create custom commands with support for displaying windows.
+
+> [!NOTE]
+> This project is in the early stages of development. Many things may be added, removed or changed.
+>
+> However, the basic functions work properly and are usable.
 
 ## Prerequisites
 
@@ -37,8 +43,8 @@ To use this extension, you need to create these keybindings in your project:
 | pause    | N/A    | Toggles the game pause state.                                                    |
 | whereami | wai    | Prints the current scene name and path.                                          |
 | list     | ls     | List all available commands.                                                     |
-| view     | -      | Changes the rendering mode of the viewport.                                      |
-| set      | -      | Sets a variable to a value. Does nothing by default, requires adding extensions. |
+| view     | N/A    | Changes the rendering mode of the viewport.                                      |
+| set      | N/A    | Sets a variable to a value. Does nothing by default, requires adding extensions. |
 
 #### Creating commands
 
@@ -103,7 +109,7 @@ You can find an example of such a class in [example](./example) folder.
 
 #### Creating custom windows
 
-Lorem ipsum dolor sit amet.
+In progress.
 
 ### Signals
 
