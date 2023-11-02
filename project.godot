@@ -13,7 +13,7 @@ config_version=5
 config/name="godot-yat"
 run/main_scene="res://example/Main.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://yat_icon.png"
 
 [autoload]
 
