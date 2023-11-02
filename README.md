@@ -43,8 +43,8 @@ To use this extension, you need to create these keybindings in your project:
 | pause    | N/A    | Toggles the game pause state.                                                    |
 | whereami | wai    | Prints the current scene name and path.                                          |
 | list     | ls     | List all available commands.                                                     |
-| view     | -      | Changes the rendering mode of the viewport.                                      |
-| set      | -      | Sets a variable to a value. Does nothing by default, requires adding extensions. |
+| view     | N/A    | Changes the rendering mode of the viewport.                                      |
+| set      | N/A    | Sets a variable to a value. Does nothing by default, requires adding extensions. |
 
 #### Creating commands
 
