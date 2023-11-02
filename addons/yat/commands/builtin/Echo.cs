@@ -9,7 +9,7 @@ namespace YAT.Commands
 		{
 			if (args.Length < 2)
 			{
-				LogHelper.InvalidArguments("echo", 1, (uint)args.Length - 1);
+				LogHelper.MissingArguments("echo", "text");
 				return CommandResult.InvalidArguments;
 			}
 
