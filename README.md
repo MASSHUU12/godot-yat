@@ -5,6 +5,11 @@
 
 YAT stands for Yet Another Terminal, which allows you to add your own commands to cheat, debug, or anything else. This add-on allows you to create custom commands with support for displaying windows.
 
+> [!NOTE]
+> This project is in the early stages of development. Many things may be added, removed or changed.
+>
+> However, the basic functions work properly and are usable.
+
 ## Prerequisites
 
 -   [.NET SDK 7](https://dotnet.microsoft.com/en-us/download)
