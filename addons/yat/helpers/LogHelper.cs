@@ -16,5 +16,15 @@ namespace YAT.Helpers
 
 		private static Terminal _terminal;
 		private static bool _terminalValid = false;
+
+		/// <summary>
+		/// Prints an error message indicating that an unknown command was entered.
+		/// </summary>
+		/// <param name="command">The unknown command that was entered.</param>
+		public static void UnknownCommand(string command)
+		{
+			if (!_terminalValid) return;
+			Terminal.Println($"Unknown command: {command}", Terminal.PrintType.Error);
+		}
 	}
 }
