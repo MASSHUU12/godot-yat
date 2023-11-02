@@ -11,7 +11,7 @@ namespace YAT.Commands
 		{
 			if (args.Length < 2)
 			{
-				LogHelper.InvalidArguments("man", 1, (uint)args.Length - 1);
+				LogHelper.MissingArguments("man", "command_name");
 				return CommandResult.InvalidArguments;
 			}
 

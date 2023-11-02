@@ -69,5 +69,21 @@ namespace YAT.Helpers
 
 			PrintMessage(message, Terminal.PrintType.Error);
 		}
+
+		/// <summary>
+		/// Prints an error message indicating that one or more arguments are missing for the specified command.
+		/// </summary>
+		/// <param name="command">The name of the command that is missing arguments.</param>
+		/// <param name="args">The names of the missing arguments.</param>
+		public static void MissingArguments(string command, params string[] args)
+		{
+			var message = string.Format(
+				"{0} expected [i]{1}[/i] to be provided.",
+				command,
+				string.Join(", ", args)
+			);
+
+			PrintMessage(message, Terminal.PrintType.Error);
+		}
 	}
 }
