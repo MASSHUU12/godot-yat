@@ -60,7 +60,7 @@ namespace YAT.Commands
 				debugDraw
 			);
 
-			yat.Terminal.Println($"Set viewport debug draw to {debugDraw} ({(ulong)debugDraw}).");
+			yat.Terminal.Println($"Set viewport debug draw to {debugDraw} ({(uint)debugDraw}).");
 
 			return CommandResult.Success;
 		}
