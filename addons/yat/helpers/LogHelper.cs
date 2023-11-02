@@ -34,5 +34,22 @@ namespace YAT.Helpers
 		/// </summary>
 		/// <param name="command">The unknown command that was entered.</param>
 		public static void UnknownCommand(string command) => PrintMessage($"Unknown command: {command}");
+
+		/// <summary>
+		/// Logs a message indicating that a required attribute is missing.
+		/// </summary>
+		/// <param name="attribute">The name of the missing attribute.</param>
+		/// <param name="name">The name of the object that is missing the attribute.</param>
+		/// <param name="useGDTerminal">Whether to print the message to the Godot terminal.</param>
+		public static void MissingAttribute(string attribute, string name, bool useGDTerminal = true)
+		{
+			var message = string.Format(
+							"Missing attribute: {0} on {1}",
+							attribute,
+							name
+						);
+
+			PrintMessage(message, Terminal.PrintType.Error, useGDTerminal);
+		}
 	}
 }

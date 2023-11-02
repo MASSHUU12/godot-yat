@@ -101,13 +101,7 @@ namespace YAT
 			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
 				is not CommandAttribute attribute)
 			{
-				var message = string.Format(
-					"The command {0} does not have a CommandAttribute, and will not be added to the list of available commands.",
-					command.GetType().Name
-				);
-
-				GD.PrintErr(message);
-				// Terminal.Print(message, YatTerminal.PrintType.Warning);
+				LogHelper.MissingAttribute("CommandAttribute", command.GetType().Name);
 				return;
 			}
 
