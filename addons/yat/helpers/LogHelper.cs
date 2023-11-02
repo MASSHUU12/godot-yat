@@ -6,13 +6,15 @@ namespace YAT.Helpers
 	{
 		public static Terminal Terminal
 		{
-			get => Terminal;
+			get => _terminal;
 			set
 			{
-				Terminal = value;
-				_terminalValid = GodotObject.IsInstanceValid(value);
+				_terminal = value;
+				_terminalValid = GodotObject.IsInstanceValid(_terminal);
 			}
 		}
+
+		private static Terminal _terminal;
 		private static bool _terminalValid = false;
 	}
 }
