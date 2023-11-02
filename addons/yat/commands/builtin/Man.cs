@@ -11,7 +11,7 @@ namespace YAT.Commands
 		{
 			if (args.Length < 2)
 			{
-				yat.Terminal.Println("Invalid input.");
+				LogHelper.InvalidArguments("man", 1, (uint)args.Length - 1);
 				return CommandResult.InvalidArguments;
 			}
 
@@ -19,7 +19,7 @@ namespace YAT.Commands
 
 			if (!yat.Commands.TryGetValue(commandName, out var command))
 			{
-				yat.Terminal.Println($"Unknown command: {commandName}");
+				LogHelper.UnknownCommand(commandName);
 				return CommandResult.InvalidCommand;
 			}
 
