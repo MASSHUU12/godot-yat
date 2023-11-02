@@ -51,5 +51,23 @@ namespace YAT.Helpers
 
 			PrintMessage(message, Terminal.PrintType.Error, useGDTerminal);
 		}
+
+		/// <summary>
+		/// Prints an error message indicating that the number of arguments provided for a command is invalid.
+		/// </summary>
+		/// <param name="command">The name of the command.</param>
+		/// <param name="expected">The expected number of arguments.</param>
+		/// <param name="actual">The actual number of arguments.</param>
+		public static void MissingArguments(string command, uint expected, uint actual)
+		{
+			var message = string.Format(
+							"Invalid number of arguments for: {0}. Expected {1}, got {2}.",
+							command,
+							expected,
+							actual
+						);
+
+			PrintMessage(message, Terminal.PrintType.Error);
+		}
 	}
 }
