@@ -23,7 +23,7 @@ namespace YAT.Helpers
 		/// <param name="message">The message to print.</param>
 		/// <param name="printType">The type of message to print.</param>
 		/// <param name="useGDTerminal">Whether to print also to the Godot terminal.</param>
-		private static void PrintMessage(string message, Terminal.PrintType printType, bool useGDTerminal = false)
+		private static void PrintMessage(string message, Terminal.PrintType printType = Terminal.PrintType.Error, bool useGDTerminal = false)
 		{
 			if (useGDTerminal) GD.PushError(message);
 			if (_terminalValid) Terminal.Println(message, printType);
@@ -33,10 +33,6 @@ namespace YAT.Helpers
 		/// Prints an error message indicating that an unknown command was entered.
 		/// </summary>
 		/// <param name="command">The unknown command that was entered.</param>
-		public static void UnknownCommand(string command)
-		{
-			var message = $"Unknown command: {command}";
-			PrintMessage(message, Terminal.PrintType.Error);
-		}
+		public static void UnknownCommand(string command) => PrintMessage($"Unknown command: {command}");
 	}
 }
