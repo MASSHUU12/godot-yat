@@ -31,7 +31,15 @@ namespace YAT
 		[Export] public uint MinHeight { get; set; } = 256;
 
 		[ExportGroup("Other")]
+		[ExportSubgroup("YatEnableFile")]
 		[Export] public bool UseYatEnableFile { get; set; } = false;
 		[Export] public string YatEnableFile { get; set; } = ".yatenable";
+		[Export] public YatEnableFileLocation YatEnableLocation { get; set; } = YatEnableFileLocation.UserData;
+
+		public enum YatEnableFileLocation
+		{
+			UserData,
+			CurrentDirectory
+		}
 	}
 }

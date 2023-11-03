@@ -26,3 +26,4 @@ MinWidth = 256
 MinHeight = 256
 UseYatEnableFile = false
 YatEnableFile = ".yatenable"
+YatEnableLocation = 0
