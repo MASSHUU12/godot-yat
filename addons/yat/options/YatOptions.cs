@@ -30,31 +30,16 @@ namespace YAT
 		[Export] public uint MinWidth { get; set; } = 256;
 		[Export] public uint MinHeight { get; set; } = 256;
 
+		[ExportGroup("Other")]
+		[ExportSubgroup("YatEnableFile")]
+		[Export] public bool UseYatEnableFile { get; set; } = false;
+		[Export] public string YatEnableFile { get; set; } = ".yatenable";
+		[Export] public YatEnableFileLocation YatEnableLocation { get; set; } = YatEnableFileLocation.UserData;
 
-		// Without a parameterless constructor, Godot will have problems
-		// creating and editing resource via the inspector.
-		// public YatOptions() : this(">", true, 25, true, true, true, true, true, new("1d2229"), new("15191fc0"), new("1d2229c0"), new("73444c"), new("e5a347"), true, true) { }
-
-		// public YatOptions(string prompt, bool showPrompt, uint maxHistory, bool autoFocus, bool autoScroll, bool autoComplete, bool autoCompleteOnTab, bool autoCompleteOnEnter, Color backgroundColor, Color inputColor, Color outputColor, Color errorColor, Color warningColor, bool windowResizable, bool windowMovable)
-		// {
-		// 	Prompt = prompt;
-		// 	ShowPrompt = showPrompt;
-		// 	MaxHistory = maxHistory;
-
-		// 	AutoFocus = autoFocus;
-		// 	AutoScroll = autoScroll;
-		// 	AutoComplete = autoComplete;
-		// 	AutoCompleteOnTab = autoCompleteOnTab;
-		// 	AutoCompleteOnEnter = autoCompleteOnEnter;
-
-		// 	BackgroundColor = backgroundColor;
-		// 	InputColor = inputColor;
-		// 	OutputColor = outputColor;
-		// 	ErrorColor = errorColor;
-		// 	WarningColor = warningColor;
-
-		// 	WindowResizable = windowResizable;
-		// 	WindowMovable = windowMovable;
-		// }
+		public enum YatEnableFileLocation
+		{
+			UserData,
+			CurrentDirectory
+		}
 	}
 }

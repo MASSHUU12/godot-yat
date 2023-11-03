@@ -111,6 +111,15 @@ You can find an example of such a class in [example](./example) folder.
 
 In progress.
 
+### Options
+
+#### YAT enable file
+
+You can make YAT accessible only when a specific file (default .yatenable)
+is present in either the `user://` or `res://` directory (default user://).
+
+This makes it easy to restrict terminal access to players without removing the extension.
+
 ### Signals
 
 | Name            | Arguments             | Description                                 |
