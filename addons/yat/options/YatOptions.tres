@@ -24,3 +24,5 @@ WindowResizable = true
 WindowMovable = true
 MinWidth = 256
 MinHeight = 256
+UseYatEnableFile = false
+YatEnableFile = ".yatenable"
