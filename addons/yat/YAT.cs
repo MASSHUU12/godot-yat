@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 using Godot;
 using YAT.Commands;
 using YAT.Helpers;
@@ -46,9 +45,12 @@ namespace YAT
 		public Dictionary<string, ICommand> Commands = new();
 
 		private Godot.Window _root;
+		private bool _yatEnabled = true;
 
 		public override void _Ready()
 		{
+			CheckYatEnableSettings();
+
 			_root = GetTree().Root;
 
 			Overlay = GD.Load<PackedScene>("res://addons/yat/overlay/Overlay.tscn").Instantiate<Overlay>();
@@ -66,13 +68,11 @@ namespace YAT
 			AddCommand(new Options());
 			AddCommand(new Restart());
 			AddCommand(new Whereami());
-
-			EmitSignal(SignalName.YatReady);
 		}
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event.IsActionPressed("yat_toggle"))
+			if (@event.IsActionPressed("yat_toggle") && _yatEnabled)
 			{
 				// Toggle the Overlay.
 				if (Overlay.IsInsideTree())
@@ -117,7 +117,25 @@ namespace YAT
 			Terminal = Overlay.Terminal;
 			LogHelper.Terminal = Terminal;
 			OptionsManager.Load();
+
+			EmitSignal(SignalName.YatReady);
+		}
+
+		/// <summary>
+		/// Checks if YAT is enabled based on the user's settings.
+		/// </summary>
+		private void CheckYatEnableSettings()
+		{
+			if (!Options.UseYatEnableFile) return;
+
+			var path = Options.YatEnableLocation switch
+			{
+				YatOptions.YatEnableFileLocation.UserData => "user://",
+				YatOptions.YatEnableFileLocation.CurrentDirectory => "res://",
+				_ => "user://"
+			};
+
+			_yatEnabled = FileAccess.FileExists(path + Options.YatEnableFile);
 		}
 	}
-
 }
