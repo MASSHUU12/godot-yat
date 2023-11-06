@@ -6,7 +6,7 @@ public partial class Plugin : EditorPlugin
 {
 	public override void _EnterTree()
 	{
-		AddAutoloadSingleton("YAT", "res://addons/yat/YAT.tscn");
+		AddAutoloadSingleton("YAT", "res://addons/yat/src/YAT.tscn");
 		GD.Print("YAT loaded!");
 		GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]godot-yat[/url] on GitHub.");
 	}

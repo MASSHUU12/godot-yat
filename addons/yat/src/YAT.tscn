@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dhbvghhlqawa4"]
 
-[ext_resource type="Script" path="res://addons/yat/YAT.cs" id="1_683p6"]
-[ext_resource type="Resource" uid="uid://dmg0237pdk1x6" path="res://addons/yat/options/YatOptions.tres" id="2_6miw0"]
+[ext_resource type="Script" path="res://addons/yat/src/YAT.cs" id="1_683p6"]
+[ext_resource type="Resource" uid="uid://dmg0237pdk1x6" path="res://addons/yat/src/options/YatOptions.tres" id="2_6miw0"]
 
 [node name="YAT" type="Control"]
 process_mode = 3

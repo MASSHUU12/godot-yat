@@ -1,5 +1,5 @@
 <div align="center">
-	<img src="./addons/yat/docs/assets/yat_icon_baner.png" />
+	<img src="./docs/assets/yat_icon_baner.png" />
 	<h3>YAT</h1>
 	<p>YAT is an addon that provides a customizable, in-game terminal for your project.</p>
 </div>
@@ -18,10 +18,10 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 
 ## Documentation
 
-You can find the documentation in the [docs](./addons/yat/docs/) folder
-and example in the [example](./example/) folder.
+You can find the documentation in the [docs](./docs/) folder
+and example in the [example](../../example/) folder.
 
-The project also has templates in the [script_templates](./script_templates/) folder, which can make it easier to create commands, etc.
+The project also has templates in the [script_templates](../../script_templates/) folder, which can make it easier to create commands, etc.
 
 ## License
 
