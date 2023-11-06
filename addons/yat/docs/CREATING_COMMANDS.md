@@ -1,7 +1,16 @@
 <div align="center">
 	<h3>Creating commands</h1>
-	<p>Here you can find information on creating new commands, and adding them to YAT.</p>
+	<p>Here you can find information on creating new commands, extending existing commands, and adding them to YAT</p>
 </div>
+
+## Table of Contents
+
+-   [Table of Contents](#table-of-contents)
+-   [Creating commands](#creating-commands)
+-   [Adding commands](#adding-commands)
+-   [Making commands extendable](#making-commands-extendable)
+-   [Extending commands](#extending-commands)
+-   [Signals](#signals)
 
 ## Creating commands
 
@@ -55,3 +64,26 @@ if (Extensions.ContainsKey(variable))
    return extension.Execute(yat, this, args[1..]);
 }
 ```
+
+## Extending commands
+
+To be able to extend a command, you first need to create an extension,
+which is a class that implements the `IExtension` interface,
+and contains the `Extension` attribute, the rest works just like a regular command.
+
+You can find an example of such a class in [example](./example) folder.
+
+###Creating custom windows
+
+In progress.
+
+## Signals
+
+| Name            | Arguments             | Description                                 |
+| --------------- | --------------------- | ------------------------------------------- |
+| CloseRequested  | N/A                   | Sent when user wants to close custom window |
+| OptionsChanged  | YatOptions            | Sent when YAT options have changed          |
+| OverlayOpened   | N/A                   | Sent when overlay has been opened           |
+| OverlayClosed   | N/A                   | Sent when overlay has been closed           |
+| YatReady        | N/A                   | Sent when YAT is ready                      |
+| CommandExecuted | command, args, result | Sent when the command was executed          |
