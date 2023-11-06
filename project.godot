@@ -17,7 +17,7 @@ config/icon="res://yat_icon.png"
 
 [autoload]
 
-YAT="*res://addons/yat/YAT.tscn"
+YAT="*res://addons/yat/src/YAT.tscn"
 
 [dotnet]
 

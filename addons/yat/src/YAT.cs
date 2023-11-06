@@ -53,7 +53,7 @@ namespace YAT
 
 			_root = GetTree().Root;
 
-			Overlay = GD.Load<PackedScene>("res://addons/yat/overlay/Overlay.tscn").Instantiate<Overlay>();
+			Overlay = GD.Load<PackedScene>("res://addons/yat/src/overlay/Overlay.tscn").Instantiate<Overlay>();
 			Overlay.Ready += OnOverlayReady;
 			OptionsManager = new(this, Options);
 
