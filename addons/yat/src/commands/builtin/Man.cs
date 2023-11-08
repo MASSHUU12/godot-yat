@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text;
+using Godot;
 using YAT.Helpers;
 
 namespace YAT.Commands
@@ -7,7 +8,7 @@ namespace YAT.Commands
 	[Command("man", "Displays the manual for a command.", "[b]Usage[/b]: man [i]command_name[/i]")]
 	public partial class Man : ICommand
 	{
-		// TODO: Cache the manual for each command so we don't have to re-parse it every time.
+		private readonly LRUCache<string, string> cache = new(10);
 
 		public CommandResult Execute(YAT yat, params string[] args)
 		{
@@ -33,9 +34,18 @@ namespace YAT.Commands
 				return CommandResult.Failure;
 			}
 
-			PrintManual(yat, attribute);
+			if (cache.Get(commandName) is string manual)
+			{
+				yat.Terminal.Print(manual);
+				return CommandResult.Success;
+			}
 
-			if (command is Extensible extensible) PrintExtensions(yat, extensible);
+			manual = PrintManual(yat, attribute);
+
+			if (command is Extensible extensible)
+				manual += PrintExtensions(yat, extensible);
+
+			cache.Add(commandName, manual);
 
 			return CommandResult.Success;
 		}
@@ -45,7 +55,7 @@ namespace YAT.Commands
 		/// </summary>
 		/// <param name="yat">The YAT instance.</param>
 		/// <param name="command">The CommandAttribute of the command to print the manual for.</param>
-		private static void PrintManual(YAT yat, CommandAttribute command)
+		private static string PrintManual(YAT yat, CommandAttribute command)
 		{
 			StringBuilder sb = new();
 
@@ -57,7 +67,11 @@ namespace YAT.Commands
 					? string.Join("\n", command.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
 					: "[ul]\tNone[/ul]");
 
-			yat.Terminal.Print(sb.ToString());
+			var manual = sb.ToString();
+
+			yat.Terminal.Print(manual);
+
+			return manual;
 		}
 
 		/// <summary>
@@ -65,7 +79,7 @@ namespace YAT.Commands
 		/// </summary>
 		/// <param name="yat">The <see cref="YAT"/> instance.</param>
 		/// <param name="extensible">The <see cref="Extensible"/> object whose extensions to print.</param>
-		private static void PrintExtensions(YAT yat, Extensible extensible)
+		private static string PrintExtensions(YAT yat, Extensible extensible)
 		{
 			StringBuilder sb = new();
 
@@ -84,7 +98,11 @@ namespace YAT.Commands
 						: "[ul]\tNone[/ul]");
 			}
 
-			yat.Terminal.Print(sb.ToString());
+			var extensions = sb.ToString();
+
+			yat.Terminal.Print(extensions);
+
+			return extensions;
 		}
 	}
 }
