@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Text;
-using Godot;
 using YAT.Helpers;
 
 namespace YAT.Commands
@@ -34,6 +33,7 @@ namespace YAT.Commands
 				return CommandResult.Failure;
 			}
 
+			// Check if the manual is already cached
 			if (cache.Get(commandName) is string manual)
 			{
 				yat.Terminal.Print(manual);
@@ -55,6 +55,7 @@ namespace YAT.Commands
 		/// </summary>
 		/// <param name="yat">The YAT instance.</param>
 		/// <param name="command">The CommandAttribute of the command to print the manual for.</param>
+		/// <returns>The manual as a string.</returns>
 		private static string PrintManual(YAT yat, CommandAttribute command)
 		{
 			StringBuilder sb = new();
@@ -79,6 +80,7 @@ namespace YAT.Commands
 		/// </summary>
 		/// <param name="yat">The <see cref="YAT"/> instance.</param>
 		/// <param name="extensible">The <see cref="Extensible"/> object whose extensions to print.</param>
+		/// <returns>The extensions as a string.</returns>
 		private static string PrintExtensions(YAT yat, Extensible extensible)
 		{
 			StringBuilder sb = new();
