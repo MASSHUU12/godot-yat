@@ -18,6 +18,8 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 
 ## Documentation
 
+Instructions on how to get started can be found in the [USAGE.md](./addons/yat/docs/USAGE.md) file.
+
 You can find the documentation in the [docs](./addons/yat/docs/) folder
 and example in the [example](./example/) folder.
 
