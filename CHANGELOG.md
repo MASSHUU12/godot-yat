@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+-   Man uses LRU cache for manuals.
+
 ## [1.1.0-beta - 2023-11-08]
 
 ### Added
