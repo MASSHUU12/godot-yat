@@ -5,7 +5,7 @@ namespace YAT.Commands
 	{
 		public CommandResult Execute(YAT yat, params string[] args)
 		{
-			yat.Terminal.Println("Quitting...");
+			yat.Terminal.Print("Quitting...");
 			yat.GetTree().Quit();
 
 			return CommandResult.Success;

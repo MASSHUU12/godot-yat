@@ -7,7 +7,7 @@ namespace YAT.Commands
 	{
 		private static Node _optionsWindowInstance;
 		private static readonly PackedScene _optionsWindow = GD.Load<PackedScene>(
-			"res://addons/yat/overlay/components/options_window/OptionsWindow.tscn"
+			"res://addons/yat/src/overlay/components/options_window/OptionsWindow.tscn"
 		);
 
 		public CommandResult Execute(YAT yat, params string[] args)

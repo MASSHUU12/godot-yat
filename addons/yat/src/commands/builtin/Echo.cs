@@ -14,7 +14,7 @@ namespace YAT.Commands
 			}
 
 			var text = string.Join(" ", args[1..^0]);
-			yat.Terminal.Println(text);
+			yat.Terminal.Print(text);
 
 			return CommandResult.Success;
 		}

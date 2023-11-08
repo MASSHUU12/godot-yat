@@ -61,6 +61,8 @@ namespace YAT
 
 			Input = GetNode<LineEdit>("%Input");
 			Input.TextSubmitted += OnCommandSubmitted;
+
+			UpdateOptions(_yat.Options);
 		}
 
 		public override void _Input(InputEvent @event)
@@ -107,20 +109,12 @@ namespace YAT
 		}
 
 		/// <summary>
-		/// Prints the specified text to the terminal window, followed by a newline character.
-		/// </summary>
-		/// <param name="text">The text to print.</param>
-		/// <param name="type">The type of print to use (e.g. error, warning, success, normal).</param>
-		public void Println(string text, PrintType type = PrintType.Normal) => Print(text + '\n', type);
-
-		/// <summary>
 		/// Prints the specified text to the terminal with the specified print type.
 		/// </summary>
 		/// <param name="text">The text to print.</param>
 		/// <param name="type">The type of print to use (e.g. error, warning, success, normal).</param>
 		public void Print(string text, PrintType type = PrintType.Normal)
 		{
-			StringBuilder sb = new();
 			var color = type switch
 			{
 				PrintType.Error => _yat.Options.ErrorColor,
@@ -130,13 +124,11 @@ namespace YAT
 				_ => _yat.Options.OutputColor,
 			};
 
-			sb.Append("[color=");
-			sb.Append(color.ToHtml());
-			sb.Append(']');
-			sb.Append(text);
-			sb.Append("[/color]");
-
-			Output.AppendText(sb.ToString());
+			Output.PushColor(color);
+			// Paragraph is needed because newline characters are breaking formatting.
+			Output.PushParagraph(HorizontalAlignment.Left);
+			Output.AppendText(text);
+			Output.PopAll();
 		}
 
 		/// <summary>

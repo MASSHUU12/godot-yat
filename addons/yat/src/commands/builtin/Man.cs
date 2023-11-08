@@ -7,6 +7,8 @@ namespace YAT.Commands
 	[Command("man", "Displays the manual for a command.", "[b]Usage[/b]: man [i]command_name[/i]")]
 	public partial class Man : ICommand
 	{
+		// TODO: Cache the manual for each command so we don't have to re-parse it every time.
+
 		public CommandResult Execute(YAT yat, params string[] args)
 		{
 			if (args.Length < 2)
@@ -27,7 +29,7 @@ namespace YAT.Commands
 
 			if (attribute is null || string.IsNullOrEmpty(attribute.Manual))
 			{
-				yat.Terminal.Println($"Command {commandName} does not have a manual.");
+				yat.Terminal.Print($"Command {commandName} does not have a manual.");
 				return CommandResult.Failure;
 			}
 
@@ -42,20 +44,20 @@ namespace YAT.Commands
 		/// Prints the manual for a given command.
 		/// </summary>
 		/// <param name="yat">The YAT instance.</param>
-		/// <param name="attribute">The CommandAttribute of the command to print the manual for.</param>
-		private static void PrintManual(YAT yat, CommandAttribute attribute)
+		/// <param name="command">The CommandAttribute of the command to print the manual for.</param>
+		private static void PrintManual(YAT yat, CommandAttribute command)
 		{
 			StringBuilder sb = new();
 
-			sb.AppendLine($"[p align=center][font_size=22]{attribute.Name}[/font_size][/p]");
-			sb.AppendLine($"[p align=center]{attribute.Description}[/p]");
-			sb.AppendLine(attribute.Manual);
+			sb.AppendLine($"[p align=center][font_size=22]{command.Name}[/font_size][/p]");
+			sb.AppendLine($"[p align=center]{command.Description}[/p]");
+			sb.AppendLine(command.Manual);
 			sb.AppendLine("\n[b]Aliases[/b]:");
-			sb.AppendLine(attribute.Aliases.Length > 0
-					? string.Join("\n", attribute.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
+			sb.AppendLine(command.Aliases.Length > 0
+					? string.Join("\n", command.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
 					: "[ul]\tNone[/ul]");
 
-			yat.Terminal.Println(sb.ToString());
+			yat.Terminal.Print(sb.ToString());
 		}
 
 		/// <summary>
@@ -82,7 +84,7 @@ namespace YAT.Commands
 						: "[ul]\tNone[/ul]");
 			}
 
-			yat.Terminal.Println(sb.ToString());
+			yat.Terminal.Print(sb.ToString());
 		}
 	}
 }

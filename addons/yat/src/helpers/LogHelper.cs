@@ -26,7 +26,7 @@ namespace YAT.Helpers
 		private static void PrintMessage(string message, Terminal.PrintType printType = Terminal.PrintType.Error, bool useGDTerminal = false)
 		{
 			if (useGDTerminal) GD.PushError(message);
-			if (_terminalValid) Terminal.Println(message, printType);
+			if (_terminalValid) Terminal.Print(message, printType);
 		}
 
 		/// <summary>

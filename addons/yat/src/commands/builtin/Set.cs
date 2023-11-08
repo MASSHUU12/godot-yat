@@ -21,7 +21,7 @@ namespace YAT.Commands
 				return extension.Execute(yat, this, args[1..]);
 			}
 
-			yat.Terminal.Println("Variable not found.", Terminal.PrintType.Error);
+			yat.Terminal.Print("Variable not found.", Terminal.PrintType.Error);
 			return CommandResult.Failure;
 		}
 	}
