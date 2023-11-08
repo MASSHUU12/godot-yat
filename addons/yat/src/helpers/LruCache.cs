@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 /// <summary>
@@ -14,6 +15,10 @@ public class LRUCache<TKey, TValue>
 
 	public LRUCache(int capacity)
 	{
+		if (capacity <= 0) throw new ArgumentOutOfRangeException(
+			nameof(capacity), "Capacity must be greater than zero."
+		);
+
 		this.capacity = capacity;
 		cache = new Dictionary<TKey, LinkedListNode<LRUItem<TKey, TValue>>>(capacity);
 		lruList = new LinkedList<LRUItem<TKey, TValue>>();
@@ -53,9 +58,8 @@ public class LRUCache<TKey, TValue>
 			cache.Remove(lastNode.Value.Key);
 		}
 
-		var newNode = new LinkedListNode<LRUItem<TKey, TValue>>(new(key, value));
-		lruList.AddFirst(newNode);
-		cache[key] = newNode;
+		lruList.AddFirst(new LinkedListNode<LRUItem<TKey, TValue>>(new(key, value)));
+		cache[key] = lruList.First;
 	}
 }
 
