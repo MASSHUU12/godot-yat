@@ -61,6 +61,8 @@ namespace YAT
 
 			Input = GetNode<LineEdit>("%Input");
 			Input.TextSubmitted += OnCommandSubmitted;
+
+			UpdateOptions(_yat.Options);
 		}
 
 		public override void _Input(InputEvent @event)
