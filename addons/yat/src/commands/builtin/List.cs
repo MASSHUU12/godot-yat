@@ -25,7 +25,7 @@ namespace YAT.Commands
 				sb.AppendLine();
 			}
 
-			yat.Terminal.Println(sb.ToString());
+			yat.Terminal.Print(sb.ToString());
 
 			return CommandResult.Success;
 		}

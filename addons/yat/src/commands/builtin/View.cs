@@ -47,7 +47,7 @@ namespace YAT.Commands
 
 					if (iMode < 0 || iMode > max)
 					{
-						yat.Terminal.Println($"Invalid mode: {mode}.", Terminal.PrintType.Error);
+						yat.Terminal.Print($"Invalid mode: {mode}.", Terminal.PrintType.Error);
 						return CommandResult.InvalidArguments;
 					}
 
@@ -60,7 +60,7 @@ namespace YAT.Commands
 				debugDraw
 			);
 
-			yat.Terminal.Println($"Set viewport debug draw to {debugDraw} ({(uint)debugDraw}).");
+			yat.Terminal.Print($"Set viewport debug draw to {debugDraw} ({(uint)debugDraw}).");
 
 			return CommandResult.Success;
 		}

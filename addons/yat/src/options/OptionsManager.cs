@@ -31,10 +31,10 @@ namespace YAT
 			switch (ResourceSaver.Save(_yat.Options, _optionsPath))
 			{
 				case Error.Ok:
-					_yat.Terminal.Println("Options saved successfully.");
+					_yat.Terminal.Print("Options saved successfully.");
 					break;
 				default:
-					_yat.Terminal.Println("Failed to save options.", Terminal.PrintType.Error);
+					_yat.Terminal.Print("Failed to save options.", Terminal.PrintType.Error);
 					break;
 			}
 		}
@@ -46,13 +46,13 @@ namespace YAT
 		{
 			if (!ResourceLoader.Exists(_optionsPath))
 			{
-				_yat.Terminal.Println("Options file does not exist, leaving options unchanged.");
+				_yat.Terminal.Print("Options file does not exist, leaving options unchanged.");
 				return;
 			}
 
 			_yat.Options = ResourceLoader.Load<YatOptions>(_optionsPath);
 			_yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
-			_yat.Terminal.Println("Options loaded successfully.");
+			_yat.Terminal.Print("Options loaded successfully.");
 		}
 
 		/// <summary>
@@ -63,7 +63,7 @@ namespace YAT
 			_yat.Options = _defaultOptions;
 			_yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
 
-			_yat.Terminal.Println("Restored default options.");
+			_yat.Terminal.Print("Restored default options.");
 		}
 	}
 }

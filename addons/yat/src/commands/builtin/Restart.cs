@@ -5,7 +5,7 @@ namespace YAT.Commands
 	{
 		public CommandResult Execute(YAT yat, params string[] args)
 		{
-			yat.Terminal.Println($"Restarting {yat.GetTree().CurrentScene.Name}...");
+			yat.Terminal.Print($"Restarting {yat.GetTree().CurrentScene.Name}...");
 			yat.GetTree().ReloadCurrentScene();
 
 			return CommandResult.Success;

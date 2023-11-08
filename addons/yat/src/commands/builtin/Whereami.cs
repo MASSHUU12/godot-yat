@@ -7,7 +7,7 @@ namespace YAT.Commands
 		{
 			var scene = yat.GetTree().CurrentScene;
 
-			yat.Terminal.Println($"{scene.GetPath()} ({scene.SceneFilePath})");
+			yat.Terminal.Print($"{scene.GetPath()} ({scene.SceneFilePath})");
 
 			return CommandResult.Success;
 		}
