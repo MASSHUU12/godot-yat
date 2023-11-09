@@ -2,13 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.2.0-beta - 2023-11-09]
+
+### Added
+
+-   Overridable GenerateCommandManual method for commands.
+-   Overridable GenerateExtensionManual method for extensions.
+-   Overridable GenerateExtensionsManual method for Extensible.
 
 ### Changed
 
 -   Man uses LRU cache for manuals.
--   Execute method no longer accepts YAT as first parameter.
 -   Commands must take YAT as a property in the constructor.
+
+### Removed
+
+-   YAT reference in command Execute method.
+-   YAT reference in extension Execute method.
 
 ## [1.1.0-beta - 2023-11-08]
 
