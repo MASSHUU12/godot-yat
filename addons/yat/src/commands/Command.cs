@@ -1,3 +1,7 @@
+using System.Linq;
+using System.Text;
+using YAT.Helpers;
+
 namespace YAT.Commands
 {
 	public partial interface ICommand
@@ -12,6 +16,34 @@ namespace YAT.Commands
 		/// </summary>
 		/// <param name="args">The arguments to pass to the command.</param>
 		public CommandResult Execute(params string[] args);
+
+		/// <summary>
+		/// Generates the manual for the command, including its name,
+		/// description, manual, and aliases.
+		/// </summary>
+		/// <param name="args">The arguments for the command.</param>
+		/// <returns>The manual for the command.</returns>
+		public virtual string GenerateCommandManual(params string[] args)
+		{
+			CommandAttribute attribute = AttributeHelper.GetAttribute<CommandAttribute>(this);
+
+			if (string.IsNullOrEmpty(attribute.Manual))
+			{
+				return $"Command {attribute.Name} does not have a manual.";
+			}
+
+			StringBuilder sb = new();
+
+			sb.AppendLine($"[p align=center][font_size=22]{attribute.Name}[/font_size][/p]");
+			sb.AppendLine($"[p align=center]{attribute.Description}[/p]");
+			sb.AppendLine(attribute.Manual);
+			sb.AppendLine("\n[b]Aliases[/b]:");
+			sb.AppendLine(attribute.Aliases.Length > 0
+					? string.Join("\n", attribute.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
+					: "[ul]\tNone[/ul]");
+
+			return sb.ToString();
+		}
 	}
 
 	[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
