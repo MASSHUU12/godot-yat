@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Text;
 using Godot;
 using YAT.Commands;
 using YAT.Helpers;
@@ -19,6 +18,15 @@ namespace YAT
 
 		public LineEdit Input;
 		public RichTextLabel Output;
+
+		/// <summary>
+		/// Gets or sets a value indicating whether the terminal is locked.
+		/// When the terminal is locked, no commands can be executed.
+		///
+		/// Terminal is locked automatically when a command is executing.
+		/// No need to lock it manually.
+		/// </summary>
+		public bool Locked { get; set; }
 
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
@@ -142,6 +150,8 @@ namespace YAT
 		/// <param name="input">The input arguments for the command.</param>
 		private void ExecuteCommand(string[] input)
 		{
+			if (Locked) return;
+
 			string commandName = input[0];
 			if (!_yat.Commands.ContainsKey(commandName))
 			{
@@ -150,7 +160,10 @@ namespace YAT
 			}
 
 			ICommand command = _yat.Commands[commandName];
+
+			Locked = true;
 			var result = command.Execute(input);
+			Locked = false;
 
 			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
 		}
