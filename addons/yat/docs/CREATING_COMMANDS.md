@@ -20,22 +20,29 @@ In addition, you must use the `Command` attribute to add the necessary metadata 
 
 The `Command` attribute accepts the command `name`, its `description`, `manual` and `aliases`. The description and manual have BBCode support.
 
-As an example, let's look at `Cls` command:
+As an example, let's look at Cls command:
 
 ```csharp
-[Command(
-	"cls",
-	"Clears the console.",
-	"[b]Usage[/b]: cls",
-	"clear"
-)]
-public partial class Cls : ICommand
+namespace YAT.Commands
 {
-	public CommandResult Execute(YAT yat, params string[] args)
+	[Command(
+		"cls",
+		"Clears the console.",
+		"[b]Usage[/b]: cls",
+		"clear"
+	)]
+	public partial class Cls : ICommand
 	{
-		yat.Terminal.Clear();
+		public YAT Yat { get; set; }
 
-		return CommandResult.Success;
+		public Cls(YAT Yat) => this.Yat = Yat;
+
+		public CommandResult Execute(params string[] args)
+		{
+			Yat.Terminal.Clear();
+
+			return CommandResult.Success;
+		}
 	}
 }
 ```
@@ -45,7 +52,8 @@ public partial class Cls : ICommand
 To add a command to the YAT all you have to do is call `AddCommand` method on YAT instance:
 
 ```csharp
-GetNode<YAT>("/root/YAT").AddCommand(new Cls());
+var yat = GetNode<YAT>("/root/YAT");
+yat.AddCommand(new Cls(yat));
 ```
 
 ## Making commands extendable
