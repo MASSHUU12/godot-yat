@@ -150,7 +150,7 @@ namespace YAT
 			}
 
 			ICommand command = _yat.Commands[commandName];
-			var result = command.Execute(_yat, input);
+			var result = command.Execute(input);
 
 			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
 		}
