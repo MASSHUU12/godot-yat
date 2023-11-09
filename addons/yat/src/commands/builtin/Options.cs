@@ -5,12 +5,16 @@ namespace YAT.Commands
 	[Command("options", "Creates a window with the available options.", "[b]Usage[/b]: options", "opts")]
 	public partial class Options : ICommand
 	{
+		public YAT Yat { get; set; }
+
 		private static Node _optionsWindowInstance;
 		private static readonly PackedScene _optionsWindow = GD.Load<PackedScene>(
 			"res://addons/yat/src/overlay/components/options_window/OptionsWindow.tscn"
 		);
 
-		public CommandResult Execute(YAT yat, params string[] args)
+		public Options(YAT Yat) => this.Yat = Yat;
+
+		public CommandResult Execute(params string[] args)
 		{
 			var instanceValid = GodotObject.IsInstanceValid(_optionsWindowInstance);
 
@@ -22,7 +26,7 @@ namespace YAT.Commands
 			}
 
 			_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate();
-			yat.Overlay.AddChild(_optionsWindowInstance);
+			Yat.Overlay.AddChild(_optionsWindowInstance);
 
 			return CommandResult.Success;
 		}

@@ -5,7 +5,11 @@ namespace YAT.Commands
 	[Command("set", "Sets a variable to a value.", "[b]Usage[/b]: set [i]variable[/i] [i]value[/i]")]
 	public partial class Set : Extensible, ICommand
 	{
-		public CommandResult Execute(YAT yat, params string[] args)
+		public YAT Yat { get; set; }
+
+		public Set(YAT Yat) => this.Yat = Yat;
+
+		public CommandResult Execute(params string[] args)
 		{
 			if (args.Length < 3)
 			{
@@ -18,10 +22,10 @@ namespace YAT.Commands
 			if (Extensions.ContainsKey(variable))
 			{
 				var extension = Extensions[variable];
-				return extension.Execute(yat, this, args[1..]);
+				return extension.Execute(Yat, this, args[1..]);
 			}
 
-			yat.Terminal.Print("Variable not found.", Terminal.PrintType.Error);
+			Yat.Terminal.Print("Variable not found.", Terminal.PrintType.Error);
 			return CommandResult.Failure;
 		}
 	}

@@ -3,9 +3,13 @@ namespace YAT.Commands
 	[Command("pause", "Toggles the game pause state.", "[b]Usage[/b]: pause")]
 	public partial class Pause : ICommand
 	{
-		public CommandResult Execute(YAT yat, params string[] args)
+		public YAT Yat { get; set; }
+
+		public Pause(YAT Yat) => this.Yat = Yat;
+
+		public CommandResult Execute(params string[] args)
 		{
-			yat.GetTree().Paused = !yat.GetTree().Paused;
+			Yat.GetTree().Paused = !Yat.GetTree().Paused;
 
 			return CommandResult.Success;
 		}
