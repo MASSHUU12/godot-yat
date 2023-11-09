@@ -57,17 +57,17 @@ namespace YAT
 			Overlay.Ready += OnOverlayReady;
 			OptionsManager = new(this, Options);
 
-			AddCommand(new Cls());
-			AddCommand(new Man());
-			AddCommand(new Set());
-			AddCommand(new Quit());
-			AddCommand(new Echo());
-			AddCommand(new List());
-			AddCommand(new View());
-			AddCommand(new Pause());
-			AddCommand(new Options());
-			AddCommand(new Restart());
-			AddCommand(new Whereami());
+			AddCommand(new Cls(this));
+			AddCommand(new Man(this));
+			AddCommand(new Set(this));
+			AddCommand(new Quit(this));
+			AddCommand(new Echo(this));
+			AddCommand(new List(this));
+			AddCommand(new View(this));
+			AddCommand(new Pause(this));
+			AddCommand(new Options(this));
+			AddCommand(new Restart(this));
+			AddCommand(new Whereami(this));
 		}
 
 		public override void _Input(InputEvent @event)
