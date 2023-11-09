@@ -22,7 +22,7 @@ namespace YAT.Commands
 			if (Extensions.ContainsKey(variable))
 			{
 				var extension = Extensions[variable];
-				return extension.Execute(Yat, this, args[1..]);
+				return extension.Execute(this, args[1..]);
 			}
 
 			Yat.Terminal.Print("Variable not found.", Terminal.PrintType.Error);

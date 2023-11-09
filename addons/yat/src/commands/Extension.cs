@@ -2,7 +2,7 @@ namespace YAT.Commands
 {
 	public partial interface IExtension
 	{
-		public CommandResult Execute(YAT yat, ICommand command, params string[] args);
+		public CommandResult Execute(ICommand command, params string[] args);
 	}
 
 	[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]

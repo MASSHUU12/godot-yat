@@ -6,11 +6,11 @@ public partial class SetCube : IExtension
 {
 	public static MeshInstance3D Cube { get; set; }
 
-	public CommandResult Execute(YAT.YAT yat, ICommand command, params string[] args)
+	public CommandResult Execute(ICommand command, params string[] args)
 	{
 		if (args.Length < 2)
 		{
-			yat.Terminal.Print("Invalid arguments.", YAT.Terminal.PrintType.Error);
+			command.Yat.Terminal.Print("Invalid arguments.", YAT.Terminal.PrintType.Error);
 			return CommandResult.InvalidArguments;
 		}
 
@@ -24,7 +24,7 @@ public partial class SetCube : IExtension
 		}
 		catch (System.Exception)
 		{
-			yat.Terminal.Print("Invalid color.", YAT.Terminal.PrintType.Error);
+			command.Yat.Terminal.Print("Invalid color.", YAT.Terminal.PrintType.Error);
 			return CommandResult.Failure;
 		}
 

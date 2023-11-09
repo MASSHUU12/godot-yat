@@ -9,7 +9,7 @@ namespace YAT.Commands
 		/// <summary>
 		/// Gets or sets the YAT instance associated with this command.
 		/// </summary>
-		protected YAT Yat { get; set; }
+		public YAT Yat { get; set; }
 
 		/// <summary>
 		/// Executes the YAT command with the given arguments.
