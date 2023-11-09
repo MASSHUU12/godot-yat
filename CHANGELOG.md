@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Man uses LRU cache for manuals.
+-   Execute method no longer accepts YAT as first parameter.
+-   Commands must take YAT as a property in the constructor.
 
 ## [1.1.0-beta - 2023-11-08]
 

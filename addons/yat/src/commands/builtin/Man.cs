@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Text;
 using YAT.Helpers;
 
 namespace YAT.Commands
@@ -9,7 +7,11 @@ namespace YAT.Commands
 	{
 		private readonly LRUCache<string, string> cache = new(10);
 
-		public CommandResult Execute(YAT yat, params string[] args)
+		public YAT Yat { get; set; }
+
+		public Man(YAT Yat) => this.Yat = Yat;
+
+		public CommandResult Execute(params string[] args)
 		{
 			if (args.Length < 2)
 			{
@@ -19,92 +21,29 @@ namespace YAT.Commands
 
 			var commandName = args[1];
 
-			if (!yat.Commands.TryGetValue(commandName, out var command))
+			if (!Yat.Commands.TryGetValue(commandName, out var command))
 			{
 				LogHelper.UnknownCommand(commandName);
 				return CommandResult.InvalidCommand;
 			}
 
-			CommandAttribute attribute = command.GetAttribute<CommandAttribute>();
-
-			if (attribute is null || string.IsNullOrEmpty(attribute.Manual))
-			{
-				yat.Terminal.Print($"Command {commandName} does not have a manual.");
-				return CommandResult.Failure;
-			}
-
-			// Check if the manual is already cached
+			// Check if the command manual is already in the cache.
 			if (cache.Get(commandName) is string manual)
 			{
-				yat.Terminal.Print(manual);
+				Yat.Terminal.Print(manual);
 				return CommandResult.Success;
 			}
 
-			manual = PrintManual(yat, attribute);
+			manual = command.GenerateCommandManual();
 
 			if (command is Extensible extensible)
-				manual += PrintExtensions(yat, extensible);
+				manual += extensible.GenerateExtensionsManual();
 
 			cache.Add(commandName, manual);
 
+			Yat.Terminal.Print(manual);
+
 			return CommandResult.Success;
-		}
-
-		/// <summary>
-		/// Prints the manual for a given command.
-		/// </summary>
-		/// <param name="yat">The YAT instance.</param>
-		/// <param name="command">The CommandAttribute of the command to print the manual for.</param>
-		/// <returns>The manual as a string.</returns>
-		private static string PrintManual(YAT yat, CommandAttribute command)
-		{
-			StringBuilder sb = new();
-
-			sb.AppendLine($"[p align=center][font_size=22]{command.Name}[/font_size][/p]");
-			sb.AppendLine($"[p align=center]{command.Description}[/p]");
-			sb.AppendLine(command.Manual);
-			sb.AppendLine("\n[b]Aliases[/b]:");
-			sb.AppendLine(command.Aliases.Length > 0
-					? string.Join("\n", command.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
-					: "[ul]\tNone[/ul]");
-
-			var manual = sb.ToString();
-
-			yat.Terminal.Print(manual);
-
-			return manual;
-		}
-
-		/// <summary>
-		/// Prints the extensions of the given <see cref="Extensible"/> object to the terminal.
-		/// </summary>
-		/// <param name="yat">The <see cref="YAT"/> instance.</param>
-		/// <param name="extensible">The <see cref="Extensible"/> object whose extensions to print.</param>
-		/// <returns>The extensions as a string.</returns>
-		private static string PrintExtensions(YAT yat, Extensible extensible)
-		{
-			StringBuilder sb = new();
-
-			sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
-
-			foreach (var extension in extensible.Extensions)
-			{
-				var attribute = extension.Value.GetAttribute<ExtensionAttribute>();
-
-				sb.AppendLine($"[font_size=18]{attribute.Name}[/font_size]");
-				sb.AppendLine(attribute.Description);
-				sb.AppendLine('\n' + attribute.Manual);
-				sb.AppendLine("\n[b]Aliases[/b]:");
-				sb.AppendLine(attribute.Aliases.Length > 0
-						? string.Join("\n", attribute.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
-						: "[ul]\tNone[/ul]");
-			}
-
-			var extensions = sb.ToString();
-
-			yat.Terminal.Print(extensions);
-
-			return extensions;
 		}
 	}
 }

@@ -17,7 +17,11 @@ namespace YAT.Commands
 	)]
 	public partial class View : ICommand
 	{
-		public CommandResult Execute(YAT yat, params string[] args)
+		public YAT Yat { get; set; }
+
+		public View(YAT Yat) => this.Yat = Yat;
+
+		public CommandResult Execute(params string[] args)
 		{
 			if (args.Length < 2) return CommandResult.InvalidArguments;
 
@@ -47,7 +51,7 @@ namespace YAT.Commands
 
 					if (iMode < 0 || iMode > max)
 					{
-						yat.Terminal.Print($"Invalid mode: {mode}.", Terminal.PrintType.Error);
+						Yat.Terminal.Print($"Invalid mode: {mode}.", Terminal.PrintType.Error);
 						return CommandResult.InvalidArguments;
 					}
 
@@ -56,11 +60,11 @@ namespace YAT.Commands
 			}
 
 			RenderingServer.ViewportSetDebugDraw(
-				yat.GetViewport().GetViewportRid(),
+				Yat.GetViewport().GetViewportRid(),
 				debugDraw
 			);
 
-			yat.Terminal.Print($"Set viewport debug draw to {debugDraw} ({(uint)debugDraw}).");
+			Yat.Terminal.Print($"Set viewport debug draw to {debugDraw} ({(uint)debugDraw}).");
 
 			return CommandResult.Success;
 		}

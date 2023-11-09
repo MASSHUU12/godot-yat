@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Godot;
+using System.Text;
 using YAT.Helpers;
 
 namespace YAT.Commands
@@ -8,6 +8,10 @@ namespace YAT.Commands
 	{
 		public Dictionary<string, IExtension> Extensions { get; } = new();
 
+		/// <summary>
+		/// Registers an extension.
+		/// </summary>
+		/// <param name="extension">The extension to register.</param>
 		public void Register(IExtension extension)
 		{
 			if (AttributeHelper.GetAttribute<ExtensionAttribute>(extension)
@@ -23,6 +27,25 @@ namespace YAT.Commands
 			{
 				Extensions[alias] = extension;
 			}
+		}
+
+		/// <summary>
+		/// Generates a manual for all extensions.
+		/// </summary>
+		/// <param name="args">Optional arguments.</param>
+		/// <returns>A string containing the generated manual.</returns>
+		public virtual string GenerateExtensionsManual(params string[] args)
+		{
+			StringBuilder sb = new();
+
+			sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
+
+			foreach (var extension in Extensions)
+			{
+				sb.Append(extension.Value.GenerateExtensionManual());
+			}
+
+			return sb.ToString();
 		}
 	}
 }

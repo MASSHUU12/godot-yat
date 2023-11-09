@@ -3,10 +3,14 @@ namespace YAT.Commands
 	[Command("restart", "Restarts the level.", "[b]Usage[/b]: restart", "reboot")]
 	public partial class Restart : ICommand
 	{
-		public CommandResult Execute(YAT yat, params string[] args)
+		public YAT Yat { get; set; }
+
+		public Restart(YAT Yat) => this.Yat = Yat;
+
+		public CommandResult Execute(params string[] args)
 		{
-			yat.Terminal.Print($"Restarting {yat.GetTree().CurrentScene.Name}...");
-			yat.GetTree().ReloadCurrentScene();
+			Yat.Terminal.Print($"Restarting {Yat.GetTree().CurrentScene.Name}...");
+			Yat.GetTree().ReloadCurrentScene();
 
 			return CommandResult.Success;
 		}
