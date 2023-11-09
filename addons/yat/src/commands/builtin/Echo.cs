@@ -5,7 +5,11 @@ namespace YAT.Commands
 	[Command("echo", "Displays the given text.", "[b]Usage[/b]: echo [i]text[/i]")]
 	public partial class Echo : ICommand
 	{
-		public CommandResult Execute(YAT yat, params string[] args)
+		public YAT Yat { get; set; }
+
+		public Echo(YAT Yat) => this.Yat = Yat;
+
+		public CommandResult Execute(params string[] args)
 		{
 			if (args.Length < 2)
 			{
@@ -14,10 +18,9 @@ namespace YAT.Commands
 			}
 
 			var text = string.Join(" ", args[1..^0]);
-			yat.Terminal.Print(text);
+			Yat.Terminal.Print(text);
 
 			return CommandResult.Success;
 		}
 	}
-
 }
