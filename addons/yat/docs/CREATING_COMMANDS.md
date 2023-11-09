@@ -7,9 +7,16 @@
 
 -   [Table of Contents](#table-of-contents)
 -   [Creating commands](#creating-commands)
+    -   [Overridable methods](#overridable-methods)
+        -   [GenerateCommandManual](#generatecommandmanual)
 -   [Adding commands](#adding-commands)
 -   [Making commands extendable](#making-commands-extendable)
+    -   [Overridable methods](#overridable-methods-1)
+        -   [GenerateExtensionsManual](#generateextensionsmanual)
 -   [Extending commands](#extending-commands)
+    -   [Overridable methods](#overridable-methods-2)
+        -   [GenerateExtensionManual](#generateextensionmanual)
+-   [Creating custom windows](#creating-custom-windows)
 -   [Signals](#signals)
 
 ## Creating commands
@@ -47,6 +54,12 @@ namespace YAT.Commands
 }
 ```
 
+### Overridable methods
+
+#### GenerateCommandManual
+
+This method generates command documentation based on the metadata added via the `Command` attribute, but nothing prevents you from overriding it and creating your own logic.
+
 ## Adding commands
 
 To add a command to the YAT all you have to do is call `AddCommand` method on YAT instance:
@@ -73,6 +86,12 @@ if (Extensions.ContainsKey(variable))
 }
 ```
 
+### Overridable methods
+
+#### GenerateExtensionsManual
+
+This method creates documentation for all extensions of a command. It does this by running the method `GenerateExtensionManual` on each extension.
+
 ## Extending commands
 
 To be able to extend a command, you first need to create an extension,
@@ -81,7 +100,13 @@ and contains the `Extension` attribute, the rest works just like a regular comma
 
 You can find an example of such a class in [example](./example) folder.
 
-###Creating custom windows
+### Overridable methods
+
+#### GenerateExtensionManual
+
+This method generates extension documentation based on the metadata added via the `Extension` attribute, but nothing prevents you from overriding it and creating your own logic.
+
+## Creating custom windows
 
 In progress.
 
