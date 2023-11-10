@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 using YAT.Commands;
 using YAT.Helpers;
@@ -166,9 +167,7 @@ namespace YAT
 		/// <param name="input">The command and its arguments.</param>
 		private async void ExecuteThreadedCommand(string[] input)
 		{
-			GodotThread thread = new();
-
-			if (thread.Start(Callable.From(() =>
+			Task task = new(() =>
 			{
 				string commandName = input[0];
 
@@ -176,16 +175,14 @@ namespace YAT
 				var result = _yat.Commands[commandName].Execute(input);
 				Locked = false;
 
-				CallDeferredThreadGroup("emit_signal", SignalName.CommandExecuted, commandName, input, (ushort)result);
-			})) != Error.Ok)
-			{
-				Print("Failed to start thread.", PrintType.Error);
-				return;
-			}
+				CallDeferredThreadGroup(
+					"emit_signal", SignalName.CommandExecuted, commandName, input, (ushort)result
+				);
+			});
+
+			task.Start();
 
 			await ToSignal(this, SignalName.CommandExecuted);
-
-			thread.WaitToFinish();
 		}
 
 		/// <summary>
