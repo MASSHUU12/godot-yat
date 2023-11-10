@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Godot;
 using YAT.Commands;
@@ -150,22 +151,67 @@ namespace YAT
 		/// <param name="input">The input arguments for the command.</param>
 		private void ExecuteCommand(string[] input)
 		{
-			if (Locked) return;
-
 			string commandName = input[0];
+
+			Locked = true;
+			var result = _yat.Commands[commandName].Execute(input);
+			Locked = false;
+
+			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
+		}
+
+		/// <summary>
+		/// Executes a command in a separate thread,
+		/// allowing the terminal to remain responsive.
+		/// </summary>
+		/// <param name="input">The command and its arguments.</param>
+		private async void ExecuteThreadedCommand(string[] input)
+		{
+			GodotThread thread = new();
+
+			if (thread.Start(Callable.From(() =>
+			{
+				string commandName = input[0];
+
+				Locked = true;
+				var result = _yat.Commands[commandName].Execute(input);
+				Locked = false;
+
+				CallDeferredThreadGroup("emit_signal", SignalName.CommandExecuted, commandName, input, (ushort)result);
+			})) != Error.Ok)
+			{
+				Print("Failed to start thread.", PrintType.Error);
+				return;
+			}
+
+			await ToSignal(this, SignalName.CommandExecuted);
+
+			thread.WaitToFinish();
+		}
+
+		/// <summary>
+		/// Executes the specified command with the given arguments.
+		/// </summary>
+		/// <param name="args">The arguments to pass to the command.</param>
+		private void CommandManager(string[] args)
+		{
+			if (Locked || args.Length == 0) return;
+
+			string commandName = args[0];
+
 			if (!_yat.Commands.ContainsKey(commandName))
 			{
 				LogHelper.UnknownCommand(commandName);
 				return;
 			}
 
-			ICommand command = _yat.Commands[commandName];
-
-			Locked = true;
-			var result = command.Execute(input);
-			Locked = false;
-
-			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
+			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
+				_yat.Commands[commandName]
+			) is not null)
+			{
+				ExecuteThreadedCommand(args);
+			}
+			else ExecuteCommand(args);
 		}
 
 		/// <summary>
@@ -183,7 +229,7 @@ namespace YAT
 			_yat.History.AddLast(command);
 			if (_yat.History.Count > _yat.Options.HistoryLimit) _yat.History.RemoveFirst();
 
-			ExecuteCommand(input);
+			CommandManager(input);
 			Input.Clear();
 		}
 
