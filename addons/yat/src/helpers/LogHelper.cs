@@ -53,18 +53,18 @@ namespace YAT.Helpers
 		}
 
 		/// <summary>
-		/// Prints an error message indicating that the number of arguments provided for a command is invalid.
+		/// Logs an error message indicating that an invalid argument was passed to a command.
 		/// </summary>
 		/// <param name="command">The name of the command.</param>
-		/// <param name="expected">The expected number of arguments.</param>
-		/// <param name="actual">The actual number of arguments.</param>
-		public static void InvalidArguments(string command, uint expected, uint actual)
+		/// <param name="argument">The name of the invalid argument.</param>
+		/// <param name="expected">The expected type of the argument.</param>
+		public static void InvalidArgument(string command, string argument, string expected)
 		{
 			var message = string.Format(
-				"Invalid number of arguments for: {0}. Expected {1}, got {2}.",
+				"{0} expected [i]{1}[/i] to be an [i]{2}[/i].",
 				command,
-				expected,
-				actual
+				argument,
+				expected
 			);
 
 			PrintMessage(message, Terminal.PrintType.Error);
