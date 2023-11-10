@@ -5,19 +5,20 @@
 
 ## Table of Contents
 
--   [Table of Contents](#table-of-contents)
--   [Creating commands](#creating-commands)
-    -   [Overridable methods](#overridable-methods)
-        -   [GenerateCommandManual](#generatecommandmanual)
--   [Adding commands](#adding-commands)
--   [Making commands extendable](#making-commands-extendable)
-    -   [Overridable methods](#overridable-methods-1)
-        -   [GenerateExtensionsManual](#generateextensionsmanual)
--   [Extending commands](#extending-commands)
-    -   [Overridable methods](#overridable-methods-2)
-        -   [GenerateExtensionManual](#generateextensionmanual)
--   [Creating custom windows](#creating-custom-windows)
--   [Signals](#signals)
+- [Table of Contents](#table-of-contents)
+- [Creating commands](#creating-commands)
+	- [Threaded commands](#threaded-commands)
+	- [Overridable methods](#overridable-methods)
+		- [GenerateCommandManual](#generatecommandmanual)
+- [Adding commands](#adding-commands)
+- [Making commands extendable](#making-commands-extendable)
+	- [Overridable methods](#overridable-methods-1)
+		- [GenerateExtensionsManual](#generateextensionsmanual)
+- [Extending commands](#extending-commands)
+	- [Overridable methods](#overridable-methods-2)
+		- [GenerateExtensionManual](#generateextensionmanual)
+- [Creating custom windows](#creating-custom-windows)
+- [Signals](#signals)
 
 ## Creating commands
 
@@ -53,6 +54,26 @@ namespace YAT.Commands
 	}
 }
 ```
+
+### Threaded commands
+
+By default, commands are run on the `main thread`, which is not a problem for simple commands, but can quickly become cumbersome for more time-consuming tasks.
+
+> [!IMPORTANT]
+> Using engine features via a command running on a separate thread can be problematic.
+>
+> Fortunately, rather most errors can be circumvented by using methods:
+> CallDeferred, CallThreadSafe or CallDeferredThreadGroup.
+
+To run the command in a separate thread, you must use the `Threaded` attribute.
+
+In addition, you must use another overload of the `Execute` method, which takes a `CancellationToken`:
+
+```csharp
+public virtual CommandResult Execute(CancellationToken ct, params string[] args)
+```
+
+It is important to make proper use of the `CancellationToken`, as it is the one that indicates when the method should `end early`.
 
 ### Overridable methods
 

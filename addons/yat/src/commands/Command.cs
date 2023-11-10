@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text;
+using System.Threading;
 using YAT.Helpers;
 
 namespace YAT.Commands
@@ -15,7 +16,22 @@ namespace YAT.Commands
 		/// Executes the YAT command with the given arguments.
 		/// </summary>
 		/// <param name="args">The arguments to pass to the command.</param>
-		public CommandResult Execute(params string[] args);
+		/// <returns>The result of the command execution.</returns>
+		public virtual CommandResult Execute(params string[] args)
+		{
+			return CommandResult.InvalidCommand;
+		}
+
+		/// <summary>
+		/// Executes the YAT command with the given arguments.
+		/// </summary>
+		/// <param name="ct">The cancellation token.</param>
+		/// <param name="args">The arguments to pass to the command.</param>
+		/// <returns>The result of the command execution.</returns>
+		public virtual CommandResult Execute(CancellationToken ct, params string[] args)
+		{
+			return CommandResult.InvalidCommand;
+		}
 
 		/// <summary>
 		/// Generates the manual for the command, including its name,

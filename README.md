@@ -16,6 +16,16 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 -   [.NET SDK 7](https://dotnet.microsoft.com/en-us/download)
 -   [.NET enabled Godot 4.2](https://godotengine.org/download/windows/)
 
+## Features
+
+-   Many built-in commands
+-   Extensible commands
+-   Threaded commands
+-   Option to create custom commands and extensions
+-   Ability to restrict access to the plugin
+-   Plugin customization (limited at this point)
+-   Ability to create custom windows (not recommended nor documented for now)
+
 ## Documentation
 
 Instructions on how to get started can be found in the [USAGE.md](./addons/yat/docs/USAGE.md) file.

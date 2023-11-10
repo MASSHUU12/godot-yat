@@ -1,5 +1,6 @@
 using System.Linq;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Godot;
 using YAT.Commands;
 using YAT.Helpers;
@@ -19,6 +20,15 @@ namespace YAT
 
 		public LineEdit Input;
 		public RichTextLabel Output;
+
+		/// <summary>
+		/// Gets or sets a value indicating whether the terminal is locked.
+		/// When the terminal is locked, no commands can be executed.
+		///
+		/// Terminal is locked automatically when a command is executing.
+		/// No need to lock it manually.
+		/// </summary>
+		public bool Locked { get; set; }
 
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
@@ -47,6 +57,7 @@ namespace YAT
 		private Label _promptLabel;
 		private string _prompt = "> ";
 		private PanelContainer _window;
+		private CancellationTokenSource _cts;
 
 		public override void _Ready()
 		{
@@ -70,7 +81,7 @@ namespace YAT
 			// Handle history navigation if the Terminal window is open.
 			if (IsInsideTree())
 			{
-				if (@event.IsActionPressed("yat_history_previous"))
+				if (@event.IsActionPressed("yat_terminal_history_previous"))
 				{
 					if (_yat.HistoryNode == null && _yat.History.Count > 0)
 					{
@@ -84,7 +95,7 @@ namespace YAT
 					}
 				}
 
-				if (@event.IsActionPressed("yat_history_next"))
+				if (@event.IsActionPressed("yat_terminal_history_next"))
 				{
 					if (_yat.HistoryNode != null && _yat.HistoryNode.Next != null)
 					{
@@ -96,6 +107,13 @@ namespace YAT
 						_yat.HistoryNode = null;
 						Input.Text = string.Empty;
 					}
+				}
+
+				if (@event.IsActionPressed("yat_terminal_interrupt") && _cts != null)
+				{
+					_cts.Cancel();
+					_cts.Dispose();
+					_cts = null;
 				}
 			}
 		}
@@ -143,16 +161,64 @@ namespace YAT
 		private void ExecuteCommand(string[] input)
 		{
 			string commandName = input[0];
+
+			Locked = true;
+			var result = _yat.Commands[commandName].Execute(input);
+			Locked = false;
+
+			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
+		}
+
+		/// <summary>
+		/// Executes a command in a separate thread,
+		/// allowing the terminal to remain responsive.
+		/// </summary>
+		/// <param name="input">The command and its arguments.</param>
+		private async void ExecuteThreadedCommand(string[] input)
+		{
+			_cts = new();
+
+			Task task = new(() =>
+			{
+				string commandName = input[0];
+
+				Locked = true;
+				var result = _yat.Commands[commandName].Execute(_cts.Token, input);
+				Locked = false;
+
+				CallDeferredThreadGroup(
+					"emit_signal", SignalName.CommandExecuted, commandName, input, (ushort)result
+				);
+			}, _cts.Token);
+
+			task.Start();
+
+			await ToSignal(this, SignalName.CommandExecuted);
+		}
+
+		/// <summary>
+		/// Executes the specified command with the given arguments.
+		/// </summary>
+		/// <param name="args">The arguments to pass to the command.</param>
+		private void CommandManager(string[] args)
+		{
+			if (Locked || args.Length == 0) return;
+
+			string commandName = args[0];
+
 			if (!_yat.Commands.ContainsKey(commandName))
 			{
 				LogHelper.UnknownCommand(commandName);
 				return;
 			}
 
-			ICommand command = _yat.Commands[commandName];
-			var result = command.Execute(input);
-
-			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
+			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
+				_yat.Commands[commandName]
+			) is not null)
+			{
+				ExecuteThreadedCommand(args);
+			}
+			else ExecuteCommand(args);
 		}
 
 		/// <summary>
@@ -170,7 +236,7 @@ namespace YAT
 			_yat.History.AddLast(command);
 			if (_yat.History.Count > _yat.Options.HistoryLimit) _yat.History.RemoveFirst();
 
-			ExecuteCommand(input);
+			CommandManager(input);
 			Input.Clear();
 		}
 
