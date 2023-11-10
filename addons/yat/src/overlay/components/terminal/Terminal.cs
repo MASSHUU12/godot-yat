@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using YAT.Commands;
@@ -56,6 +57,7 @@ namespace YAT
 		private Label _promptLabel;
 		private string _prompt = "> ";
 		private PanelContainer _window;
+		private CancellationTokenSource _cts;
 
 		public override void _Ready()
 		{
@@ -105,6 +107,13 @@ namespace YAT
 						_yat.HistoryNode = null;
 						Input.Text = string.Empty;
 					}
+				}
+
+				if (@event.IsActionPressed("yat_terminal_interrupt") && _cts != null)
+				{
+					_cts.Cancel();
+					_cts.Dispose();
+					_cts = null;
 				}
 			}
 		}
@@ -167,18 +176,20 @@ namespace YAT
 		/// <param name="input">The command and its arguments.</param>
 		private async void ExecuteThreadedCommand(string[] input)
 		{
+			_cts = new();
+
 			Task task = new(() =>
 			{
 				string commandName = input[0];
 
 				Locked = true;
-				var result = _yat.Commands[commandName].Execute(input);
+				var result = _yat.Commands[commandName].Execute(_cts.Token, input);
 				Locked = false;
 
 				CallDeferredThreadGroup(
 					"emit_signal", SignalName.CommandExecuted, commandName, input, (ushort)result
 				);
-			});
+			}, _cts.Token);
 
 			task.Start();
 
