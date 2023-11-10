@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Godot;
 using YAT.Commands;
@@ -79,7 +78,7 @@ namespace YAT
 			// Handle history navigation if the Terminal window is open.
 			if (IsInsideTree())
 			{
-				if (@event.IsActionPressed("yat_history_previous"))
+				if (@event.IsActionPressed("yat_terminal_history_previous"))
 				{
 					if (_yat.HistoryNode == null && _yat.History.Count > 0)
 					{
@@ -93,7 +92,7 @@ namespace YAT
 					}
 				}
 
-				if (@event.IsActionPressed("yat_history_next"))
+				if (@event.IsActionPressed("yat_terminal_history_next"))
 				{
 					if (_yat.HistoryNode != null && _yat.HistoryNode.Next != null)
 					{
