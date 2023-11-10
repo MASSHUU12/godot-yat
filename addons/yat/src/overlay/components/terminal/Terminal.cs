@@ -111,6 +111,8 @@ namespace YAT
 
 				if (@event.IsActionPressed("yat_terminal_interrupt") && _cts != null)
 				{
+					Print("Command cancellation requested.", PrintType.Warning);
+
 					_cts.Cancel();
 					_cts.Dispose();
 					_cts = null;
@@ -194,6 +196,8 @@ namespace YAT
 			task.Start();
 
 			await ToSignal(this, SignalName.CommandExecuted);
+
+			Print("Command execution finished.");
 		}
 
 		/// <summary>
