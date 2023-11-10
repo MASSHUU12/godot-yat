@@ -144,11 +144,12 @@ namespace YAT
 				_ => _yat.Options.OutputColor,
 			};
 
-			Output.PushColor(color);
+			// Using CallDeferred to avoid issues when running this method in a separate thread.
+			Output.CallDeferred("push_color", color);
 			// Paragraph is needed because newline characters are breaking formatting.
-			Output.PushParagraph(HorizontalAlignment.Left);
-			Output.AppendText(text);
-			Output.PopAll();
+			Output.CallDeferred("push_paragraph", (ushort)HorizontalAlignment.Left);
+			Output.CallDeferred("append_text", text);
+			Output.CallDeferred("pop_all");
 		}
 
 		/// <summary>
