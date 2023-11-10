@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0-beta - 2023-11-10]
+
+### Added
+
+-   InvalidArgument method to LogHelper.
+-   watch command.
+-   Terminal lock feature to prevent calling a new command during execution of a command.
+-   Threaded attribute for running commands on a separate thread.
+-   yat_terminal_interrupt keybinding.
+-   Overload for Execute method that takes a CancellationToken.
+
+### Changed
+
+-   Terminal's Print method uses CallDeferred to display messages in the output.
+-   Execute method is now virtual.
+-   Renamed keybindings:
+    -   yat_history_next to yat_terminal_history_next
+    -   yat_history_previous to yat_terminal_history_previous
+
+### Removed
+
+-   InvalidArguments method from LogHelper.
+
 ## [1.2.0-beta - 2023-11-09]
 
 ### Added
