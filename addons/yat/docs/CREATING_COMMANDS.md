@@ -59,13 +59,21 @@ namespace YAT.Commands
 
 By default, commands are run on the `main thread`, which is not a problem for simple commands, but can quickly become cumbersome for more time-consuming tasks.
 
-To run the command on a separate thread, just mark it with the `Threaded` attribute.
-
 > [!IMPORTANT]
 > Using engine features via a command running on a separate thread can be problematic.
 >
 > Fortunately, rather most errors can be circumvented by using methods:
 > CallDeferred, CallThreadSafe or CallDeferredThreadGroup.
+
+To run the command in a separate thread, you must use the `Threaded` attribute.
+
+In addition, you must use another overload of the `Execute` method, which takes a `CancellationToken`:
+
+```csharp
+public virtual CommandResult Execute(CancellationToken ct, params string[] args)
+```
+
+It is important to make proper use of the `CancellationToken`, as it is the one that indicates when the method should `end early`.
 
 ### Overridable methods
 
