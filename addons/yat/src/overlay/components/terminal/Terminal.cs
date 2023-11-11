@@ -71,7 +71,6 @@ namespace YAT.Overlay.Components.Terminal
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
 			Input = GetNode<LineEdit>("%Input");
-			Input.TextSubmitted += OnCommandSubmitted;
 
 			UpdateOptions(_yat.Options);
 		}
@@ -226,39 +225,6 @@ namespace YAT.Overlay.Components.Terminal
 				ExecuteThreadedCommand(args);
 			}
 			else ExecuteCommand(args);
-		}
-
-		/// <summary>
-		/// Handles the submission of a command by sanitizing the input,
-		/// executing the command, and clearing the input buffer.
-		/// </summary>
-		/// <param name="command">The command to be submitted.</param>
-		private void OnCommandSubmitted(string command)
-		{
-			var input = SanitizeInput(command);
-
-			if (input.Length == 0 || Locked) return;
-
-			_yat.HistoryNode = null;
-			_yat.History.AddLast(command);
-			if (_yat.History.Count > _yat.Options.HistoryLimit) _yat.History.RemoveFirst();
-
-			CommandManager(input);
-			Input.Clear();
-		}
-
-		/// <summary>
-		/// Sanitizes the input command by removing leading/trailing white space
-		/// and extra spaces between words.
-		/// </summary>
-		/// <param name="command">The command to sanitize.</param>
-		/// <returns>The sanitized command.</returns>
-		private static string[] SanitizeInput(string command)
-		{
-			command = command.Trim();
-			return command.Split(' ').Where(
-				s => !string.IsNullOrWhiteSpace(s)
-			).ToArray();
 		}
 	}
 }
