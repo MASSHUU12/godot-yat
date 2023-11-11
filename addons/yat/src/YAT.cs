@@ -68,6 +68,7 @@ namespace YAT
 			AddCommand(new Watch(this));
 			AddCommand(new Options(this));
 			AddCommand(new Restart(this));
+			AddCommand(new History(this));
 			AddCommand(new Whereami(this));
 		}
 
