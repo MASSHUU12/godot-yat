@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace YAT.Helpers
 {
 	/// <summary>
@@ -13,6 +15,20 @@ namespace YAT.Helpers
 		public static string EscapeBBCode(string text)
 		{
 			return text.Replace("[", "[lb]");
+		}
+
+		/// <summary>
+		/// Sanitizes the given text by removing leading and trailing white spaces
+		/// and empty entries.
+		/// </summary>
+		/// <param name="text">The text to sanitize.</param>
+		/// <returns>An array of sanitized strings.</returns>
+		public static string[] SanitizeText(string text)
+		{
+			text = text.Trim();
+			return text.Split(' ').Where(
+				s => !string.IsNullOrWhiteSpace(s)
+			).ToArray();
 		}
 	}
 }
