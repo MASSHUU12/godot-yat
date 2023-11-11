@@ -8,6 +8,11 @@ All notable changes to this project will be documented in this file.
 
 -   History command.
 
+### Changed
+
+-   Terminal's Output variable is private.
+-   Terminal's Input variable's setter is private.
+
 ## [1.3.0-beta - 2023-11-10]
 
 ### Added

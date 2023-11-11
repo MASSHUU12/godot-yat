@@ -18,8 +18,7 @@ namespace YAT
 		[Signal]
 		public delegate void CommandExecutedEventHandler(string command, string[] args, CommandResult result);
 
-		public LineEdit Input;
-		public RichTextLabel Output;
+		public LineEdit Input { get; private set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the terminal is locked.
@@ -28,7 +27,7 @@ namespace YAT
 		/// Terminal is locked automatically when a command is executing.
 		/// No need to lock it manually.
 		/// </summary>
-		public bool Locked { get; set; }
+		public bool Locked { get; private set; }
 
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
@@ -56,6 +55,7 @@ namespace YAT
 		private YAT _yat;
 		private Label _promptLabel;
 		private string _prompt = "> ";
+		private RichTextLabel Output;
 		private PanelContainer _window;
 		private CancellationTokenSource _cts;
 
@@ -117,6 +117,8 @@ namespace YAT
 					_cts.Dispose();
 					_cts = null;
 				}
+
+
 			}
 		}
 
