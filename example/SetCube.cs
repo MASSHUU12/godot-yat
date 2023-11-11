@@ -1,5 +1,6 @@
 using Godot;
 using YAT.Commands;
+using YAT.Overlay.Components;
 
 [Extension("cubecolor", "Sets the cube's color.", "[b]Usage[/b]: setcube [i]color[/i]")]
 public partial class SetCube : IExtension
@@ -10,7 +11,7 @@ public partial class SetCube : IExtension
 	{
 		if (args.Length < 2)
 		{
-			command.Yat.Terminal.Print("Invalid arguments.", YAT.Terminal.PrintType.Error);
+			command.Yat.Terminal.Print("Invalid arguments.", Terminal.PrintType.Error);
 			return CommandResult.InvalidArguments;
 		}
 
@@ -24,7 +25,7 @@ public partial class SetCube : IExtension
 		}
 		catch (System.Exception)
 		{
-			command.Yat.Terminal.Print("Invalid color.", YAT.Terminal.PrintType.Error);
+			command.Yat.Terminal.Print("Invalid color.", Terminal.PrintType.Error);
 			return CommandResult.Failure;
 		}
 

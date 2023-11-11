@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Overlay.Components;
 
 namespace YAT.Helpers
 {

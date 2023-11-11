@@ -5,7 +5,7 @@ using Godot;
 using YAT.Commands;
 using YAT.Helpers;
 
-namespace YAT
+namespace YAT.Overlay.Components
 {
 	public partial class Terminal : Control
 	{
