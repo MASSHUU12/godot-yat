@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 -   History command.
 
+### Changed
+
+-   Improved encapsulation.
+
 ## [1.3.0-beta - 2023-11-10]
 
 ### Added
