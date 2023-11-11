@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Text;
 using YAT.Helpers;
 
 namespace YAT.Commands
@@ -30,12 +32,17 @@ namespace YAT.Commands
 
 		private void ShowHistory()
 		{
-			Yat.Terminal.Print("Terminal history:");
+			StringBuilder sb = new();
+
+			sb.AppendLine("Terminal history:");
+
 			int i = 0;
 			foreach (string command in Yat.History)
 			{
-				Yat.Terminal.Print($"{i++}: {TextHelper.EscapeBBCode(command)}");
+				sb.AppendLine($"{i++}: {TextHelper.EscapeBBCode(command)}");
 			}
+
+			Yat.Terminal.Print(sb.ToString());
 		}
 	}
 }
