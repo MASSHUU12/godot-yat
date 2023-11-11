@@ -205,9 +205,9 @@ namespace YAT
 		/// Executes the specified command with the given arguments.
 		/// </summary>
 		/// <param name="args">The arguments to pass to the command.</param>
-		private void CommandManager(string[] args)
+		public void CommandManager(string[] args)
 		{
-			if (Locked || args.Length == 0) return;
+			if (args.Length == 0) return;
 
 			string commandName = args[0];
 
@@ -235,7 +235,7 @@ namespace YAT
 		{
 			var input = SanitizeInput(command);
 
-			if (input.Length == 0) return;
+			if (input.Length == 0 || Locked) return;
 
 			_yat.HistoryNode = null;
 			_yat.History.AddLast(command);
