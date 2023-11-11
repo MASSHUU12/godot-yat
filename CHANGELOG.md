@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 
 -   Improved encapsulation.
 -   Moved overlay under YAT.Overlay namespace.
--   Moved terminal under YAT.Overlay.Components namespace.
+-   Moved terminal under YAT.Overlay.Components.Terminal namespace.
 
 ## [1.3.0-beta - 2023-11-10]
 

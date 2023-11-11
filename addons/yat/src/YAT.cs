@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using YAT.Commands;
 using YAT.Helpers;
-using YAT.Overlay.Components;
+using YAT.Overlay.Components.Terminal;
 
 namespace YAT
 {
