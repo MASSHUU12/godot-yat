@@ -6,7 +6,7 @@ namespace YAT.Commands
 {
 	[Command(
 		"history",
-		"Displays the history of commands executed in the current session.",
+		"Manages the command history of the current session.",
 		"[b]Usage[/b]: history [i]action (optional)[/i]" +
 		"\n\n[b]Actions[/b]:\n" +
 		"[b]clear[/b]: Clears the history.\n" +
