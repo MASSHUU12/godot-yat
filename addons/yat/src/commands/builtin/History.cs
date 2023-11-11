@@ -11,7 +11,8 @@ namespace YAT.Commands
 		"\n\n[b]Actions[/b]:\n" +
 		"[b]clear[/b]: Clears the history.\n" +
 		"[b]<number>[/b]: Executes the command at the specified index in the history.\n" +
-		"[b]list[/b]: Lists the history."
+		"[b]list[/b]: Lists the history.",
+		"hist"
 	)]
 	public partial class History : ICommand
 	{
