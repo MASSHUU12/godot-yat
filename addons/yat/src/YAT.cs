@@ -38,11 +38,11 @@ namespace YAT
 		[Export] public YatOptions Options { get; set; } = new();
 
 		public Overlay Overlay { get; private set; }
-		public Terminal Terminal;
-		public OptionsManager OptionsManager;
-		public LinkedListNode<string> HistoryNode = null;
+		public Terminal Terminal { get; private set; }
 		public readonly LinkedList<string> History = new();
-		public Dictionary<string, ICommand> Commands = new();
+		public readonly LinkedListNode<string> HistoryNode = null;
+		public OptionsManager OptionsManager { get; private set; }
+		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
 		private Godot.Window _root;
 		private bool _yatEnabled = true;
