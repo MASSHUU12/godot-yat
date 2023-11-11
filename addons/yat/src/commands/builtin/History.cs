@@ -27,7 +27,54 @@ namespace YAT.Commands
 				return CommandResult.Success;
 			}
 
+			if (args.Length > 2)
+			{
+				Yat.Terminal.Print("Too many arguments.");
+				return CommandResult.Failure;
+			}
+
+			switch (args[1])
+			{
+				case "clear":
+					ClearHistory();
+					break;
+				case "list":
+					ShowHistory();
+					break;
+				default:
+					if (int.TryParse(args[1], out int index))
+						ExecuteFromHistory(index);
+					else
+					{
+						Yat.Terminal.Print($"Invalid action: {args[1]}");
+						return CommandResult.Failure;
+					}
+					break;
+			}
+
 			return CommandResult.Success;
+		}
+
+		private void ClearHistory()
+		{
+			Yat.History.Clear();
+			Yat.Terminal.Print("Terminal history cleared.");
+		}
+
+		private void ExecuteFromHistory(int index)
+		{
+			if (index < 0 || index >= Yat.History.Count)
+			{
+				Yat.Terminal.Print($"Invalid index: {index}");
+				return;
+			}
+
+			var command = Yat.History.ElementAt(index);
+
+			Yat.Terminal.Print(
+				$"Executing command at index {index}: {TextHelper.EscapeBBCode(command)}"
+			);
+			Yat.Terminal.CommandManager(TextHelper.SanitizeText(command));
 		}
 
 		private void ShowHistory()
