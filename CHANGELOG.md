@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   History command.
+
 ## [1.3.0-beta - 2023-11-10]
 
 ### Added
