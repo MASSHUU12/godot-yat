@@ -198,7 +198,7 @@ namespace YAT
 
 			await ToSignal(this, SignalName.CommandExecuted);
 
-			Print("Command execution finished.");
+			Print("Command execution finished.", PrintType.Success);
 		}
 
 		/// <summary>
