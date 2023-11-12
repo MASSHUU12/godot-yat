@@ -31,6 +31,9 @@ namespace YAT.Overlay.Components.Terminal
 			}
 		}
 
+		/// <summary>
+		/// Provides suggestions for autocompletion of user input in the terminal.
+		/// </summary>
 		private void Autocompletion()
 		{
 			// Command structure:
@@ -64,6 +67,10 @@ namespace YAT.Overlay.Components.Terminal
 			}
 		}
 
+		/// <summary>
+		/// Selects the next suggestion from the list of suggestions
+		/// and updates the text input with it.
+		/// </summary>
 		private void UseNextSuggestion()
 		{
 			if (suggestions.Length == 0) return;
