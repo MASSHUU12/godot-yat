@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using YAT.Commands;
 using YAT.Helpers;
+using YAT.Overlay.Components.Terminal;
 
 namespace YAT
 {
@@ -37,10 +38,10 @@ namespace YAT
 
 		[Export] public YatOptions Options { get; set; } = new();
 
-		public Overlay Overlay { get; private set; }
+		public Overlay.Overlay Overlay { get; private set; }
 		public Terminal Terminal { get; private set; }
 		public readonly LinkedList<string> History = new();
-		public readonly LinkedListNode<string> HistoryNode = null;
+		public LinkedListNode<string> HistoryNode = null;
 		public OptionsManager OptionsManager { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
@@ -53,7 +54,7 @@ namespace YAT
 
 			_root = GetTree().Root;
 
-			Overlay = GD.Load<PackedScene>("res://addons/yat/src/overlay/Overlay.tscn").Instantiate<Overlay>();
+			Overlay = GD.Load<PackedScene>("res://addons/yat/src/overlay/Overlay.tscn").Instantiate<Overlay.Overlay>();
 			Overlay.Ready += OnOverlayReady;
 			OptionsManager = new(this, Options);
 

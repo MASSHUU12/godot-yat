@@ -10,6 +10,7 @@ To use this extension, you need to create these keybindings in your project:
 -   `yat_toggle` - Toggles the state of the overlay.
 -   `yat_terminal_interrupt` - Used to stop command working on separate thread.
 -   `yat_terminal_history_next` - Displays the next command from history.
+-   `yat_terminal_autocompletion` - Used to scroll through suggestions from autocompletion.
 -   `yat_terminal_history_previous` - Displays the previous command from history.
 
 ### Suggested keybindings

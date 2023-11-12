@@ -61,6 +61,8 @@ public class LRUCache<TKey, TValue>
 		lruList.AddFirst(new LinkedListNode<LRUItem<TKey, TValue>>(new(key, value)));
 		cache[key] = lruList.First;
 	}
+
+	public int Size => cache.Count;
 }
 
 /// <summary>

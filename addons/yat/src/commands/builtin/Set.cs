@@ -1,4 +1,5 @@
 using YAT.Helpers;
+using YAT.Overlay.Components.Terminal;
 
 namespace YAT.Commands
 {

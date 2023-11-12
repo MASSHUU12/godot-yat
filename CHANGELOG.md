@@ -7,10 +7,20 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   History command.
+-   yat_terminal_autocompletion keybinding.
+-   Autocompletion system.
+-   Size property to LRU cache.
 
 ### Changed
 
 -   Improved encapsulation.
+-   Moved overlay under YAT.Overlay namespace.
+-   Moved terminal under YAT.Overlay.Components.Terminal namespace.
+
+### Fixed
+
+-   Caret sticks to the beginning of the string when scrolling through the command history &
+    when scrolling through suggestions from autocompletion.
 
 ## [1.3.0-beta - 2023-11-10]
 

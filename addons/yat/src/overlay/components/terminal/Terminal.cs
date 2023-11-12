@@ -1,11 +1,10 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using YAT.Commands;
 using YAT.Helpers;
 
-namespace YAT
+namespace YAT.Overlay.Components.Terminal
 {
 	public partial class Terminal : Control
 	{
@@ -18,7 +17,7 @@ namespace YAT
 		[Signal]
 		public delegate void CommandExecutedEventHandler(string command, string[] args, CommandResult result);
 
-		public LineEdit Input { get; private set; }
+		public Input Input { get; private set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the terminal is locked.
@@ -70,8 +69,7 @@ namespace YAT
 			Output = GetNode<RichTextLabel>("%Output");
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
-			Input = GetNode<LineEdit>("%Input");
-			Input.TextSubmitted += OnCommandSubmitted;
+			Input = GetNode<Input>("%Input");
 
 			UpdateOptions(_yat.Options);
 		}
@@ -93,6 +91,8 @@ namespace YAT
 						_yat.HistoryNode = _yat.HistoryNode.Previous;
 						Input.Text = _yat.HistoryNode.Value;
 					}
+
+					Input.CallDeferred(nameof(Input.MoveCaretToEnd));
 				}
 
 				if (@event.IsActionPressed("yat_terminal_history_next"))
@@ -107,6 +107,8 @@ namespace YAT
 						_yat.HistoryNode = null;
 						Input.Text = string.Empty;
 					}
+
+					Input.CallDeferred(nameof(Input.MoveCaretToEnd));
 				}
 
 				if (@event.IsActionPressed("yat_terminal_interrupt") && _cts != null)
@@ -117,8 +119,6 @@ namespace YAT
 					_cts.Dispose();
 					_cts = null;
 				}
-
-
 			}
 		}
 
@@ -226,39 +226,6 @@ namespace YAT
 				ExecuteThreadedCommand(args);
 			}
 			else ExecuteCommand(args);
-		}
-
-		/// <summary>
-		/// Handles the submission of a command by sanitizing the input,
-		/// executing the command, and clearing the input buffer.
-		/// </summary>
-		/// <param name="command">The command to be submitted.</param>
-		private void OnCommandSubmitted(string command)
-		{
-			var input = SanitizeInput(command);
-
-			if (input.Length == 0 || Locked) return;
-
-			_yat.HistoryNode = null;
-			_yat.History.AddLast(command);
-			if (_yat.History.Count > _yat.Options.HistoryLimit) _yat.History.RemoveFirst();
-
-			CommandManager(input);
-			Input.Clear();
-		}
-
-		/// <summary>
-		/// Sanitizes the input command by removing leading/trailing white space
-		/// and extra spaces between words.
-		/// </summary>
-		/// <param name="command">The command to sanitize.</param>
-		/// <returns>The sanitized command.</returns>
-		private static string[] SanitizeInput(string command)
-		{
-			command = command.Trim();
-			return command.Split(' ').Where(
-				s => !string.IsNullOrWhiteSpace(s)
-			).ToArray();
 		}
 	}
 }

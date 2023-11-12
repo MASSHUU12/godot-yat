@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using YAT.Helpers;
+using YAT.Overlay.Components.Terminal;
 
 namespace YAT.Commands
 {
