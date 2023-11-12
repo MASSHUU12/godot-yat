@@ -12,7 +12,7 @@ namespace YAT.Overlay.Components.Terminal
 		private Terminal _terminal;
 		private string cachedInput = string.Empty;
 		private string[] suggestions = Array.Empty<string>();
-		private int suggestionIndex = -1;
+		private uint suggestionIndex = 0;
 
 		public override void _Ready()
 		{
@@ -41,21 +41,20 @@ namespace YAT.Overlay.Components.Terminal
 			// command_name subcommand_name args
 
 			if (suggestions.Length > 0 && (
-				Text == cachedInput || Text == suggestions[suggestionIndex]
+				Text == cachedInput || suggestions.Contains(Text)
 			))
 			{
-				GD.Print(suggestions);
 				UseNextSuggestion();
 				return;
 			}
 
 			cachedInput = Text;
 			suggestions = Array.Empty<string>();
-			suggestionIndex = -1;
+			suggestionIndex = 0;
 
 			var tokens = TextHelper.SanitizeText(Text);
 
-			if (tokens.Length == 0 || _terminal.Locked) return;
+			if (tokens.Length == 0) return;
 
 			if (tokens.Length == 1)
 			{
@@ -75,7 +74,7 @@ namespace YAT.Overlay.Components.Terminal
 		{
 			if (suggestions.Length == 0) return;
 
-			suggestionIndex = (suggestionIndex + 1) % suggestions.Length;
+			suggestionIndex = (uint)((suggestionIndex + 1) % suggestions.Length);
 			Text = suggestions[suggestionIndex];
 		}
 
