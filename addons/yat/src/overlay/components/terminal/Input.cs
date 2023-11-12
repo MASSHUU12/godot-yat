@@ -54,8 +54,6 @@ namespace YAT.Overlay.Components.Terminal
 
 			var tokens = TextHelper.SanitizeText(Text);
 
-			if (tokens.Length == 0) return;
-
 			if (tokens.Length == 1)
 			{
 				suggestions = GenerateCommandSuggestions(tokens[0]);
@@ -86,21 +84,10 @@ namespace YAT.Overlay.Components.Terminal
 		private string[] GenerateCommandSuggestions(string token)
 		{
 			return _yat.Commands
-				.Where(x =>
-				{
-					var attribute = x.Value.GetAttribute<CommandAttribute>();
-
-					if (attribute == null) return false;
-					return attribute.Name.StartsWith(token);
-				})
-				.Select(x =>
-				{
-					var attribute = x.Value.GetAttribute<CommandAttribute>();
-
-					if (attribute == null) return string.Empty;
-					return attribute.Name;
-				})
-				.Distinct() // Remove duplicates
+				.Where(x => x.Value.GetAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
+				.Select(x => x.Value.GetAttribute<CommandAttribute>()?.Name)
+				.Where(name => !string.IsNullOrEmpty(name))
+				.Distinct()
 				.ToArray();
 		}
 
