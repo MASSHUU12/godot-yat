@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+-   NoValidate attribute indicating that no automatic validation should be performed.
+
 ### Changed
 
 -   Attributes, interfaces and enums have been moved to their respective folders and namespaces.
