@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
@@ -116,8 +115,6 @@ namespace YAT.Overlay.Components.Terminal
 					_cts.Dispose();
 					_cts = null;
 				}
-
-
 			}
 		}
 
