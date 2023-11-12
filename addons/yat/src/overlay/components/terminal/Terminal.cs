@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
+using YAT.Attributes;
 using YAT.Commands;
 using YAT.Helpers;
 
