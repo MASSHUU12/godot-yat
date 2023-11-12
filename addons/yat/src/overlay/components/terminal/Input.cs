@@ -11,7 +11,6 @@ namespace YAT.Overlay.Components.Terminal
 		private YAT _yat;
 		private Terminal _terminal;
 		private string cachedInput = string.Empty;
-		private string originalInput = string.Empty;
 		private string[] suggestions = Array.Empty<string>();
 		private int suggestionIndex = -1;
 
@@ -28,6 +27,7 @@ namespace YAT.Overlay.Components.Terminal
 			if (@event.IsActionPressed("yat_terminal_autocompletion") && HasFocus())
 			{
 				Autocompletion();
+				CallDeferred("grab_focus"); // Prevent toggling the input focus
 			}
 		}
 
@@ -47,7 +47,6 @@ namespace YAT.Overlay.Components.Terminal
 			}
 
 			cachedInput = Text;
-			originalInput = Text;
 			suggestions = Array.Empty<string>();
 			suggestionIndex = -1;
 
