@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+-   Attributes are now under YAT.Attributes namespace.
+-   The attributes have been moved to the attributes folder.
+-   Attributes are no longer partial, but are sealed.
+
 ## [1.4.0-beta 2023-11-12]
 
 ### Added
