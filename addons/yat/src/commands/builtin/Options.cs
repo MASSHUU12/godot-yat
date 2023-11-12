@@ -1,5 +1,7 @@
 using Godot;
 using YAT.Attributes;
+using YAT.Enums;
+using YAT.Interfaces;
 
 namespace YAT.Commands
 {

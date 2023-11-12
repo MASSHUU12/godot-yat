@@ -1,6 +1,7 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Commands;
+using YAT.Enums;
+using YAT.Interfaces;
 using YAT.Overlay.Components.Terminal;
 
 [Extension("cubecolor", "Sets the cube's color.", "[b]Usage[/b]: setcube [i]color[/i]")]

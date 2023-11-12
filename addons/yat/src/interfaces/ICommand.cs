@@ -2,9 +2,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using YAT.Attributes;
+using YAT.Enums;
 using YAT.Helpers;
 
-namespace YAT.Commands
+namespace YAT.Interfaces
 {
 	public partial interface ICommand
 	{
@@ -61,16 +62,5 @@ namespace YAT.Commands
 
 			return sb.ToString();
 		}
-	}
-
-	/// <summary>
-	/// Represents the result of executing a command.
-	/// </summary>
-	public enum CommandResult
-	{
-		Success,
-		Failure,
-		InvalidArguments,
-		InvalidCommand,
 	}
 }

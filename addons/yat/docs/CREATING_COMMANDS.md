@@ -32,6 +32,8 @@ As an example, let's look at Cls command:
 
 ```csharp
 using YAT.Attributes;
+using YAT.Enums;
+using YAT.Interfaces;
 
 namespace YAT.Commands
 {

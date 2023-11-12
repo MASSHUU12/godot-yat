@@ -1,9 +1,10 @@
 using System.Linq;
 using System.Text;
 using YAT.Attributes;
+using YAT.Enums;
 using YAT.Helpers;
 
-namespace YAT.Commands
+namespace YAT.Interfaces
 {
 	public partial interface IExtension
 	{
