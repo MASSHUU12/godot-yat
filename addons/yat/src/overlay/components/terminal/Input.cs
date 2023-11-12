@@ -72,7 +72,12 @@ namespace YAT.Overlay.Components.Terminal
 			Text = suggestions[suggestionIndex];
 		}
 
-		private string[] GenerateCommandSuggestions(string inputState)
+		/// <summary>
+		/// Generates an array of command suggestions based on the input state.
+		/// </summary>
+		/// <param name="token">The current input state.</param>
+		/// <returns>An array of command suggestions.</returns>
+		private string[] GenerateCommandSuggestions(string token)
 		{
 			return _yat.Commands
 				.Where(x =>
@@ -80,7 +85,7 @@ namespace YAT.Overlay.Components.Terminal
 					var attribute = x.Value.GetAttribute<CommandAttribute>();
 
 					if (attribute == null) return false;
-					return attribute.Name.StartsWith(inputState);
+					return attribute.Name.StartsWith(token);
 				})
 				.Select(x =>
 				{
