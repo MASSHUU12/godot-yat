@@ -68,9 +68,7 @@ namespace YAT.Overlay.Components.Terminal
 		{
 			if (suggestions.Length == 0) return;
 
-			suggestionIndex++;
-
-			if (suggestionIndex >= suggestions.Length) suggestionIndex = 0;
+			suggestionIndex = (suggestionIndex + 1) % suggestions.Length;
 			Text = suggestions[suggestionIndex];
 		}
 
@@ -94,7 +92,6 @@ namespace YAT.Overlay.Components.Terminal
 				.Distinct() // Remove duplicates
 				.ToArray();
 		}
-
 
 		/// <summary>
 		/// Handles the submission of a command by sanitizing the input,
