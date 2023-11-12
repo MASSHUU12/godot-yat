@@ -5,20 +5,20 @@
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [Creating commands](#creating-commands)
-	- [Threaded commands](#threaded-commands)
-	- [Overridable methods](#overridable-methods)
-		- [GenerateCommandManual](#generatecommandmanual)
-- [Adding commands](#adding-commands)
-- [Making commands extendable](#making-commands-extendable)
-	- [Overridable methods](#overridable-methods-1)
-		- [GenerateExtensionsManual](#generateextensionsmanual)
-- [Extending commands](#extending-commands)
-	- [Overridable methods](#overridable-methods-2)
-		- [GenerateExtensionManual](#generateextensionmanual)
-- [Creating custom windows](#creating-custom-windows)
-- [Signals](#signals)
+-   [Table of Contents](#table-of-contents)
+-   [Creating commands](#creating-commands)
+    -   [Threaded commands](#threaded-commands)
+    -   [Overridable methods](#overridable-methods)
+        -   [GenerateCommandManual](#generatecommandmanual)
+-   [Adding commands](#adding-commands)
+-   [Making commands extendable](#making-commands-extendable)
+    -   [Overridable methods](#overridable-methods-1)
+        -   [GenerateExtensionsManual](#generateextensionsmanual)
+-   [Extending commands](#extending-commands)
+    -   [Overridable methods](#overridable-methods-2)
+        -   [GenerateExtensionManual](#generateextensionmanual)
+-   [Creating custom windows](#creating-custom-windows)
+-   [Signals](#signals)
 
 ## Creating commands
 
@@ -31,6 +31,8 @@ The `Command` attribute accepts the command `name`, its `description`, `manual` 
 As an example, let's look at Cls command:
 
 ```csharp
+using YAT.Attributes;
+
 namespace YAT.Commands
 {
 	[Command(
