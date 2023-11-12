@@ -17,7 +17,7 @@ namespace YAT.Overlay.Components.Terminal
 		[Signal]
 		public delegate void CommandExecutedEventHandler(string command, string[] args, CommandResult result);
 
-		public LineEdit Input { get; private set; }
+		public Input Input { get; private set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether the terminal is locked.
@@ -69,7 +69,7 @@ namespace YAT.Overlay.Components.Terminal
 			Output = GetNode<RichTextLabel>("%Output");
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
-			Input = GetNode<LineEdit>("%Input");
+			Input = GetNode<Input>("%Input");
 
 			UpdateOptions(_yat.Options);
 		}
@@ -91,6 +91,8 @@ namespace YAT.Overlay.Components.Terminal
 						_yat.HistoryNode = _yat.HistoryNode.Previous;
 						Input.Text = _yat.HistoryNode.Value;
 					}
+
+					Input.CallDeferred(nameof(Input.MoveCaretToEnd));
 				}
 
 				if (@event.IsActionPressed("yat_terminal_history_next"))
@@ -105,6 +107,8 @@ namespace YAT.Overlay.Components.Terminal
 						_yat.HistoryNode = null;
 						Input.Text = string.Empty;
 					}
+
+					Input.CallDeferred(nameof(Input.MoveCaretToEnd));
 				}
 
 				if (@event.IsActionPressed("yat_terminal_interrupt") && _cts != null)

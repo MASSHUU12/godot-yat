@@ -74,6 +74,8 @@ namespace YAT.Overlay.Components.Terminal
 
 			suggestionIndex = (uint)((suggestionIndex + 1) % suggestions.Length);
 			Text = suggestions[suggestionIndex];
+
+			MoveCaretToEnd();
 		}
 
 		/// <summary>
@@ -108,6 +110,14 @@ namespace YAT.Overlay.Components.Terminal
 
 			_terminal.CommandManager(input);
 			Clear();
+		}
+
+		/// <summary>
+		/// Moves the caret to the end of the input text.
+		/// </summary>
+		public void MoveCaretToEnd()
+		{
+			CaretColumn = Text.Length;
 		}
 	}
 }

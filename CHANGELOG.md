@@ -16,6 +16,11 @@ All notable changes to this project will be documented in this file.
 -   Moved overlay under YAT.Overlay namespace.
 -   Moved terminal under YAT.Overlay.Components.Terminal namespace.
 
+### Fixed
+
+-   Caret sticks to the beginning of the string when scrolling through the command history &
+    when scrolling through suggestions from autocompletion.
+
 ## [1.3.0-beta - 2023-11-10]
 
 ### Added
