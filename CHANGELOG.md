@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 -   History command.
 -   yat_terminal_autocompletion keybinding.
 -   Autocompletion system.
+-   Size property to LRU cache.
 
 ### Changed
 
