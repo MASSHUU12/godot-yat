@@ -1,4 +1,5 @@
 using YAT.Attributes;
+using YAT.Interfaces;
 
 namespace YAT.Commands
 {

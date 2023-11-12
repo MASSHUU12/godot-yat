@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Godot;
 using YAT.Attributes;
-using YAT.Commands;
 using YAT.Helpers;
 
 namespace YAT.Overlay.Components.Terminal

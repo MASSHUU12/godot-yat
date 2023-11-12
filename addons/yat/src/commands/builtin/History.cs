@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text;
 using YAT.Attributes;
 using YAT.Helpers;
+using YAT.Interfaces;
 
 namespace YAT.Commands
 {
