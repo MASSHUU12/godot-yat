@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   History command.
+-   yat_terminal_autocompletion keybinding.
 
 ### Changed
 
