@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Attributes;
 
 namespace YAT.Commands
 {

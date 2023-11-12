@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using YAT.Attributes;
 using YAT.Overlay.Components.Terminal;
 
 namespace YAT.Commands

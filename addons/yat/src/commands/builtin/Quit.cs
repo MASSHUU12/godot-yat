@@ -1,3 +1,5 @@
+using YAT.Attributes;
+
 namespace YAT.Commands
 {
 	[Command("quit", "Quits the game.", "[b]Usage[/b]: quit", "exit")]

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text;
+using YAT.Attributes;
 using YAT.Helpers;
 
 namespace YAT.Commands
