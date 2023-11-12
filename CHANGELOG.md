@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
--   Attributes are now under YAT.Attributes namespace.
--   The attributes have been moved to the attributes folder.
+-   Attributes are now under YAT.Attributes namespace and have been moved to the attributes folder.
+-   Interfaces are now under YAT.Interfaces namespace and have been moved to the interfaces folder.
 -   Attributes are no longer partial, but are sealed.
 
 ## [1.4.0-beta 2023-11-12]
