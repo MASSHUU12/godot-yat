@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using Godot;
+using YAT.Commands;
 using YAT.Helpers;
 
 namespace YAT.Overlay.Components.Terminal
@@ -7,6 +10,10 @@ namespace YAT.Overlay.Components.Terminal
 	{
 		private YAT _yat;
 		private Terminal _terminal;
+		private string cachedInput = string.Empty;
+		private string originalInput = string.Empty;
+		private string[] suggestions = Array.Empty<string>();
+		private int suggestionIndex = -1;
 
 		public override void _Ready()
 		{
@@ -14,6 +21,75 @@ namespace YAT.Overlay.Components.Terminal
 			_terminal = GetNode<Terminal>("../../../../../../..");
 
 			TextSubmitted += OnTextSubmitted;
+		}
+
+		public override void _GuiInput(InputEvent @event)
+		{
+			if (@event.IsActionPressed("yat_terminal_autocompletion") && HasFocus())
+			{
+				Autocompletion();
+			}
+		}
+
+		private void Autocompletion()
+		{
+			// Command structure:
+			// command_name args
+			// command_name subcommand_name args
+
+			if (suggestions.Length > 0 && (
+				Text == cachedInput || Text == suggestions[suggestionIndex]
+			))
+			{
+				GD.Print(suggestions);
+				UseNextSuggestion();
+				return;
+			}
+
+			cachedInput = Text;
+			originalInput = Text;
+			suggestions = Array.Empty<string>();
+			suggestionIndex = -1;
+
+			var tokens = TextHelper.SanitizeText(Text);
+
+			if (tokens.Length == 0 || _terminal.Locked) return;
+
+			if (tokens.Length == 1)
+			{
+				suggestions = GenerateCommandSuggestions(tokens[0]);
+
+				if (suggestions.Length > 0) UseNextSuggestion();
+
+				return;
+			}
+		}
+
+		private void UseNextSuggestion()
+		{
+			if (suggestions.Length == 0) return;
+
+			suggestionIndex++;
+
+			if (suggestionIndex >= suggestions.Length) suggestionIndex = 0;
+			Text = suggestions[suggestionIndex];
+		}
+
+		private string[] GenerateCommandSuggestions(string inputState)
+		{
+			return _yat.Commands.Where(x =>
+			{
+				var attribute = x.Value.GetAttribute<CommandAttribute>();
+
+				if (attribute == null) return false;
+				return attribute.Name.StartsWith(inputState);
+			}).Select(x =>
+			{
+				var attribute = x.Value.GetAttribute<CommandAttribute>();
+
+				if (attribute == null) return string.Empty;
+				return attribute.Name;
+			}).ToArray();
 		}
 
 		/// <summary>
