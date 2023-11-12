@@ -1,4 +1,4 @@
-namespace YAT.Commands
+namespace YAT.Enums
 {
 	/// <summary>
 	/// Represents the result of executing a command.

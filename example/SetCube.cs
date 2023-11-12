@@ -1,6 +1,6 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Commands;
+using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Overlay.Components.Terminal;
 
