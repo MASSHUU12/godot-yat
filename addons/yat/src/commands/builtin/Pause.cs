@@ -1,3 +1,5 @@
+using YAT.Attributes;
+
 namespace YAT.Commands
 {
 	[Command("pause", "Toggles the game pause state.", "[b]Usage[/b]: pause")]

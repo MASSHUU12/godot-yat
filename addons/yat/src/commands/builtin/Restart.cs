@@ -1,3 +1,5 @@
+using YAT.Attributes;
+
 namespace YAT.Commands
 {
 	[Command("restart", "Restarts the level.", "[b]Usage[/b]: restart", "reboot")]

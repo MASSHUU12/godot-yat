@@ -1,3 +1,5 @@
+using YAT.Attributes;
+
 namespace YAT.Commands
 {
 	[Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
