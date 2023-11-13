@@ -84,10 +84,10 @@ namespace YAT.Helpers
 			return true;
 		}
 
-		private static bool GetRange(string arg, out int min, out int max)
+		private static bool GetRange<T>(string arg, out T min, out T max) where T : IConvertible, IComparable<T>
 		{
-			min = 0;
-			max = 0;
+			min = default;
+			max = default;
 
 			if (!arg.Contains('(') || !arg.Contains(')')) return false;
 
@@ -96,8 +96,8 @@ namespace YAT.Helpers
 
 			if (range.Length != 2) return false;
 
-			if (!int.TryParse(range[0], out min)) return false;
-			if (!int.TryParse(range[1], out max)) return false;
+			if (!NumericHelper.TryConvert(range[0], out min)) return false;
+			if (!NumericHelper.TryConvert(range[1], out max)) return false;
 
 			return true;
 		}
@@ -112,18 +112,39 @@ namespace YAT.Helpers
 		{
 			var t = type.ToLower();
 
-			try
+			if (t == "string") return value;
+			if (t == "bool") return bool.Parse(value);
+			if (t == value) return value;
+
+			if (t.StartsWith("int")) return TryConvertNumeric<int>(type, value);
+			if (t.StartsWith("float")) return TryConvertNumeric<float>(type, value);
+			if (t.StartsWith("double")) return TryConvertNumeric<double>(type, value);
+
+			return null;
+		}
+
+		/// <summary>
+		/// Tries to convert a string value to a numeric type T, and returns the converted value if it is within the range specified by the type.
+		/// </summary>
+		/// <typeparam name="T">The numeric type to convert to.</typeparam>
+		/// <param name="type">The string representation of the numeric type.</param>
+		/// <param name="value">The string value to convert.</param>
+		/// <returns>The converted value if it is within the range specified by the type, otherwise null.</returns>
+		/// <remarks>
+		/// This method uses the NumericHelper class to perform the conversion and range checking.
+		/// </remarks>
+		private static object TryConvertNumeric<T>(string type, string value) where T : IConvertible, IComparable<T>
+		{
+			if (NumericHelper.TryConvert(value, out T result))
 			{
-				if (t == "string") return value;
-				if (t == "int") return int.Parse(value);
-				if (t == "float") return float.Parse(value);
-				if (t == "double") return double.Parse(value);
-				if (t == "bool") return bool.Parse(value);
-				if (t == value) return value;
-			}
-			catch (Exception)
-			{
-				return null;
+				if (GetRange(type, out T min, out T max))
+				{
+					return NumericHelper.IsWithinRange(result, min, max) ? result : null;
+				}
+				else
+				{
+					return result;
+				}
 			}
 
 			return null;
