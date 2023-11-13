@@ -8,6 +8,8 @@
 -   [Table of Contents](#table-of-contents)
 -   [Creating commands](#creating-commands)
     -   [Threaded commands](#threaded-commands)
+    -   [Automatic input validation](#automatic-input-validation)
+        -   [Validation of arguments](#validation-of-arguments)
     -   [Overridable methods](#overridable-methods)
         -   [GenerateCommandManual](#generatecommandmanual)
 -   [Adding commands](#adding-commands)
@@ -78,6 +80,29 @@ public virtual CommandResult Execute(CancellationToken ct, params string[] args)
 ```
 
 It is important to make proper use of the `CancellationToken`, as it is the one that indicates when the method should `end early`.
+
+### Automatic input validation
+
+#### Validation of arguments
+
+You can specify what arguments, under what rules and in what order the command expects using the `Arguments` attribute.
+
+Arguments are defined as follows:
+
+-   `argument` - the user must use the name of this argument.
+-   `argument:data_type` - the user must use the given data type in place of this argument.
+-   `argument:[option1, option2]` - the user must use any of the given options in place of the argument.
+-   `argument:[option1, data_type, option3]` - the user must specify any of the given options or use the listed data type in place of the given argument
+
+Example of use:
+
+```csharp
+[Arguments("action:[move, jump]", "direction:[left, right, int]")]
+```
+
+In the above example, the command takes two arguments.
+The first argument can take one of two values: `move` or `jump`.
+The second argument has three possibilities, it can take `"left"`, `"right"` or a `number`.
 
 ### Overridable methods
 
