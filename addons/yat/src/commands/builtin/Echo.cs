@@ -5,7 +5,7 @@ using YAT.Interfaces;
 namespace YAT.Commands
 {
 	[Command("echo", "Displays the given text.", "[b]Usage[/b]: echo [i]text[/i]")]
-	[Arguments("message:[hi, hello, int]")]
+	[Arguments("message:string")]
 	public partial class Echo : ICommand
 	{
 		public YAT Yat { get; set; }
