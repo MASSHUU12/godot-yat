@@ -11,10 +11,10 @@ All notable changes to this project will be documented in this file.
 -   Arguments & options attributes for automatic validation.
 -   NoValidate attribute indicating that no automatic validation should be performed.
 -   New methods to LogHelper: Error, InvalidArgumentType.
+-   Execute method overload accepting converted arguments as an additional parameter.
 
 ### Changed
 
--   Execute method now also accepts converted arguments as an additional parameter.
 -   Attributes, interfaces and enums have been moved to their respective folders and namespaces.
 -   Attributes are no longer partial, but are sealed.
 -   Templates have been updated.

@@ -16,26 +16,47 @@ namespace YAT.Interfaces
 		public YAT Yat { get; set; }
 
 		/// <summary>
-		/// Executes the YAT command with the given arguments.
+		/// Represents the result of executing a command.
 		/// </summary>
-		/// <param name="cArgs">The converted arguments to pass to the command.</param>
-		/// <param name="args">The arguments to pass to the command.</param>
+		/// <param name="cArgs">The converted arguments for the command.</param>
+		/// <param name="args">The arguments passed to the command.</param>
 		/// <returns>The result of the command execution.</returns>
 		public virtual CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
 		{
-			return CommandResult.InvalidCommand;
+			return CommandResult.NotImplemented;
 		}
 
 		/// <summary>
 		/// Executes the YAT command with the given arguments.
 		/// </summary>
-		/// <param name="cArgs">The converted arguments to pass to the command.</param>
+		/// <param name="args">The arguments passed to the command.</param>
+		/// <returns>The result of the command execution.</returns>
+		public virtual CommandResult Execute(params string[] args)
+		{
+			return CommandResult.NotImplemented;
+		}
+
+		/// <summary>
+		/// Executes the YAT command with the given arguments.
+		/// </summary>
+		/// <param name="cArgs">The converted arguments for the command.</param>
 		/// <param name="ct">The cancellation token.</param>
-		/// <param name="args">The arguments to pass to the command.</param>
+		/// <param name="args">The arguments passed to the command.</param>
 		/// <returns>The result of the command execution.</returns>
 		public virtual CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
 		{
-			return CommandResult.InvalidCommand;
+			return CommandResult.NotImplemented;
+		}
+
+		/// <summary>
+		/// Executes the YAT command with the given arguments.
+		/// </summary>
+		/// <param name="ct">The cancellation token.</param>
+		/// <param name="args">The arguments passed to the command.</param>
+		/// <returns>The result of the command execution.</returns>
+		public virtual CommandResult Execute(CancellationToken ct, params string[] args)
+		{
+			return CommandResult.NotImplemented;
 		}
 
 		/// <summary>
