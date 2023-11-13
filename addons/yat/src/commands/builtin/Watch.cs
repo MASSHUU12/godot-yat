@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Threading;
 using YAT.Attributes;
 using YAT.Enums;
@@ -14,30 +14,26 @@ namespace YAT.Commands
 		"[b]Usage[/b]: watch <command> <interval (in seconds)> [args...]"
 	)]
 	[Threaded]
-	[Arguments("command:string", "interval:float")]
+	[Arguments("command:string", "interval:float(0.5, 60)")]
 	public partial class Watch : ICommand
 	{
 		public YAT Yat { get; set; }
 
 		public Watch(YAT Yat) => this.Yat = Yat;
 
-		public CommandResult Execute(CancellationToken ct, params string[] args)
+		public CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
 		{
 			const uint SECONDS_MULTIPLIER = 1000;
 
-			if (!Yat.Commands.TryGetValue(args[1], out ICommand command))
+			ICommand command = Yat.Commands.TryGetValue((string)cArgs["command"], out var c) ? c : null;
+
+			if (command == null)
 			{
-				LogHelper.UnknownCommand(args[1]);
-				return CommandResult.Failure;
+				LogHelper.Error($"Command '{cArgs["command"]}' not found, exiting watch.");
+				return CommandResult.InvalidArguments;
 			}
 
-			if (!float.TryParse(args[2], out float interval))
-			{
-				LogHelper.InvalidArgument("watch", "interval", "positive number");
-				return CommandResult.Failure;
-			}
-
-			interval = (float)Math.Clamp(interval, 0.5, 60);
+			float interval = (float)cArgs["interval"];
 
 			while (!ct.IsCancellationRequested)
 			{
