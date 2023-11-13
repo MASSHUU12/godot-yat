@@ -84,6 +84,24 @@ namespace YAT.Helpers
 			return true;
 		}
 
+		private static bool GetRange(string arg, out int min, out int max)
+		{
+			min = 0;
+			max = 0;
+
+			if (!arg.Contains('(') || !arg.Contains(')')) return false;
+
+			string[] parts = arg.Split('(', ')');
+			string[] range = parts[1].Split(',');
+
+			if (range.Length != 2) return false;
+
+			if (!int.TryParse(range[0], out min)) return false;
+			if (!int.TryParse(range[1], out max)) return false;
+
+			return true;
+		}
+
 		/// <summary>
 		/// Converts a string value to the specified type.
 		/// </summary>
