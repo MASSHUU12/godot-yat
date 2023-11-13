@@ -23,9 +23,11 @@ namespace YAT.Helpers
 		/// </summary>
 		/// <typeparam name="T">The type of the output.</typeparam>
 		/// <param name="input">The string to convert.</param>
-		/// <param name="output">When this method returns, contains the converted value if the conversion succeeded, or the default value of T if the conversion failed.</param>
+		/// <param name="output">When this method returns,
+		/// contains the converted value if the conversion succeeded,
+		/// or the default value of T if the conversion failed.</param>
 		/// <returns>true if the conversion succeeded; otherwise, false.</returns>
-		public static bool TryConvert<T>(this string input, out T output) where T : IConvertible, IComparable
+		public static bool TryConvert<T>(this string input, out T output) where T : IConvertible, IComparable<T>
 		{
 			var converter = TypeDescriptor.GetConverter(typeof(T));
 
