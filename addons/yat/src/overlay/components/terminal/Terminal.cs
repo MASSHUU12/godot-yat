@@ -194,8 +194,8 @@ namespace YAT.Overlay.Components.Terminal
 				var command = _yat.Commands[commandName];
 
 				Locked = true;
-				var result = command.Execute(input);
-				result = result == CommandResult.NotImplemented ? command.Execute(cArgs, input) : result;
+				var result = command.Execute(_cts.Token, input);
+				result = result == CommandResult.NotImplemented ? command.Execute(cArgs, _cts.Token, input) : result;
 				Locked = false;
 
 				CallDeferredThreadGroup(
