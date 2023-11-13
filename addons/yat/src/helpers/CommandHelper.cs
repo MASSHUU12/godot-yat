@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
@@ -45,11 +46,13 @@ namespace YAT.Helpers
 				}
 				else
 				{
-					object convertedArg = ConvertStringToType(argType.ToString(), passedArgs[i]);
+					object convertedArg = ConvertStringToType(
+						argType?.ToString() ?? argName, passedArgs[i]
+					);
 
 					if (convertedArg is null)
 					{
-						LogHelper.InvalidArgument(name, argName, (string)argType);
+						LogHelper.InvalidArgument(name, argName, (string)argType ?? argName);
 						return false;
 					}
 
@@ -77,6 +80,7 @@ namespace YAT.Helpers
 				if (t == "float") return float.Parse(value);
 				if (t == "double") return double.Parse(value);
 				if (t == "bool") return bool.Parse(value);
+				if (t == value) return value;
 			}
 			catch (Exception)
 			{
@@ -118,7 +122,7 @@ namespace YAT.Helpers
 		/// <returns>The parsed object or type, or null if the data type could not be parsed.</returns>
 		private static object ParseDataType(string dataType)
 		{
-			var data = dataType.Trim();
+			var data = dataType?.Trim();
 
 			if (string.IsNullOrEmpty(data)) return null;
 
