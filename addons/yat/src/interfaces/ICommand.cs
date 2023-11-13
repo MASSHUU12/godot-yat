@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,9 +18,10 @@ namespace YAT.Interfaces
 		/// <summary>
 		/// Executes the YAT command with the given arguments.
 		/// </summary>
+		/// <param name="cArgs">The converted arguments to pass to the command.</param>
 		/// <param name="args">The arguments to pass to the command.</param>
 		/// <returns>The result of the command execution.</returns>
-		public virtual CommandResult Execute(params string[] args)
+		public virtual CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
 		{
 			return CommandResult.InvalidCommand;
 		}
@@ -27,10 +29,11 @@ namespace YAT.Interfaces
 		/// <summary>
 		/// Executes the YAT command with the given arguments.
 		/// </summary>
+		/// <param name="cArgs">The converted arguments to pass to the command.</param>
 		/// <param name="ct">The cancellation token.</param>
 		/// <param name="args">The arguments to pass to the command.</param>
 		/// <returns>The result of the command execution.</returns>
-		public virtual CommandResult Execute(CancellationToken ct, params string[] args)
+		public virtual CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
 		{
 			return CommandResult.InvalidCommand;
 		}
@@ -43,6 +46,8 @@ namespace YAT.Interfaces
 		/// <returns>The manual for the command.</returns>
 		public virtual string GenerateCommandManual(params string[] args)
 		{
+			// TODO: Use ArgumentAttribute to generate manual for command arguments.
+
 			CommandAttribute attribute = AttributeHelper.GetAttribute<CommandAttribute>(this);
 
 			if (string.IsNullOrEmpty(attribute.Manual))
