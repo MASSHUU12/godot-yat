@@ -24,7 +24,7 @@
 
 ## Creating commands
 
-To create a command, you need to create C# file and implement `IYatCommand` interface.
+To create a command, you need to create C# file and implement `ICommand` interface.
 
 In addition, you must use the `Command` attribute to add the necessary metadata for the command.
 
@@ -60,6 +60,39 @@ namespace YAT.Commands
 	}
 }
 ```
+
+If you want your command to accept some arguments, I recommend using the `Arguments` attribute (more [below](#automatic-input-validation)), so that the terminal itself will perform input `validation` from the user.
+
+Depending on your needs, YAT supports 4 types of `Execute` method that you can use:
+
+```csharp
+public virtual CommandResult Execute(params string[] args)
+```
+
+Basic version, you can use it when you want to run a command on the main thread, both without and with automatic validation.
+
+```csharp
+public virtual CommandResult Execute(
+	Dictionary<string, object> cArgs, params string[] args
+)
+```
+
+Similar to the basic version, it runs on the main thread, but it takes as the first argument data that has passed validation and been converted to the appropriate types.
+
+```csharp
+public virtual CommandResult Execute(CancellationToken ct, params string[] args)
+```
+
+It is equivalent to the first version, but runs on a separate thread, and accepts a CancellationToken.
+
+```csharp
+public virtual CommandResult Execute(
+					Dictionary<string, object> cArgs,
+					CancellationToken ct, params string[] args
+)
+```
+
+It is equivalent to the second version, but runs on a separate thread, and accepts a CancellationToken.
 
 ### Threaded commands
 
