@@ -86,5 +86,7 @@ namespace YAT.Helpers
 
 			PrintMessage(message, Terminal.PrintType.Error);
 		}
+
+		public static void Error(string message) => PrintMessage(message, Terminal.PrintType.Error);
 	}
 }
