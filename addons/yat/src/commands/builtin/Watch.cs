@@ -14,6 +14,7 @@ namespace YAT.Commands
 		"[b]Usage[/b]: watch <command> <interval (in seconds)> [args...]"
 	)]
 	[Threaded]
+	[Arguments("command:string", "interval:float")]
 	public partial class Watch : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -23,12 +24,6 @@ namespace YAT.Commands
 		public CommandResult Execute(CancellationToken ct, params string[] args)
 		{
 			const uint SECONDS_MULTIPLIER = 1000;
-
-			if (args.Length <= 2)
-			{
-				LogHelper.MissingArguments("watch", "command");
-				return CommandResult.Failure;
-			}
 
 			if (!Yat.Commands.TryGetValue(args[1], out ICommand command))
 			{

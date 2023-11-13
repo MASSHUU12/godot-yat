@@ -7,6 +7,7 @@ using YAT.Overlay.Components.Terminal;
 namespace YAT.Commands
 {
 	[Command("set", "Sets a variable to a value.", "[b]Usage[/b]: set [i]variable[/i] [i]value[/i]")]
+	[Arguments("variable:string", "value:string")]
 	public partial class Set : Extensible, ICommand
 	{
 		public YAT Yat { get; set; }
@@ -15,12 +16,6 @@ namespace YAT.Commands
 
 		public CommandResult Execute(params string[] args)
 		{
-			if (args.Length < 3)
-			{
-				LogHelper.MissingArguments("set", "variable", "value");
-				return CommandResult.InvalidArguments;
-			}
-
 			var variable = args[1];
 
 			if (Extensions.ContainsKey(variable))

@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+-   Built-in commands use automatic argument validation.
 -   Attributes, interfaces and enums have been moved to their respective folders and namespaces.
 -   Attributes are no longer partial, but are sealed.
 -   Templates have been updated.

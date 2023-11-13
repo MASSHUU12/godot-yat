@@ -1,11 +1,11 @@
 using YAT.Attributes;
 using YAT.Enums;
-using YAT.Helpers;
 using YAT.Interfaces;
 
 namespace YAT.Commands
 {
 	[Command("echo", "Displays the given text.", "[b]Usage[/b]: echo [i]text[/i]")]
+	[Arguments("message:[hi, hello, int]")]
 	public partial class Echo : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -14,12 +14,6 @@ namespace YAT.Commands
 
 		public CommandResult Execute(params string[] args)
 		{
-			if (args.Length < 2)
-			{
-				LogHelper.MissingArguments("echo", "text");
-				return CommandResult.InvalidArguments;
-			}
-
 			var text = string.Join(" ", args[1..^0]);
 			Yat.Terminal.Print(text);
 

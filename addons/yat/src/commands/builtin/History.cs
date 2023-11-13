@@ -10,13 +10,14 @@ namespace YAT.Commands
 	[Command(
 		"history",
 		"Manages the command history of the current session.",
-		"[b]Usage[/b]: history [i]action (optional)[/i]" +
+		"[b]Usage[/b]: history [i]action[/i]" +
 		"\n\n[b]Actions[/b]:\n" +
 		"[b]clear[/b]: Clears the history.\n" +
 		"[b]<number>[/b]: Executes the command at the specified index in the history.\n" +
 		"[b]list[/b]: Lists the history.",
 		"hist"
 	)]
+	[Arguments("action:[clear, list, int]")]
 	public partial class History : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -25,18 +26,6 @@ namespace YAT.Commands
 
 		public CommandResult Execute(params string[] args)
 		{
-			if (args.Length <= 1)
-			{
-				ShowHistory();
-				return CommandResult.Success;
-			}
-
-			if (args.Length > 2)
-			{
-				Yat.Terminal.Print("Too many arguments.");
-				return CommandResult.Failure;
-			}
-
 			switch (args[1])
 			{
 				case "clear":
