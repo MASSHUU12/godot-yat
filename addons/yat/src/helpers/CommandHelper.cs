@@ -38,7 +38,28 @@ namespace YAT.Helpers
 
 				if (argType is string[] options)
 				{
-					if (!options.Contains(passedArgs[i]))
+					var found = false;
+
+					foreach (var opt in options)
+					{
+						if (opt == passedArgs[i])
+						{
+							found = true;
+							arguments[argName] = opt;
+							break;
+						}
+
+						object convertedArg = ConvertStringToType(opt, passedArgs[i]);
+
+						if (convertedArg is not null)
+						{
+							found = true;
+							arguments[argName] = convertedArg;
+							break;
+						}
+					}
+
+					if (!found)
 					{
 						LogHelper.InvalidArgument(name, argName, string.Join(", ", options));
 						return false;
