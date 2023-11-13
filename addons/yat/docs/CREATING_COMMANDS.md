@@ -83,6 +83,8 @@ It is important to make proper use of the `CancellationToken`, as it is the one 
 
 ### Automatic input validation
 
+> You can disable automatic validation using the `NoValidate` attribute.
+
 Supported data types:
 
 -   string
