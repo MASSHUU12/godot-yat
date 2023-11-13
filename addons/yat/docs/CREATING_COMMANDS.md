@@ -83,6 +83,20 @@ It is important to make proper use of the `CancellationToken`, as it is the one 
 
 ### Automatic input validation
 
+Supported data types:
+
+-   string
+-   int
+-   float
+-   double
+-   bool
+
+Numeric types can accept ranges of values. For example:
+
+```csharp
+[Arguments("step:double(0, 69.420)")]
+```
+
 #### Validation of arguments
 
 You can specify what arguments, under what rules and in what order the command expects using the `Arguments` attribute.

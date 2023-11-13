@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+-   NumericHelper class.
 -   NotImplemented command result.
 -   Automatic argument validation.
 -   Arguments & options attributes for automatic validation.
