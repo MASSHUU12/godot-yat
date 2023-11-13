@@ -9,5 +9,6 @@ namespace YAT.Enums
 		Failure,
 		InvalidArguments,
 		InvalidCommand,
+		NotImplemented,
 	}
 }
