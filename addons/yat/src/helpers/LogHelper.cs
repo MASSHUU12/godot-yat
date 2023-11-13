@@ -87,6 +87,24 @@ namespace YAT.Helpers
 			PrintMessage(message, Terminal.PrintType.Error);
 		}
 
+		/// <summary>
+		/// Prints an error message indicating that an invalid argument type was passed to a command.
+		/// </summary>
+		/// <param name="command">The name of the command.</param>
+		/// <param name="argument">The name of the argument.</param>
+		/// <param name="expected">The expected type of the argument.</param>
+		public static void InvalidArgumentType(string command, string argument, string expected)
+		{
+			var message = string.Format(
+				"{0} expected [i]{1}[/i] to be an [i]{2}[/i].",
+				command,
+				argument,
+				expected
+			);
+
+			PrintMessage(message, Terminal.PrintType.Error);
+		}
+
 		public static void Error(string message) => PrintMessage(message, Terminal.PrintType.Error);
 	}
 }

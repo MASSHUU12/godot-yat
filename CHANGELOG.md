@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 -   Arguments & options attributes for automatic validation.
 -   NoValidate attribute indicating that no automatic validation should be performed.
+-   New methods to LogHelper: Error, InvalidArgumentType.
 
 ### Changed
 
