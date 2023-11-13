@@ -39,9 +39,7 @@ namespace YAT.Commands
 			{
 				if (command.Execute(args[2..]) != CommandResult.Success)
 				{
-					Yat.Terminal.Print(
-						$"Error executing command '{args[1]}', exiting watch.", Terminal.PrintType.Error
-					);
+					LogHelper.Error($"Error executing command '{args[1]}', exiting watch.");
 					return CommandResult.Failure;
 				}
 
