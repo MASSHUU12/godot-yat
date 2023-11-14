@@ -172,19 +172,11 @@ namespace YAT.Helpers
 		/// </remarks>
 		private static object TryConvertNumeric<T>(string type, string value) where T : IConvertible, IComparable<T>
 		{
-			if (NumericHelper.TryConvert(value, out T result))
-			{
-				if (GetRange(type, out T min, out T max))
-				{
-					return NumericHelper.IsWithinRange(result, min, max) ? result : null;
-				}
-				else
-				{
-					return result;
-				}
-			}
+			if (!NumericHelper.TryConvert(value, out T result)) return null;
 
-			return null;
+			if (GetRange(type, out T min, out T max))
+				return NumericHelper.IsWithinRange(result, min, max) ? result : null;
+			return result;
 		}
 	}
 }
