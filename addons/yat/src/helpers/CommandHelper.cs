@@ -22,21 +22,9 @@ namespace YAT.Helpers
 			ArgumentsAttribute argumentsAttribute = command.GetAttribute<ArgumentsAttribute>();
 			var name = commandAttribute.Name;
 
-			if (argumentsAttribute is null)
-			{
-				args = new();
-				return true;
-			}
+			args = ValidateAttribute(argumentsAttribute, passedArgs.Length, name);
 
-			args = argumentsAttribute.Args;
-
-			if (args.Count == 0) return true;
-
-			if (passedArgs.Length < args.Count)
-			{
-				LogHelper.MissingArguments(name, args.Keys.ToArray());
-				return false;
-			}
+			if (args is null) return false;
 
 			for (int i = 0; i < args.Count; i++)
 			{
@@ -96,25 +84,41 @@ namespace YAT.Helpers
 			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
 			OptionsAttribute optionsAttribute = command.GetAttribute<OptionsAttribute>();
 
-			if (optionsAttribute is null)
-			{
-				opts = new();
-				return true;
-			}
+			opts = ValidateAttribute(optionsAttribute, passedArgs.Length, commandAttribute.Name);
 
-			opts = optionsAttribute.Options;
-
-			if (opts.Count == 0) return true;
-
-			if (passedArgs.Length < opts.Count)
-			{
-				LogHelper.MissingArguments(commandAttribute.Name, opts.Keys.ToArray());
-				return false;
-			}
+			if (opts is null) return false;
 
 			GD.Print(opts);
 
 			return true;
+		}
+
+		/// <summary>
+		/// Validates the given attribute and returns a dictionary of its properties.
+		/// </summary>
+		/// <typeparam name="T">The type of the attribute to validate.</typeparam>
+		/// <param name="attribute">The attribute to validate.</param>
+		/// <param name="passedLen">The number of arguments/options passed to the command.</param>
+		/// <param name="commandName">The name of the command being validated.</param>
+		/// <returns>A dictionary of the attribute's properties, or null if validation fails.</returns>
+		private static Dictionary<string, object> ValidateAttribute<T>(T attribute, int passedLen, string commandName) where T : Attribute
+		{
+			Dictionary<string, object> dict = new();
+
+			if (attribute is null) return dict;
+
+			if (attribute is ArgumentsAttribute argumentsAttribute) dict = argumentsAttribute.Args;
+			else if (attribute is OptionsAttribute optionsAttribute) dict = optionsAttribute.Options;
+
+			if (dict.Count == 0) return dict;
+
+			if (passedLen < dict.Count)
+			{
+				LogHelper.MissingArguments(commandName, dict.Keys.ToArray());
+				return null;
+			}
+
+			return dict;
 		}
 
 		private static bool GetRange<T>(string arg, out T min, out T max) where T : IConvertible, IComparable<T>
