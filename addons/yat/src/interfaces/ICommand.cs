@@ -63,7 +63,7 @@ namespace YAT.Interfaces
 		/// Generates the manual for the command, including its name,
 		/// description, manual, and aliases.
 		/// </summary>
-		/// <param name="args">The arguments for the command.</param>
+		/// <param name="args">Optional arguments for the method.</param>
 		/// <returns>The manual for the command.</returns>
 		public virtual string GenerateCommandManual(params string[] args)
 		{
@@ -87,7 +87,7 @@ namespace YAT.Interfaces
 		/// <summary>
 		/// Generates a manual for the arguments of the command.
 		/// </summary>
-		/// <param name="args">The arguments to generate the manual for.</param>
+		/// <param name="args">Optional arguments for the method.</param>
 		/// <returns>A string containing the manual for the arguments of the command.</returns>
 		public virtual string GenerateArgumentsManual(params string[] args)
 		{
