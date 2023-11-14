@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+-   Man command displays command arguments.
 -   Built-in commands use automatic argument validation.
 -   Attributes, interfaces and enums have been moved to their respective folders and namespaces.
 -   Attributes are no longer partial, but are sealed.
