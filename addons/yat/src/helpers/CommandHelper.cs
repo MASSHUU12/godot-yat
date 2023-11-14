@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
@@ -14,27 +13,34 @@ namespace YAT.Helpers
 		/// </summary>
 		/// <param name="command">The command to validate arguments for.</param>
 		/// <param name="passedArgs">The arguments passed to the command.</param>
-		/// <param name="arguments">The dictionary of converted arguments for the command.</param>
+		/// <param name="args">The dictionary of converted arguments for the command.</param>
 		/// <returns>True if the arguments are valid, false otherwise.</returns>
-		public static bool ValidateCommandArguments(ICommand command, string[] passedArgs, out Dictionary<string, object> arguments)
+		public static bool ValidateCommandArguments(ICommand command, string[] passedArgs, out Dictionary<string, object> args)
 		{
 			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
+			ArgumentsAttribute argumentsAttribute = command.GetAttribute<ArgumentsAttribute>();
 			var name = commandAttribute.Name;
 
-			arguments = GetArguments(command);
-
-			if (arguments.Count == 0) return true;
-
-			if (passedArgs.Length < arguments.Count)
+			if (argumentsAttribute is null)
 			{
-				LogHelper.MissingArguments(name, arguments.Keys.ToArray());
+				args = new();
+				return true;
+			}
+
+			args = argumentsAttribute.Args;
+
+			if (args.Count == 0) return true;
+
+			if (passedArgs.Length < args.Count)
+			{
+				LogHelper.MissingArguments(name, args.Keys.ToArray());
 				return false;
 			}
 
-			for (int i = 0; i < arguments.Count; i++)
+			for (int i = 0; i < args.Count; i++)
 			{
-				string argName = arguments.Keys.ElementAt(i);
-				object argType = arguments.Values.ElementAt(i);
+				string argName = args.Keys.ElementAt(i);
+				object argType = args.Values.ElementAt(i);
 
 				if (argType is string[] options)
 				{
@@ -45,7 +51,7 @@ namespace YAT.Helpers
 						if (opt == passedArgs[i])
 						{
 							found = true;
-							arguments[argName] = opt;
+							args[argName] = opt;
 							break;
 						}
 
@@ -54,7 +60,7 @@ namespace YAT.Helpers
 						if (convertedArg is not null)
 						{
 							found = true;
-							arguments[argName] = convertedArg;
+							args[argName] = convertedArg;
 							break;
 						}
 					}
@@ -77,7 +83,7 @@ namespace YAT.Helpers
 						return false;
 					}
 
-					arguments[argName] = convertedArg;
+					args[argName] = convertedArg;
 				}
 			}
 
@@ -149,72 +155,5 @@ namespace YAT.Helpers
 
 			return null;
 		}
-
-		/// <summary>
-		/// Gets the arguments for the specified command.
-		/// </summary>
-		/// <param name="command">The command to get the arguments for.</param>
-		/// <returns>A dictionary containing the arguments for the command.</returns>
-		public static Dictionary<string, object> GetArguments(ICommand command)
-		{
-			ArgumentsAttribute attribute = command.GetAttribute<ArgumentsAttribute>();
-
-			if (attribute is null) return new Dictionary<string, object>();
-
-			Dictionary<string, object> arguments = new();
-
-			foreach (string arg in attribute.Args)
-			{
-				string[] parts = arg.Split(':');
-				string argName = parts[0];
-				string dataType = parts.Length > 1 ? parts[1] : null;
-
-				arguments.Add(argName, ParseDataType(dataType));
-			}
-
-			return arguments;
-		}
-
-		/// <summary>
-		/// Parses a string representation of a data type and returns the corresponding object or type.
-		/// </summary>
-		/// <param name="dataType">The string representation of the data type to parse.</param>
-		/// <returns>The parsed object or type, or null if the data type could not be parsed.</returns>
-		private static object ParseDataType(string dataType)
-		{
-			var data = dataType?.Trim();
-
-			if (string.IsNullOrEmpty(data)) return null;
-
-			if (data.StartsWith("[") && data.EndsWith("]"))
-			{
-				string[] values = dataType.Trim('[', ']').Split(',').Select(v => v.Trim()).ToArray();
-				return values;
-			}
-
-			return data;
-		}
-
-		/// <summary>
-		/// Gets the type from the given string. <br />
-		/// If the type is not found, it will try to find it in the "System" namespace.
-		/// </summary>
-		/// <param name="typeName">The name of the type.</param>
-		/// <returns>The type, or null if not found.</returns>
-		// private static Type GetTypeFromString(string typeName)
-		// {
-		// 	bool isNullable = typeName.EndsWith("?");
-		// 	if (isNullable) typeName = typeName.TrimEnd('?');
-
-		// 	// Attempt to get the type, should be as Assembly Qualified Name.
-		// 	// If the type is not found, try with the "mscorlib" assembly
-		// 	Type type = Type.GetType(typeName, false) ??
-		// 				Type.GetType($"System.{typeName.Capitalize()}", false);
-
-		// 	// If the type was nullable, make it nullable
-		// 	if (isNullable && type != null) type = typeof(Nullable<>).MakeGenericType(type);
-
-		// 	return type;
-		// }
 	}
 }
