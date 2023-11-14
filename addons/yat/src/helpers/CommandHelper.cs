@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
@@ -86,6 +87,32 @@ namespace YAT.Helpers
 					args[argName] = convertedArg;
 				}
 			}
+
+			return true;
+		}
+
+		public static bool ValidateCommandOptions(ICommand command, string[] passedArgs, out Dictionary<string, object> opts)
+		{
+			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
+			OptionsAttribute optionsAttribute = command.GetAttribute<OptionsAttribute>();
+
+			if (optionsAttribute is null)
+			{
+				opts = new();
+				return true;
+			}
+
+			opts = optionsAttribute.Options;
+
+			if (opts.Count == 0) return true;
+
+			if (passedArgs.Length < opts.Count)
+			{
+				LogHelper.MissingArguments(commandAttribute.Name, opts.Keys.ToArray());
+				return false;
+			}
+
+			GD.Print(opts);
 
 			return true;
 		}
