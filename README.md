@@ -21,12 +21,17 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 -   Many built-in commands
 -   Extensible commands
 -   Threaded commands
--   Option to create custom commands and extensions
+-   Custom commands and extensions
 -   Ability to restrict access to the plugin
 -   Script templates
+-   Automatic argument validation
 -   Autocompletion (limited)
 -   Plugin customization (limited at this point)
 -   Ability to create custom windows (not recommended nor documented for now)
+
+## Showcase
+
+<video src="addons/yat/docs/assets/yat_terminal_showcase.mp4" controls title="Terminal showcase video"></video>
 
 ## Documentation
 
