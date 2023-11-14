@@ -5,22 +5,22 @@
 
 ## Table of Contents
 
--   [Table of Contents](#table-of-contents)
--   [Creating commands](#creating-commands)
-    -   [Threaded commands](#threaded-commands)
-    -   [Automatic input validation](#automatic-input-validation)
-        -   [Validation of arguments](#validation-of-arguments)
-    -   [Overridable methods](#overridable-methods)
-        -   [GenerateCommandManual](#generatecommandmanual)
--   [Adding commands](#adding-commands)
--   [Making commands extendable](#making-commands-extendable)
-    -   [Overridable methods](#overridable-methods-1)
-        -   [GenerateExtensionsManual](#generateextensionsmanual)
--   [Extending commands](#extending-commands)
-    -   [Overridable methods](#overridable-methods-2)
-        -   [GenerateExtensionManual](#generateextensionmanual)
--   [Creating custom windows](#creating-custom-windows)
--   [Signals](#signals)
+- [Table of Contents](#table-of-contents)
+- [Creating commands](#creating-commands)
+	- [Threaded commands](#threaded-commands)
+	- [Automatic input validation](#automatic-input-validation)
+		- [Validation of arguments](#validation-of-arguments)
+	- [Overridable methods](#overridable-methods)
+		- [GenerateCommandManual](#generatecommandmanual)
+- [Adding commands](#adding-commands)
+- [Making commands extendable](#making-commands-extendable)
+	- [Overridable methods](#overridable-methods-1)
+		- [GenerateExtensionsManual](#generateextensionsmanual)
+- [Extending commands](#extending-commands)
+	- [Overridable methods](#overridable-methods-2)
+		- [GenerateExtensionManual](#generateextensionmanual)
+- [Creating custom windows](#creating-custom-windows)
+- [Signals](#signals)
 
 ## Creating commands
 
@@ -66,30 +66,25 @@ If you want your command to accept some arguments, I recommend using the `Argume
 Depending on your needs, YAT supports 4 types of `Execute` method that you can use:
 
 ```csharp
-public virtual CommandResult Execute(params string[] args)
+public CommandResult Execute(params string[] args)
 ```
 
 Basic version, you can use it when you want to run a command on the main thread, both without and with automatic validation.
 
 ```csharp
-public virtual CommandResult Execute(
-	Dictionary<string, object> cArgs, params string[] args
-)
+public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
 ```
 
 Similar to the basic version, it runs on the main thread, but it takes as the first argument data that has passed validation and been converted to the appropriate types.
 
 ```csharp
-public virtual CommandResult Execute(CancellationToken ct, params string[] args)
+public CommandResult Execute(CancellationToken ct, params string[] args)
 ```
 
 It is equivalent to the first version, but runs on a separate thread, and accepts a CancellationToken.
 
 ```csharp
-public virtual CommandResult Execute(
-					Dictionary<string, object> cArgs,
-					CancellationToken ct, params string[] args
-)
+public CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
 ```
 
 It is equivalent to the second version, but runs on a separate thread, and accepts a CancellationToken.
