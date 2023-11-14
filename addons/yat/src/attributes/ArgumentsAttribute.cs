@@ -26,7 +26,7 @@ namespace YAT.Attributes
 		/// <summary>
 		/// Gets the arguments for the specified command.
 		/// </summary>
-		/// <param name="command">The command to get the arguments for.</param>
+		/// <param name="args">The arguments for the command.</param>
 		/// <returns>A dictionary containing the arguments for the command.</returns>
 		private static Dictionary<string, object> GetArguments(string[] args)
 		{
