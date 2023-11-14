@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
+using YAT.Interfaces;
 
 namespace YAT.Overlay.Components.Terminal
 {
@@ -164,12 +166,14 @@ namespace YAT.Overlay.Components.Terminal
 		/// Executes the given CLI command.
 		/// </summary>
 		/// <param name="input">The input arguments for the command.</param>
-		private void ExecuteCommand(string[] input)
+		private void ExecuteCommand(string[] input, Dictionary<string, object> cArgs)
 		{
 			string commandName = input[0];
+			var command = _yat.Commands[commandName];
 
 			Locked = true;
-			var result = _yat.Commands[commandName].Execute(input);
+			var result = command.Execute(input);
+			result = result == CommandResult.NotImplemented ? command.Execute(cArgs, input) : result;
 			Locked = false;
 
 			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
@@ -180,16 +184,18 @@ namespace YAT.Overlay.Components.Terminal
 		/// allowing the terminal to remain responsive.
 		/// </summary>
 		/// <param name="input">The command and its arguments.</param>
-		private async void ExecuteThreadedCommand(string[] input)
+		private async void ExecuteThreadedCommand(string[] input, Dictionary<string, object> cArgs)
 		{
 			_cts = new();
 
 			Task task = new(() =>
 			{
 				string commandName = input[0];
+				var command = _yat.Commands[commandName];
 
 				Locked = true;
-				var result = _yat.Commands[commandName].Execute(_cts.Token, input);
+				var result = command.Execute(_cts.Token, input);
+				result = result == CommandResult.NotImplemented ? command.Execute(cArgs, _cts.Token, input) : result;
 				Locked = false;
 
 				CallDeferredThreadGroup(
@@ -220,13 +226,25 @@ namespace YAT.Overlay.Components.Terminal
 				return;
 			}
 
+			ICommand command = _yat.Commands[commandName];
+			Dictionary<string, object> convertedArgs = null;
+
+			if (command.GetAttribute<NoValidateAttribute>() is null)
+			{
+				if (!CommandHelper.ValidateCommandArguments(
+					command, args[1..], out convertedArgs
+				)) return;
+			}
+
 			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
 				_yat.Commands[commandName]
 			) is not null)
 			{
-				ExecuteThreadedCommand(args);
+				ExecuteThreadedCommand(args, convertedArgs);
+				return;
 			}
-			else ExecuteCommand(args);
+
+			ExecuteCommand(args, convertedArgs);
 		}
 	}
 }

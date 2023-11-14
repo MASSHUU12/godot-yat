@@ -5,24 +5,26 @@
 
 ## Table of Contents
 
--   [Table of Contents](#table-of-contents)
--   [Creating commands](#creating-commands)
-    -   [Threaded commands](#threaded-commands)
-    -   [Overridable methods](#overridable-methods)
-        -   [GenerateCommandManual](#generatecommandmanual)
--   [Adding commands](#adding-commands)
--   [Making commands extendable](#making-commands-extendable)
-    -   [Overridable methods](#overridable-methods-1)
-        -   [GenerateExtensionsManual](#generateextensionsmanual)
--   [Extending commands](#extending-commands)
-    -   [Overridable methods](#overridable-methods-2)
-        -   [GenerateExtensionManual](#generateextensionmanual)
--   [Creating custom windows](#creating-custom-windows)
--   [Signals](#signals)
+- [Table of Contents](#table-of-contents)
+- [Creating commands](#creating-commands)
+	- [Threaded commands](#threaded-commands)
+	- [Automatic input validation](#automatic-input-validation)
+		- [Validation of arguments](#validation-of-arguments)
+	- [Overridable methods](#overridable-methods)
+		- [GenerateCommandManual](#generatecommandmanual)
+- [Adding commands](#adding-commands)
+- [Making commands extendable](#making-commands-extendable)
+	- [Overridable methods](#overridable-methods-1)
+		- [GenerateExtensionsManual](#generateextensionsmanual)
+- [Extending commands](#extending-commands)
+	- [Overridable methods](#overridable-methods-2)
+		- [GenerateExtensionManual](#generateextensionmanual)
+- [Creating custom windows](#creating-custom-windows)
+- [Signals](#signals)
 
 ## Creating commands
 
-To create a command, you need to create C# file and implement `IYatCommand` interface.
+To create a command, you need to create C# file and implement `ICommand` interface.
 
 In addition, you must use the `Command` attribute to add the necessary metadata for the command.
 
@@ -59,6 +61,34 @@ namespace YAT.Commands
 }
 ```
 
+If you want your command to accept some arguments, I recommend using the `Arguments` attribute (more [below](#automatic-input-validation)), so that the terminal itself will perform input `validation` from the user.
+
+Depending on your needs, YAT supports 4 types of `Execute` method that you can use:
+
+```csharp
+public CommandResult Execute(params string[] args)
+```
+
+Basic version, you can use it when you want to run a command on the main thread, both without and with automatic validation.
+
+```csharp
+public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
+```
+
+Similar to the basic version, it runs on the main thread, but it takes as the first argument data that has passed validation and been converted to the appropriate types.
+
+```csharp
+public CommandResult Execute(CancellationToken ct, params string[] args)
+```
+
+It is equivalent to the first version, but runs on a separate thread, and accepts a CancellationToken.
+
+```csharp
+public CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
+```
+
+It is equivalent to the second version, but runs on a separate thread, and accepts a CancellationToken.
+
 ### Threaded commands
 
 By default, commands are run on the `main thread`, which is not a problem for simple commands, but can quickly become cumbersome for more time-consuming tasks.
@@ -78,6 +108,45 @@ public virtual CommandResult Execute(CancellationToken ct, params string[] args)
 ```
 
 It is important to make proper use of the `CancellationToken`, as it is the one that indicates when the method should `end early`.
+
+### Automatic input validation
+
+> You can disable automatic validation using the `NoValidate` attribute.
+
+Supported data types:
+
+-   string
+-   int
+-   float
+-   double
+-   bool
+
+Numeric types can accept ranges of values. For example:
+
+```csharp
+[Arguments("step:double(0, 69.420)")]
+```
+
+#### Validation of arguments
+
+You can specify what arguments, under what rules and in what order the command expects using the `Arguments` attribute.
+
+Arguments are defined as follows:
+
+-   `argument` - the user must use the name of this argument.
+-   `argument:data_type` - the user must use the given data type in place of this argument.
+-   `argument:[option1, option2]` - the user must use any of the given options in place of the argument.
+-   `argument:[option1, data_type, option3]` - the user must specify any of the given options or use the listed data type in place of the given argument
+
+Example of use:
+
+```csharp
+[Arguments("action:[move, jump]", "direction:[left, right, int]")]
+```
+
+In the above example, the command takes two arguments.
+The first argument can take one of two values: `move` or `jump`.
+The second argument has three possibilities, it can take `"left"`, `"right"` or a `number`.
 
 ### Overridable methods
 

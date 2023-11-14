@@ -4,8 +4,20 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+-   NumericHelper class.
+-   NotImplemented command result.
+-   Automatic argument validation.
+-   Arguments & options attributes for automatic validation.
+-   NoValidate attribute indicating that no automatic validation should be performed.
+-   New methods to LogHelper: Error, InvalidArgumentType.
+-   Execute method overload accepting converted arguments as an additional parameter.
+
 ### Changed
 
+-   Man command displays command arguments.
+-   Built-in commands use automatic argument validation.
 -   Attributes, interfaces and enums have been moved to their respective folders and namespaces.
 -   Attributes are no longer partial, but are sealed.
 -   Templates have been updated.

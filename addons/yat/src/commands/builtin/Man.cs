@@ -6,6 +6,7 @@ using YAT.Interfaces;
 namespace YAT.Commands
 {
 	[Command("man", "Displays the manual for a command.", "[b]Usage[/b]: man [i]command_name[/i]")]
+	[Arguments("command_name:string")]
 	public partial class Man : ICommand
 	{
 		private readonly LRUCache<string, string> cache = new(10);
@@ -16,12 +17,6 @@ namespace YAT.Commands
 
 		public CommandResult Execute(params string[] args)
 		{
-			if (args.Length < 2)
-			{
-				LogHelper.MissingArguments("man", "command_name");
-				return CommandResult.InvalidArguments;
-			}
-
 			var commandName = args[1];
 
 			if (!Yat.Commands.TryGetValue(commandName, out var command))
@@ -38,6 +33,7 @@ namespace YAT.Commands
 			}
 
 			manual = command.GenerateCommandManual();
+			manual += command.GenerateArgumentsManual();
 
 			if (command is Extensible extensible)
 				manual += extensible.GenerateExtensionsManual();

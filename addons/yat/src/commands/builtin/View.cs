@@ -19,6 +19,7 @@ namespace YAT.Commands
 		"You can also use the integer value of the type " +
 		"[url=https://docs.godotengine.org/en/stable/classes/class_renderingserver.html#class-renderingserver-method-set-debug-generate-wireframes]ViewportDebugDraw[/url]."
 	)]
+	[Arguments("type:[normal, unshaded, lightning, overdraw, wireframe, int]")]
 	public partial class View : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -27,9 +28,7 @@ namespace YAT.Commands
 
 		public CommandResult Execute(params string[] args)
 		{
-			if (args.Length < 2) return CommandResult.InvalidArguments;
-
-			var mode = args[1].ToLower().Trim();
+			var mode = args[1];
 			RenderingServer.ViewportDebugDraw debugDraw = RenderingServer.ViewportDebugDraw.Disabled;
 
 			switch (mode)

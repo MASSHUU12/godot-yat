@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,24 +16,47 @@ namespace YAT.Interfaces
 		public YAT Yat { get; set; }
 
 		/// <summary>
+		/// Represents the result of executing a command.
+		/// </summary>
+		/// <param name="cArgs">The converted arguments for the command.</param>
+		/// <param name="args">The arguments passed to the command.</param>
+		/// <returns>The result of the command execution.</returns>
+		public virtual CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
+		{
+			return CommandResult.NotImplemented;
+		}
+
+		/// <summary>
 		/// Executes the YAT command with the given arguments.
 		/// </summary>
-		/// <param name="args">The arguments to pass to the command.</param>
+		/// <param name="args">The arguments passed to the command.</param>
 		/// <returns>The result of the command execution.</returns>
 		public virtual CommandResult Execute(params string[] args)
 		{
-			return CommandResult.InvalidCommand;
+			return CommandResult.NotImplemented;
+		}
+
+		/// <summary>
+		/// Executes the YAT command with the given arguments.
+		/// </summary>
+		/// <param name="cArgs">The converted arguments for the command.</param>
+		/// <param name="ct">The cancellation token.</param>
+		/// <param name="args">The arguments passed to the command.</param>
+		/// <returns>The result of the command execution.</returns>
+		public virtual CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
+		{
+			return CommandResult.NotImplemented;
 		}
 
 		/// <summary>
 		/// Executes the YAT command with the given arguments.
 		/// </summary>
 		/// <param name="ct">The cancellation token.</param>
-		/// <param name="args">The arguments to pass to the command.</param>
+		/// <param name="args">The arguments passed to the command.</param>
 		/// <returns>The result of the command execution.</returns>
 		public virtual CommandResult Execute(CancellationToken ct, params string[] args)
 		{
-			return CommandResult.InvalidCommand;
+			return CommandResult.NotImplemented;
 		}
 
 		/// <summary>
@@ -45,10 +69,7 @@ namespace YAT.Interfaces
 		{
 			CommandAttribute attribute = AttributeHelper.GetAttribute<CommandAttribute>(this);
 
-			if (string.IsNullOrEmpty(attribute.Manual))
-			{
-				return $"Command {attribute.Name} does not have a manual.";
-			}
+			if (string.IsNullOrEmpty(attribute?.Manual)) return "This command does not have a manual.";
 
 			StringBuilder sb = new();
 
@@ -59,6 +80,35 @@ namespace YAT.Interfaces
 			sb.AppendLine(attribute.Aliases.Length > 0
 					? string.Join("\n", attribute.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
 					: "[ul]\tNone[/ul]");
+
+			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Generates a manual for the arguments of the command.
+		/// </summary>
+		/// <param name="args">The arguments to generate the manual for.</param>
+		/// <returns>A string containing the manual for the arguments of the command.</returns>
+		public virtual string GenerateArgumentsManual(params string[] args)
+		{
+			ArgumentsAttribute attribute = AttributeHelper.GetAttribute<ArgumentsAttribute>(this);
+
+			if (attribute is null) return "This command does not have any arguments.";
+
+			StringBuilder sb = new();
+
+			sb.AppendLine("[p align=center][font_size=18]Arguments[/font_size][/p]");
+
+			if (attribute.Args.Count == 0)
+			{
+				sb.AppendLine("This command does not have any arguments.");
+				return sb.ToString();
+			}
+
+			foreach (var arg in attribute.Args)
+			{
+				sb.AppendLine($"[b]{arg.Key}[/b]: {arg.Value}");
+			}
 
 			return sb.ToString();
 		}
