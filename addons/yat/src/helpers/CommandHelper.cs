@@ -131,6 +131,31 @@ namespace YAT.Helpers
 					continue;
 				}
 
+				// If option expects a value
+				if (!string.IsNullOrEmpty(passedOptName) &&
+					optType is not string[]
+				)
+				{
+					if (string.IsNullOrEmpty(passedOptValue))
+					{
+						LogHelper.MissingValue(name, optName);
+						return false;
+					}
+
+					object convertedOpt = ConvertStringToType(
+						optType.ToString(), passedOptValue
+					);
+
+					if (convertedOpt is null)
+					{
+						LogHelper.InvalidArgument(name, optName, (string)(optType ?? optName));
+						return false;
+					}
+
+					opts[optName] = convertedOpt;
+					continue;
+				}
+
 				GD.Print(optName, " ", opts[optName]);
 			}
 
