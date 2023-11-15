@@ -158,9 +158,8 @@ namespace YAT.Helpers
 		{
 			var t = type.ToLower();
 
-			if (t == "string") return value;
+			if (t == "string" || t == value) return value;
 			if (t == "bool") return bool.Parse(value);
-			if (t == value) return value;
 
 			if (t.StartsWith("int")) return TryConvertNumeric<int>(type, value);
 			if (t.StartsWith("float")) return TryConvertNumeric<float>(type, value);
