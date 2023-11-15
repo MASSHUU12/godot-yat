@@ -126,11 +126,16 @@ namespace YAT.Helpers
 				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
 				// If option is a flag (there is no type specified)
-				// TODO: Flag should not accept a value
 				if (optType is null)
 				{
-					opts[optName] = !string.IsNullOrEmpty(passedOptName) &&
-									string.IsNullOrEmpty(passedOptValue);
+					if (!string.IsNullOrEmpty(passedOptValue))
+					{
+						LogHelper.InvalidArgument(name, optName, optName);
+						return false;
+					}
+
+					opts[optName] = !string.IsNullOrEmpty(passedOptName);
+
 					continue;
 				}
 
