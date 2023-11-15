@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   MissingValue method to LogHelper.
+
 ## [1.5.0-beta 2023-11-14]
 
 ### Added
