@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
@@ -140,8 +139,8 @@ namespace YAT.Helpers
 				}
 
 				// If option expects a value (there is no ... at the end of the type)
-				if (optType is string valueType &&
-					!valueType.EndsWith("...")
+				if (optType is string valueType && !valueType.EndsWith("...") &&
+					!valueType.Contains('|')
 				)
 				{
 					object convertedOpt = ConvertStringToType(
@@ -159,9 +158,7 @@ namespace YAT.Helpers
 				}
 
 				// If option expects an array of values (type ends with ...)
-				if (optType is string valuesType &&
-					valuesType.EndsWith("...")
-				)
+				if (optType is string valuesType && valuesType.EndsWith("..."))
 				{
 					string[] values = passedOptValue.Split(',',
 							StringSplitOptions.TrimEntries |
@@ -186,6 +183,38 @@ namespace YAT.Helpers
 
 					opts[optName] = validatedValues.ToArray();
 					continue;
+				}
+
+				// If option expects one of the specified values (type contains |)
+				if (optType is string optionsType && optionsType.Contains('|'))
+				{
+					string[] options = optionsType.Split('|');
+					var found = false;
+
+					foreach (var opt in options)
+					{
+						if (opt == passedOptValue)
+						{
+							found = true;
+							opts[optName] = opt;
+							break;
+						}
+
+						object convertedOpt = ConvertStringToType(opt, passedOptValue);
+
+						if (convertedOpt is not null)
+						{
+							found = true;
+							opts[optName] = convertedOpt;
+							break;
+						}
+					}
+
+					if (!found)
+					{
+						LogHelper.InvalidArgument(name, optName, string.Join(", ", options));
+						return false;
+					}
 				}
 			}
 
