@@ -6,14 +6,16 @@ namespace YAT.Attributes
 	public sealed class OptionsAttribute : System.Attribute
 	{
 		// Options are defined as follows and are optional:
-		// -arg or --arg - passed argument must match the name of the argument
-		// -arg=data_type - passed argument must be of the specified data type
+		// -arg or --arg - passed option must match the name of the option
+		// -arg=data_type - value of passed option must be of the specified data type
 		//					and look like this: -arg=value
-		// -arg=option1,data_type,option3 - passed argument must be
+		// -arg=option1,data_type,option3 - value of passed option must be
 		//										of the specified data types or
 		//										one of the specified options
-		//										many arguments can be passed
+		//										many values can be passed
 		//										like this: -arg=value1,value2
+		// -arg=data_type... - value of passed option must be an array of
+		// 						the specified data type
 		// Numeric data types can have a range specified as follows:
 		// data_type(min, max)
 		public Dictionary<string, object> Options { get; private set; }

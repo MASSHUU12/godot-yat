@@ -133,7 +133,8 @@ namespace YAT.Helpers
 
 				// If option expects a value
 				if (!string.IsNullOrEmpty(passedOptName) &&
-					optType is not string[]
+					optType is string valueType &&
+					!valueType.EndsWith("...")
 				)
 				{
 					if (string.IsNullOrEmpty(passedOptValue))
@@ -156,7 +157,43 @@ namespace YAT.Helpers
 					continue;
 				}
 
-				GD.Print(optName, " ", opts[optName]);
+				// If option expects an array of values (type ends with ...)
+				if (!string.IsNullOrEmpty(passedOptName) &&
+					optType is string valuesType &&
+					valuesType.EndsWith("...")
+				)
+				{
+					if (string.IsNullOrEmpty(passedOptValue)
+					)
+					{
+						LogHelper.MissingValue(name, optName);
+						return false;
+					}
+
+					string[] values = passedOptValue.Split(',',
+							StringSplitOptions.TrimEntries |
+							StringSplitOptions.RemoveEmptyEntries
+					);
+					List<object> validatedValues = new();
+
+					foreach (var value in values)
+					{
+						object convertedOpt = ConvertStringToType(
+							valuesType.Replace("...", string.Empty), value
+						);
+
+						if (convertedOpt is null)
+						{
+							LogHelper.InvalidArgument(name, optName, valuesType);
+							return false;
+						}
+
+						validatedValues.Add(convertedOpt);
+					}
+
+					opts[optName] = validatedValues.ToArray();
+					continue;
+				}
 			}
 
 			return true;
