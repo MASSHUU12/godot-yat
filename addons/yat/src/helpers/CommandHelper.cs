@@ -119,16 +119,19 @@ namespace YAT.Helpers
 				string passedOptName = passedOpt?[0];
 				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
-				// If option is a flag, skip it
-				// if (optType is null)
-				// {
-				// 	opts[optName] = false;
-				// 	continue;
-				// }
+				// If option is a flag
+				if (optType is null)
+				{
+					if (!string.IsNullOrEmpty(passedOptName) && string.IsNullOrEmpty(passedOptValue))
+					{
+						opts[optName] = true;
+						continue;
+					}
+					opts[optName] = false;
+					continue;
+				}
 
-				GD.Print(passedOptName, " ", passedOptValue);
-
-				// GD.Print(optName, optType);
+				GD.Print(optName, " ", opts[optName]);
 			}
 
 			return true;
