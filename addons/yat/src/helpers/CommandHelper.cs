@@ -249,6 +249,16 @@ namespace YAT.Helpers
 			return dict;
 		}
 
+		/// <summary>
+		/// Parses a string argument to extract a range of values.
+		/// </summary>
+		/// <typeparam name="T">The type of the values in the range.</typeparam>
+		/// <param name="arg">The string argument to parse.</param>
+		/// <param name="min">Contains the minimum value of the range if the parse succeeded,
+		/// or the default value of <typeparamref name="T"/> if the parse failed.</param>
+		/// <param name="max">Contains the maximum value of the range if the parse succeeded,
+		/// or the default value of <typeparamref name="T"/> if the parse failed.</param>
+		/// <returns><c>true</c> if the parse succeeded; otherwise, <c>false</c>.</returns>
 		private static bool GetRange<T>(string arg, out T min, out T max) where T : IConvertible, IComparable<T>
 		{
 			min = default;
