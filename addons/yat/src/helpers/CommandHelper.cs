@@ -20,7 +20,7 @@ namespace YAT.Helpers
 		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
 		{
 			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
-			args = ValidateAttribute(command.GetAttribute<T>(), commandAttribute.Name);
+			args = ValidateAttribute(command.GetAttribute<T>());
 
 			if (args is null) return false;
 
@@ -80,7 +80,7 @@ namespace YAT.Helpers
 
 					if (!found)
 					{
-						LogHelper.InvalidArgument((string)name, argName, string.Join(", ", options));
+						LogHelper.InvalidArgument(name, argName, string.Join(", ", options));
 						return false;
 					}
 				}
@@ -92,7 +92,7 @@ namespace YAT.Helpers
 
 					if (convertedArg is null)
 					{
-						LogHelper.InvalidArgument((string)name, argName, (string)argType ?? argName);
+						LogHelper.InvalidArgument(name, argName, (string)(argType ?? argName));
 						return false;
 					}
 
@@ -103,14 +103,32 @@ namespace YAT.Helpers
 			return true;
 		}
 
-		private static bool ValidateCommandOptions(string name, Dictionary<string, object> args, string[] passedArgs)
+		private static bool ValidateCommandOptions(string name, Dictionary<string, object> opts, string[] passedOpts)
 		{
-			for (int i = 0; i < args.Count; i++)
+			for (int i = 0; i < opts.Count; i++)
 			{
-				string argName = args.Keys.ElementAt(i);
-				object argType = args.Values.ElementAt(i);
+				string optName = opts.Keys.ElementAt(i);
+				object optType = opts.Values.ElementAt(i);
 
-				GD.Print(argName, argType);
+				// By default treat the option as not passed
+				opts[optName] = null;
+
+				var passedOpt = passedOpts.Where(o => o.StartsWith(optName))
+								.FirstOrDefault()
+								?.Split('=', StringSplitOptions.RemoveEmptyEntries);
+				string passedOptName = passedOpt?[0];
+				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
+
+				// If option is a flag, skip it
+				// if (optType is null)
+				// {
+				// 	opts[optName] = false;
+				// 	continue;
+				// }
+
+				GD.Print(passedOptName, " ", passedOptValue);
+
+				// GD.Print(optName, optType);
 			}
 
 			return true;
@@ -121,9 +139,8 @@ namespace YAT.Helpers
 		/// </summary>
 		/// <typeparam name="T">The type of the attribute to validate.</typeparam>
 		/// <param name="attribute">The attribute to validate.</param>
-		/// <param name="commandName">The name of the command being validated.</param>
 		/// <returns>A dictionary of the attribute's properties, or null if validation fails.</returns>
-		private static Dictionary<string, object> ValidateAttribute<T>(T attribute, string commandName) where T : Attribute
+		private static Dictionary<string, object> ValidateAttribute<T>(T attribute) where T : Attribute
 		{
 			Dictionary<string, object> dict = new();
 
