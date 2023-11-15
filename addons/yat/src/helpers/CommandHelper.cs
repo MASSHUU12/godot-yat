@@ -119,7 +119,7 @@ namespace YAT.Helpers
 				string passedOptName = passedOpt?[0];
 				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
-				// If option is a flag
+				// If option is a flag (there is no type specified)
 				if (optType is null)
 				{
 					if (!string.IsNullOrEmpty(passedOptName) && string.IsNullOrEmpty(passedOptValue))
@@ -139,7 +139,7 @@ namespace YAT.Helpers
 					return false;
 				}
 
-				// If option expects a value
+				// If option expects a value (there is no ... at the end of the type)
 				if (optType is string valueType &&
 					!valueType.EndsWith("...")
 				)
@@ -220,7 +220,7 @@ namespace YAT.Helpers
 			if (!arg.Contains('(') || !arg.Contains(')')) return false;
 
 			string[] parts = arg.Split('(', ')');
-			string[] range = parts[1].Split(',');
+			string[] range = parts[1].Split(',', ':');
 
 			if (range.Length != 2) return false;
 

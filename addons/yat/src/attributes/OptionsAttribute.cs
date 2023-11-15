@@ -9,15 +9,13 @@ namespace YAT.Attributes
 		// -arg or --arg - passed option must match the name of the option
 		// -arg=data_type - value of passed option must be of the specified data type
 		//					and look like this: -arg=value
-		// -arg=option1,data_type,option3 - value of passed option must be
-		//										of the specified data types or
+		// -arg=option1|data_type|option3 - value of passed option must be
+		//										of the specified data type or
 		//										one of the specified options
-		//										many values can be passed
-		//										like this: -arg=value1,value2
 		// -arg=data_type... - value of passed option must be an array of
 		// 						the specified data type
 		// Numeric data types can have a range specified as follows:
-		// data_type(min, max)
+		// data_type(min:max)
 		public Dictionary<string, object> Options { get; private set; }
 
 		public OptionsAttribute(params string[] options)
