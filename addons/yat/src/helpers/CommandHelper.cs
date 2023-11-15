@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
@@ -102,6 +103,13 @@ namespace YAT.Helpers
 			return true;
 		}
 
+		/// <summary>
+		/// Validates the command options based on the specified name, options, and passed options.
+		/// </summary>
+		/// <param name="name">The name of the command.</param>
+		/// <param name="opts">The dictionary of options.</param>
+		/// <param name="passedOpts">The array of passed options.</param>
+		/// <returns>True if the command options are valid, false otherwise.</returns>
 		private static bool ValidateCommandOptions(string name, Dictionary<string, object> opts, string[] passedOpts)
 		{
 			for (int i = 0; i < opts.Count; i++)
@@ -112,21 +120,17 @@ namespace YAT.Helpers
 				// By default treat the option as not passed
 				opts[optName] = null;
 
-				var passedOpt = passedOpts.Where(o => o.StartsWith(optName))
-								.FirstOrDefault()
+				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName))
 								?.Split('=', StringSplitOptions.RemoveEmptyEntries);
 				string passedOptName = passedOpt?[0];
 				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
 				// If option is a flag (there is no type specified)
+				// TODO: Flag should not accept a value
 				if (optType is null)
 				{
-					if (!string.IsNullOrEmpty(passedOptName) && string.IsNullOrEmpty(passedOptValue))
-					{
-						opts[optName] = true;
-						continue;
-					}
-					opts[optName] = false;
+					opts[optName] = !string.IsNullOrEmpty(passedOptName) &&
+									string.IsNullOrEmpty(passedOptValue);
 					continue;
 				}
 
@@ -138,23 +142,30 @@ namespace YAT.Helpers
 					return false;
 				}
 
+				bool ProcessOptionValue(string valueType, Action<object> set)
+				{
+					object converted = ConvertStringToType(valueType, passedOptValue);
+
+					if (converted is null)
+					{
+						LogHelper.InvalidArgument(name, optName, valueType ?? optName);
+						return false;
+					}
+
+					set(converted);
+
+					return true;
+				}
+
 				// If option expects a value (there is no ... at the end of the type)
 				if (optType is string valueType && !valueType.EndsWith("...") &&
 					!valueType.Contains('|')
 				)
 				{
-					object convertedOpt = ConvertStringToType(
-						optType.ToString(), passedOptValue
-					);
-
-					if (convertedOpt is null)
-					{
-						LogHelper.InvalidArgument(name, optName, (string)(optType ?? optName));
-						return false;
-					}
-
-					opts[optName] = convertedOpt;
-					continue;
+					if (ProcessOptionValue(valueType,
+						(converted) => opts[optName] = converted)
+					) continue;
+					return false;
 				}
 
 				// If option expects an array of values (type ends with ...)
@@ -168,17 +179,9 @@ namespace YAT.Helpers
 
 					foreach (var value in values)
 					{
-						object convertedOpt = ConvertStringToType(
-							valuesType.Replace("...", string.Empty), value
-						);
-
-						if (convertedOpt is null)
-						{
-							LogHelper.InvalidArgument(name, optName, valuesType);
-							return false;
-						}
-
-						validatedValues.Add(convertedOpt);
+						if (!ProcessOptionValue(valuesType.Replace("...", string.Empty),
+							(converted) => validatedValues.Add(converted)
+						)) return false;
 					}
 
 					opts[optName] = validatedValues.ToArray();
@@ -200,12 +203,12 @@ namespace YAT.Helpers
 							break;
 						}
 
-						object convertedOpt = ConvertStringToType(opt, passedOptValue);
+						object converted = ConvertStringToType(opt, passedOptValue);
 
-						if (convertedOpt is not null)
+						if (converted is not null)
 						{
 							found = true;
-							opts[optName] = convertedOpt;
+							opts[optName] = converted;
 							break;
 						}
 					}
