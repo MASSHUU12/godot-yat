@@ -232,13 +232,13 @@ namespace YAT.Overlay.Components.Terminal
 
 			if (command.GetAttribute<NoValidateAttribute>() is null)
 			{
-				if (!CommandHelper.ValidateCommandArguments(
+				if (!CommandHelper.ValidatePassedData<ArgumentsAttribute>(
 					command, args[1..], out convertedArgs
 				)) return;
 
 				if (command.GetAttribute<OptionsAttribute>() is not null)
 				{
-					if (!CommandHelper.ValidateCommandOptions(
+					if (!CommandHelper.ValidatePassedData<OptionsAttribute>(
 						command, args[1..], out convertedOpts
 					)) return;
 				}

@@ -10,22 +10,38 @@ namespace YAT.Helpers
 	public static class CommandHelper
 	{
 		/// <summary>
-		/// Validates the arguments passed to a command.
+		/// Validates the passed data for a given command and returns a dictionary of arguments.
 		/// </summary>
-		/// <param name="command">The command to validate arguments for.</param>
+		/// <typeparam name="T">The type of attribute to validate.</typeparam>
+		/// <param name="command">The command to validate.</param>
 		/// <param name="passedArgs">The arguments passed to the command.</param>
-		/// <param name="args">The dictionary of converted arguments for the command.</param>
-		/// <returns>True if the arguments are valid, false otherwise.</returns>
-		public static bool ValidateCommandArguments(ICommand command, string[] passedArgs, out Dictionary<string, object> args)
+		/// <param name="args">The dictionary of arguments.</param>
+		/// <returns>True if the passed data is valid, false otherwise.</returns>
+		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
 		{
 			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
-			ArgumentsAttribute argumentsAttribute = command.GetAttribute<ArgumentsAttribute>();
-			var name = commandAttribute.Name;
-
-			args = ValidateAttribute(argumentsAttribute, passedArgs.Length, name);
+			args = ValidateAttribute(command.GetAttribute<T>(), passedArgs.Length, commandAttribute.Name);
 
 			if (args is null) return false;
 
+			if (typeof(T) == typeof(ArgumentsAttribute))
+				return ValidateCommandArguments(commandAttribute.Name, args, passedArgs);
+			else if (typeof(T) == typeof(OptionsAttribute))
+				return ValidateCommandOptions(commandAttribute.Name, args, passedArgs);
+
+			return true;
+		}
+
+		/// <summary>
+		/// Validates the arguments passed to a command based on the command's attribute
+		/// and the arguments dictionary.
+		/// </summary>
+		/// <param name="name">The command's name.</param>
+		/// <param name="args">The arguments dictionary.</param>
+		/// <param name="passedArgs">The arguments passed to the command.</param>
+		/// <returns>True if the arguments are valid, false otherwise.</returns>
+		private static bool ValidateCommandArguments(string name, Dictionary<string, object> args, string[] passedArgs)
+		{
 			for (int i = 0; i < args.Count; i++)
 			{
 				string argName = args.Keys.ElementAt(i);
@@ -56,7 +72,7 @@ namespace YAT.Helpers
 
 					if (!found)
 					{
-						LogHelper.InvalidArgument(name, argName, string.Join(", ", options));
+						LogHelper.InvalidArgument((string)name, argName, string.Join(", ", options));
 						return false;
 					}
 				}
@@ -68,7 +84,7 @@ namespace YAT.Helpers
 
 					if (convertedArg is null)
 					{
-						LogHelper.InvalidArgument(name, argName, (string)argType ?? argName);
+						LogHelper.InvalidArgument((string)name, argName, (string)argType ?? argName);
 						return false;
 					}
 
@@ -79,16 +95,9 @@ namespace YAT.Helpers
 			return true;
 		}
 
-		public static bool ValidateCommandOptions(ICommand command, string[] passedArgs, out Dictionary<string, object> opts)
+		private static bool ValidateCommandOptions(string name, Dictionary<string, object> args, string[] passedArgs)
 		{
-			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
-			OptionsAttribute optionsAttribute = command.GetAttribute<OptionsAttribute>();
-
-			opts = ValidateAttribute(optionsAttribute, passedArgs.Length, commandAttribute.Name);
-
-			if (opts is null) return false;
-
-			GD.Print(opts);
+			GD.Print(args);
 
 			return true;
 		}
