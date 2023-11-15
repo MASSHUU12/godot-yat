@@ -131,18 +131,19 @@ namespace YAT.Helpers
 					continue;
 				}
 
+				if (string.IsNullOrEmpty(passedOptName)) continue;
+
+				if (string.IsNullOrEmpty(passedOptValue))
+				{
+					LogHelper.MissingValue(name, optName);
+					return false;
+				}
+
 				// If option expects a value
-				if (!string.IsNullOrEmpty(passedOptName) &&
-					optType is string valueType &&
+				if (optType is string valueType &&
 					!valueType.EndsWith("...")
 				)
 				{
-					if (string.IsNullOrEmpty(passedOptValue))
-					{
-						LogHelper.MissingValue(name, optName);
-						return false;
-					}
-
 					object convertedOpt = ConvertStringToType(
 						optType.ToString(), passedOptValue
 					);
@@ -158,18 +159,10 @@ namespace YAT.Helpers
 				}
 
 				// If option expects an array of values (type ends with ...)
-				if (!string.IsNullOrEmpty(passedOptName) &&
-					optType is string valuesType &&
+				if (optType is string valuesType &&
 					valuesType.EndsWith("...")
 				)
 				{
-					if (string.IsNullOrEmpty(passedOptValue)
-					)
-					{
-						LogHelper.MissingValue(name, optName);
-						return false;
-					}
-
 					string[] values = passedOptValue.Split(',',
 							StringSplitOptions.TrimEntries |
 							StringSplitOptions.RemoveEmptyEntries
