@@ -20,12 +20,20 @@ namespace YAT.Helpers
 		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
 		{
 			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
-			args = ValidateAttribute(command.GetAttribute<T>(), passedArgs.Length, commandAttribute.Name);
+			args = ValidateAttribute(command.GetAttribute<T>(), commandAttribute.Name);
 
 			if (args is null) return false;
 
 			if (typeof(T) == typeof(ArgumentsAttribute))
+			{
+				if (passedArgs.Length < args.Count)
+				{
+					LogHelper.MissingArguments(commandAttribute.Name, args.Keys.ToArray());
+					return false;
+				}
+
 				return ValidateCommandArguments(commandAttribute.Name, args, passedArgs);
+			}
 			else if (typeof(T) == typeof(OptionsAttribute))
 				return ValidateCommandOptions(commandAttribute.Name, args, passedArgs);
 
@@ -97,7 +105,13 @@ namespace YAT.Helpers
 
 		private static bool ValidateCommandOptions(string name, Dictionary<string, object> args, string[] passedArgs)
 		{
-			GD.Print(args);
+			for (int i = 0; i < args.Count; i++)
+			{
+				string argName = args.Keys.ElementAt(i);
+				object argType = args.Values.ElementAt(i);
+
+				GD.Print(argName, argType);
+			}
 
 			return true;
 		}
@@ -107,10 +121,9 @@ namespace YAT.Helpers
 		/// </summary>
 		/// <typeparam name="T">The type of the attribute to validate.</typeparam>
 		/// <param name="attribute">The attribute to validate.</param>
-		/// <param name="passedLen">The number of arguments/options passed to the command.</param>
 		/// <param name="commandName">The name of the command being validated.</param>
 		/// <returns>A dictionary of the attribute's properties, or null if validation fails.</returns>
-		private static Dictionary<string, object> ValidateAttribute<T>(T attribute, int passedLen, string commandName) where T : Attribute
+		private static Dictionary<string, object> ValidateAttribute<T>(T attribute, string commandName) where T : Attribute
 		{
 			Dictionary<string, object> dict = new();
 
@@ -120,12 +133,6 @@ namespace YAT.Helpers
 			else if (attribute is OptionsAttribute optionsAttribute) dict = optionsAttribute.Options;
 
 			if (dict.Count == 0) return dict;
-
-			if (passedLen < dict.Count)
-			{
-				LogHelper.MissingArguments(commandName, dict.Keys.ToArray());
-				return null;
-			}
 
 			return dict;
 		}
