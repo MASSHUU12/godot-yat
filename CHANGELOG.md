@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+-   Update Godot.NET.Sdk version to 4.2.0-beta.6.
+
 ## [1.5.0-beta 2023-11-14]
 
 ### Added
