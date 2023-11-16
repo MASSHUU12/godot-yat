@@ -112,16 +112,17 @@ namespace YAT.Helpers
 		/// <returns>True if the command options are valid, false otherwise.</returns>
 		private static bool ValidateCommandOptions(string name, Dictionary<string, object> opts, string[] passedOpts)
 		{
-			for (int i = 0; i < opts.Count; i++)
+			foreach (var optEntry in opts)
 			{
-				string optName = opts.Keys.ElementAt(i);
-				object optType = opts.Values.ElementAt(i);
+				string optName = optEntry.Key;
+				object optType = optEntry.Value;
 
-				// By default treat the option as not passed
-				opts[optName] = null;
+				opts[optName] = null; // By default treat the option as not passed
 
 				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName))
-								?.Split('=', StringSplitOptions.RemoveEmptyEntries);
+								?.Split('=', StringSplitOptions.TrimEntries |
+											StringSplitOptions.RemoveEmptyEntries
+								);
 				string passedOptName = passedOpt?[0];
 				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
