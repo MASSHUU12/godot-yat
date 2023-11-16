@@ -6,7 +6,12 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+-   Automatic validation of options.
 -   MissingValue method to LogHelper.
+
+### Changed
+
+-   Dictionary passed to Execute method can contain both arguments and options.
 
 ## [1.5.0-beta 2023-11-14]
 

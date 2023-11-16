@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
@@ -248,7 +249,10 @@ namespace YAT.Overlay.Components.Terminal
 				_yat.Commands[commandName]
 			) is not null)
 			{
-				ExecuteThreadedCommand(args, convertedArgs);
+				ExecuteThreadedCommand(args,
+					// Merge dictionaries to pass both args and opts to the command.
+					convertedArgs.Concat(convertedOpts).ToDictionary(x => x.Key, x => x.Value)
+				);
 				return;
 			}
 
