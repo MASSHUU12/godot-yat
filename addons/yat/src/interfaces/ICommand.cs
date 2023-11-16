@@ -134,7 +134,7 @@ namespace YAT.Interfaces
 
 			foreach (var opt in attribute.Options)
 			{
-				sb.AppendLine($"[b]{opt.Key}[/b]: {opt.Value}");
+				sb.AppendLine($"[b]{opt.Key}[/b]: {opt.Value ?? "Flag"}");
 			}
 
 			return sb.ToString();
