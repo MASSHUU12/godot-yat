@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
@@ -5,17 +6,22 @@ using YAT.Interfaces;
 namespace YAT.Commands
 {
 	[Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
+	[Options("-l")]
 	public partial class Whereami : ICommand
 	{
 		public YAT Yat { get; set; }
 
 		public Whereami(YAT Yat) => this.Yat = Yat;
 
-		public CommandResult Execute(params string[] args)
+		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
 		{
 			var scene = Yat.GetTree().CurrentScene;
+			var longForm = (bool)cArgs["-l"];
 
-			Yat.Terminal.Print($"{scene.GetPath()} ({scene.SceneFilePath})");
+			Yat.Terminal.Print(
+				scene.GetPath() +
+				(longForm ? " (" + scene.SceneFilePath + ")" : string.Empty)
+			);
 
 			return CommandResult.Success;
 		}
