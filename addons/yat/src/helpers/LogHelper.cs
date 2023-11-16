@@ -105,6 +105,22 @@ namespace YAT.Helpers
 			PrintMessage(message, Terminal.PrintType.Error);
 		}
 
+		/// <summary>
+		/// Prints an error message indicating that a required value is missing.
+		/// </summary>
+		/// <param name="command">The name of the command that is missing the value.</param>
+		/// <param name="option">The name of the option that is missing the value.</param>
+		public static void MissingValue(string command, string option)
+		{
+			var message = string.Format(
+				"{0} expected [i]{1}[/i] to be provided.",
+				command,
+				option
+			);
+
+			PrintMessage(message, Terminal.PrintType.Error);
+		}
+
 		public static void Error(string message) => PrintMessage(message, Terminal.PrintType.Error);
 	}
 }

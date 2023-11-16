@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
@@ -9,34 +10,46 @@ namespace YAT.Helpers
 	public static class CommandHelper
 	{
 		/// <summary>
-		/// Validates the arguments passed to a command.
+		/// Validates the passed data for a given command and returns a dictionary of arguments.
 		/// </summary>
-		/// <param name="command">The command to validate arguments for.</param>
+		/// <typeparam name="T">The type of attribute to validate.</typeparam>
+		/// <param name="command">The command to validate.</param>
 		/// <param name="passedArgs">The arguments passed to the command.</param>
-		/// <param name="args">The dictionary of converted arguments for the command.</param>
-		/// <returns>True if the arguments are valid, false otherwise.</returns>
-		public static bool ValidateCommandArguments(ICommand command, string[] passedArgs, out Dictionary<string, object> args)
+		/// <param name="args">The dictionary of arguments.</param>
+		/// <returns>True if the passed data is valid, false otherwise.</returns>
+		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
 		{
 			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
-			ArgumentsAttribute argumentsAttribute = command.GetAttribute<ArgumentsAttribute>();
-			var name = commandAttribute.Name;
+			args = ValidateAttribute(command.GetAttribute<T>());
 
-			if (argumentsAttribute is null)
+			if (args is null) return false;
+
+			if (typeof(T) == typeof(ArgumentsAttribute))
 			{
-				args = new();
-				return true;
+				if (passedArgs.Length < args.Count)
+				{
+					LogHelper.MissingArguments(commandAttribute.Name, args.Keys.ToArray());
+					return false;
+				}
+
+				return ValidateCommandArguments(commandAttribute.Name, args, passedArgs);
 			}
+			else if (typeof(T) == typeof(OptionsAttribute))
+				return ValidateCommandOptions(commandAttribute.Name, args, passedArgs);
 
-			args = argumentsAttribute.Args;
+			return true;
+		}
 
-			if (args.Count == 0) return true;
-
-			if (passedArgs.Length < args.Count)
-			{
-				LogHelper.MissingArguments(name, args.Keys.ToArray());
-				return false;
-			}
-
+		/// <summary>
+		/// Validates the arguments passed to a command based on the command's attribute
+		/// and the arguments dictionary.
+		/// </summary>
+		/// <param name="name">The command's name.</param>
+		/// <param name="args">The arguments dictionary.</param>
+		/// <param name="passedArgs">The arguments passed to the command.</param>
+		/// <returns>True if the arguments are valid, false otherwise.</returns>
+		private static bool ValidateCommandArguments(string name, Dictionary<string, object> args, string[] passedArgs)
+		{
 			for (int i = 0; i < args.Count; i++)
 			{
 				string argName = args.Keys.ElementAt(i);
@@ -79,7 +92,7 @@ namespace YAT.Helpers
 
 					if (convertedArg is null)
 					{
-						LogHelper.InvalidArgument(name, argName, (string)argType ?? argName);
+						LogHelper.InvalidArgument(name, argName, (string)(argType ?? argName));
 						return false;
 					}
 
@@ -90,6 +103,163 @@ namespace YAT.Helpers
 			return true;
 		}
 
+		/// <summary>
+		/// Validates the command options based on the specified name, options, and passed options.
+		/// </summary>
+		/// <param name="name">The name of the command.</param>
+		/// <param name="opts">The dictionary of options.</param>
+		/// <param name="passedOpts">The array of passed options.</param>
+		/// <returns>True if the command options are valid, false otherwise.</returns>
+		private static bool ValidateCommandOptions(string name, Dictionary<string, object> opts, string[] passedOpts)
+		{
+			foreach (var optEntry in opts)
+			{
+				string optName = optEntry.Key;
+				object optType = optEntry.Value;
+
+				opts[optName] = null; // By default treat the option as not passed
+
+				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName))
+								?.Split('=', StringSplitOptions.TrimEntries |
+											StringSplitOptions.RemoveEmptyEntries
+								);
+				string passedOptName = passedOpt?[0];
+				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
+
+				// If option is a flag (there is no type specified)
+				if (optType is null)
+				{
+					if (!string.IsNullOrEmpty(passedOptValue))
+					{
+						LogHelper.InvalidArgument(name, optName, optName);
+						return false;
+					}
+
+					opts[optName] = !string.IsNullOrEmpty(passedOptName);
+
+					continue;
+				}
+
+				if (string.IsNullOrEmpty(passedOptName)) continue;
+
+				if (string.IsNullOrEmpty(passedOptValue))
+				{
+					LogHelper.MissingValue(name, optName);
+					return false;
+				}
+
+				bool ProcessOptionValue(string valueType, Action<object> set)
+				{
+					object converted = ConvertStringToType(valueType, passedOptValue);
+
+					if (converted is null)
+					{
+						LogHelper.InvalidArgument(name, optName, valueType ?? optName);
+						return false;
+					}
+
+					set(converted);
+
+					return true;
+				}
+
+				// If option expects a value (there is no ... at the end of the type)
+				if (optType is string valueType && !valueType.EndsWith("...") &&
+					!valueType.Contains('|')
+				)
+				{
+					if (ProcessOptionValue(valueType,
+						(converted) => opts[optName] = converted)
+					) continue;
+					return false;
+				}
+
+				// If option expects an array of values (type ends with ...)
+				if (optType is string valuesType && valuesType.EndsWith("..."))
+				{
+					string[] values = passedOptValue.Split(',',
+							StringSplitOptions.TrimEntries |
+							StringSplitOptions.RemoveEmptyEntries
+					);
+					List<object> validatedValues = new();
+
+					foreach (var value in values)
+					{
+						if (!ProcessOptionValue(valuesType.Replace("...", string.Empty),
+							(converted) => validatedValues.Add(converted)
+						)) return false;
+					}
+
+					opts[optName] = validatedValues.ToArray();
+					continue;
+				}
+
+				// If option expects one of the specified values (type contains |)
+				if (optType is string optionsType && optionsType.Contains('|'))
+				{
+					string[] options = optionsType.Split('|');
+					var found = false;
+
+					foreach (var opt in options)
+					{
+						if (opt == passedOptValue)
+						{
+							found = true;
+							opts[optName] = opt;
+							break;
+						}
+
+						object converted = ConvertStringToType(opt, passedOptValue);
+
+						if (converted is not null)
+						{
+							found = true;
+							opts[optName] = converted;
+							break;
+						}
+					}
+
+					if (!found)
+					{
+						LogHelper.InvalidArgument(name, optName, string.Join(", ", options));
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+
+		/// <summary>
+		/// Validates the given attribute and returns a dictionary of its properties.
+		/// </summary>
+		/// <typeparam name="T">The type of the attribute to validate.</typeparam>
+		/// <param name="attribute">The attribute to validate.</param>
+		/// <returns>A dictionary of the attribute's properties, or null if validation fails.</returns>
+		private static Dictionary<string, object> ValidateAttribute<T>(T attribute) where T : Attribute
+		{
+			Dictionary<string, object> dict = new();
+
+			if (attribute is null) return dict;
+
+			if (attribute is ArgumentsAttribute argumentsAttribute) dict = argumentsAttribute.Args;
+			else if (attribute is OptionsAttribute optionsAttribute) dict = optionsAttribute.Options;
+
+			if (dict.Count == 0) return dict;
+
+			return dict;
+		}
+
+		/// <summary>
+		/// Parses a string argument to extract a range of values.
+		/// </summary>
+		/// <typeparam name="T">The type of the values in the range.</typeparam>
+		/// <param name="arg">The string argument to parse.</param>
+		/// <param name="min">Contains the minimum value of the range if the parse succeeded,
+		/// or the default value of <typeparamref name="T"/> if the parse failed.</param>
+		/// <param name="max">Contains the maximum value of the range if the parse succeeded,
+		/// or the default value of <typeparamref name="T"/> if the parse failed.</param>
+		/// <returns><c>true</c> if the parse succeeded; otherwise, <c>false</c>.</returns>
 		private static bool GetRange<T>(string arg, out T min, out T max) where T : IConvertible, IComparable<T>
 		{
 			min = default;
@@ -98,7 +268,7 @@ namespace YAT.Helpers
 			if (!arg.Contains('(') || !arg.Contains(')')) return false;
 
 			string[] parts = arg.Split('(', ')');
-			string[] range = parts[1].Split(',');
+			string[] range = parts[1].Split(',', ':');
 
 			if (range.Length != 2) return false;
 
@@ -118,9 +288,8 @@ namespace YAT.Helpers
 		{
 			var t = type.ToLower();
 
-			if (t == "string") return value;
+			if (t == "string" || t == value) return value;
 			if (t == "bool") return bool.Parse(value);
-			if (t == value) return value;
 
 			if (t.StartsWith("int")) return TryConvertNumeric<int>(type, value);
 			if (t.StartsWith("float")) return TryConvertNumeric<float>(type, value);
@@ -141,19 +310,11 @@ namespace YAT.Helpers
 		/// </remarks>
 		private static object TryConvertNumeric<T>(string type, string value) where T : IConvertible, IComparable<T>
 		{
-			if (NumericHelper.TryConvert(value, out T result))
-			{
-				if (GetRange(type, out T min, out T max))
-				{
-					return NumericHelper.IsWithinRange(result, min, max) ? result : null;
-				}
-				else
-				{
-					return result;
-				}
-			}
+			if (!NumericHelper.TryConvert(value, out T result)) return null;
 
-			return null;
+			if (GetRange(type, out T min, out T max))
+				return NumericHelper.IsWithinRange(result, min, max) ? result : null;
+			return result;
 		}
 	}
 }

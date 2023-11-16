@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
@@ -228,23 +229,49 @@ namespace YAT.Overlay.Components.Terminal
 
 			ICommand command = _yat.Commands[commandName];
 			Dictionary<string, object> convertedArgs = null;
+			Dictionary<string, object> convertedOpts = null;
 
 			if (command.GetAttribute<NoValidateAttribute>() is null)
 			{
-				if (!CommandHelper.ValidateCommandArguments(
+				if (!CommandHelper.ValidatePassedData<ArgumentsAttribute>(
 					command, args[1..], out convertedArgs
 				)) return;
+
+				if (command.GetAttribute<OptionsAttribute>() is not null)
+				{
+					if (!CommandHelper.ValidatePassedData<OptionsAttribute>(
+						command, args[1..], out convertedOpts
+					)) return;
+				}
 			}
+
+			var concatenated = ConcatenatePassedData(convertedArgs, convertedOpts);
 
 			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
 				_yat.Commands[commandName]
 			) is not null)
 			{
-				ExecuteThreadedCommand(args, convertedArgs);
+				ExecuteThreadedCommand(args, concatenated);
 				return;
 			}
 
-			ExecuteCommand(args, convertedArgs);
+			ExecuteCommand(args, concatenated);
+		}
+
+		/// <summary>
+		/// Concatenates two dictionaries and returns the result.
+		/// </summary>
+		/// <param name="args">The first dictionary to concatenate.</param>
+		/// <param name="opts">The second dictionary to concatenate.</param>
+		/// <returns>The concatenated dictionary.</returns>
+		private static Dictionary<string, object> ConcatenatePassedData(Dictionary<string, object> args, Dictionary<string, object> opts)
+		{
+			Dictionary<string, object> result = new();
+
+			if (args is not null) result = result.Concat(args).ToDictionary(x => x.Key, x => x.Value);
+			if (opts is not null) result = result.Concat(opts).ToDictionary(x => x.Key, x => x.Value);
+
+			return result;
 		}
 	}
 }

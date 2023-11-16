@@ -63,9 +63,8 @@ namespace YAT.Interfaces
 		/// Generates the manual for the command, including its name,
 		/// description, manual, and aliases.
 		/// </summary>
-		/// <param name="args">Optional arguments for the method.</param>
 		/// <returns>The manual for the command.</returns>
-		public virtual string GenerateCommandManual(params string[] args)
+		public virtual string GenerateCommandManual()
 		{
 			CommandAttribute attribute = AttributeHelper.GetAttribute<CommandAttribute>(this);
 
@@ -87,9 +86,8 @@ namespace YAT.Interfaces
 		/// <summary>
 		/// Generates a manual for the arguments of the command.
 		/// </summary>
-		/// <param name="args">Optional arguments for the method.</param>
 		/// <returns>A string containing the manual for the arguments of the command.</returns>
-		public virtual string GenerateArgumentsManual(params string[] args)
+		public virtual string GenerateArgumentsManual()
 		{
 			ArgumentsAttribute attribute = AttributeHelper.GetAttribute<ArgumentsAttribute>(this);
 
@@ -108,6 +106,35 @@ namespace YAT.Interfaces
 			foreach (var arg in attribute.Args)
 			{
 				sb.AppendLine($"[b]{arg.Key}[/b]: {arg.Value}");
+			}
+
+			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Generates a manual for the command options
+		/// based on the <see cref="OptionsAttribute"/> applied to the command.
+		/// </summary>
+		/// <returns>A string containing the manual for the command options.</returns>
+		public virtual string GenerateOptionsManual()
+		{
+			OptionsAttribute attribute = AttributeHelper.GetAttribute<OptionsAttribute>(this);
+
+			if (attribute is null) return "This command does not have any options.";
+
+			StringBuilder sb = new();
+
+			sb.AppendLine("[p align=center][font_size=18]Options[/font_size][/p]");
+
+			if (attribute.Options.Count == 0)
+			{
+				sb.AppendLine("This command does not have any options.");
+				return sb.ToString();
+			}
+
+			foreach (var opt in attribute.Options)
+			{
+				sb.AppendLine($"[b]{opt.Key}[/b]: {opt.Value ?? "Flag"}");
 			}
 
 			return sb.ToString();
