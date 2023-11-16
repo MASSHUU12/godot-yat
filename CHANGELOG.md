@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+-   Update Godot.NET.Sdk version to 4.2.0-beta.6.
 -   Dictionary passed to Execute method can contain both arguments and options.
 -   Command whereami displays abbreviated form by default, adding -l option restores previous behavior.
 -   Methods that generate documentation take no arguments.
