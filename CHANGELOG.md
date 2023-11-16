@@ -8,10 +8,14 @@ All notable changes to this project will be documented in this file.
 
 -   Automatic validation of options.
 -   MissingValue method to LogHelper.
+-   Documentation (man command) displays information about options.
 
 ### Changed
 
 -   Dictionary passed to Execute method can contain both arguments and options.
+-   Command whereami displays abbreviated form by default, adding -l option restores previous behavior.
+-   Methods that generate documentation take no arguments.
+-   Moved documentation on automatic input validation to a separate file.
 
 ## [1.5.0-beta 2023-11-14]
 
