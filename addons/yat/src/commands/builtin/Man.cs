@@ -34,6 +34,7 @@ namespace YAT.Commands
 
 			manual = command.GenerateCommandManual();
 			manual += command.GenerateArgumentsManual();
+			manual += command.GenerateOptionsManual();
 
 			if (command is Extensible extensible)
 				manual += extensible.GenerateExtensionsManual();
