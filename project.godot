@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="godot-yat"
-run/main_scene="res://example/Main.tscn"
+run/main_scene="res://example/main_menu/MainMenu.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://yat_icon.png"
 
