@@ -1,5 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://bxbhysvcges3"]
+[gd_scene load_steps=12 format=3 uid="uid://bxbhysvcges3"]
 
+[ext_resource type="Script" path="res://example/game/Game.cs" id="1_2co8j"]
 [ext_resource type="PackedScene" uid="uid://dvnxjokqnumnn" path="res://example/player/Player.tscn" id="1_5qf0i"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q280h"]
@@ -95,6 +96,7 @@ _data = {
 }
 
 [node name="Game" type="Node3D"]
+script = ExtResource("1_2co8j")
 
 [node name="Environment" type="Node3D" parent="."]
 
