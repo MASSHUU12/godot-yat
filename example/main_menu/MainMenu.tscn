@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://d4fqgp0bjijcv"]
+
+[ext_resource type="Script" path="res://example/main_menu/MainMenu.gd" id="1_qgsi7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jxdgx"]
+content_margin_bottom = 24.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3cit"]
+bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+
+[sub_resource type="Theme" id="Theme_efckn"]
+Button/font_sizes/font_size = 18
+Label/font_sizes/font_size = 32
+Label/styles/normal = SubResource("StyleBoxEmpty_jxdgx")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_q3cit")
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_efckn")
+script = ExtResource("1_qgsi7")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "YAT Example"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Start" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Start"
+
+[node name="Quit" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"

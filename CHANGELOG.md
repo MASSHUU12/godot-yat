@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   Input actions for example.
+
+### Changed
+
+-   Created from scratch an example of basic plugin usage.
+
 ## [1.6.0-beta 2023-11-16]
 
 ### Added
