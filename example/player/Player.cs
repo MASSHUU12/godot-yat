@@ -47,7 +47,7 @@ public partial class Player : CharacterBody3D
 		if (!IsOnFloor())
 			Velocity = Velocity with { Y = Velocity.Y - gravity * (float)delta };
 
-		if (Input.IsActionJustPressed("ui_accept"))
+		if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
 			Velocity = Velocity with { Y = JumpVelocity };
 
 		// Get the input direction and handle the movement/deceleration.
