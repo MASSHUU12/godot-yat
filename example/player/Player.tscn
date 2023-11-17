@@ -14,11 +14,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
-[node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
-target_position = Vector3(0, 0, -2)
-collision_mask = 2
-collide_with_areas = true
-collide_with_bodies = false
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_rune4")
