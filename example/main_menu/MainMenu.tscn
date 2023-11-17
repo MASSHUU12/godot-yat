@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4fqgp0bjijcv"]
+[gd_scene load_steps=5 format=3 uid="uid://d4fqgp0bjijcv"]
+
+[ext_resource type="Script" path="res://example/main_menu/MainMenu.gd" id="1_qgsi7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jxdgx"]
 content_margin_bottom = 24.0
@@ -20,6 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_efckn")
+script = ExtResource("1_qgsi7")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -42,9 +45,11 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Start" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Start"
 
 [node name="Quit" type="Button" parent="PanelContainer/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Quit"
