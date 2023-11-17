@@ -14,9 +14,11 @@ public partial class Player : CharacterBody3D
 	[ExportSubgroup("Jump")]
 	[Export(PropertyHint.Range, "0, 100, 0.1")] public float JumpVelocity { get; set; } = 4.5f;
 
+	private YAT.YAT _yat;
 	private Node3D _head;
 	private Camera3D _camera;
 	private Vector2 _mouseMovement;
+	private bool _playerHaveControl = true;
 
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
@@ -26,6 +28,18 @@ public partial class Player : CharacterBody3D
 
 		_head = GetNode<Node3D>("Head");
 		_camera = GetNode<Camera3D>("Head/Camera3D");
+
+		_yat = GetNode<YAT.YAT>("/root/YAT");
+		_yat.OverlayOpened += () =>
+		{
+			_playerHaveControl = false;
+			Input.MouseMode = Input.MouseModeEnum.Visible;
+		};
+		_yat.OverlayClosed += () =>
+		{
+			_playerHaveControl = true;
+			Input.MouseMode = Input.MouseModeEnum.Captured;
+		};
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -51,7 +65,7 @@ public partial class Player : CharacterBody3D
 			Velocity = Velocity with { Y = JumpVelocity };
 
 		// Get the input direction and handle the movement/deceleration.
-		Vector2 inputDir = GetInputVector();
+		Vector2 inputDir = _playerHaveControl ? GetInputVector() : Vector2.Zero;
 		Vector3 direction = (
 			_head.Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)
 		).Normalized();
@@ -75,7 +89,7 @@ public partial class Player : CharacterBody3D
 	/// <param name="@event">The input event to handle.</param>
 	private void HandleCamera(InputEvent @event)
 	{
-		if (Input.MouseMode == Input.MouseModeEnum.Captured)
+		if (Input.MouseMode == Input.MouseModeEnum.Captured && _playerHaveControl)
 		{
 			// Rotate the head and camera.
 			if (@event is InputEventMouseMotion mouseMotion)
