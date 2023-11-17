@@ -129,6 +129,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 gi_mode = 2
 mesh = SubResource("BoxMesh_a0ms4")
 
+[node name="Hint" type="Label3D" parent="Scene"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.949)
+text = "Lorem ipsum dolor sit amet"
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_j6yai")
