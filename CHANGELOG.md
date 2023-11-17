@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Created from scratch an example of basic plugin usage.
+-   Include script templates in exported ZIP file.
 
 ## [1.6.0-beta 2023-11-16]
 
