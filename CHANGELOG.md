@@ -7,11 +7,21 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   Input actions for example.
+-   Documentation for custom windows.
 
 ### Changed
 
+-   OptionWindow renamed to SettingsWindow.
+-   SettingsWindow inherits YatWindow.
+-   The appearance of the terminal differs slightly.
+-   Renamed custom window to YatWindow.
+-   Completely redesigned custom window for YAT.
 -   Created from scratch an example of basic plugin usage.
 -   Include script templates in exported ZIP file.
+
+### Removed
+
+-   CloseRequested signal (replaced by native signal).
 
 ## [1.6.0-beta 2023-11-16]
 
