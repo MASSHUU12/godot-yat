@@ -10,7 +10,7 @@ using YAT.Interfaces;
 
 namespace YAT.Overlay.Components.Terminal
 {
-	public partial class Terminal : Window.Window
+	public partial class Terminal : YatWindow
 	{
 		/// <summary>
 		/// Delegate for the CommandExecuted event.
