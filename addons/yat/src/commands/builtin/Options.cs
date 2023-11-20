@@ -3,6 +3,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Overlay.Components;
+using YAT.Overlay.Components.Terminal;
 
 namespace YAT.Commands
 {
@@ -28,6 +29,8 @@ namespace YAT.Commands
 				_optionsWindowInstance = null;
 				return CommandResult.Success;
 			}
+
+			Yat.Terminal.Print("Options will be improved in the future.", Terminal.PrintType.Warning);
 
 			_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate<YatWindow>();
 			Yat.Overlay.AddChild(_optionsWindowInstance);
