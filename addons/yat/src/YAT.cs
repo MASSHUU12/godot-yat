@@ -47,7 +47,7 @@ namespace YAT
 		public OptionsManager OptionsManager { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
-		private Godot.Window _root;
+		private Window _root;
 		private bool _yatEnabled = true;
 
 		public override void _Ready()
@@ -77,7 +77,7 @@ namespace YAT
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event.IsActionPressed("yat_toggle") && _yatEnabled)
+			if (@event.IsActionPressed("yat_toggle"))
 			{
 				ToggleOverlay();
 			}
@@ -105,6 +105,8 @@ namespace YAT
 
 		public void ToggleOverlay()
 		{
+			if (!_yatEnabled) return;
+
 			if (Overlay.IsInsideTree()) CloseOverlay();
 			else OpenOverlay();
 		}
