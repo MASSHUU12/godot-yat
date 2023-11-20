@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+-   Bumped Godot.NET.Sdk version to 4.2.0-rc.1.
 -   OptionWindow renamed to SettingsWindow.
 -   SettingsWindow inherits YatWindow.
 -   The appearance of the terminal differs slightly.
