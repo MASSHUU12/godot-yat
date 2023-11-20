@@ -10,7 +10,7 @@ using YAT.Interfaces;
 
 namespace YAT.Overlay.Components.Terminal
 {
-	public partial class Terminal : Control
+	public partial class Terminal : Godot.Window
 	{
 		/// <summary>
 		/// Delegate for the CommandExecuted event.

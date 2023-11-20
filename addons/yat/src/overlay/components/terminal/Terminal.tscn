@@ -1,28 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://8moeu8x68ywt"]
+[gd_scene load_steps=6 format=3 uid="uid://dsyqv187j7w76"]
 
-[ext_resource type="Script" path="res://addons/yat/src/overlay/components/terminal/Terminal.cs" id="1_82ly0"]
-[ext_resource type="PackedScene" uid="uid://c0e5ehgrroudb" path="res://addons/yat/src/overlay/components/window/Window.tscn" id="2_0wq7x"]
-[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/src/overlay/components/window/themes/label_theme.tres" id="3_o5e5l"]
-[ext_resource type="Script" path="res://addons/yat/src/overlay/components/terminal/Input.cs" id="4_417ep"]
+[ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/overlay/components/window_2.0/Window.tscn" id="1_j81ps"]
+[ext_resource type="Theme" uid="uid://bbo6sgir4ilud" path="res://addons/yat/src/overlay/components/terminal/themes/yat_terminal_theme.tres" id="2_8e34l"]
+[ext_resource type="Script" path="res://addons/yat/src/overlay/components/terminal/Terminal.cs" id="2_17k82"]
+[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/src/overlay/components/terminal/themes/yat_terminal_label_theme.tres" id="2_xf2be"]
+[ext_resource type="Script" path="res://addons/yat/src/overlay/components/terminal/Input.cs" id="3_vlo1w"]
 
-[node name="Terminal" type="Control"]
-layout_mode = 3
-anchors_preset = 0
-script = ExtResource("1_82ly0")
+[node name="Terminal" instance=ExtResource("1_j81ps")]
+title = "YAT"
+size = Vector2i(728, 384)
+script = ExtResource("2_17k82")
 
-[node name="Window" parent="." instance=ExtResource("2_0wq7x")]
-layout_mode = 2
-Title = "Yet Another Terminal"
-CanClose = false
+[node name="Content" parent="." index="0"]
+theme = ExtResource("2_8e34l")
 
-[node name="PanelContainer" parent="Window" index="0"]
-offset_right = 720.0
-offset_bottom = 320.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/VBoxContainer/Content" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Content" index="0"]
 layout_mode = 2
 
-[node name="Output" type="RichTextLabel" parent="Window/PanelContainer/VBoxContainer/Content/VBoxContainer"]
+[node name="Output" type="RichTextLabel" parent="Content/VBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -35,28 +30,25 @@ MIT 2023 - MASSHUU12
 shortcut_keys_enabled = false
 selection_enabled = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/VBoxContainer/Content/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/VBoxContainer" index="1"]
 layout_mode = 2
 
-[node name="PromptLabel" type="Label" parent="Window/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer"]
+[node name="PromptLabel" type="Label" parent="Content/VBoxContainer/HBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = ExtResource("3_o5e5l")
+theme_override_styles/normal = ExtResource("2_xf2be")
 text = ">"
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 1
 max_lines_visible = 1
 
-[node name="Input" type="LineEdit" parent="Window/PanelContainer/VBoxContainer/Content/VBoxContainer/HBoxContainer"]
+[node name="Input" type="LineEdit" parent="Content/VBoxContainer/HBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 caret_blink = true
-script = ExtResource("4_417ep")
-
-[editable path="Window"]
+script = ExtResource("3_vlo1w")
