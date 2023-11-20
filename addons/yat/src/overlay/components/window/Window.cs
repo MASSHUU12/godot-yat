@@ -1,4 +1,4 @@
-namespace YAT.Overlay.Components.Window
+namespace YAT.Overlay.Components
 {
 	public partial class Window : Godot.Window
 	{
