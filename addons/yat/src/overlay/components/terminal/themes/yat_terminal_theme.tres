@@ -18,4 +18,5 @@ RichTextLabel/font_sizes/bold_italics_font_size = 14
 RichTextLabel/font_sizes/italics_font_size = 14
 RichTextLabel/font_sizes/mono_font_size = 14
 RichTextLabel/font_sizes/normal_font_size = 14
+RichTextLabel/styles/focus = ExtResource("1_kk14i")
 RichTextLabel/styles/normal = ExtResource("1_kk14i")
