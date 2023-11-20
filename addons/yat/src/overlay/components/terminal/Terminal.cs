@@ -67,11 +67,12 @@ namespace YAT.Overlay.Components.Terminal
 			_yat.OptionsChanged += UpdateOptions;
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
+			Input = GetNode<Input>("%Input");
 
 			Output = GetNode<RichTextLabel>("%Output");
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
-			Input = GetNode<Input>("%Input");
+			CloseRequested += () => _yat.ToggleOverlay();
 
 			UpdateOptions(_yat.Options);
 		}
