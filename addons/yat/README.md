@@ -8,8 +8,6 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 
 > [!NOTE]
 > This project is in the early stages of development. Many things may be added, removed or changed.
->
-> However, the basic functions work properly and are usable.
 
 ## Prerequisites
 
@@ -27,7 +25,7 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 -   Automatic input validation
 -   Autocompletion (limited)
 -   Plugin customization (limited at this point)
--   Ability to create custom windows (not recommended nor documented for now)
+-   Ability to create custom windows
 
 ## Showcase
 

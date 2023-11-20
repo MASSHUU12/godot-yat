@@ -17,7 +17,7 @@ namespace YAT.Overlay.Components.Terminal
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
-			_terminal = GetNode<Terminal>("../../../../../../..");
+			_terminal = GetNode<Terminal>("../../../..");
 
 			TextSubmitted += OnTextSubmitted;
 		}

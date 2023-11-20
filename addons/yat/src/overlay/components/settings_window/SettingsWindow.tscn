@@ -1,0 +1,158 @@
+[gd_scene load_steps=3 format=3 uid="uid://liha0ppubuti"]
+
+[ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/overlay/components/yat_window/YatWindow.tscn" id="1_2pep7"]
+[ext_resource type="Script" path="res://addons/yat/src/overlay/components/settings_window/SettingsWindow.cs" id="2_2707c"]
+
+[node name="SettingsWindow" instance=ExtResource("1_2pep7")]
+script = ExtResource("2_2707c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content" index="0"]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Content/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Save" type="Button" parent="Content/VBoxContainer/Buttons" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save"
+
+[node name="Load" type="Button" parent="Content/VBoxContainer/Buttons" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load"
+
+[node name="RestoreDefaults" type="Button" parent="Content/VBoxContainer/Buttons" index="2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Restore Defaults"
+
+[node name="TabContainer" type="TabContainer" parent="Content/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Terminal" type="Control" parent="Content/VBoxContainer/TabContainer" index="1"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/VBoxContainer/TabContainer/Terminal" index="0"]
+layout_mode = 0
+offset_top = -31.0
+offset_right = 167.0
+offset_bottom = 147.0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer" index="0"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Prompt" type="HBoxContainer" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/Prompt" index="0"]
+layout_mode = 2
+text = "Prompt"
+
+[node name="Prompt" type="LineEdit" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/Prompt" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+text = ">"
+
+[node name="ShowPrompt" type="HBoxContainer" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer" index="1"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/ShowPrompt" index="0"]
+layout_mode = 2
+text = "Show Prompt"
+
+[node name="ShowPrompt" type="CheckBox" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/ShowPrompt" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Height" type="HBoxContainer" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer" index="2"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/Height" index="0"]
+layout_mode = 2
+text = "Height"
+
+[node name="Height" type="SpinBox" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/Height" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 65535.0
+value = 720.0
+rounded = true
+
+[node name="Width" type="HBoxContainer" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer" index="3"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/Width" index="0"]
+layout_mode = 2
+text = "Width"
+
+[node name="Width" type="SpinBox" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/Width" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 65535.0
+value = 320.0
+rounded = true
+
+[node name="AutoScroll" type="HBoxContainer" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer" index="4"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/AutoScroll" index="0"]
+layout_mode = 2
+text = "Auto Scroll"
+
+[node name="AutoScroll" type="CheckBox" parent="Content/VBoxContainer/TabContainer/Terminal/MarginContainer/VBoxContainer/AutoScroll" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Window" type="Control" parent="Content/VBoxContainer/TabContainer" index="2"]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/VBoxContainer/TabContainer/Window" index="0"]
+visible = false
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/VBoxContainer/TabContainer/Window/MarginContainer" index="0"]
+layout_mode = 2
+
+[node name="Movable" type="HBoxContainer" parent="Content/VBoxContainer/TabContainer/Window/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Content/VBoxContainer/TabContainer/Window/MarginContainer/VBoxContainer/Movable" index="0"]
+layout_mode = 2
+text = "Movable"
+
+[node name="Movable" type="CheckBox" parent="Content/VBoxContainer/TabContainer/Window/MarginContainer/VBoxContainer/Movable" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Colors" type="Control" parent="Content/VBoxContainer/TabContainer" index="3"]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/VBoxContainer/TabContainer/Colors" index="0"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12

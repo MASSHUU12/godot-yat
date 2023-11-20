@@ -47,7 +47,7 @@ namespace YAT
 		public OptionsManager OptionsManager { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
-		private Godot.Window _root;
+		private Window _root;
 		private bool _yatEnabled = true;
 
 		public override void _Ready()
@@ -77,23 +77,9 @@ namespace YAT
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event.IsActionPressed("yat_toggle") && _yatEnabled)
+			if (@event.IsActionPressed("yat_toggle"))
 			{
-				// Toggle the Overlay.
-				if (Overlay.IsInsideTree())
-				{
-					Terminal.Input.ReleaseFocus();
-					_root.RemoveChild(Overlay);
-					EmitSignal(SignalName.OverlayClosed);
-				}
-				else
-				{
-					_root.AddChild(Overlay);
-					// Grabbing focus this way prevents writing to the input field
-					// from the previous frame.
-					Terminal.Input.CallDeferred("grab_focus");
-					EmitSignal(SignalName.OverlayOpened);
-				}
+				ToggleOverlay();
 			}
 		}
 
@@ -115,6 +101,34 @@ namespace YAT
 			{
 				Commands[alias] = command;
 			}
+		}
+
+		public void ToggleOverlay()
+		{
+			if (!_yatEnabled) return;
+
+			if (Overlay.IsInsideTree()) CloseOverlay();
+			else OpenOverlay();
+		}
+
+		private void OpenOverlay()
+		{
+			if (Overlay.IsInsideTree()) return;
+
+			_root.AddChild(Overlay);
+			// Grabbing focus this way prevents writing to the input field
+			// from the previous frame.
+			Terminal.Input.CallDeferred("grab_focus");
+			EmitSignal(SignalName.OverlayOpened);
+		}
+
+		private void CloseOverlay()
+		{
+			if (!Overlay.IsInsideTree()) return;
+
+			Terminal.Input.ReleaseFocus();
+			_root.RemoveChild(Overlay);
+			EmitSignal(SignalName.OverlayClosed);
 		}
 
 		private void OnOverlayReady()

@@ -2,6 +2,8 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Overlay.Components;
+using YAT.Overlay.Components.Terminal;
 
 namespace YAT.Commands
 {
@@ -10,9 +12,9 @@ namespace YAT.Commands
 	{
 		public YAT Yat { get; set; }
 
-		private static Node _optionsWindowInstance;
+		private static YatWindow _optionsWindowInstance;
 		private static readonly PackedScene _optionsWindow = GD.Load<PackedScene>(
-			"res://addons/yat/src/overlay/components/options_window/OptionsWindow.tscn"
+			"res://addons/yat/src/overlay/components/settings_window/SettingsWindow.tscn"
 		);
 
 		public Options(YAT Yat) => this.Yat = Yat;
@@ -23,15 +25,23 @@ namespace YAT.Commands
 
 			if (instanceValid)
 			{
-				_optionsWindowInstance.QueueFree();
+				CloseWindow();
 				_optionsWindowInstance = null;
 				return CommandResult.Success;
 			}
 
-			_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate();
+			Yat.Terminal.Print("Options will be improved in the future.", Terminal.PrintType.Warning);
+
+			_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate<YatWindow>();
 			Yat.Overlay.AddChild(_optionsWindowInstance);
 
 			return CommandResult.Success;
+		}
+
+		private static void CloseWindow()
+		{
+			_optionsWindowInstance.QueueFree();
+			_optionsWindowInstance = null;
 		}
 	}
 }

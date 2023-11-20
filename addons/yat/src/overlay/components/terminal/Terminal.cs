@@ -10,7 +10,7 @@ using YAT.Interfaces;
 
 namespace YAT.Overlay.Components.Terminal
 {
-	public partial class Terminal : Control
+	public partial class Terminal : YatWindow
 	{
 		/// <summary>
 		/// Delegate for the CommandExecuted event.
@@ -59,7 +59,6 @@ namespace YAT.Overlay.Components.Terminal
 		private Label _promptLabel;
 		private string _prompt = "> ";
 		private RichTextLabel Output;
-		private PanelContainer _window;
 		private CancellationTokenSource _cts;
 
 		public override void _Ready()
@@ -67,13 +66,13 @@ namespace YAT.Overlay.Components.Terminal
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 
-			_window = GetNode<PanelContainer>("Window/PanelContainer");
 			_promptLabel = GetNode<Label>("%PromptLabel");
+			Input = GetNode<Input>("%Input");
 
 			Output = GetNode<RichTextLabel>("%Output");
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
-			Input = GetNode<Input>("%Input");
+			CloseRequested += () => _yat.ToggleOverlay();
 
 			UpdateOptions(_yat.Options);
 		}
@@ -123,6 +122,12 @@ namespace YAT.Overlay.Components.Terminal
 					_cts.Dispose();
 					_cts = null;
 				}
+
+			}
+
+			if (@event.IsActionPressed("yat_toggle"))
+			{
+				CallDeferred("emit_signal", SignalName.CloseRequested);
 			}
 		}
 
@@ -130,7 +135,7 @@ namespace YAT.Overlay.Components.Terminal
 		{
 			_promptLabel.Text = options.Prompt;
 			_promptLabel.Visible = options.ShowPrompt;
-			_window.Size = new(options.DefaultWidth, options.DefaultHeight);
+			Size = new((int)options.DefaultWidth, (int)options.DefaultHeight);
 			Output.ScrollFollowing = options.AutoScroll;
 		}
 
