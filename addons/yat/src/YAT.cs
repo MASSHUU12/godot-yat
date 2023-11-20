@@ -79,21 +79,7 @@ namespace YAT
 		{
 			if (@event.IsActionPressed("yat_toggle") && _yatEnabled)
 			{
-				// Toggle the Overlay.
-				if (Overlay.IsInsideTree())
-				{
-					Terminal.Input.ReleaseFocus();
-					_root.RemoveChild(Overlay);
-					EmitSignal(SignalName.OverlayClosed);
-				}
-				else
-				{
-					_root.AddChild(Overlay);
-					// Grabbing focus this way prevents writing to the input field
-					// from the previous frame.
-					Terminal.Input.CallDeferred("grab_focus");
-					EmitSignal(SignalName.OverlayOpened);
-				}
+				ToggleOverlay();
 			}
 		}
 
@@ -115,6 +101,32 @@ namespace YAT
 			{
 				Commands[alias] = command;
 			}
+		}
+
+		public void ToggleOverlay()
+		{
+			if (Overlay.IsInsideTree()) CloseOverlay();
+			else OpenOverlay();
+		}
+
+		private void OpenOverlay()
+		{
+			if (Overlay.IsInsideTree()) return;
+
+			_root.AddChild(Overlay);
+			// Grabbing focus this way prevents writing to the input field
+			// from the previous frame.
+			Terminal.Input.CallDeferred("grab_focus");
+			EmitSignal(SignalName.OverlayOpened);
+		}
+
+		private void CloseOverlay()
+		{
+			if (!Overlay.IsInsideTree()) return;
+
+			Terminal.Input.ReleaseFocus();
+			_root.RemoveChild(Overlay);
+			EmitSignal(SignalName.OverlayClosed);
 		}
 
 		private void OnOverlayReady()
