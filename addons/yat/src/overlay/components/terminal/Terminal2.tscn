@@ -2,10 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/overlay/components/window_2.0/Window.tscn" id="1_j81ps"]
 [ext_resource type="Theme" uid="uid://bbo6sgir4ilud" path="res://addons/yat/src/overlay/components/terminal/themes/yat_terminal_theme.tres" id="2_8e34l"]
-[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/src/overlay/components/window/themes/label_theme.tres" id="2_xf2be"]
+[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/src/overlay/components/terminal/themes/yat_terminal_label_theme.tres" id="2_xf2be"]
 [ext_resource type="Script" path="res://addons/yat/src/overlay/components/terminal/Input.cs" id="3_vlo1w"]
 
 [node name="Window" instance=ExtResource("1_j81ps")]
+title = "YAT"
 size = Vector2i(728, 384)
 
 [node name="Content" parent="." index="0"]
