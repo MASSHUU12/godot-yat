@@ -1,50 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://c0e5ehgrroudb"]
+[gd_scene load_steps=3 format=3 uid="uid://o1hlj04h0rri"]
 
-[ext_resource type="Theme" uid="uid://dgvvyeq7dbek1" path="res://addons/yat/src/overlay/components/window/themes/yat_theme.tres" id="1_rhj83"]
+[ext_resource type="Theme" uid="uid://b0caaqjmiluf7" path="res://addons/yat/src/overlay/components/window/yat_window_theme.tres" id="1_cty0e"]
 [ext_resource type="Script" path="res://addons/yat/src/overlay/components/window/Window.cs" id="2_1mdws"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v37hv"]
-
-[node name="Window" type="Control"]
-layout_mode = 3
-anchors_preset = 0
-mouse_filter = 1
-theme = ExtResource("1_rhj83")
+[node name="Window" type="Window"]
+title = "Window"
+position = Vector2i(0, 36)
+size = Vector2i(512, 256)
+min_size = Vector2i(256, 144)
+theme = ExtResource("1_cty0e")
 script = ExtResource("2_1mdws")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(256, 256)
-layout_mode = 0
-offset_right = 256.0
-offset_bottom = 256.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-layout_mode = 2
-
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_right = 16
-
-[node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/MarginContainer/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Title"
-vertical_alignment = 1
-
-[node name="Close" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/Header"]
-layout_mode = 2
-text = "X"
-flat = true
-
-[node name="Content" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_v37hv")
+[node name="Content" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
