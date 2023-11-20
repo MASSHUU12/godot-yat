@@ -1,7 +1,14 @@
+using Godot;
+
 namespace YAT.Overlay.Components
 {
-	public partial class Window : Godot.Window
+	public partial class YatWindow : Window
 	{
+		public override void _Ready()
+		{
+			MoveToTheDefaultPosition();
+		}
+
 		/// <summary>
 		/// Moves the terminal window to the default position at the center of the viewport.
 		/// </summary>
