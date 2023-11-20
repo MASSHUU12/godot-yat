@@ -35,6 +35,7 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Content/VBoxContainer/TabContainer/Terminal" index="0"]
+layout_mode = 0
 offset_top = -31.0
 offset_right = 167.0
 offset_bottom = 147.0
@@ -148,6 +149,7 @@ visible = false
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Content/VBoxContainer/TabContainer/Colors" index="0"]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_constants/margin_left = 12
