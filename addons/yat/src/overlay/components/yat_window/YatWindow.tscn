@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://o1hlj04h0rri"]
 
-[ext_resource type="Theme" uid="uid://b0caaqjmiluf7" path="res://addons/yat/src/overlay/components/window/yat_window_theme.tres" id="1_cty0e"]
-[ext_resource type="Script" path="res://addons/yat/src/overlay/components/window/YatWindow.cs" id="2_1mdws"]
+[ext_resource type="Theme" uid="uid://b0caaqjmiluf7" path="res://addons/yat/src/overlay/components/yat_window/yat_window_theme.tres" id="1_cty0e"]
+[ext_resource type="Script" path="res://addons/yat/src/overlay/components/yat_window/YatWindow.cs" id="2_1mdws"]
 
 [node name="YatWindow" type="Window"]
 disable_3d = true
