@@ -122,6 +122,12 @@ namespace YAT.Overlay.Components.Terminal
 					_cts.Dispose();
 					_cts = null;
 				}
+
+			}
+
+			if (@event.IsActionPressed("yat_toggle"))
+			{
+				CallDeferred("emit_signal", SignalName.CloseRequested);
 			}
 		}
 
