@@ -1,7 +1,7 @@
 using Godot;
 using YAT.Overlay.Components.Terminal;
 
-namespace YAT.Overlay
+namespace YAT.Scenes
 {
 	public partial class Overlay : Control
 	{
