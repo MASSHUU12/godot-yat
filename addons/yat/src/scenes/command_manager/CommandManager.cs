@@ -14,13 +14,21 @@ namespace YAT.Scenes
 	public partial class CommandManager : Node
 	{
 		/// <summary>
-		/// Delegate for the CommandExecuted event.
+		/// Signal emitted when a command execution has started.
+		/// </summary>
+		/// <param name="command">The command that was started.</param>
+		/// <param name="args">The arguments passed to the command.</param>
+		[Signal]
+		public delegate void CommandStartedEventHandler(string command, string[] args);
+
+		/// <summary>
+		/// Signal emitted when a command has been executed.
 		/// </summary>
 		/// <param name="command">The command that was executed.</param>
 		/// <param name="args">The arguments passed to the command.</param>
 		/// <param name="result">The result of the command execution.</param>
 		[Signal]
-		public delegate void CommandExecutedEventHandler(string command, string[] args, CommandResult result);
+		public delegate void CommandFinishedEventHandler(string command, string[] args, CommandResult result);
 
 		public bool Locked { get; private set; }
 		public CancellationTokenSource Cts { get; set; }
@@ -31,7 +39,7 @@ namespace YAT.Scenes
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("..");
-			_terminal = _yat.Terminal;
+			_yat.Ready += () => _terminal = _yat.Terminal;
 		}
 
 		/// <summary>
@@ -70,7 +78,9 @@ namespace YAT.Scenes
 
 			var concatenated = ConcatenatePassedData(convertedArgs, convertedOpts);
 
-			_terminal.Title = commandName;
+			_yat.Terminal.Title = commandName;
+
+			EmitSignal(SignalName.CommandStarted, commandName, args);
 
 			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
 				_yat.Commands[commandName]
@@ -97,7 +107,7 @@ namespace YAT.Scenes
 			result = result == CommandResult.NotImplemented ? command.Execute(cArgs, input) : result;
 			Locked = false;
 
-			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
+			EmitSignal(SignalName.CommandFinished, commandName, input, (ushort)result);
 		}
 
 		/// <summary>
@@ -120,13 +130,13 @@ namespace YAT.Scenes
 				Locked = false;
 
 				CallDeferredThreadGroup(
-					"emit_signal", SignalName.CommandExecuted, commandName, input, (ushort)result
+					"emit_signal", SignalName.CommandFinished, commandName, input, (ushort)result
 				);
 			}, Cts.Token);
 
 			task.Start();
 
-			await ToSignal(this, SignalName.CommandExecuted);
+			await ToSignal(this, SignalName.CommandFinished);
 
 			_yat.Terminal.Print("Command execution finished.", Terminal.PrintType.Success);
 		}
