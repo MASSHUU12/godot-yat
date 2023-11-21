@@ -2,8 +2,8 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Overlay.Components;
 using YAT.Overlay.Components.Terminal;
+using YAT.Scenes.Overlay.Components.YatWindow;
 
 namespace YAT.Commands
 {

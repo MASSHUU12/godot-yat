@@ -1,6 +1,6 @@
 using Godot;
 
-namespace YAT.Overlay.Components
+namespace YAT.Scenes.Overlay.Components.YatWindow
 {
 	public partial class YatWindow : Window
 	{
