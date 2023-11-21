@@ -5,6 +5,7 @@ using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Overlay.Components.Terminal;
+using YAT.Scenes;
 
 namespace YAT
 {
@@ -45,6 +46,7 @@ namespace YAT
 		public readonly LinkedList<string> History = new();
 		public LinkedListNode<string> HistoryNode = null;
 		public OptionsManager OptionsManager { get; private set; }
+		public CommandManager CommandManager { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
 		private Window _root;
