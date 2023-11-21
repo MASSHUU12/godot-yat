@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   CommandManager scene.
+-   CommandStarted signal.
+-   The name of the currently running command is displayed in the title of the terminal window.
+
+### Changed
+
+-   Terminal is under using YAT.Scenes.Overlay.Components.Terminal namespace.
+-   YatWindow is under YAT.Scenes.Overlay.Components.YatWindow namespace.
+-   Overlay is under YAT.Scenes.Overlay namespace.
+-   Overlay folder have been moved to the scenes folder.
+-   YAT inherits from Node.
+-   CommandExecuted signal have been renamed to CommandFinished.
+-   Moved command execution logic from terminal to command manager.
+-   CommandExecuted signal, Locked and cancellation token have been moved to command manager.
+
 ## [1.7.0-beta 2023-11-20]
 
 ### Added
