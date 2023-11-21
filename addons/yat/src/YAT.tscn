@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dhbvghhlqawa4"]
+[gd_scene load_steps=4 format=3 uid="uid://dhbvghhlqawa4"]
 
 [ext_resource type="Script" path="res://addons/yat/src/YAT.cs" id="1_683p6"]
 [ext_resource type="Resource" uid="uid://dmg0237pdk1x6" path="res://addons/yat/src/options/YatOptions.tres" id="2_6miw0"]
+[ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/scenes/command_manager/CommandManager.tscn" id="3_11rsn"]
 
 [node name="YAT" type="Control"]
 process_mode = 3
@@ -15,3 +16,5 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_683p6")
 Options = ExtResource("2_6miw0")
+
+[node name="CommandManager" parent="." instance=ExtResource("3_11rsn")]
