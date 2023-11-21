@@ -34,12 +34,10 @@ namespace YAT.Scenes
 		public CancellationTokenSource Cts { get; set; }
 
 		private YAT _yat;
-		private Terminal _terminal;
 
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("..");
-			_yat.Ready += () => _terminal = _yat.Terminal;
 		}
 
 		/// <summary>
@@ -77,8 +75,6 @@ namespace YAT.Scenes
 			}
 
 			var concatenated = ConcatenatePassedData(convertedArgs, convertedOpts);
-
-			_yat.Terminal.Title = commandName;
 
 			EmitSignal(SignalName.CommandStarted, commandName, args);
 
