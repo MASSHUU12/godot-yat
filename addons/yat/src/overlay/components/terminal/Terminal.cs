@@ -1,36 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Godot;
-using YAT.Attributes;
-using YAT.Enums;
-using YAT.Helpers;
-using YAT.Interfaces;
+using YAT.Scenes;
 
 namespace YAT.Overlay.Components.Terminal
 {
 	public partial class Terminal : YatWindow
 	{
-		/// <summary>
-		/// Delegate for the CommandExecuted event.
-		/// </summary>
-		/// <param name="command">The command that was executed.</param>
-		/// <param name="args">The arguments passed to the command.</param>
-		/// <param name="result">The result of the command execution.</param>
-		[Signal]
-		public delegate void CommandExecutedEventHandler(string command, string[] args, CommandResult result);
-
 		public Input Input { get; private set; }
-
-		/// <summary>
-		/// Gets or sets a value indicating whether the terminal is locked.
-		/// When the terminal is locked, no commands can be executed.
-		///
-		/// Terminal is locked automatically when a command is executing.
-		/// No need to lock it manually.
-		/// </summary>
-		public bool Locked { get; private set; }
 
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
@@ -57,14 +32,17 @@ namespace YAT.Overlay.Components.Terminal
 
 		private YAT _yat;
 		private Label _promptLabel;
-		private string _prompt = "> ";
 		private RichTextLabel Output;
-		private CancellationTokenSource _cts;
+		private string _prompt = "> ";
+		private CommandManager _commandManager;
 
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
+
+			_commandManager = _yat.GetNode<CommandManager>("CommandManager");
+			_commandManager.CommandExecuted += (command, args, result) => Title = "YAT";
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
 			Input = GetNode<Input>("%Input");
@@ -73,7 +51,6 @@ namespace YAT.Overlay.Components.Terminal
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
 			CloseRequested += () => _yat.ToggleOverlay();
-			CommandExecuted += (command, args, result) => Title = "YAT";
 
 			UpdateOptions(_yat.Options);
 		}
@@ -115,13 +92,14 @@ namespace YAT.Overlay.Components.Terminal
 					Input.CallDeferred(nameof(Input.MoveCaretToEnd));
 				}
 
-				if (@event.IsActionPressed("yat_terminal_interrupt") && _cts != null)
+				if (@event.IsActionPressed("yat_terminal_interrupt") &&
+					_commandManager.Cts != null)
 				{
 					Print("Command cancellation requested.", PrintType.Warning);
 
-					_cts.Cancel();
-					_cts.Dispose();
-					_cts = null;
+					_commandManager.Cts.Cancel();
+					_commandManager.Cts.Dispose();
+					_commandManager.Cts = null;
 				}
 
 			}
@@ -168,118 +146,5 @@ namespace YAT.Overlay.Components.Terminal
 		/// Clears the output text of the terminal window.
 		/// </summary>
 		public void Clear() => Output.Clear();
-
-		/// <summary>
-		/// Executes the given CLI command.
-		/// </summary>
-		/// <param name="input">The input arguments for the command.</param>
-		private void ExecuteCommand(string[] input, Dictionary<string, object> cArgs)
-		{
-			string commandName = input[0];
-			var command = _yat.Commands[commandName];
-
-			Locked = true;
-			var result = command.Execute(input);
-			result = result == CommandResult.NotImplemented ? command.Execute(cArgs, input) : result;
-			Locked = false;
-
-			EmitSignal(SignalName.CommandExecuted, commandName, input, (ushort)result);
-		}
-
-		/// <summary>
-		/// Executes a command in a separate thread,
-		/// allowing the terminal to remain responsive.
-		/// </summary>
-		/// <param name="input">The command and its arguments.</param>
-		private async void ExecuteThreadedCommand(string[] input, Dictionary<string, object> cArgs)
-		{
-			_cts = new();
-
-			Task task = new(() =>
-			{
-				string commandName = input[0];
-				var command = _yat.Commands[commandName];
-
-				Locked = true;
-				var result = command.Execute(_cts.Token, input);
-				result = result == CommandResult.NotImplemented ? command.Execute(cArgs, _cts.Token, input) : result;
-				Locked = false;
-
-				CallDeferredThreadGroup(
-					"emit_signal", SignalName.CommandExecuted, commandName, input, (ushort)result
-				);
-			}, _cts.Token);
-
-			task.Start();
-
-			await ToSignal(this, SignalName.CommandExecuted);
-
-			Print("Command execution finished.", PrintType.Success);
-		}
-
-		/// <summary>
-		/// Executes the specified command with the given arguments.
-		/// </summary>
-		/// <param name="args">The arguments to pass to the command.</param>
-		public void CommandManager(string[] args)
-		{
-			if (args.Length == 0) return;
-
-			string commandName = args[0];
-
-			if (!_yat.Commands.ContainsKey(commandName))
-			{
-				LogHelper.UnknownCommand(commandName);
-				return;
-			}
-
-			ICommand command = _yat.Commands[commandName];
-			Dictionary<string, object> convertedArgs = null;
-			Dictionary<string, object> convertedOpts = null;
-
-			if (command.GetAttribute<NoValidateAttribute>() is null)
-			{
-				if (!CommandHelper.ValidatePassedData<ArgumentsAttribute>(
-					command, args[1..], out convertedArgs
-				)) return;
-
-				if (command.GetAttribute<OptionsAttribute>() is not null)
-				{
-					if (!CommandHelper.ValidatePassedData<OptionsAttribute>(
-						command, args[1..], out convertedOpts
-					)) return;
-				}
-			}
-
-			var concatenated = ConcatenatePassedData(convertedArgs, convertedOpts);
-
-			Title = commandName;
-
-			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
-				_yat.Commands[commandName]
-			) is not null)
-			{
-				ExecuteThreadedCommand(args, concatenated);
-				return;
-			}
-
-			ExecuteCommand(args, concatenated);
-		}
-
-		/// <summary>
-		/// Concatenates two dictionaries and returns the result.
-		/// </summary>
-		/// <param name="args">The first dictionary to concatenate.</param>
-		/// <param name="opts">The second dictionary to concatenate.</param>
-		/// <returns>The concatenated dictionary.</returns>
-		private static Dictionary<string, object> ConcatenatePassedData(Dictionary<string, object> args, Dictionary<string, object> opts)
-		{
-			Dictionary<string, object> result = new();
-
-			if (args is not null) result = result.Concat(args).ToDictionary(x => x.Key, x => x.Value);
-			if (opts is not null) result = result.Concat(opts).ToDictionary(x => x.Key, x => x.Value);
-
-			return result;
-		}
 	}
 }
