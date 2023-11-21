@@ -41,7 +41,7 @@ namespace YAT
 
 		[Export] public YatOptions Options { get; set; } = new();
 
-		public Scenes.Overlay Overlay { get; private set; }
+		public Scenes.Overlay.Overlay Overlay { get; private set; }
 		public Terminal Terminal { get; private set; }
 		public readonly LinkedList<string> History = new();
 		public LinkedListNode<string> HistoryNode = null;
@@ -58,7 +58,7 @@ namespace YAT
 
 			_root = GetTree().Root;
 
-			Overlay = GD.Load<PackedScene>("res://addons/yat/src/scenes/overlay/Overlay.tscn").Instantiate<Scenes.Overlay>();
+			Overlay = GD.Load<PackedScene>("res://addons/yat/src/scenes/overlay/Overlay.tscn").Instantiate<Scenes.Overlay.Overlay>();
 			Overlay.Ready += OnOverlayReady;
 			OptionsManager = new(this, Options);
 
