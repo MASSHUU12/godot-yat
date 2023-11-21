@@ -13,7 +13,7 @@ namespace YAT
 	/// YAT (Yet Another Terminal) is an addon that provides a customizable, in-game terminal for your project.
 	/// This class is the main entry point for the addon, and provides access to the terminal, options, and commands.
 	/// </summary>
-	public partial class YAT : Control
+	public partial class YAT : Node
 	{
 		#region Signals
 		/// <summary>
