@@ -4,7 +4,8 @@ using YAT.Attributes;
 using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Overlay.Components.Terminal;
+using YAT.Scenes;
+using YAT.Scenes.Overlay.Components.Terminal;
 
 namespace YAT
 {
@@ -12,7 +13,7 @@ namespace YAT
 	/// YAT (Yet Another Terminal) is an addon that provides a customizable, in-game terminal for your project.
 	/// This class is the main entry point for the addon, and provides access to the terminal, options, and commands.
 	/// </summary>
-	public partial class YAT : Control
+	public partial class YAT : Node
 	{
 		#region Signals
 		/// <summary>
@@ -40,11 +41,12 @@ namespace YAT
 
 		[Export] public YatOptions Options { get; set; } = new();
 
-		public Overlay.Overlay Overlay { get; private set; }
+		public Scenes.Overlay.Overlay Overlay { get; private set; }
 		public Terminal Terminal { get; private set; }
 		public readonly LinkedList<string> History = new();
 		public LinkedListNode<string> HistoryNode = null;
 		public OptionsManager OptionsManager { get; private set; }
+		public CommandManager CommandManager { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
 		private Window _root;
@@ -56,7 +58,7 @@ namespace YAT
 
 			_root = GetTree().Root;
 
-			Overlay = GD.Load<PackedScene>("res://addons/yat/src/overlay/Overlay.tscn").Instantiate<Overlay.Overlay>();
+			Overlay = GD.Load<PackedScene>("res://addons/yat/src/scenes/overlay/Overlay.tscn").Instantiate<Scenes.Overlay.Overlay>();
 			Overlay.Ready += OnOverlayReady;
 			OptionsManager = new(this, Options);
 

@@ -4,11 +4,12 @@ using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
 
-namespace YAT.Overlay.Components.Terminal
+namespace YAT.Scenes.Overlay.Components.Terminal
 {
 	public partial class Input : LineEdit
 	{
 		private YAT _yat;
+		private CommandManager _commandManager;
 		private Terminal _terminal;
 		private string cachedInput = string.Empty;
 		private string[] suggestions = Array.Empty<string>();
@@ -17,6 +18,7 @@ namespace YAT.Overlay.Components.Terminal
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
+			_commandManager = _yat.GetNode<CommandManager>("CommandManager");
 			_terminal = GetNode<Terminal>("../../../..");
 
 			TextSubmitted += OnTextSubmitted;
@@ -102,13 +104,13 @@ namespace YAT.Overlay.Components.Terminal
 		{
 			var input = TextHelper.SanitizeText(command);
 
-			if (input.Length == 0 || _terminal.Locked) return;
+			if (input.Length == 0 || _commandManager.Locked) return;
 
 			_yat.HistoryNode = null;
 			_yat.History.AddLast(command);
 			if (_yat.History.Count > _yat.Options.HistoryLimit) _yat.History.RemoveFirst();
 
-			_terminal.CommandManager(input);
+			_commandManager.Run(input);
 			Clear();
 		}
 

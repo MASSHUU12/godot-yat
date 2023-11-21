@@ -1,5 +1,5 @@
 using Godot;
-using YAT.Overlay.Components;
+using YAT.Scenes.Overlay.Components.YatWindow;
 
 public partial class SettingsWindow : YatWindow
 {

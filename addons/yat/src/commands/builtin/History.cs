@@ -67,7 +67,7 @@ namespace YAT.Commands
 			Yat.Terminal.Print(
 				$"Executing command at index {index}: {TextHelper.EscapeBBCode(command)}"
 			);
-			Yat.Terminal.CommandManager(TextHelper.SanitizeText(command));
+			Yat.CommandManager.Run(TextHelper.SanitizeText(command));
 		}
 
 		private void ShowHistory()

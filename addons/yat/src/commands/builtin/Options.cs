@@ -2,8 +2,8 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Overlay.Components;
-using YAT.Overlay.Components.Terminal;
+using YAT.Scenes.Overlay.Components.Terminal;
+using YAT.Scenes.Overlay.Components.YatWindow;
 
 namespace YAT.Commands
 {
@@ -14,7 +14,7 @@ namespace YAT.Commands
 
 		private static YatWindow _optionsWindowInstance;
 		private static readonly PackedScene _optionsWindow = GD.Load<PackedScene>(
-			"res://addons/yat/src/overlay/components/settings_window/SettingsWindow.tscn"
+			"res://addons/yat/src/scenes/overlay/components/settings_window/SettingsWindow.tscn"
 		);
 
 		public Options(YAT Yat) => this.Yat = Yat;

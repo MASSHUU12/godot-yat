@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cgcaidamikcnr"]
 
-[ext_resource type="Script" path="res://addons/yat/src/overlay/Overlay.cs" id="1_e6tk7"]
-[ext_resource type="PackedScene" uid="uid://dsyqv187j7w76" path="res://addons/yat/src/overlay/components/terminal/Terminal.tscn" id="2_8r83y"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/Overlay.cs" id="1_e6tk7"]
+[ext_resource type="PackedScene" uid="uid://dsyqv187j7w76" path="res://addons/yat/src/scenes/overlay/components/terminal/Terminal.tscn" id="2_8r83y"]
 
 [node name="Overlay" type="Control"]
 process_mode = 3
