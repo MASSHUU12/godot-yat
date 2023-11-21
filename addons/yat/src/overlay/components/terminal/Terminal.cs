@@ -73,6 +73,7 @@ namespace YAT.Overlay.Components.Terminal
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
 			CloseRequested += () => _yat.ToggleOverlay();
+			CommandExecuted += (command, args, result) => Title = "YAT";
 
 			UpdateOptions(_yat.Options);
 		}
@@ -251,6 +252,8 @@ namespace YAT.Overlay.Components.Terminal
 			}
 
 			var concatenated = ConcatenatePassedData(convertedArgs, convertedOpts);
+
+			Title = commandName;
 
 			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
 				_yat.Commands[commandName]
