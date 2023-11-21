@@ -42,7 +42,8 @@ namespace YAT.Overlay.Components.Terminal
 			_yat.OptionsChanged += UpdateOptions;
 
 			_commandManager = _yat.GetNode<CommandManager>("CommandManager");
-			_commandManager.CommandExecuted += (command, args, result) => Title = "YAT";
+			_commandManager.CommandStarted += (command, args) => Title = "YAT - " + command;
+			_commandManager.CommandFinished += (command, args, result) => Title = "YAT";
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
 			Input = GetNode<Input>("%Input");
