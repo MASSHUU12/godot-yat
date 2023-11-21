@@ -2,7 +2,7 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Overlay.Components.Terminal;
+using YAT.Scenes.Overlay.Components.Terminal;
 
 [Extension("cubecolor", "Sets the cube's color.", "[b]Usage[/b]: setcube [i]color[/i]")]
 public partial class SetCube : IExtension

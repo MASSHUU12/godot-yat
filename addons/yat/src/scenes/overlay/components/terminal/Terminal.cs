@@ -1,10 +1,8 @@
 using Godot;
-using YAT.Scenes;
-using YAT.Scenes.Overlay.Components.YatWindow;
 
-namespace YAT.Overlay.Components.Terminal
+namespace YAT.Scenes.Overlay.Components.Terminal
 {
-	public partial class Terminal : YatWindow
+	public partial class Terminal : YatWindow.YatWindow
 	{
 		public Input Input { get; private set; }
 

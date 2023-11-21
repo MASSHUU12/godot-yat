@@ -4,8 +4,8 @@ using YAT.Attributes;
 using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Overlay.Components.Terminal;
 using YAT.Scenes;
+using YAT.Scenes.Overlay.Components.Terminal;
 
 namespace YAT
 {

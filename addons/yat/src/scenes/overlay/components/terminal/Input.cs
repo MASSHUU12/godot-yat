@@ -3,9 +3,8 @@ using System.Linq;
 using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
-using YAT.Scenes;
 
-namespace YAT.Overlay.Components.Terminal
+namespace YAT.Scenes.Overlay.Components.Terminal
 {
 	public partial class Input : LineEdit
 	{
