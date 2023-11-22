@@ -16,6 +16,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 
 [node name="Text" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "command arg arg2 -o -o2"
 vertical_alignment = 1

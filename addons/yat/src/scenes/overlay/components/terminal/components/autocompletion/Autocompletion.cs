@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
@@ -7,6 +8,8 @@ using YAT.Helpers;
 public partial class Autocompletion : PanelContainer
 {
 	private YAT.YAT _yat;
+	private Label _text;
+	private MarginContainer _container;
 	private YAT.Scenes.Overlay.Components.Terminal.Input _input;
 
 	private string cachedInput = string.Empty;
@@ -16,7 +19,12 @@ public partial class Autocompletion : PanelContainer
 	public override void _Ready()
 	{
 		_yat = GetNode<YAT.YAT>("/root/YAT");
+		_text = GetNode<Label>("%Text");
+		_container = GetNode<MarginContainer>("./MarginContainer");
 		_input = GetNode<YAT.Scenes.Overlay.Components.Terminal.Input>("../HBoxContainer/Input");
+		_input.TextChanged += UpdateCommandInfo;
+
+		_container.Visible = false;
 	}
 
 	public override void _Input(InputEvent @event)
@@ -26,6 +34,27 @@ public partial class Autocompletion : PanelContainer
 			Autocomplete();
 			_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
 		}
+	}
+
+	private void UpdateCommandInfo(string text)
+	{
+		// Hide the command info panel if the input is empty or the command is invalid.
+		if (text.Length == 0 || !_yat.Commands.ContainsKey(text))
+		{
+			_container.Visible = false;
+			return;
+		}
+
+		_container.Visible = true;
+
+		StringBuilder commandInfo = new();
+		var command = _yat.Commands[text];
+		var commandAttribute = command.GetAttribute<CommandAttribute>();
+		var commandArguments = command.GetAttribute<ArgumentsAttribute>();
+
+		commandInfo.Append(commandAttribute.Name);
+
+		_text.Text = commandInfo.ToString();
 	}
 
 	/// <summary>
