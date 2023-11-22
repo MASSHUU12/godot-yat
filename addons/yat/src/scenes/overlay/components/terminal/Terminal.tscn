@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dsyqv187j7w76"]
+[gd_scene load_steps=6 format=3 uid="uid://dsyqv187j7w76"]
 
 [ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/overlay/components/yat_window/YatWindow.tscn" id="2_0wq7x"]
 [ext_resource type="Theme" uid="uid://bbo6sgir4ilud" path="res://addons/yat/src/scenes/overlay/components/terminal/theme/yat_terminal_theme.tres" id="2_8e34l"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/terminal/Terminal.cs" id="2_17k82"]
-[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/src/scenes/overlay/components/terminal/theme/yat_terminal_label_theme.tres" id="2_xf2be"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/terminal/components/input/Input.cs" id="3_vlo1w"]
 [ext_resource type="PackedScene" uid="uid://dnjobwvlxce2m" path="res://addons/yat/src/scenes/overlay/components/terminal/components/autocompletion/Autocompletion.tscn" id="4_qug7a"]
 
@@ -40,13 +39,8 @@ layout_mode = 2
 [node name="PromptLabel" type="Label" parent="Content/VBoxContainer/HBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 0
 size_flags_vertical = 1
-theme_override_colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
-theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = ExtResource("2_xf2be")
 text = ">"
-horizontal_alignment = 1
 vertical_alignment = 1
 max_lines_visible = 1
 

@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 -   Improved input sanitization.
 -   Existing autocompletion have been moved from Input.cs to Autocompletion.cs.
 
+### Fixed
+
+-   Background color difference between prompt and input.
+
 ## [1.8.0-beta 2023-11-21]
 
 ### Added
