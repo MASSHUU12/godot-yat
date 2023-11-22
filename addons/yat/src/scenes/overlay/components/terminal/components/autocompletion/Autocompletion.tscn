@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnjobwvlxce2m"]
+
+[ext_resource type="Theme" uid="uid://s0wkxsjl6ere" path="res://addons/yat/src/scenes/overlay/components/terminal/components/autocompletion/theme/yat_autocompletion_theme.tres" id="1_w8lqw"]
+
+[node name="Autocompletion" type="PanelContainer"]
+offset_right = 193.0
+offset_bottom = 23.0
+size_flags_horizontal = 0
+theme = ExtResource("1_w8lqw")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="Text" type="Label" parent="MarginContainer"]
+layout_mode = 2
+text = "command arg arg2 -o -o2"
+vertical_alignment = 1
