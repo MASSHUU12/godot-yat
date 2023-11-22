@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+-   Improved input sanitization.
 -   Existing autocompletion have been moved from Input.cs to Autocompletion.cs.
 
 ## [1.8.0-beta 2023-11-21]

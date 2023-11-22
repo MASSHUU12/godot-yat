@@ -25,10 +25,11 @@ namespace YAT.Helpers
 		/// <returns>An array of sanitized strings.</returns>
 		public static string[] SanitizeText(string text)
 		{
-			text = text.Trim();
-			return text.Split(' ').Where(
-				s => !string.IsNullOrWhiteSpace(s)
-			).ToArray();
+			return text.Split(' ', System.StringSplitOptions.TrimEntries |
+								System.StringSplitOptions.RemoveEmptyEntries)
+						.Select(token => token.Trim())
+						.Where(token => !string.IsNullOrEmpty(token))
+						.ToArray();
 		}
 	}
 }
