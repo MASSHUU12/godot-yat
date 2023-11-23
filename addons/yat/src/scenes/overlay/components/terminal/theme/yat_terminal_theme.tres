@@ -6,6 +6,8 @@
 
 [resource]
 HBoxContainer/constants/separation = 0
+Label/colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
+Label/font_sizes/font_size = 14
 Label/styles/normal = ExtResource("1_fha50")
 LineEdit/colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
 LineEdit/colors/font_placeholder_color = Color(0.87451, 0.87451, 0.87451, 0.6)

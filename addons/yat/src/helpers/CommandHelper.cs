@@ -55,49 +55,63 @@ namespace YAT.Helpers
 				string argName = args.Keys.ElementAt(i);
 				object argType = args.Values.ElementAt(i);
 
-				if (argType is string[] options)
+				if (!ValidateCommandArgument(argName, argType, args, passedArgs[i]))
+					return false;
+			}
+
+			return true;
+		}
+
+		public static bool ValidateCommandArgument(
+			string name,
+			object type,
+			Dictionary<string, object> args,
+			string passedArg,
+			bool log = true
+		)
+		{
+			if (type is string[] options)
+			{
+				var found = false;
+
+				foreach (var opt in options)
 				{
-					var found = false;
-
-					foreach (var opt in options)
+					if (opt == passedArg)
 					{
-						if (opt == passedArgs[i])
-						{
-							found = true;
-							args[argName] = opt;
-							break;
-						}
-
-						object convertedArg = ConvertStringToType(opt, passedArgs[i]);
-
-						if (convertedArg is not null)
-						{
-							found = true;
-							args[argName] = convertedArg;
-							break;
-						}
+						found = true;
+						args[name] = opt;
+						break;
 					}
 
-					if (!found)
+					object convertedArg = ConvertStringToType(opt, passedArg);
+
+					if (convertedArg is not null)
 					{
-						LogHelper.InvalidArgument(name, argName, string.Join(", ", options));
-						return false;
+						found = true;
+						args[name] = convertedArg;
+						break;
 					}
 				}
-				else
+
+				if (!found)
 				{
-					object convertedArg = ConvertStringToType(
-						argType?.ToString() ?? argName, passedArgs[i]
-					);
-
-					if (convertedArg is null)
-					{
-						LogHelper.InvalidArgument(name, argName, (string)(argType ?? argName));
-						return false;
-					}
-
-					args[argName] = convertedArg;
+					if (log) LogHelper.InvalidArgument(name, name, string.Join(", ", options));
+					return false;
 				}
+			}
+			else
+			{
+				object convertedArg = ConvertStringToType(
+					type?.ToString() ?? name, passedArg
+				);
+
+				if (convertedArg is null)
+				{
+					if (log) LogHelper.InvalidArgument(name, name, (string)(type ?? name));
+					return false;
+				}
+
+				args[name] = convertedArg;
 			}
 
 			return true;
