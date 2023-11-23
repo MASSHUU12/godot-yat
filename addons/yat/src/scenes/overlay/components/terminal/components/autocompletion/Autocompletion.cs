@@ -58,18 +58,23 @@ public partial class Autocompletion : PanelContainer
 
 		if (commandArguments != null)
 		{
-			var keys = commandArguments.Args.Keys.ToList();
+			var keys = commandArguments.Args.Keys;
+			StringBuilder argsInfo = new();
 
 			for (int i = 0; i < keys.Count; i++)
 			{
-				var key = keys[i];
+				var key = keys.ElementAt(i);
 				var arg = commandArguments.Args[key];
 
-				if (tokens.Length - 1 == i) commandInfo.Append($" [b]<{key}>[/b]");
-				else commandInfo.Append($" <{key}>");
+				argsInfo.Append(tokens.Length - 1 == i ?
+					$" [b]<{key}:{(string)arg}>[/b]" :
+					$" <{key}:{(string)arg}>"
+				);
 
-				if (i < keys.Count - 1) commandInfo.Append(' ');
+				if (i < keys.Count - 1) argsInfo.Append(' ');
 			}
+
+			commandInfo.Append(argsInfo);
 		}
 
 		_text.Clear();
