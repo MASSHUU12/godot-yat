@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Background color difference between prompt and input.
+-   Terminal is not centered by default.
 
 ## [1.8.0-beta 2023-11-21]
 
