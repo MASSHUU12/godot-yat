@@ -37,6 +37,10 @@ public partial class Autocompletion : PanelContainer
 		}
 	}
 
+	/// <summary>
+	/// Updates the command information based on the provided text.
+	/// </summary>
+	/// <param name="text">The text to update the command information with.</param>
 	private void UpdateCommandInfo(string text)
 	{
 		var tokens = TextHelper.SanitizeText(text);
@@ -46,6 +50,11 @@ public partial class Autocompletion : PanelContainer
 		DisplayCommandInfo(GenerateCommandInfo(tokens));
 	}
 
+	/// <summary>
+	/// Generates the command information based on the given tokens.
+	/// </summary>
+	/// <param name="tokens">The tokens representing the command and its arguments.</param>
+	/// <returns>The generated command information.</returns>
 	private string GenerateCommandInfo(string[] tokens)
 	{
 		var command = _yat.Commands[tokens[0]];
@@ -90,12 +99,21 @@ public partial class Autocompletion : PanelContainer
 		return commandInfo.ToString();
 	}
 
+	/// <summary>
+	/// Displays the command information in the terminal.
+	/// </summary>
+	/// <param name="commandInfo">The command information to display.</param>
 	private void DisplayCommandInfo(string commandInfo)
 	{
 		_text.Clear();
 		_text.AppendText(commandInfo);
 	}
 
+	/// <summary>
+	/// Checks if the given tokens are valid.
+	/// </summary>
+	/// <param name="tokens">The tokens to be checked.</param>
+	/// <returns>True if the tokens are valid, false otherwise.</returns>
 	private bool AreTokensValid(string[] tokens)
 	{
 		if (tokens.Length == 0 || !_yat.Commands.ContainsKey(tokens[0]))
