@@ -41,20 +41,18 @@ public partial class Autocompletion : PanelContainer
 	{
 		var tokens = TextHelper.SanitizeText(text);
 
-		// Hide the command info panel if the input is empty or the command is invalid.
-		if (tokens.Length == 0 || !_yat.Commands.ContainsKey(tokens[0]))
-		{
-			_container.Visible = false;
-			return;
-		}
+		if (!AreTokensValid(tokens)) return;
 
-		_container.Visible = true;
+		DisplayCommandInfo(GenerateCommandInfo(tokens));
+	}
 
-		StringBuilder commandInfo = new();
+	private string GenerateCommandInfo(string[] tokens)
+	{
 		var command = _yat.Commands[tokens[0]];
 		var commandAttribute = command.GetAttribute<CommandAttribute>();
 		var commandArguments = command.GetAttribute<ArgumentsAttribute>();
 
+		StringBuilder commandInfo = new();
 		commandInfo.Append(commandAttribute.Name);
 
 		if (commandArguments != null)
@@ -89,8 +87,25 @@ public partial class Autocompletion : PanelContainer
 			}
 		}
 
+		return commandInfo.ToString();
+	}
+
+	private void DisplayCommandInfo(string commandInfo)
+	{
 		_text.Clear();
-		_text.AppendText(commandInfo.ToString());
+		_text.AppendText(commandInfo);
+	}
+
+	private bool AreTokensValid(string[] tokens)
+	{
+		if (tokens.Length == 0 || !_yat.Commands.ContainsKey(tokens[0]))
+		{
+			_container.Visible = false;
+			return false;
+		}
+
+		_container.Visible = true;
+		return true;
 	}
 
 	/// <summary>
