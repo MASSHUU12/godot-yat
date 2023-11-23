@@ -62,7 +62,13 @@ namespace YAT.Helpers
 			return true;
 		}
 
-		public static bool ValidateCommandArgument(string name, object type, Dictionary<string, object> args, string passedArg)
+		public static bool ValidateCommandArgument(
+			string name,
+			object type,
+			Dictionary<string, object> args,
+			string passedArg,
+			bool log = true
+		)
 		{
 			if (type is string[] options)
 			{
@@ -89,7 +95,7 @@ namespace YAT.Helpers
 
 				if (!found)
 				{
-					LogHelper.InvalidArgument(name, name, string.Join(", ", options));
+					if (log) LogHelper.InvalidArgument(name, name, string.Join(", ", options));
 					return false;
 				}
 			}
@@ -101,7 +107,7 @@ namespace YAT.Helpers
 
 				if (convertedArg is null)
 				{
-					LogHelper.InvalidArgument(name, name, (string)(type ?? name));
+					if (log) LogHelper.InvalidArgument(name, name, (string)(type ?? name));
 					return false;
 				}
 
