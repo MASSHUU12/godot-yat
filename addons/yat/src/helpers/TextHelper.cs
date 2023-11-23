@@ -18,6 +18,16 @@ namespace YAT.Helpers
 		}
 
 		/// <summary>
+		/// Makes the specified text bold by surrounding it with the appropriate tags.
+		/// </summary>
+		/// <param name="text">The text to make bold.</param>
+		/// <returns>The specified text surrounded by bold tags.</returns>
+		public static string MakeBold(string text)
+		{
+			return $"[b]{text}[/b]";
+		}
+
+		/// <summary>
 		/// Sanitizes the given text by removing leading and trailing white spaces
 		/// and empty entries.
 		/// </summary>
