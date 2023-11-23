@@ -73,15 +73,17 @@ public partial class Autocompletion : PanelContainer
 					false
 				);
 
-				commandInfo.Append(string.Format(
+				string argument = string.Format(
 					"{0}{1}<{2}:{3}>{4}{5}",
+					valid ? string.Empty : $"[color={_yat.Options.ErrorColor.ToHtml()}]",
 					current ? "[b]" : string.Empty,
-					valid ? string.Empty : "[color=#ff0000]",
 					key,
 					(arg is string[]) ? "options" : arg,
-					valid ? string.Empty : "[/color]",
-					current ? "[/b]" : string.Empty
-				));
+					current ? "[/b]" : string.Empty,
+					valid ? string.Empty : "[/color]"
+				);
+
+				commandInfo.Append(argument);
 
 				if (i < keys.Count - 1) commandInfo.Append(' ');
 			}
