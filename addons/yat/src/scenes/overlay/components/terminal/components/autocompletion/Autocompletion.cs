@@ -8,7 +8,7 @@ using YAT.Helpers;
 public partial class Autocompletion : PanelContainer
 {
 	private YAT.YAT _yat;
-	private Label _text;
+	private RichTextLabel _text;
 	private MarginContainer _container;
 	private YAT.Scenes.Overlay.Components.Terminal.Input _input;
 
@@ -19,7 +19,7 @@ public partial class Autocompletion : PanelContainer
 	public override void _Ready()
 	{
 		_yat = GetNode<YAT.YAT>("/root/YAT");
-		_text = GetNode<Label>("%Text");
+		_text = GetNode<RichTextLabel>("%Text");
 		_container = GetNode<MarginContainer>("./MarginContainer");
 		_input = GetNode<YAT.Scenes.Overlay.Components.Terminal.Input>("../HBoxContainer/Input");
 		_input.TextChanged += UpdateCommandInfo;

@@ -12,11 +12,16 @@ script = ExtResource("2_e3khj")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
 
-[node name="Text" type="Label" parent="MarginContainer"]
+[node name="Text" type="RichTextLabel" parent="MarginContainer"]
 unique_name_in_owner = true
+clip_contents = false
 layout_mode = 2
+bbcode_enabled = true
 text = "command arg arg2 -o -o2"
-vertical_alignment = 1
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
