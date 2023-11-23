@@ -38,8 +38,10 @@ public partial class Autocompletion : PanelContainer
 
 	private void UpdateCommandInfo(string text)
 	{
+		var tokens = TextHelper.SanitizeText(text);
+
 		// Hide the command info panel if the input is empty or the command is invalid.
-		if (text.Length == 0 || !_yat.Commands.ContainsKey(text))
+		if (tokens.Length == 0 || !_yat.Commands.ContainsKey(tokens[0]))
 		{
 			_container.Visible = false;
 			return;
@@ -48,11 +50,20 @@ public partial class Autocompletion : PanelContainer
 		_container.Visible = true;
 
 		StringBuilder commandInfo = new();
-		var command = _yat.Commands[text];
+		var command = _yat.Commands[tokens[0]];
 		var commandAttribute = command.GetAttribute<CommandAttribute>();
 		var commandArguments = command.GetAttribute<ArgumentsAttribute>();
 
 		commandInfo.Append(commandAttribute.Name);
+
+		if (commandArguments != null)
+		{
+			commandArguments.Args.Keys.ToList().ForEach(x =>
+			{
+				commandInfo.Append($" <{x}>");
+				GD.Print(x);
+			});
+		}
 
 		_text.Text = commandInfo.ToString();
 	}
