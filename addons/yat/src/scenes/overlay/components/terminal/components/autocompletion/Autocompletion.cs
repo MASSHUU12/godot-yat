@@ -74,7 +74,7 @@ public partial class Autocompletion : PanelContainer
 				);
 
 				string argument = string.Format(
-					"{0}{1}<{2}:{3}>{4}{5}",
+					" {0}{1}<{2}:{3}>{4}{5}",
 					valid ? string.Empty : $"[color={_yat.Options.ErrorColor.ToHtml()}]",
 					current ? "[b]" : string.Empty,
 					key,
