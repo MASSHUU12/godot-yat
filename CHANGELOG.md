@@ -7,10 +7,12 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   Autocompletion scene.
+-   On-the-fly argument validation.
 -   MakeBold method for TextHelper.
 
 ### Changed
 
+-   Separated logic from ValidateCommandArguments to ValidateCommandArgument method.
 -   Improved input sanitization.
 -   Existing autocompletion have been moved from Input.cs to Autocompletion.cs.
 

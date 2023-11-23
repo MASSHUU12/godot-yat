@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Godot;
@@ -59,26 +60,31 @@ public partial class Autocompletion : PanelContainer
 		if (commandArguments != null)
 		{
 			var keys = commandArguments.Args.Keys;
-			StringBuilder argsInfo = new();
-
 			for (int i = 0; i < keys.Count; i++)
 			{
 				string key = keys.ElementAt(i);
 				var arg = commandArguments.Args[key];
-				var fullArg = $"{key}:";
-
-				if (arg is string[]) fullArg += "array";
-				else fullArg += arg;
-
-				argsInfo.Append(tokens.Length - 1 == i ?
-					$" [b]<{fullArg}>[/b]" :
-					$" <{fullArg}>"
+				bool current = tokens.Length - 1 == i;
+				bool valid = CommandHelper.ValidateCommandArgument(
+					commandAttribute.Name,
+					arg,
+					new Dictionary<string, object>() { { key, arg } },
+					(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,
+					false
 				);
 
-				if (i < keys.Count - 1) argsInfo.Append(' ');
-			}
+				commandInfo.Append(string.Format(
+					"{0}{1}<{2}:{3}>{4}{5}",
+					current ? "[b]" : string.Empty,
+					valid ? string.Empty : "[color=#ff0000]",
+					key,
+					(arg is string[]) ? "options" : arg,
+					valid ? string.Empty : "[/color]",
+					current ? "[/b]" : string.Empty
+				));
 
-			commandInfo.Append(argsInfo);
+				if (i < keys.Count - 1) commandInfo.Append(' ');
+			}
 		}
 
 		_text.Clear();
