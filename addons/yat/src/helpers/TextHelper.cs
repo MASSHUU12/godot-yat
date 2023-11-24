@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace YAT.Helpers
@@ -40,6 +41,40 @@ namespace YAT.Helpers
 						.Select(token => token.Trim())
 						.Where(token => !string.IsNullOrEmpty(token))
 						.ToArray();
+		}
+
+		/// <summary>
+		/// Concatenates sentences in an array of strings
+		/// by removing quotation marks and
+		/// merging consecutive strings enclosed in quotation marks.
+		/// </summary>
+		/// <param name="strings">The array of strings to concatenate.</param>
+		/// <returns>An array of strings with concatenated sentences.</returns>
+		public static string[] ConcatenateSentence(string[] strings)
+		{
+			List<string> modifiedStrings = new();
+
+			for (int i = 0; i < strings.Length; i++)
+			{
+				if (strings[i].IndexOfAny(new[] { '"', '\'' }) == 0)
+				{
+					string sentence = strings[i][1..];
+
+					while (!(strings[i].IndexOfAny(new[] { '"', '\'' }) == strings[i].Length - 1)
+						&& i < strings.Length
+					)
+					{
+						i++;
+						sentence += $" {strings[i]}";
+					}
+
+					sentence = sentence[..^1];
+					modifiedStrings.Add(sentence);
+				}
+				else modifiedStrings.Add(strings[i]);
+			}
+
+			return modifiedStrings.ToArray();
 		}
 	}
 }

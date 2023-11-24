@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   Cat command.
+-   TextHelper.ConcatenateSentence method.
 
 ## [1.9.0-beta 2023-11-23]
 
