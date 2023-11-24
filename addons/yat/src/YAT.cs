@@ -65,6 +65,7 @@ namespace YAT
 			AddCommand(new Cls(this));
 			AddCommand(new Man(this));
 			AddCommand(new Set(this));
+			AddCommand(new Cat(this));
 			AddCommand(new Quit(this));
 			AddCommand(new Echo(this));
 			AddCommand(new List(this));
