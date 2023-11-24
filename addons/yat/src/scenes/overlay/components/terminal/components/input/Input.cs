@@ -24,6 +24,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 		private void OnTextSubmitted(string command)
 		{
 			var input = TextHelper.SanitizeText(command);
+			input = TextHelper.ConcatenateSentence(input);
 
 			if (input.Length == 0 || _commandManager.Locked) return;
 

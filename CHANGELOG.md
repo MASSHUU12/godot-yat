@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 -   Cat command.
 -   TextHelper.ConcatenateSentence method.
 
+### Changed
+
+-   The terminal now distinguishes between sentences wrapped in " or ' and treats them as a whole.
+
 ## [1.9.0-beta 2023-11-23]
 
 ### Added
