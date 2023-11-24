@@ -65,10 +65,11 @@ namespace YAT.Helpers
 					)
 					{
 						i++;
+						if (i >= strings.Length) break;
 						sentence += $" {strings[i]}";
 					}
 
-					sentence = sentence[..^1];
+					sentence = i >= strings.Length ? sentence : sentence[..^1];
 					modifiedStrings.Add(sentence);
 				}
 				else modifiedStrings.Add(strings[i]);
