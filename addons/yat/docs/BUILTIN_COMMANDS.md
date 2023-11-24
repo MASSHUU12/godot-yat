@@ -22,3 +22,4 @@
 | set      | N/A    | Sets a variable to a value. Does nothing by default, requires adding extensions. |
 | watch    | N/A    | Runs user-defined (not threaded) commands at regular intervals.                  |
 | history  | hist   | Manages the command history of the current session.                              |
+| cat      | N/A    | Prints content of a file.                                                        |
