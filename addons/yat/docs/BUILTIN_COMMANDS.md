@@ -23,3 +23,4 @@
 | watch    | N/A    | Runs user-defined (not threaded) commands at regular intervals.                  |
 | history  | hist   | Manages the command history of the current session.                              |
 | cat      | N/A    | Prints content of a file.                                                        |
+| cowsay   | N/A    | Make a cow say something.                                                        |
