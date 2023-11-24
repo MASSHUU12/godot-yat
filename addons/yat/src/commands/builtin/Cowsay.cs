@@ -21,25 +21,30 @@ namespace YAT.Commands
 			return CommandResult.Success;
 		}
 
-		private static string[] GenerateBubble(string message)
+		private static string GenerateSpeechBubble(string text)
 		{
-			var lines = message.Split('\n');
-			var longestLine = lines.Max(line => line.Length);
+			string[] lines = text.Split('\n');
+			int maxLineLength = lines.Max(line => line.Length);
+			int bubbleWidth = maxLineLength + 4;
 
-			var bubbleWidth = longestLine + 4;
-			var bubble = new string[lines.Length + 2];
+			string topLine = "  " + new string('_', bubbleWidth + 2);
+			string bottomLine = "  " + new string('-', (int)(bubbleWidth * 1.5));
 
-			bubble[0] = $" {new string('_', bubbleWidth)}";
-			bubble[1] = $"/ {message.PadRight(longestLine)} \\";
-			bubble[2] = $"\\ {new string('-', bubbleWidth)} /";
+			StringBuilder middleLines = new();
+			foreach (string line in lines)
+			{
+				int padding = maxLineLength - line.Length;
+				string paddedLine = "< " + line + new string(' ', padding) + " >\n";
+				middleLines.Append(paddedLine);
+			}
 
-			return bubble;
+			return topLine + '\n' + middleLines.ToString() + bottomLine;
 		}
 
 		private void PrintCow(string message)
 		{
-			var bubble = GenerateBubble(message);
-			var padding = string.Empty.PadRight(bubble[0].Length >> 1);
+			var bubble = GenerateSpeechBubble(message);
+			var padding = string.Empty.PadRight(bubble.Length >> 2);
 			var cow = new[]
 			{
 				$"{padding} \\   ^__^",
