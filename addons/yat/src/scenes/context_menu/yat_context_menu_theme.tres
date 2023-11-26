@@ -1,0 +1,22 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://ds2kv5hxa6wpg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j10hw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gempe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdm46"]
+bg_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gy6jr"]
+
+[resource]
+PopupMenu/font_sizes/font_separator_size = 16
+PopupMenu/font_sizes/font_size = 14
+PopupMenu/styles/labeled_separator_left = SubResource("StyleBoxEmpty_j10hw")
+PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxEmpty_gempe")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_cdm46")
+PopupMenu/styles/separator = SubResource("StyleBoxEmpty_gy6jr")
