@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://byapbl7njd52y"]
+
+[ext_resource type="PackedScene" uid="uid://cqk7b35vstfc8" path="res://addons/yat/src/scenes/context_menu/ContextMenu.tscn" id="1_jv4im"]
+
+[node name="TerminalContext" instance=ExtResource("1_jv4im")]
