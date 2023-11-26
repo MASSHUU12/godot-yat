@@ -110,8 +110,8 @@ public partial class Player : CharacterBody3D
 	private static Vector2 GetInputVector()
 	{
 		return Input.GetVector(
-			"example_player_move_left", "example_player_move_right",
-			"example_player_move_forward", "example_player_move_backward"
+			"yat_example_player_move_left", "yat_example_player_move_right",
+			"yat_example_player_move_forward", "yat_example_player_move_backward"
 		);
 	}
 }
