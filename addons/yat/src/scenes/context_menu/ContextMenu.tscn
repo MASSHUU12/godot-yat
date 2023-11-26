@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqk7b35vstfc8"]
+[gd_scene load_steps=3 format=3 uid="uid://cqk7b35vstfc8"]
 
 [ext_resource type="Theme" uid="uid://ds2kv5hxa6wpg" path="res://addons/yat/src/scenes/context_menu/yat_context_menu_theme.tres" id="1_yydo2"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/context_menu/ContextMenu.cs" id="2_ura0f"]
 
 [node name="ContextMenu" type="PopupMenu"]
 disable_3d = true
@@ -14,3 +15,4 @@ item_0/id = 0
 item_0/separator = true
 item_1/text = "Dolor sit amet"
 item_1/id = 1
+script = ExtResource("2_ura0f")
