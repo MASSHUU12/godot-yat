@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+-   Godot.NET.Sdk version to 4.2.0-rc.2.
 -   The terminal now distinguishes between sentences wrapped in " or ' and treats them as a whole.
 
 ## [1.9.0-beta 2023-11-23]
