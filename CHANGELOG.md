@@ -10,12 +10,19 @@ All notable changes to this project will be documented in this file.
 -   Cowsay command.
 -   TextHelper.ConcatenateSentence method.
 -   yat_context_menu input event keybinding.
+-   Generic context menu.
+-   Generic context submenu.
+-   Context menu for terminal.
 
 ### Changed
 
 -   Godot.NET.Sdk version to 4.2.0-rc.2.
 -   The terminal now distinguishes between sentences wrapped in " or ' and treats them as a whole.
 -   Renamed keybindings for example scenes.
+
+### Fixed
+
+-   Reference to CommandManager in YAT.
 
 ## [1.9.0-beta 2023-11-23]
 
