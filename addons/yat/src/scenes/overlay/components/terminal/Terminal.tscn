@@ -54,6 +54,5 @@ script = ExtResource("3_vlo1w")
 
 [node name="TerminalContext" parent="Content" index="1" instance=ExtResource("6_letxx")]
 unique_name_in_owner = true
-handle_input_locally = true
+title = "Context menu"
 visible = false
-mouse_passthrough = false

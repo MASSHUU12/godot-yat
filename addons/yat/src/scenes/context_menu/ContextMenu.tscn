@@ -5,16 +5,7 @@
 
 [node name="ContextMenu" type="PopupMenu"]
 disable_3d = true
-handle_input_locally = false
-title = "Context menu"
 size = Vector2i(255, 100)
 visible = true
-mouse_passthrough = true
 theme = ExtResource("1_yydo2")
-item_count = 2
-item_0/text = "Lorem ipsum"
-item_0/id = 0
-item_0/separator = true
-item_1/text = "Dolor sit amet"
-item_1/id = 1
 script = ExtResource("2_ura0f")
