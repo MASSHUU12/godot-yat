@@ -14,6 +14,7 @@ To use this extension, you need to create these keybindings in your project.
 -   `yat_terminal_history_previous` - Displays the previous command from history.
 -   `yat_terminal_interrupt` - Used to stop command working on separate thread.
 -   `yat_terminal_autocompletion` - Used to scroll through suggestions from autocompletion.
+-   `yat_context_menu` - Allows to call the context menu.
 
 ### Example
 
@@ -26,6 +27,7 @@ To use this extension, you need to create these keybindings in your project.
 
 -   yat_toggle: `~`
 -   yat_terminal_interrupt: `Ctrl + C`
+-   yat_context_menu: `Right Mouse Button`
 -   yat_terminal_history_next: `Arrow Down`
 -   yat_terminal_history_previous: `Arrow Up`
 
