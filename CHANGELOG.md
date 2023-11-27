@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 -   Cat command.
 -   Cowsay command.
+-   QuickCommands command.
 -   TextHelper.ConcatenateSentence method.
 -   yat_context_menu input event keybinding.
 -   Generic context menu.
