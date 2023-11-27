@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dsyqv187j7w76"]
+[gd_scene load_steps=7 format=3 uid="uid://dsyqv187j7w76"]
 
 [ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/overlay/components/yat_window/YatWindow.tscn" id="2_0wq7x"]
 [ext_resource type="Theme" uid="uid://bbo6sgir4ilud" path="res://addons/yat/src/scenes/overlay/components/terminal/theme/yat_terminal_theme.tres" id="2_8e34l"]
@@ -6,14 +6,6 @@
 [ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/terminal/components/input/Input.cs" id="3_vlo1w"]
 [ext_resource type="PackedScene" uid="uid://dnjobwvlxce2m" path="res://addons/yat/src/scenes/overlay/components/terminal/components/autocompletion/Autocompletion.tscn" id="4_qug7a"]
 [ext_resource type="PackedScene" uid="uid://byapbl7njd52y" path="res://addons/yat/src/scenes/overlay/components/terminal/components/terminal_context/TerminalContext.tscn" id="6_letxx"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/terminal/components/terminal_context/quick_commands/QuickCommands.cs" id="7_hoxxy"]
-
-[sub_resource type="Resource" id="Resource_wys1c"]
-script = ExtResource("7_hoxxy")
-Commands = {
-"Hello": "watch echo 0.5 Hello",
-"Quit": "quit"
-}
 
 [node name="Terminal" instance=ExtResource("2_0wq7x")]
 title = "YAT"
@@ -64,4 +56,3 @@ script = ExtResource("3_vlo1w")
 unique_name_in_owner = true
 title = "Context menu"
 visible = false
-QuickCommands = SubResource("Resource_wys1c")
