@@ -24,8 +24,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
--   Reference to CommandManager in YAT.
--   Sentences (wrapped in " or ') consisting of one word were incorrectly recognized.
+-   The CommandManager variable in YAT was empty, instead of storing a reference to Command Manager.
 
 ## [1.9.0-beta 2023-11-23]
 
