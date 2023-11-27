@@ -1,9 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://byapbl7njd52y"]
+[gd_scene load_steps=4 format=3 uid="uid://byapbl7njd52y"]
 
 [ext_resource type="PackedScene" uid="uid://cqk7b35vstfc8" path="res://addons/yat/src/scenes/context_menu/ContextMenu.tscn" id="1_jv4im"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/terminal/components/terminal_context/TerminalContext.cs" id="2_hofjw"]
+[ext_resource type="PackedScene" uid="uid://jdyvooorqjp2" path="res://addons/yat/src/scenes/context_menu/context_submenu/ContextSubmenu.tscn" id="3_l1nd4"]
 
 [node name="TerminalContext" instance=ExtResource("1_jv4im")]
-item_count = 1
-item_0/text = "Quick commands"
 script = ExtResource("2_hofjw")
+
+[node name="QuickCommandsSubmenu" parent="." index="3" instance=ExtResource("3_l1nd4")]
+handle_input_locally = false
+visible = false
+mouse_passthrough = true
+item_count = 1
+item_0/text = "quit"
+item_0/id = 0
