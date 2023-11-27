@@ -5,6 +5,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 	public partial class Terminal : YatWindow.YatWindow
 	{
 		public Input Input { get; private set; }
+		public TerminalContext Context { get; private set; }
 
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
@@ -34,7 +35,6 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 		private RichTextLabel Output;
 		private string _prompt = "> ";
 		private CommandManager _commandManager;
-		private TerminalContext _terminalContext;
 
 		public override void _Ready()
 		{
@@ -43,7 +43,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 
-			_terminalContext = GetNode<TerminalContext>("%TerminalContext");
+			Context = GetNode<TerminalContext>("%TerminalContext");
 
 			_commandManager = _yat.GetNode<CommandManager>("CommandManager");
 			_commandManager.CommandStarted += (command, args) => Title = "YAT - " + command;
@@ -109,7 +109,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 
 				if (@event.IsActionPressed("yat_context_menu"))
 				{
-					_terminalContext.ShowNextToMouse();
+					Context.ShowNextToMouse();
 				}
 			}
 
