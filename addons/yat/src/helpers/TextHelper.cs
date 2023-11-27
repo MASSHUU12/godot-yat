@@ -62,7 +62,7 @@ namespace YAT.Helpers
 				// If the token starts and ends with quotation marks, remove them
 				if (startsWith && EndsWith(token, '"', '\''))
 				{
-					modifiedStrings.Add(token[1..^1]);
+					modifiedStrings.Add(token.Length > 1 ? token[1..^1] : token[1..]);
 					continue;
 				}
 
