@@ -79,6 +79,7 @@ namespace YAT
 			AddCommand(new Restart(this));
 			AddCommand(new History(this));
 			AddCommand(new Whereami(this));
+			AddCommand(new Commands.QuickCommands(this));
 		}
 
 		public override void _Input(InputEvent @event)
