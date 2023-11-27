@@ -7,20 +7,21 @@
 
 > More information about each command can be found in their manuals.
 
-| Command  | Alias  | Description                                                                      |
-| -------- | ------ | -------------------------------------------------------------------------------- |
-| cls      | clear  | Clears the console.                                                              |
-| man      | N/A    | Displays the manual for a command.                                               |
-| quit     | N/A    | Quits the game.                                                                  |
-| echo     | N/A    | Displays the given text.                                                         |
-| restart  | reboot | Restarts the level.                                                              |
-| options  | N/A    | Creates the options window.                                                      |
-| pause    | N/A    | Toggles the game pause state.                                                    |
-| whereami | wai    | Prints the current scene name and path.                                          |
-| list     | ls     | List all available commands.                                                     |
-| view     | N/A    | Changes the rendering mode of the viewport.                                      |
-| set      | N/A    | Sets a variable to a value. Does nothing by default, requires adding extensions. |
-| watch    | N/A    | Runs user-defined (not threaded) commands at regular intervals.                  |
-| history  | hist   | Manages the command history of the current session.                              |
-| cat      | N/A    | Prints content of a file.                                                        |
-| cowsay   | N/A    | Make a cow say something.                                                        |
+| Command       | Alias  | Description                                                                      |
+| ------------- | ------ | -------------------------------------------------------------------------------- |
+| cls           | clear  | Clears the console.                                                              |
+| man           | N/A    | Displays the manual for a command.                                               |
+| quit          | N/A    | Quits the game.                                                                  |
+| echo          | N/A    | Displays the given text.                                                         |
+| restart       | reboot | Restarts the level.                                                              |
+| options       | N/A    | Creates the options window.                                                      |
+| pause         | N/A    | Toggles the game pause state.                                                    |
+| whereami      | wai    | Prints the current scene name and path.                                          |
+| list          | ls     | List all available commands.                                                     |
+| view          | N/A    | Changes the rendering mode of the viewport.                                      |
+| set           | N/A    | Sets a variable to a value. Does nothing by default, requires adding extensions. |
+| watch         | N/A    | Runs user-defined (not threaded) commands at regular intervals.                  |
+| history       | hist   | Manages the command history of the current session.                              |
+| cat           | N/A    | Prints content of a file.                                                        |
+| cowsay        | N/A    | Make a cow say something.                                                        |
+| quickcommands | qc     | Manages Quick Commands.                                                          |

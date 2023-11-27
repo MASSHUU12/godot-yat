@@ -6,7 +6,7 @@ using YAT.Scenes.Overlay.Components.Terminal;
 
 namespace YAT.Commands
 {
-	[Command("quickcommands", "Manages quick commands.", "[b]Usage[/b]: quickcommands [i]action[/i] [i]name[/i] [i]command[/i]", "qc")]
+	[Command("quickcommands", "Manages Quick Commands.", "[b]Usage[/b]: quickcommands [i]action[/i] [i]name[/i] [i]command[/i]", "qc")]
 	[Arguments("action:[add, remove, list]", "name:string", "command:string")]
 	public sealed class QuickCommands : ICommand
 	{
