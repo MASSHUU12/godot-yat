@@ -60,7 +60,9 @@ namespace YAT
 
 			Overlay = GD.Load<PackedScene>("res://addons/yat/src/scenes/overlay/Overlay.tscn").Instantiate<Scenes.Overlay.Overlay>();
 			Overlay.Ready += OnOverlayReady;
+
 			OptionsManager = new(this, Options);
+			CommandManager = GetNode<CommandManager>("./CommandManager");
 
 			AddCommand(new Cls(this));
 			AddCommand(new Man(this));
