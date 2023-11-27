@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/terminal/components/terminal_context/quick_commands/QuickCommands.cs" id="3_0x3x6"]
 [ext_resource type="PackedScene" uid="uid://c4jcws6fnnmwc" path="res://addons/yat/src/scenes/overlay/components/terminal/components/terminal_context/quic_commands_context/QuickCommandsContext.tscn" id="3_mbmve"]
 
-[sub_resource type="Resource" id="Resource_ja0fr"]
+[sub_resource type="Resource" id="Resource_msn3d"]
 script = ExtResource("3_0x3x6")
 Commands = {
 "Hello": "watch echo 0.5 Hello",
@@ -16,4 +16,4 @@ Commands = {
 script = ExtResource("2_hofjw")
 
 [node name="QuickCommandsContext" parent="." index="3" instance=ExtResource("3_mbmve")]
-QuickCommands = SubResource("Resource_ja0fr")
+QuickCommands = SubResource("Resource_msn3d")
