@@ -58,12 +58,9 @@ namespace YAT.Helpers
 			{
 				string token = strings[i];
 				bool startsWith = token.IndexOfAny(new[] { '"', '\'' }) == 0;
-				bool endsWith = token[1..].ToString().IndexOfAny(
-					new[] { '"', '\'' }
-				) == token.Length - 2; // -2 to account for the index starting at 1
 
 				// If the token starts and ends with quotation marks, remove them
-				if (startsWith && endsWith)
+				if (startsWith && EndsWith(token, '"', '\''))
 				{
 					modifiedStrings.Add(token[1..^1]);
 					continue;
@@ -72,14 +69,14 @@ namespace YAT.Helpers
 				// If the token starts with a quotation mark, concatenate the next strings
 				if (startsWith)
 				{
-					string sentence = token[1..];
+					string sentence = strings[i][1..];
 
 					// Concatenate the next strings until the end of the sentence is reached
-					while (!endsWith && i < strings.Length)
+					while (!EndsWith(strings[i], '"', '\'') && i < strings.Length)
 					{
 						i++;
 						if (i >= strings.Length) break;
-						sentence += $" {token}";
+						sentence += $" {strings[i]}";
 					}
 
 					sentence = i >= strings.Length ? sentence : sentence[..^1];
@@ -89,6 +86,17 @@ namespace YAT.Helpers
 			}
 
 			return modifiedStrings.ToArray();
+		}
+
+		/// <summary>
+		/// Determines whether the specified text ends with any of the specified characters.
+		/// </summary>
+		/// <param name="text">The text to check.</param>
+		/// <param name="value">The characters to compare against the end of the text.</param>
+		/// <returns><c>true</c> if the text ends with any of the specified characters; otherwise, <c>false</c>.</returns>
+		public static bool EndsWith(string text, params char[] value)
+		{
+			return value.Any(text.EndsWith);
 		}
 	}
 }
