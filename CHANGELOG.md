@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 -   Generic context menu.
 -   Generic context submenu.
 -   Context menu for terminal.
+-   Quick Commands for terminal.
 
 ### Changed
 
@@ -23,6 +24,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Reference to CommandManager in YAT.
+-   Sentences (wrapped in " or ') consisting of one word were incorrectly recognized.
 
 ## [1.9.0-beta 2023-11-23]
 

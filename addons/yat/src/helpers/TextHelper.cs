@@ -54,25 +54,38 @@ namespace YAT.Helpers
 		{
 			List<string> modifiedStrings = new();
 
-			for (int i = 0; i < strings.Length; i++)
+			for (ushort i = 0; i < strings.Length; i++)
 			{
-				if (strings[i].IndexOfAny(new[] { '"', '\'' }) == 0)
-				{
-					string sentence = strings[i][1..];
+				string token = strings[i];
+				bool startsWith = token.IndexOfAny(new[] { '"', '\'' }) == 0;
+				bool endsWith = token[1..].ToString().IndexOfAny(
+					new[] { '"', '\'' }
+				) == token.Length - 2; // -2 to account for the index starting at 1
 
-					while (!(strings[i].IndexOfAny(new[] { '"', '\'' }) == strings[i].Length - 1)
-						&& i < strings.Length
-					)
+				// If the token starts and ends with quotation marks, remove them
+				if (startsWith && endsWith)
+				{
+					modifiedStrings.Add(token[1..^1]);
+					continue;
+				}
+
+				// If the token starts with a quotation mark, concatenate the next strings
+				if (startsWith)
+				{
+					string sentence = token[1..];
+
+					// Concatenate the next strings until the end of the sentence is reached
+					while (!endsWith && i < strings.Length)
 					{
 						i++;
 						if (i >= strings.Length) break;
-						sentence += $" {strings[i]}";
+						sentence += $" {token}";
 					}
 
 					sentence = i >= strings.Length ? sentence : sentence[..^1];
 					modifiedStrings.Add(sentence);
 				}
-				else modifiedStrings.Add(strings[i]);
+				else modifiedStrings.Add(token);
 			}
 
 			return modifiedStrings.ToArray();
