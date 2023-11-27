@@ -34,7 +34,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 		private RichTextLabel Output;
 		private string _prompt = "> ";
 		private CommandManager _commandManager;
-		private ContextMenu.ContextMenu _terminalContext;
+		private TerminalContext _terminalContext;
 
 		public override void _Ready()
 		{
@@ -43,7 +43,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 
-			_terminalContext = GetNode<ContextMenu.ContextMenu>("%TerminalContext");
+			_terminalContext = GetNode<TerminalContext>("%TerminalContext");
 
 			_commandManager = _yat.GetNode<CommandManager>("CommandManager");
 			_commandManager.CommandStarted += (command, args) => Title = "YAT - " + command;
