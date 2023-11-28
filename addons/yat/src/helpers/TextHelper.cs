@@ -57,12 +57,31 @@ namespace YAT.Helpers
 			for (ushort i = 0; i < strings.Length; i++)
 			{
 				string token = strings[i];
-				bool startsWith = token.IndexOfAny(new[] { '"', '\'' }) == 0;
+				bool startsWith = StartsWith(token, '"', '\'');
 
 				// If the token starts and ends with quotation marks, remove them
 				if (startsWith && EndsWith(token, '"', '\''))
 				{
 					modifiedStrings.Add(token.Length > 1 ? token[1..^1] : token[1..]);
+					continue;
+				}
+
+				// Handle sentences in options (e.g. -name="John Doe")
+				if (StartsWith(token, '-') && !EndsWith(token, '"', '\''))
+				{
+					string sentence = token.Replace("\"", string.Empty).Replace("'", string.Empty);
+
+					// Concatenate the next strings until the end of the sentence is reached
+					while (!EndsWith(strings[i], '"', '\'') && i < strings.Length)
+					{
+						i++;
+						if (i >= strings.Length) break;
+
+						sentence += $" {strings[i]}";
+					}
+
+					sentence = i >= strings.Length ? sentence : sentence[..^1];
+					modifiedStrings.Add(sentence);
 					continue;
 				}
 

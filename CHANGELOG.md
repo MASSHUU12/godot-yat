@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 -   Context menu for terminal.
 -   Quick Commands for terminal.
 -   StartsWith & EndsWith text helper method.
+-   Support for sentences in options.
 
 ### Changed
 
