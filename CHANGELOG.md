@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 -   Godot.NET.Sdk version to 4.2.0-rc.2.
 -   The terminal now distinguishes between sentences wrapped in " or ' and treats them as a whole.
 -   Renamed keybindings for example scenes.
+-   New showcase video.
 
 ### Fixed
 

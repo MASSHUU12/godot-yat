@@ -29,7 +29,7 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 
 ## Showcase
 
-<video src="https://github.com/MASSHUU12/godot-yat/assets/61974579/d7ebaafc-380e-4a0e-83ff-40e5fe485f75" controls title="Terminal showcase video"></video>
+<video src="https://github.com/MASSHUU12/godot-yat/assets/61974579/85ec5856-d9ea-4496-89e5-a9d6cbec20ce" controls title="YAT showcase video"></video>
 
 ## Documentation
 
