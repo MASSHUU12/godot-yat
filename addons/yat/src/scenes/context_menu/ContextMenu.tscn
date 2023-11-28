@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqk7b35vstfc8"]
+
+[ext_resource type="Theme" uid="uid://ds2kv5hxa6wpg" path="res://addons/yat/src/scenes/context_menu/yat_context_menu_theme.tres" id="1_yydo2"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/context_menu/ContextMenu.cs" id="2_ura0f"]
+
+[node name="ContextMenu" type="PopupMenu"]
+disable_3d = true
+size = Vector2i(255, 100)
+visible = true
+theme = ExtResource("1_yydo2")
+script = ExtResource("2_ura0f")

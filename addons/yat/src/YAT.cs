@@ -60,7 +60,9 @@ namespace YAT
 
 			Overlay = GD.Load<PackedScene>("res://addons/yat/src/scenes/overlay/Overlay.tscn").Instantiate<Scenes.Overlay.Overlay>();
 			Overlay.Ready += OnOverlayReady;
+
 			OptionsManager = new(this, Options);
+			CommandManager = GetNode<CommandManager>("./CommandManager");
 
 			AddCommand(new Cls(this));
 			AddCommand(new Man(this));
@@ -77,6 +79,7 @@ namespace YAT
 			AddCommand(new Restart(this));
 			AddCommand(new History(this));
 			AddCommand(new Whereami(this));
+			AddCommand(new Commands.QuickCommands(this));
 		}
 
 		public override void _Input(InputEvent @event)

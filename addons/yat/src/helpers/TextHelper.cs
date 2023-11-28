@@ -54,15 +54,47 @@ namespace YAT.Helpers
 		{
 			List<string> modifiedStrings = new();
 
-			for (int i = 0; i < strings.Length; i++)
+			for (ushort i = 0; i < strings.Length; i++)
 			{
-				if (strings[i].IndexOfAny(new[] { '"', '\'' }) == 0)
+				string token = strings[i];
+				bool startsWith = StartsWith(token, '"', '\'');
+
+				// If the token starts and ends with quotation marks, remove them
+				if (startsWith && EndsWith(token, '"', '\''))
+				{
+					modifiedStrings.Add(token.Length > 1 ? token[1..^1] : token[1..]);
+					continue;
+				}
+
+				// Handle sentences in options (e.g. -name="John Doe")
+				if (StartsWith(token, '-') &&
+					(token.Contains('"') || token.Contains('\''))
+					&& !EndsWith(token, '"', '\'')
+				)
+				{
+					string sentence = token.Replace("\"", string.Empty).Replace("'", string.Empty);
+
+					// Concatenate the next strings until the end of the sentence is reached
+					while (!EndsWith(strings[i], '"', '\'') && i < strings.Length)
+					{
+						i++;
+						if (i >= strings.Length) break;
+
+						sentence += $" {strings[i]}";
+					}
+
+					sentence = i >= strings.Length ? sentence : sentence[..^1];
+					modifiedStrings.Add(sentence);
+					continue;
+				}
+
+				// If the token starts with a quotation mark, concatenate the next strings
+				if (startsWith)
 				{
 					string sentence = strings[i][1..];
 
-					while (!(strings[i].IndexOfAny(new[] { '"', '\'' }) == strings[i].Length - 1)
-						&& i < strings.Length
-					)
+					// Concatenate the next strings until the end of the sentence is reached
+					while (!EndsWith(strings[i], '"', '\'') && i < strings.Length)
 					{
 						i++;
 						if (i >= strings.Length) break;
@@ -72,10 +104,32 @@ namespace YAT.Helpers
 					sentence = i >= strings.Length ? sentence : sentence[..^1];
 					modifiedStrings.Add(sentence);
 				}
-				else modifiedStrings.Add(strings[i]);
+				else modifiedStrings.Add(token);
 			}
 
 			return modifiedStrings.ToArray();
+		}
+
+		/// <summary>
+		/// Determines whether the specified string starts with any of the specified characters.
+		/// </summary>
+		/// <param name="text">The string to check.</param>
+		/// <param name="value">The characters to compare.</param>
+		/// <returns><c>true</c> if the string starts with any of the specified characters; otherwise, <c>false</c>.</returns>
+		public static bool StartsWith(string text, params char[] value)
+		{
+			return value.Any(text.StartsWith);
+		}
+
+		/// <summary>
+		/// Determines whether the specified text ends with any of the specified characters.
+		/// </summary>
+		/// <param name="text">The text to check.</param>
+		/// <param name="value">The characters to compare against the end of the text.</param>
+		/// <returns><c>true</c> if the text ends with any of the specified characters; otherwise, <c>false</c>.</returns>
+		public static bool EndsWith(string text, params char[] value)
+		{
+			return value.Any(text.EndsWith);
 		}
 	}
 }
