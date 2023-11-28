@@ -7,10 +7,7 @@
 
 [sub_resource type="Resource" id="Resource_msn3d"]
 script = ExtResource("3_0x3x6")
-Commands = {
-"Hello": "watch echo 0.5 Hello",
-"Quit": "quit"
-}
+Commands = {}
 
 [node name="TerminalContext" instance=ExtResource("1_jv4im")]
 script = ExtResource("2_hofjw")

@@ -6,16 +6,11 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 	public partial class QuickCommandsContext : ContextSubmenu
 	{
 		[Export]
-		public QuickCommands QuickCommands { get; set; } = new()
-		{
-			Commands = {
-				{ "Quit", "quit"},
-				{ "Hello", "watch echo 0.5 Hello"}
-			}
-		};
+		public QuickCommands QuickCommands { get; set; } = new();
 
 		private YAT _yat;
 		private const ushort _maxQuickCommands = 10;
+		private const string _optionsPath = "user://yat_qc.tres";
 
 		public override void _Ready()
 		{
@@ -40,9 +35,12 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 			) return false;
 
 			QuickCommands.Commands.Add(name, command);
+
+			var status = StorageHelper.SaveResource(QuickCommands, _optionsPath);
+
 			GetQuickCommands();
 
-			return true;
+			return status;
 		}
 
 		/// <summary>
@@ -55,9 +53,12 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 			if (!QuickCommands.Commands.ContainsKey(name)) return false;
 
 			QuickCommands.Commands.Remove(name);
+
+			var status = StorageHelper.SaveResource(QuickCommands, _optionsPath);
+
 			GetQuickCommands();
 
-			return true;
+			return status;
 		}
 
 		/// <summary>
@@ -65,6 +66,10 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 		/// </summary>
 		private void GetQuickCommands()
 		{
+			var qc = StorageHelper.LoadResource<QuickCommands>(_optionsPath);
+
+			if (qc != null) QuickCommands = qc;
+
 			Clear();
 
 			foreach (var command in QuickCommands.Commands)
