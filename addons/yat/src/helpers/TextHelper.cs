@@ -89,6 +89,17 @@ namespace YAT.Helpers
 		}
 
 		/// <summary>
+		/// Determines whether the specified string starts with any of the specified characters.
+		/// </summary>
+		/// <param name="text">The string to check.</param>
+		/// <param name="value">The characters to compare.</param>
+		/// <returns><c>true</c> if the string starts with any of the specified characters; otherwise, <c>false</c>.</returns>
+		public static bool StartsWith(string text, params char[] value)
+		{
+			return value.Any(text.StartsWith);
+		}
+
+		/// <summary>
 		/// Determines whether the specified text ends with any of the specified characters.
 		/// </summary>
 		/// <param name="text">The text to check.</param>

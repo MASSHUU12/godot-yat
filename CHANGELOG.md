@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file.
 -   Generic context submenu.
 -   Context menu for terminal.
 -   Quick Commands for terminal.
--   EndsWith text helper method.
+-   StartsWith & EndsWith text helper method.
 
 ### Changed
 
