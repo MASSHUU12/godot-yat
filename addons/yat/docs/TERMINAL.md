@@ -19,6 +19,8 @@ YAT uses the keybinding `yat_context_menu` to launch the context menu, so if you
 
 #### Quick Commands
 
+> Quick Commands are saved in user://yat_qc.tres
+
 The terminal's context menu allows you to run Quick Commands.
 These are user-defined command prompts, and you can manage them via the `qc` command.
 
