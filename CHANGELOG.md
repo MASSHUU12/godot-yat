@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   The CommandManager variable in YAT was empty, instead of storing a reference to Command Manager.
+-   Providing an '=' character in an option resulted in incorrect parsing of the option.
 
 ## [1.9.0-beta 2023-11-23]
 
