@@ -67,7 +67,10 @@ namespace YAT.Helpers
 				}
 
 				// Handle sentences in options (e.g. -name="John Doe")
-				if (StartsWith(token, '-') && !EndsWith(token, '"', '\''))
+				if (StartsWith(token, '-') &&
+					(token.Contains('"') || token.Contains('\''))
+					&& !EndsWith(token, '"', '\'')
+				)
 				{
 					string sentence = token.Replace("\"", string.Empty).Replace("'", string.Empty);
 
