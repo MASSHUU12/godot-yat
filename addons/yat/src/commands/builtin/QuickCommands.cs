@@ -7,7 +7,8 @@ using YAT.Scenes.Overlay.Components.Terminal;
 namespace YAT.Commands
 {
 	[Command("quickcommands", "Manages Quick Commands.", "[b]Usage[/b]: quickcommands [i]action[/i] [i]name[/i] [i]command[/i]", "qc")]
-	[Arguments("action:[add, remove, list]", "name:string", "command:string")]
+	[Arguments("action:[add, remove, list]")]
+	[Options("-name=string", "-command=string")]
 	public sealed class QuickCommands : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -17,28 +18,21 @@ namespace YAT.Commands
 		public CommandResult Execute(System.Collections.Generic.Dictionary<string, object> cArgs, params string[] args)
 		{
 			string action = (string)cArgs["action"];
-			string name = (string)cArgs["name"];
-			string command = (string)cArgs["command"];
+			string name = cArgs.TryGetValue("-name", out object nameObj) ? (string)nameObj : null;
+			string command = cArgs.TryGetValue("-command", out object commandObj) ? (string)commandObj : null;
 
-			bool status = true;
-			string message;
+			if (action != "list" && string.IsNullOrEmpty(name))
+			{
+				Yat.Terminal.Print("You need to provide a command name for this action.", Terminal.PrintType.Error);
+				return CommandResult.Failure;
+			}
 
 			switch (action)
 			{
 				case "add":
-					status = Yat.Terminal.Context.QuickCommands.AddQuickCommand(name, command);
-					if (status) message = $"[b]Added quick command '{name}'[/b]";
-					else message = $"[b]Failed to add quick command '{name}'[/b]";
-
-					Yat.Terminal.Print(message, status ? Terminal.PrintType.Success : Terminal.PrintType.Error);
-					break;
+					return AddQuickCommand(name, command);
 				case "remove":
-					status = Yat.Terminal.Context.QuickCommands.RemoveQuickCommand(name);
-					if (status) message = $"[b]Removed quick command '{name}'[/b]";
-					else message = $"[b]Failed to remove quick command '{name}'[/b]";
-
-					Yat.Terminal.Print(message, status ? Terminal.PrintType.Success : Terminal.PrintType.Error);
-					break;
+					return RemoveQuickCommand(name);
 				default:
 					foreach (var qc in Yat.Terminal.Context.QuickCommands.QuickCommands.Commands)
 					{
@@ -46,6 +40,38 @@ namespace YAT.Commands
 					}
 					break;
 			}
+
+			return CommandResult.Success;
+		}
+
+		private CommandResult AddQuickCommand(string name, string command)
+		{
+			if (string.IsNullOrEmpty(command))
+			{
+				Yat.Terminal.Print("You need to provide command for this action.", Terminal.PrintType.Error);
+				return CommandResult.Failure;
+			}
+
+			bool status = Yat.Terminal.Context.QuickCommands.AddQuickCommand(name, command);
+			string message;
+
+			if (status) message = $"Added quick command '{name}'.";
+			else message = $"Failed to add quick command '{name}'.";
+
+			Yat.Terminal.Print(message, status ? Terminal.PrintType.Success : Terminal.PrintType.Error);
+
+			return status ? CommandResult.Success : CommandResult.Failure;
+		}
+
+		private CommandResult RemoveQuickCommand(string name)
+		{
+			bool status = Yat.Terminal.Context.QuickCommands.RemoveQuickCommand(name);
+			string message;
+
+			if (status) message = $"Removed quick command '{name}'.";
+			else message = $"Failed to remove quick command '{name}'.";
+
+			Yat.Terminal.Print(message, status ? Terminal.PrintType.Success : Terminal.PrintType.Error);
 
 			return status ? CommandResult.Success : CommandResult.Failure;
 		}
