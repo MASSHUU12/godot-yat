@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 -   StartsWith & EndsWith text helper method.
 -   Support for sentences in options.
 -   Terminal documentation.
+-   StorageHelper class.
 
 ### Changed
 
