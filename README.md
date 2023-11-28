@@ -20,6 +20,7 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 -   Extensible commands
 -   Threaded commands
 -   Custom commands and extensions
+-   Quick Commands
 -   Ability to restrict access to the plugin
 -   Script templates
 -   Automatic input validation
