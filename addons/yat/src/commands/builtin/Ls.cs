@@ -44,10 +44,12 @@ namespace YAT.Commands
 				string[] files = Directory.GetFiles(path);
 				string[] directories = Directory.GetDirectories(path);
 
+				DirectoryInfo directoryInfo = new(path);
+				FileSystemInfo[] fileSystemInfos = directoryInfo.GetFileSystemInfos();
+
 				StringBuilder sb = new();
 
-				AppendNames(sb, directories, isDirectory: true);
-				AppendNames(sb, files, isDirectory: false);
+				AppendDetails(sb, fileSystemInfos);
 
 				Yat.Terminal.Print(sb.ToString());
 			}
@@ -70,24 +72,50 @@ namespace YAT.Commands
 			return CommandResult.Success;
 		}
 
-		private void AppendNames(StringBuilder sb, string[] names, bool isDirectory)
+		/// <summary>
+		/// Appends details of the given FileSystemInfo array to the provided StringBuilder.
+		/// </summary>
+		/// <param name="sb">The StringBuilder to append the details to.</param>
+		/// <param name="infos">The array of FileSystemInfo objects to retrieve details from.</param>
+		private static void AppendDetails(StringBuilder sb, FileSystemInfo[] infos)
 		{
-			foreach (string name in names)
+			foreach (FileSystemInfo info in infos)
 			{
-				if (_ct.IsCancellationRequested) return;
+				var line = string.Format(
+					"{0}\t{1}\t{2}{3}{4}",
+					info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"),
+					info is FileInfo file ? GetFileSizeString(file.Length) : string.Empty,
+					info.Name,
+					info is DirectoryInfo ? '/' : string.Empty,
+					(info.Attributes & FileAttributes.Hidden) != 0 ? '*' : string.Empty
+				);
 
-				var attributes = File.GetAttributes(name);
-
-				sb.Append(Path.GetFileName(name));
-
-				if (isDirectory) sb.Append('/');
-
-				sb.Append(' ');
-
-				if (attributes.HasFlag(FileAttributes.Hidden)) sb.Append("[Hidden]");
-
+				sb.Append(line);
 				sb.AppendLine();
 			}
+		}
+
+		/// <summary>
+		/// Converts a file size in bytes to a human-readable string representation.
+		/// </summary>
+		/// <param name="fileSize">The file size in bytes.</param>
+		/// <returns>A string representing the file size in a human-readable format.</returns>
+		private static string GetFileSizeString(long fileSize)
+		{
+			const int byteConversion = 1024;
+			double bytes = fileSize;
+
+			if (bytes < byteConversion) return $"{bytes} B";
+
+			double kilobytes = bytes / byteConversion;
+			if (kilobytes < byteConversion) return $"{kilobytes:0.##} KB";
+
+			double megabytes = kilobytes / byteConversion;
+			if (megabytes < byteConversion) return $"{megabytes:0.##} MB";
+
+			double gigabytes = megabytes / byteConversion;
+
+			return $"{gigabytes:0.##} GB";
 		}
 	}
 }
