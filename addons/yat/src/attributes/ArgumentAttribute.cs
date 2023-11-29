@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace YAT.Attributes
 {
-	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public sealed class ArgumentAttribute : Attribute
 	{
 		public string Name { get; private set; }
