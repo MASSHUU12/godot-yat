@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading;
-using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
@@ -10,7 +9,7 @@ namespace YAT.Commands
 	[Command(
 		"ping",
 		"Sends ICMP (Internet Control Message Protocol) echo request to the server.",
-		"[b]Usage[/b]: ping"
+		"[b]Usage[/b]: ping [i]target[/i] [i]options[/i]"
 	)]
 	[Threaded]
 	[Arguments("target:string")]
