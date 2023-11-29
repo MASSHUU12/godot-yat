@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace YAT.Attributes
 {
-	[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = false)]
-	public sealed class ArgumentsAttribute : System.Attribute
+	[Obsolete("Use ArgumentAttribute instead.")]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	public sealed class ArgumentsAttribute : Attribute
 	{
 		// Arguments are defined as follows:
 		// arg - passed argument must match the name of the argument
