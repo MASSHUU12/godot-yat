@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 -   Ping command.
 -   Ip command.
 -   Ls command.
--   GetFileSizeString numeric helper method.
+-   FileSizeToString numeric helper method.
 
 ### Changed
 

@@ -93,7 +93,7 @@ namespace YAT.Commands
 										info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").Length
 				);
 				maxFileSizeLength = Math.Max(maxFileSizeLength, (info is FileInfo file)
-									? NumericHelper.GetFileSizeString(file.Length).Length
+									? NumericHelper.FileSizeToString(file.Length).Length
 									: 0
 				);
 			}
@@ -105,7 +105,7 @@ namespace YAT.Commands
 			{
 				if (_ct.IsCancellationRequested) return;
 
-				var fileSizeString = NumericHelper.GetFileSizeString(
+				var fileSizeString = NumericHelper.FileSizeToString(
 									info is FileInfo
 									? ((FileInfo)info).Length
 									: 0

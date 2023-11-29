@@ -54,7 +54,7 @@ namespace YAT.Helpers
 		/// </summary>
 		/// <param name="fileSize">The file size in bytes.</param>
 		/// <returns>A string representing the file size in a human-readable format.</returns>
-		public static string GetFileSizeString(long fileSize)
+		public static string FileSizeToString(long fileSize)
 		{
 			const int byteConversion = 1024;
 			double bytes = fileSize;
