@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 -   Ping command.
 -   Ip command.
 
+### Changed
+
+-   List command alias renamed to 'lc'.
+
 ## [1.10.0-beta]
 
 ### Added
