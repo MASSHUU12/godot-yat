@@ -13,6 +13,7 @@ namespace YAT.Commands
 	)]
 	[Threaded]
 	[Arguments("target:string")]
+	[Options("-timeout=int(120:1200)")]
 	public sealed class Ping : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -22,9 +23,10 @@ namespace YAT.Commands
 		public CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
 		{
 			string target = cArgs["target"] as string;
+			int timeout = cArgs.TryGetValue("timeout", out object timeoutObj) ? (int)timeoutObj : 120;
+
 			string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 			byte[] buffer = System.Text.Encoding.ASCII.GetBytes(data);
-			int timeout = 120;
 
 			while (!ct.IsCancellationRequested)
 			{
@@ -39,10 +41,9 @@ namespace YAT.Commands
 				{
 					Yat.Terminal.Print($"Reply from {reply.Address}: bytes={reply.Buffer.Length} time={reply.RoundtripTime}ms TTL={reply.Options.Ttl}");
 				}
-				else
-				{
-					Yat.Terminal.Print($"Request timed out.");
-				}
+				else Yat.Terminal.Print($"Request timed out.");
+
+				Thread.Sleep(1000);
 			}
 
 			return CommandResult.Success;
