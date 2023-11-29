@@ -7,7 +7,7 @@ using YAT.Interfaces;
 
 namespace YAT.Commands
 {
-	[Command("list", "List all available commands", "[b]Usage[/b]: list", "ls")]
+	[Command("list", "List all available commands", "[b]Usage[/b]: list", "lc")]
 	public partial class List : ICommand
 	{
 		public YAT Yat { get; set; }

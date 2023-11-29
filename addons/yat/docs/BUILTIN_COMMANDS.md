@@ -17,7 +17,7 @@
 | options       | N/A    | Creates the options window.                                                      |
 | pause         | N/A    | Toggles the game pause state.                                                    |
 | whereami      | wai    | Prints the current scene name and path.                                          |
-| list          | ls     | List all available commands.                                                     |
+| list          | lc     | List all available commands.                                                     |
 | view          | N/A    | Changes the rendering mode of the viewport.                                      |
 | set           | N/A    | Sets a variable to a value. Does nothing by default, requires adding extensions. |
 | watch         | N/A    | Runs user-defined (not threaded) commands at regular intervals.                  |
@@ -27,3 +27,4 @@
 | quickcommands | qc     | Manages Quick Commands.                                                          |
 | ping          | N/A    | Sends ICMP (Internet Control Message Protocol) echo request to the server.       |
 | ip            | N/A    | Displays your private IP addresses.                                              |
+| ls            | N/A    | Lists the contents of the current directory.                                     |

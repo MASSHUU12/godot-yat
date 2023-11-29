@@ -48,5 +48,28 @@ namespace YAT.Helpers
 			output = default;
 			return false;
 		}
+
+		/// <summary>
+		/// Converts a file size in bytes to a human-readable string representation.
+		/// </summary>
+		/// <param name="fileSize">The file size in bytes.</param>
+		/// <returns>A string representing the file size in a human-readable format.</returns>
+		public static string FileSizeToString(long fileSize)
+		{
+			const int byteConversion = 1024;
+			double bytes = fileSize;
+
+			if (bytes < byteConversion) return $"{bytes} B";
+
+			double kilobytes = bytes / byteConversion;
+			if (kilobytes < byteConversion) return $"{kilobytes:0.##} KB";
+
+			double megabytes = kilobytes / byteConversion;
+			if (megabytes < byteConversion) return $"{megabytes:0.##} MB";
+
+			double gigabytes = megabytes / byteConversion;
+
+			return $"{gigabytes:0.##} GB";
+		}
 	}
 }
