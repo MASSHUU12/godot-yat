@@ -16,7 +16,8 @@ namespace YAT.Commands
 	[Arguments("target:string")]
 	[Options(
 		"-timeout=int(120:1200)",
-		"-delay=int(1:10)"
+		"-delay=int(1:10)",
+		"-bytes=int(16:65500)"
 	)]
 	public sealed class Ping : ICommand
 	{
@@ -28,11 +29,11 @@ namespace YAT.Commands
 		{
 			string target = cArgs["target"] as string;
 			int timeout = cArgs["-timeout"] as int? ?? 120;
+			int bytes = cArgs["-bytes"] as int? ?? 32;
 			int delay = cArgs["-delay"] as int? ?? 1;
 			delay *= 1000;
 
-			string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-			byte[] buffer = System.Text.Encoding.ASCII.GetBytes(data);
+			byte[] buffer = System.Text.Encoding.ASCII.GetBytes(GenerateData(bytes));
 
 			while (!ct.IsCancellationRequested)
 			{
@@ -53,6 +54,21 @@ namespace YAT.Commands
 			}
 
 			return CommandResult.Success;
+		}
+
+		/// <summary>
+		/// Generates a string of specified length with repeated character 'a'.
+		/// </summary>
+		/// <param name="bytes">The number of bytes in the generated string.</param>
+		/// <returns>A string of specified length with repeated character 'a'.</returns>
+		private static string GenerateData(int bytes)
+		{
+			string data = string.Empty;
+			for (int i = 0; i < bytes; i++)
+			{
+				data += 'a';
+			}
+			return data;
 		}
 	}
 }
