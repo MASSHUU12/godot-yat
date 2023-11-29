@@ -72,6 +72,7 @@ namespace YAT
 			AddCommand(new Echo(this));
 			AddCommand(new List(this));
 			AddCommand(new View(this));
+			AddCommand(new Ping(this));
 			AddCommand(new Pause(this));
 			AddCommand(new Watch(this));
 			AddCommand(new Cowsay(this));
