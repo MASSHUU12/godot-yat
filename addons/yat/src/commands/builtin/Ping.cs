@@ -18,6 +18,7 @@ namespace YAT.Commands
 		"-timeout=int(120:1200)",
 		"-delay=int(1:10)",
 		"-bytes=int(16:65500)",
+		"-ttl=int(1:255)",
 		"-fragment"
 	)]
 	public sealed class Ping : ICommand
@@ -32,6 +33,7 @@ namespace YAT.Commands
 			bool fragment = (bool)cArgs["-fragment"];
 			int timeout = cArgs["-timeout"] as int? ?? 120;
 			int bytes = cArgs["-bytes"] as int? ?? 32;
+			int ttl = cArgs["-ttl"] as int? ?? 128;
 			int delay = cArgs["-delay"] as int? ?? 1;
 			delay *= 1000;
 
@@ -42,6 +44,7 @@ namespace YAT.Commands
 				System.Net.NetworkInformation.Ping ping = new();
 				System.Net.NetworkInformation.PingOptions options = new()
 				{
+					Ttl = ttl,
 					DontFragment = !fragment
 				};
 				System.Net.NetworkInformation.PingReply reply = ping.Send(target, timeout, buffer, options);
