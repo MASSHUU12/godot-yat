@@ -26,3 +26,4 @@
 | cowsay        | N/A    | Make a cow say something.                                                        |
 | quickcommands | qc     | Manages Quick Commands.                                                          |
 | ping          | N/A    | Sends ICMP (Internet Control Message Protocol) echo request to the server.       |
+| ip            | N/A    | Displays your private IP addresses.                                              |
