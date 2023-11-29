@@ -78,22 +78,38 @@ namespace YAT.Commands
 		/// </summary>
 		/// <param name="sb">The StringBuilder to append the details to.</param>
 		/// <param name="infos">The array of FileSystemInfo objects to retrieve details from.</param>
-		private static void AppendDetails(StringBuilder sb, FileSystemInfo[] infos)
+		private void AppendDetails(StringBuilder sb, FileSystemInfo[] infos)
 		{
 			int maxFileSizeLength = 0;
 			int maxLastWriteTimeLength = 0;
 
+			// Get the maximum length of the file size and last write time strings.
 			foreach (FileSystemInfo info in infos)
 			{
-				maxLastWriteTimeLength = Math.Max(maxLastWriteTimeLength, info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").Length);
-				maxFileSizeLength = Math.Max(maxFileSizeLength, (info is FileInfo file) ? NumericHelper.GetFileSizeString(file.Length).Length : 0);
+				if (_ct.IsCancellationRequested) return;
+
+				maxLastWriteTimeLength = Math.Max(
+										maxLastWriteTimeLength,
+										info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").Length
+				);
+				maxFileSizeLength = Math.Max(maxFileSizeLength, (info is FileInfo file)
+									? NumericHelper.GetFileSizeString(file.Length).Length
+									: 0
+				);
 			}
 
 			maxFileSizeLength += 4;
 
+			// Append the details of each FileSystemInfo object to the StringBuilder.
 			foreach (FileSystemInfo info in infos)
 			{
-				var fileSizeString = NumericHelper.GetFileSizeString(info is FileInfo ? ((FileInfo)info).Length : 0);
+				if (_ct.IsCancellationRequested) return;
+
+				var fileSizeString = NumericHelper.GetFileSizeString(
+									info is FileInfo
+									? ((FileInfo)info).Length
+									: 0
+				);
 
 				var line = string.Format(
 					"{0}\t\t{1}\t\t{2}{3}{4}",
