@@ -64,6 +64,7 @@ namespace YAT
 			OptionsManager = new(this, Options);
 			CommandManager = GetNode<CommandManager>("./CommandManager");
 
+			AddCommand(new Ls(this));
 			AddCommand(new Ip(this));
 			AddCommand(new Cls(this));
 			AddCommand(new Man(this));
