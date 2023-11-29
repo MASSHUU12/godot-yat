@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   Ping command.
+
 ## [1.10.0-beta]
 
 ### Added
