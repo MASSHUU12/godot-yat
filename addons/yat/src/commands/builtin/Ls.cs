@@ -6,6 +6,7 @@ using System.Threading;
 using Godot;
 using YAT.Attributes;
 using YAT.Enums;
+using YAT.Helpers;
 using YAT.Interfaces;
 using static YAT.Scenes.Overlay.Components.Terminal.Terminal;
 
@@ -79,43 +80,35 @@ namespace YAT.Commands
 		/// <param name="infos">The array of FileSystemInfo objects to retrieve details from.</param>
 		private static void AppendDetails(StringBuilder sb, FileSystemInfo[] infos)
 		{
+			int maxFileSizeLength = 0;
+			int maxLastWriteTimeLength = 0;
+
 			foreach (FileSystemInfo info in infos)
 			{
+				maxLastWriteTimeLength = Math.Max(maxLastWriteTimeLength, info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").Length);
+				maxFileSizeLength = Math.Max(maxFileSizeLength, (info is FileInfo file) ? NumericHelper.GetFileSizeString(file.Length).Length : 0);
+			}
+
+			maxFileSizeLength += 4;
+
+			foreach (FileSystemInfo info in infos)
+			{
+				var fileSizeString = NumericHelper.GetFileSizeString(info is FileInfo ? ((FileInfo)info).Length : 0);
+
 				var line = string.Format(
-					"{0}\t{1}\t{2}{3}{4}",
-					info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"),
-					info is FileInfo file ? GetFileSizeString(file.Length) : string.Empty,
+					"{0}\t\t{1}\t\t{2}{3}{4}",
+					info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").PadRight(maxLastWriteTimeLength),
+					info is FileInfo
+						? fileSizeString.PadRight(Mathf.Clamp(maxFileSizeLength - fileSizeString.Length, 0, maxFileSizeLength))
+						: string.Empty.PadRight(maxFileSizeLength),
 					info.Name,
 					info is DirectoryInfo ? '/' : string.Empty,
-					(info.Attributes & FileAttributes.Hidden) != 0 ? '*' : string.Empty
+					(info.Attributes & FileAttributes.Hidden) != 0 ? "*" : string.Empty
 				);
 
 				sb.Append(line);
 				sb.AppendLine();
 			}
-		}
-
-		/// <summary>
-		/// Converts a file size in bytes to a human-readable string representation.
-		/// </summary>
-		/// <param name="fileSize">The file size in bytes.</param>
-		/// <returns>A string representing the file size in a human-readable format.</returns>
-		private static string GetFileSizeString(long fileSize)
-		{
-			const int byteConversion = 1024;
-			double bytes = fileSize;
-
-			if (bytes < byteConversion) return $"{bytes} B";
-
-			double kilobytes = bytes / byteConversion;
-			if (kilobytes < byteConversion) return $"{kilobytes:0.##} KB";
-
-			double megabytes = kilobytes / byteConversion;
-			if (megabytes < byteConversion) return $"{megabytes:0.##} MB";
-
-			double gigabytes = megabytes / byteConversion;
-
-			return $"{gigabytes:0.##} GB";
 		}
 	}
 }
