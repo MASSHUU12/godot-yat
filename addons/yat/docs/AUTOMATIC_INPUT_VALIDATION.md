@@ -24,11 +24,12 @@ Supported data types:
 
 ### Arguments
 
-> Arguments are required, if an argument is missing
-> or data that does not meet the requirements is passed,
-> validation will fail and the command will not run.
+> The order of arguments above the class matters.
 
-You can specify what arguments, under what rules and in what order the command expects using the `Arguments` attribute.
+Arguments are required, if an argument is missing or data that does not meet the requirements is passed,
+validation will fail and the command will not run.
+
+You can specify what arguments, under what rules and in what order the command expects using the `Argument` attribute.
 
 Arguments are defined as follows:
 
@@ -40,13 +41,14 @@ Arguments are defined as follows:
 Numeric types can accept ranges of values. For example:
 
 ```csharp
-[Arguments("step:double(0, 69.420)")]
+[Argument("step", "double(0, 69.420)", "Number of steps.")]
 ```
 
 Example of use:
 
 ```csharp
-[Arguments("action:[move, jump]", "direction:[left, right, int]")]
+[Argument("action", "[move, jump]", "Action to perform.")]
+[Argument("direction", "[left, right, int]", "Direction to move/jump.")]
 ```
 
 In the above example, the command takes two arguments.
@@ -68,13 +70,14 @@ Options are defined as follows:
 Numeric types can accept ranges of values. For example:
 
 ```csharp
-[Options("-step=double(0:69.420)")]
+[Option("-step", "double(0:69.420)", "Number of steps to move.")]
 ```
 
 Example of use:
 
 ```csharp
-[Options("-action=move|jump", "-direction=left|right|int(-1:1)")]
+[Option("-action", "move|jump", "Action to perform.")]
+[Option("-direction", "left|right|int(-1:1)", "Direction to move.")]
 ```
 
 In the above example, command can take two options.
