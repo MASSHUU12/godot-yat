@@ -21,5 +21,20 @@ namespace YAT.Helpers
 
 			return attribute;
 		}
+
+		/// <summary>
+		/// Retrieves an array of attributes of the specified type from the given object.
+		/// </summary>
+		/// <typeparam name="T">The type of attribute to retrieve.</typeparam>
+		/// <param name="obj">The object from which to retrieve the attributes.</param>
+		/// <returns>An array of attributes of the specified type, or null if no attributes are found.</returns>
+		public static T[] GetAttributes<T>(this object obj) where T : Attribute
+		{
+			if (Attribute.GetCustomAttributes(obj.GetType(), typeof(T))
+				is not T[] attributes
+			) return null;
+
+			return attributes;
+		}
 	}
 }

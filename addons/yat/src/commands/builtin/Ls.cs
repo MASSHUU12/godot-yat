@@ -14,7 +14,7 @@ namespace YAT.Commands
 {
 	[Command("ls", "Lists the contents of the current directory.", "[b]Usage[/b]: ls")]
 	[Threaded]
-	[Arguments("path:string")]
+	[Argument("path", "string", "The path to list the contents of.")]
 	public sealed class Ls : ICommand
 	{
 		public YAT Yat { get; set; }

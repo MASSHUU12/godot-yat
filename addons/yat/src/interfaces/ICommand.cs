@@ -89,23 +89,23 @@ namespace YAT.Interfaces
 		/// <returns>A string containing the manual for the arguments of the command.</returns>
 		public virtual string GenerateArgumentsManual()
 		{
-			ArgumentsAttribute attribute = AttributeHelper.GetAttribute<ArgumentsAttribute>(this);
+			var attributes = AttributeHelper.GetAttributes<ArgumentAttribute>(this);
 
-			if (attribute is null) return "This command does not have any arguments.";
+			if (attributes is null) return "This command does not have any arguments.";
 
 			StringBuilder sb = new();
 
 			sb.AppendLine("[p align=center][font_size=18]Arguments[/font_size][/p]");
 
-			if (attribute.Args.Count == 0)
+			if (attributes.Length == 0)
 			{
 				sb.AppendLine("This command does not have any arguments.");
 				return sb.ToString();
 			}
 
-			foreach (var arg in attribute.Args)
+			foreach (var attr in attributes)
 			{
-				sb.AppendLine($"[b]{arg.Key}[/b]: {arg.Value}");
+				sb.AppendLine($"[b]{attr.Name}[/b]: {attr.Type} - {attr.Description}");
 			}
 
 			return sb.ToString();
@@ -118,23 +118,23 @@ namespace YAT.Interfaces
 		/// <returns>A string containing the manual for the command options.</returns>
 		public virtual string GenerateOptionsManual()
 		{
-			OptionsAttribute attribute = AttributeHelper.GetAttribute<OptionsAttribute>(this);
+			var attributes = AttributeHelper.GetAttributes<OptionAttribute>(this);
 
-			if (attribute is null) return "This command does not have any options.";
+			if (attributes is null) return "This command does not have any options.";
 
 			StringBuilder sb = new();
 
 			sb.AppendLine("[p align=center][font_size=18]Options[/font_size][/p]");
 
-			if (attribute.Options.Count == 0)
+			if (attributes.Length == 0)
 			{
 				sb.AppendLine("This command does not have any options.");
 				return sb.ToString();
 			}
 
-			foreach (var opt in attribute.Options)
+			foreach (var attr in attributes)
 			{
-				sb.AppendLine($"[b]{opt.Key}[/b]: {opt.Value ?? "Flag"}");
+				sb.AppendLine($"[b]{attr.Name}[/b]: {attr.Type} - {attr.Description}");
 			}
 
 			return sb.ToString();

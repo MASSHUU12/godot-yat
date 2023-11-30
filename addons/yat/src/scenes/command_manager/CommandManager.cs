@@ -62,13 +62,13 @@ namespace YAT.Scenes
 
 			if (command.GetAttribute<NoValidateAttribute>() is null)
 			{
-				if (!CommandHelper.ValidatePassedData<ArgumentsAttribute>(
+				if (!CommandHelper.ValidatePassedData<ArgumentAttribute>(
 					command, args[1..], out convertedArgs
 				)) return;
 
-				if (command.GetAttribute<OptionsAttribute>() is not null)
+				if (command.GetAttributes<OptionAttribute>() is not null)
 				{
-					if (!CommandHelper.ValidatePassedData<OptionsAttribute>(
+					if (!CommandHelper.ValidatePassedData<OptionAttribute>(
 						command, args[1..], out convertedOpts
 					)) return;
 				}

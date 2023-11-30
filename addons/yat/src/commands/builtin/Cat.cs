@@ -8,8 +8,8 @@ using YAT.Scenes.Overlay.Components.Terminal;
 namespace YAT.Commands
 {
 	[Command("cat", "Prints content of a file.", "[b]Usage[/b]: cat [i]file[/i]")]
-	[Arguments("file:string")]
-	[Options("-l=int(1:99)")]
+	[Argument("file", "string", "The file to print.")]
+	[Option("-l", "int(1:99)", "Limits the number of lines to print.")]
 	public sealed class Cat : ICommand
 	{
 		public YAT Yat { get; set; }

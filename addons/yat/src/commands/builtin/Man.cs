@@ -6,7 +6,7 @@ using YAT.Interfaces;
 namespace YAT.Commands
 {
 	[Command("man", "Displays the manual for a command.", "[b]Usage[/b]: man [i]command_name[/i]")]
-	[Arguments("command_name:string")]
+	[Argument("command_name", "string", "The name of the command to display the manual for.")]
 	public partial class Man : ICommand
 	{
 		private readonly LRUCache<string, string> cache = new(10);

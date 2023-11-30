@@ -12,14 +12,12 @@ namespace YAT.Commands
 		"[b]Usage[/b]: ping [i]target[/i] [i]options[/i]"
 	)]
 	[Threaded]
-	[Arguments("target:string")]
-	[Options(
-		"-timeout=int(120:1200)",
-		"-delay=int(1:10)",
-		"-bytes=int(16:65500)",
-		"-ttl=int(1:255)",
-		"-fragment"
-	)]
+	[Argument("target", "string", "The target to ping.")]
+	[Option("-timeout", "int(120:1200)", "The timeout in milliseconds.")]
+	[Option("-delay", "int(1:10)", "The delay between pings in seconds.")]
+	[Option("-bytes", "int(16:65500)", "The number of bytes to send.")]
+	[Option("-ttl", "int(1:255)", "The time to live.")]
+	[Option("-fragment", null, "Fragment the packet.")]
 	public sealed class Ping : ICommand
 	{
 		public YAT Yat { get; set; }

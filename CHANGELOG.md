@@ -10,10 +10,20 @@ All notable changes to this project will be documented in this file.
 -   Ip command.
 -   Ls command.
 -   FileSizeToString numeric helper method.
+-   GetAttributes method for AttributeHelper.
+-   Argument attribute.
+-   Option attribute.
 
 ### Changed
 
+-   All builtin commands use new Argument attribute.
+-   All builtin commands use new Option attribute.
 -   List command alias renamed to 'lc'.
+
+### Removed
+
+-   Arguments attribute.
+-   Options attribute.
 
 ## [1.10.0-beta]
 

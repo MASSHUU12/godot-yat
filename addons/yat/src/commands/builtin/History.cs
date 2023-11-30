@@ -17,7 +17,7 @@ namespace YAT.Commands
 		"[b]list[/b]: Lists the history.",
 		"hist"
 	)]
-	[Arguments("action:[clear, list, int]")]
+	[Argument("action", "[clear, list, int]", "The action to perform.")]
 	public partial class History : ICommand
 	{
 		public YAT Yat { get; set; }
