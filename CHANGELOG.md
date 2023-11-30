@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.11.0-beta 2023-11-30]
 
 ### Added
 
@@ -26,7 +26,7 @@ All notable changes to this project will be documented in this file.
 -   Arguments attribute.
 -   Options attribute.
 
-## [1.10.0-beta]
+## [1.10.0-beta 2023-11-28]
 
 ### Added
 
