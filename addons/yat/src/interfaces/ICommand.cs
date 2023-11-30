@@ -118,23 +118,23 @@ namespace YAT.Interfaces
 		/// <returns>A string containing the manual for the command options.</returns>
 		public virtual string GenerateOptionsManual()
 		{
-			OptionsAttribute attribute = AttributeHelper.GetAttribute<OptionsAttribute>(this);
+			var attributes = AttributeHelper.GetAttributes<OptionAttribute>(this);
 
-			if (attribute is null) return "This command does not have any options.";
+			if (attributes is null) return "This command does not have any options.";
 
 			StringBuilder sb = new();
 
 			sb.AppendLine("[p align=center][font_size=18]Options[/font_size][/p]");
 
-			if (attribute.Options.Count == 0)
+			if (attributes.Length == 0)
 			{
 				sb.AppendLine("This command does not have any options.");
 				return sb.ToString();
 			}
 
-			foreach (var opt in attribute.Options)
+			foreach (var attr in attributes)
 			{
-				sb.AppendLine($"[b]{opt.Key}[/b]: {opt.Value ?? "Flag"}");
+				sb.AppendLine($"[b]{attr.Name}[/b]: {attr.Type} - {attr.Description}");
 			}
 
 			return sb.ToString();

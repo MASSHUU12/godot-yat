@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   All builtin commands use new Argument attribute.
+-   All builtin commands use new Option attribute.
 -   List command alias renamed to 'lc'.
 
 ### Removed

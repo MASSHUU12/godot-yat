@@ -9,7 +9,14 @@ namespace YAT.Commands
 {
 	[Command("cowsay", "Make a cow say something.", "[b]Usage[/b]: cowsay [i]message[/i]")]
 	[Argument("message", "string", "The message to make the cow say.")]
-	[Options("-b", "-d", "-g", "-p", "-s", "-t", "-w", "-y")]
+	[Option("-b", null, "Borg")]
+	[Option("-d", null, "Dead")]
+	[Option("-g", null, "Greedy")]
+	[Option("-p", null, "Paranoid")]
+	[Option("-s", null, "Stoned")]
+	[Option("-t", null, "Tired")]
+	[Option("-w", null, "Wired")]
+	[Option("-y", null, "Youthful")]
 	public sealed class Cowsay : ICommand
 	{
 		public YAT Yat { get; set; }

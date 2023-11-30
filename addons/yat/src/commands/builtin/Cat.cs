@@ -9,7 +9,7 @@ namespace YAT.Commands
 {
 	[Command("cat", "Prints content of a file.", "[b]Usage[/b]: cat [i]file[/i]")]
 	[Argument("file", "string", "The file to print.")]
-	[Options("-l=int(1:99)")]
+	[Option("-l", "int(1:99)", "Limits the number of lines to print.")]
 	public sealed class Cat : ICommand
 	{
 		public YAT Yat { get; set; }
