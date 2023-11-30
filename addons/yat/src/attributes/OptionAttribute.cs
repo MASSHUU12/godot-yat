@@ -6,14 +6,16 @@ namespace YAT.Attributes
 	public sealed class OptionAttribute : Attribute
 	{
 		public string Name { get; private set; }
-		public object Type { get; set; }
 		public string Description { get; private set; }
+		public object Type { get; set; }
+		public object DefaultValue { get; private set; }
 
-		public OptionAttribute(string name, string type, string description = "")
+		public OptionAttribute(string name, string type, string description = "", object defaultValue = null)
 		{
 			Name = name;
 			Type = ParseDataType(type);
 			Description = description;
+			DefaultValue = defaultValue;
 		}
 
 		/// <summary>
