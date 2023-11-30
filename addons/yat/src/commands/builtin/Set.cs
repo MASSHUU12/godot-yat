@@ -6,7 +6,8 @@ using YAT.Scenes.Overlay.Components.Terminal;
 namespace YAT.Commands
 {
 	[Command("set", "Sets a variable to a value.", "[b]Usage[/b]: set [i]variable[/i] [i]value[/i]")]
-	[Arguments("variable:string", "value:string")]
+	[Argument("variable", "string", "The name of the variable to set.")]
+	[Argument("value", "string", "The value to set the variable to.")]
 	public partial class Set : Extensible, ICommand
 	{
 		public YAT Yat { get; set; }

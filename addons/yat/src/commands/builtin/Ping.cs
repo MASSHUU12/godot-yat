@@ -12,7 +12,7 @@ namespace YAT.Commands
 		"[b]Usage[/b]: ping [i]target[/i] [i]options[/i]"
 	)]
 	[Threaded]
-	[Arguments("target:string")]
+	[Argument("target", "string", "The target to ping.")]
 	[Options(
 		"-timeout=int(120:1200)",
 		"-delay=int(1:10)",

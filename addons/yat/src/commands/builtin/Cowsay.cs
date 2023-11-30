@@ -8,7 +8,7 @@ using YAT.Interfaces;
 namespace YAT.Commands
 {
 	[Command("cowsay", "Make a cow say something.", "[b]Usage[/b]: cowsay [i]message[/i]")]
-	[Arguments("message:string")]
+	[Argument("message", "string", "The message to make the cow say.")]
 	[Options("-b", "-d", "-g", "-p", "-s", "-t", "-w", "-y")]
 	public sealed class Cowsay : ICommand
 	{

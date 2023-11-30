@@ -8,7 +8,7 @@ using YAT.Interfaces;
 namespace YAT.Commands
 {
 	[Command("ip", "Displays your private IP addresses.", "[b]Usage[/b]: ip")]
-	[Arguments("action:[addr]")]
+	[Argument("action", "[addr]", "The action to perform.")]
 	public sealed class Ip : ICommand
 	{
 		public YAT Yat { get; set; }
