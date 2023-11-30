@@ -7,7 +7,7 @@ namespace YAT.Attributes
 	public sealed class ArgumentAttribute : Attribute
 	{
 		public string Name { get; private set; }
-		public object Type { get; private set; }
+		public object Type { get; set; }
 		public string Description { get; private set; }
 
 		public ArgumentAttribute(string name, string type, string Description = "")
