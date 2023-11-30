@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 -   Ls command.
 -   FileSizeToString numeric helper method.
 -   GetAttributes method for AttributeHelper.
+-   Argument attribute.
+-   Option attribute.
 
 ### Changed
 
@@ -20,6 +22,7 @@ All notable changes to this project will be documented in this file.
 ### Removed
 
 -   Arguments attribute.
+-   Options attribute.
 
 ## [1.10.0-beta]
 
