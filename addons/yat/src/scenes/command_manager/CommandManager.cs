@@ -62,7 +62,7 @@ namespace YAT.Scenes
 
 			if (command.GetAttribute<NoValidateAttribute>() is null)
 			{
-				if (!CommandHelper.ValidatePassedData<ArgumentsAttribute>(
+				if (!CommandHelper.ValidatePassedData<ArgumentAttribute>(
 					command, args[1..], out convertedArgs
 				)) return;
 
