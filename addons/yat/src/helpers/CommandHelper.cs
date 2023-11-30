@@ -19,16 +19,14 @@ namespace YAT.Helpers
 		/// <returns>True if the passed data is valid, false otherwise.</returns>
 		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
 		{
-			Debug.Assert(typeof(T) == typeof(ArgumentAttribute) || typeof(T) == typeof(OptionsAttribute));
+			Debug.Assert(typeof(T) == typeof(ArgumentAttribute) || typeof(T) == typeof(OptionAttribute));
 
 			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
 			var argsArr = command.GetType().GetCustomAttributes(typeof(T), false) as T[];
-			args = argsArr.ToDictionary(a => (a as ArgumentAttribute).Name, a => (a as ArgumentAttribute).Type);
-
-			if (args is null) return false;
 
 			if (typeof(T) == typeof(ArgumentAttribute))
 			{
+				args = argsArr.ToDictionary(a => (a as ArgumentAttribute).Name, a => (a as ArgumentAttribute).Type);
 				if (passedArgs.Length < args.Count)
 				{
 					LogHelper.MissingArguments(commandAttribute.Name, args.Keys.ToArray());
@@ -37,8 +35,14 @@ namespace YAT.Helpers
 
 				return ValidateCommandArguments(commandAttribute.Name, args, passedArgs);
 			}
-			else if (typeof(T) == typeof(OptionsAttribute))
+			else if (typeof(T) == typeof(OptionAttribute))
+			{
+				args = argsArr.ToDictionary(a => (a as OptionAttribute).Name, a => (a as OptionAttribute).Type);
+
 				return ValidateCommandOptions(commandAttribute.Name, args, passedArgs);
+			}
+
+			args = null;
 
 			return true;
 		}
