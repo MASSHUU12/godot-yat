@@ -13,7 +13,8 @@ namespace YAT.Commands
 		"[b]Usage[/b]: watch <command> <interval (in seconds)> [args...]"
 	)]
 	[Threaded]
-	[Arguments("command:string", "interval:float(0.5, 60)")]
+	[Argument("command", "string", "The command to run.")]
+	[Argument("interval", "float(0.5, 60)", "The interval at which to run the command.")]
 	public partial class Watch : ICommand
 	{
 		public YAT Yat { get; set; }
