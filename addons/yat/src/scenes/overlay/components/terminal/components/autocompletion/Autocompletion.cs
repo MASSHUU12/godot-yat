@@ -59,18 +59,17 @@ public partial class Autocompletion : PanelContainer
 	{
 		var command = _yat.Commands[tokens[0]];
 		var commandAttribute = command.GetAttribute<CommandAttribute>();
-		var commandArguments = command.GetAttribute<ArgumentsAttribute>();
+		var commandArguments = command.GetAttributes<ArgumentAttribute>();
 
 		StringBuilder commandInfo = new();
 		commandInfo.Append(commandAttribute.Name);
 
-		if (commandArguments != null)
+		if (commandArguments is not null)
 		{
-			var keys = commandArguments.Args.Keys;
-			for (int i = 0; i < keys.Count; i++)
+			for (int i = 0; i < commandArguments.Length; i++)
 			{
-				string key = keys.ElementAt(i);
-				var arg = commandArguments.Args[key];
+				string key = commandArguments[i].Name;
+				var arg = commandArguments[i].Type;
 				bool current = tokens.Length - 1 == i;
 				bool valid = CommandHelper.ValidateCommandArgument(
 					commandAttribute.Name,
@@ -92,7 +91,7 @@ public partial class Autocompletion : PanelContainer
 
 				commandInfo.Append(argument);
 
-				if (i < keys.Count - 1) commandInfo.Append(' ');
+				if (i < commandArguments.Length - 1) commandInfo.Append(' ');
 			}
 		}
 
