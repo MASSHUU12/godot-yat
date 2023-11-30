@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 -   Ip command.
 -   Ls command.
 -   FileSizeToString numeric helper method.
+-   GetAttributes method for AttributeHelper.
 
 ### Changed
 
