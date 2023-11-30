@@ -16,6 +16,10 @@ All notable changes to this project will be documented in this file.
 
 -   List command alias renamed to 'lc'.
 
+### Removed
+
+-   Arguments attribute.
+
 ## [1.10.0-beta]
 
 ### Added
