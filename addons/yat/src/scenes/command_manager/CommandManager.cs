@@ -66,7 +66,7 @@ namespace YAT.Scenes
 					command, args[1..], out convertedArgs
 				)) return;
 
-				if (command.GetAttribute<OptionAttribute>() is not null)
+				if (command.GetAttributes<OptionAttribute>() is not null)
 				{
 					if (!CommandHelper.ValidatePassedData<OptionAttribute>(
 						command, args[1..], out convertedOpts
