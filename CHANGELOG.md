@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+-   Godot.NET.Sdk version to 4.2.0.
 -   All builtin commands use new Argument attribute.
 -   All builtin commands use new Option attribute.
 -   List command alias renamed to 'lc'.
