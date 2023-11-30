@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
@@ -19,12 +19,15 @@ namespace YAT.Helpers
 		/// <returns>True if the passed data is valid, false otherwise.</returns>
 		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
 		{
+			Debug.Assert(typeof(T) == typeof(ArgumentAttribute) || typeof(T) == typeof(OptionsAttribute));
+
 			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
-			args = ValidateAttribute(command.GetAttribute<T>());
+			var argsArr = command.GetType().GetCustomAttributes(typeof(T), false) as T[];
+			args = argsArr.ToDictionary(a => (a as ArgumentAttribute).Name, a => (a as ArgumentAttribute).Type);
 
 			if (args is null) return false;
 
-			if (typeof(T) == typeof(ArgumentsAttribute))
+			if (typeof(T) == typeof(ArgumentAttribute))
 			{
 				if (passedArgs.Length < args.Count)
 				{
@@ -242,26 +245,6 @@ namespace YAT.Helpers
 			}
 
 			return true;
-		}
-
-		/// <summary>
-		/// Validates the given attribute and returns a dictionary of its properties.
-		/// </summary>
-		/// <typeparam name="T">The type of the attribute to validate.</typeparam>
-		/// <param name="attribute">The attribute to validate.</param>
-		/// <returns>A dictionary of the attribute's properties, or null if validation fails.</returns>
-		private static Dictionary<string, object> ValidateAttribute<T>(T attribute) where T : Attribute
-		{
-			Dictionary<string, object> dict = new();
-
-			if (attribute is null) return dict;
-
-			if (attribute is ArgumentsAttribute argumentsAttribute) dict = argumentsAttribute.Args;
-			else if (attribute is OptionsAttribute optionsAttribute) dict = optionsAttribute.Options;
-
-			if (dict.Count == 0) return dict;
-
-			return dict;
 		}
 
 		/// <summary>
