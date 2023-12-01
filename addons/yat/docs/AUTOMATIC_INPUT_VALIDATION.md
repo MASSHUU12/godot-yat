@@ -83,3 +83,13 @@ Example of use:
 In the above example, command can take two options.
 The first option can take one of two values: `move` or `jump`.
 The second option has three possibilities, it can take `"left"`, `"right"` or a `number` limited to a range from -1 to 1.
+
+#### Default values
+
+Options also support `default values`, which will be assigned to them when the user does not pass an option when running the command. If the default value is not set, and the user does not use the option, then its value is set to `null`:
+
+```csharp
+[Option("-action", "move|jump", "Action to perform.", "move")]
+```
+
+In the example above, if the user does not use the `-action` option then it will default to `move`.
