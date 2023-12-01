@@ -13,11 +13,11 @@ namespace YAT.Commands
 	)]
 	[Threaded]
 	[Argument("target", "string", "The target to ping.")]
-	[Option("-timeout", "int(120:1200)", "The timeout in milliseconds.")]
-	[Option("-delay", "int(1:10)", "The delay between pings in seconds.")]
-	[Option("-bytes", "int(16:65500)", "The number of bytes to send.")]
-	[Option("-ttl", "int(1:255)", "The time to live.")]
-	[Option("-fragment", null, "Fragment the packet.")]
+	[Option("-timeout", "int(120:1200)", "The timeout in milliseconds.", 120)]
+	[Option("-delay", "int(1:10)", "The delay between pings in seconds.", 1)]
+	[Option("-bytes", "int(16:65500)", "The number of bytes to send.", 32)]
+	[Option("-ttl", "int(1:255)", "The time to live.", 128)]
+	[Option("-fragment", null, "Fragment the packet.", false)]
 	public sealed class Ping : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -26,12 +26,12 @@ namespace YAT.Commands
 
 		public CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
 		{
-			string target = cArgs["target"] as string;
+			string target = (string)cArgs["target"];
 			bool fragment = (bool)cArgs["-fragment"];
-			int timeout = cArgs["-timeout"] as int? ?? 120;
-			int bytes = cArgs["-bytes"] as int? ?? 32;
-			int ttl = cArgs["-ttl"] as int? ?? 128;
-			int delay = cArgs["-delay"] as int? ?? 1;
+			int timeout = (int)cArgs["-timeout"];
+			int bytes = (int)cArgs["-bytes"];
+			int ttl = (int)cArgs["-ttl"];
+			int delay = (int)cArgs["-delay"];
 			delay *= 1000;
 
 			byte[] buffer = System.Text.Encoding.ASCII.GetBytes(GenerateData(bytes));

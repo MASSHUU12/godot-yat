@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
@@ -37,7 +38,12 @@ namespace YAT.Helpers
 			}
 			else if (typeof(T) == typeof(OptionAttribute))
 			{
-				args = argsArr.ToDictionary(a => (a as OptionAttribute).Name, a => (a as OptionAttribute).Type);
+				args = argsArr.ToDictionary(
+					a => (a as OptionAttribute).Name,
+					a => (object)new Tuple<object, object>(
+						(a as OptionAttribute).Type, (a as OptionAttribute).DefaultValue
+					)
+				);
 
 				return ValidateCommandOptions(commandAttribute.Name, args, passedArgs);
 			}
@@ -136,18 +142,21 @@ namespace YAT.Helpers
 			foreach (var optEntry in opts)
 			{
 				string optName = optEntry.Key;
-				object optType = optEntry.Value;
+				object optType = ((Tuple<object, object>)optEntry.Value).Item1;
 
-				opts[optName] = null; // By default treat the option as not passed
-
-				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName))
-								?.Split('=', 2, StringSplitOptions.TrimEntries |
-											StringSplitOptions.RemoveEmptyEntries
-								);
+				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName), string.Empty)
+								.Split('=', 2, StringSplitOptions.TrimEntries);
 				string passedOptName = passedOpt?[0];
 				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
-				// If option is a flag (there is no type specified)
+				// If option is not passed then set the option to its default value
+				if (string.IsNullOrEmpty(passedOptName))
+				{
+					opts[optName] = ((Tuple<object, object>)opts[optName]).Item2;
+					continue;
+				}
+
+				// if option is a flag (there is no type specified for the option)
 				if (optType is null)
 				{
 					if (!string.IsNullOrEmpty(passedOptValue))
@@ -157,12 +166,10 @@ namespace YAT.Helpers
 					}
 
 					opts[optName] = !string.IsNullOrEmpty(passedOptName);
-
 					continue;
 				}
 
-				if (string.IsNullOrEmpty(passedOptName)) continue;
-
+				// If option is passed but it doesn't have a value
 				if (string.IsNullOrEmpty(passedOptValue))
 				{
 					LogHelper.MissingValue(name, optName);

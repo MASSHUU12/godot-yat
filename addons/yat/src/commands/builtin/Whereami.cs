@@ -6,7 +6,7 @@ using YAT.Interfaces;
 namespace YAT.Commands
 {
 	[Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
-	[Option("-l", null, "Prints the full path to the scene file.")]
+	[Option("-l", null, "Prints the full path to the scene file.", false)]
 	public partial class Whereami : ICommand
 	{
 		public YAT Yat { get; set; }
