@@ -9,7 +9,7 @@ namespace YAT.Commands
 {
 	[Command("cat", "Prints content of a file.", "[b]Usage[/b]: cat [i]file[/i]")]
 	[Argument("file", "string", "The file to print.")]
-	[Option("-l", "int(1:99)", "Limits the number of lines to print.")]
+	[Option("-l", "int(1:99)", "Limits the number of lines to print.", -1)]
 	public sealed class Cat : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -19,10 +19,7 @@ namespace YAT.Commands
 		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
 		{
 			string fileName = (string)cArgs["file"];
-			int lineLimit = -1;
-
-			if (cArgs.TryGetValue("-l", out object l) && l is not null)
-				lineLimit = (int)l;
+			int lineLimit = (int)cArgs["-l"];
 
 			if (!FileAccess.FileExists(fileName))
 			{
