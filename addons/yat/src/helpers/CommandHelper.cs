@@ -142,12 +142,10 @@ namespace YAT.Helpers
 			foreach (var optEntry in opts)
 			{
 				string optName = optEntry.Key;
-				object optType = optEntry.Value;
+				object optType = ((Tuple<object, object>)optEntry.Value).Item1;
 
-				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName))
-								?.Split('=', 2, StringSplitOptions.TrimEntries |
-											StringSplitOptions.RemoveEmptyEntries
-								);
+				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName), string.Empty)
+								.Split('=', 2, StringSplitOptions.TrimEntries);
 				string passedOptName = passedOpt?[0];
 				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
@@ -157,8 +155,6 @@ namespace YAT.Helpers
 					opts[optName] = ((Tuple<object, object>)opts[optName]).Item2;
 					continue;
 				}
-
-				opts[optName] = passedOptValue;
 
 				// If option is passed but it doesn't have a value
 				if (string.IsNullOrEmpty(passedOptValue))
