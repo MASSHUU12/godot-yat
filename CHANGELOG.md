@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   Ability to set a default value for the option.
+
+### Changed
+
+-   Not passed boolean options do not have the value set to false by default.
+
 ## [1.11.0-beta 2023-11-30]
 
 ### Added

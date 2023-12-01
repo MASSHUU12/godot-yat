@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
@@ -37,7 +38,12 @@ namespace YAT.Helpers
 			}
 			else if (typeof(T) == typeof(OptionAttribute))
 			{
-				args = argsArr.ToDictionary(a => (a as OptionAttribute).Name, a => (a as OptionAttribute).Type);
+				args = argsArr.ToDictionary(
+					a => (a as OptionAttribute).Name,
+					a => (object)new Tuple<object, object>(
+						(a as OptionAttribute).Type, (a as OptionAttribute).DefaultValue
+					)
+				);
 
 				return ValidateCommandOptions(commandAttribute.Name, args, passedArgs);
 			}
@@ -138,8 +144,6 @@ namespace YAT.Helpers
 				string optName = optEntry.Key;
 				object optType = optEntry.Value;
 
-				opts[optName] = null; // By default treat the option as not passed
-
 				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName))
 								?.Split('=', 2, StringSplitOptions.TrimEntries |
 											StringSplitOptions.RemoveEmptyEntries
@@ -147,22 +151,16 @@ namespace YAT.Helpers
 				string passedOptName = passedOpt?[0];
 				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
-				// If option is a flag (there is no type specified)
-				if (optType is null)
+				// If option is not passed set it to its default value and continue
+				if (string.IsNullOrEmpty(passedOptName))
 				{
-					if (!string.IsNullOrEmpty(passedOptValue))
-					{
-						LogHelper.InvalidArgument(name, optName, optName);
-						return false;
-					}
-
-					opts[optName] = !string.IsNullOrEmpty(passedOptName);
-
+					opts[optName] = ((Tuple<object, object>)opts[optName]).Item2;
 					continue;
 				}
 
-				if (string.IsNullOrEmpty(passedOptName)) continue;
+				opts[optName] = passedOptValue;
 
+				// If option is passed but it doesn't have a value
 				if (string.IsNullOrEmpty(passedOptValue))
 				{
 					LogHelper.MissingValue(name, optName);
