@@ -149,10 +149,23 @@ namespace YAT.Helpers
 				string passedOptName = passedOpt?[0];
 				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
-				// If option is not passed set it to its default value and continue
+				// If option is not passed then set the option to its default value
 				if (string.IsNullOrEmpty(passedOptName))
 				{
 					opts[optName] = ((Tuple<object, object>)opts[optName]).Item2;
+					continue;
+				}
+
+				// if option is a flag (there is no type specified for the option)
+				if (optType is null)
+				{
+					if (!string.IsNullOrEmpty(passedOptValue))
+					{
+						LogHelper.InvalidArgument(name, optName, optName);
+						return false;
+					}
+
+					opts[optName] = !string.IsNullOrEmpty(passedOptName);
 					continue;
 				}
 
