@@ -146,8 +146,8 @@ namespace YAT.Helpers
 
 				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName), string.Empty)
 								.Split('=', 2, StringSplitOptions.TrimEntries);
-				string passedOptName = passedOpt?[0];
-				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
+				string? passedOptName = passedOpt?[0];
+				string? passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
 				// If option is not passed then set the option to its default value
 				if (string.IsNullOrEmpty(passedOptName))
