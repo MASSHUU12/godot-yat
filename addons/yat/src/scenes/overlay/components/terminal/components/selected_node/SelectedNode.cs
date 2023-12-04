@@ -5,9 +5,9 @@ namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
 	public partial class SelectedNode : Node
 	{
 		[Signal]
-		public delegate void SelectedNodeChangedEventHandler(Node node);
+		public delegate void CurrentNodeChangedEventHandler(Node node);
 		[Signal]
-		public delegate void SelectedNodeChangeFailedEventHandler(RejectionReason reason);
+		public delegate void CurrentNodeChangeFailedEventHandler(RejectionReason reason);
 
 		public Node CurrentNode { get; private set; }
 
@@ -31,19 +31,19 @@ namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
 		{
 			if (node is null || node.IsEmpty)
 			{
-				EmitSignal(SignalName.SelectedNodeChangeFailed, (ushort)RejectionReason.InvalidNodePath);
+				EmitSignal(SignalName.CurrentNodeChangeFailed, (ushort)RejectionReason.InvalidNodePath);
 				return false;
 			}
 
 			var newSelectedNode = GetNodeOrNull(node);
 			if (!IsInstanceValid(newSelectedNode))
 			{
-				EmitSignal(SignalName.SelectedNodeChangeFailed, (ushort)RejectionReason.InvalidNode);
+				EmitSignal(SignalName.CurrentNodeChangeFailed, (ushort)RejectionReason.InvalidNode);
 				return false;
 			}
 
 			CurrentNode = newSelectedNode;
-			EmitSignal(SignalName.SelectedNodeChanged, CurrentNode);
+			EmitSignal(SignalName.CurrentNodeChanged, CurrentNode);
 
 			return true;
 		}
