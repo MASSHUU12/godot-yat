@@ -50,7 +50,7 @@ namespace YAT.Helpers
 		/// <typeparam name="T">The type of resource to load.</typeparam>
 		/// <param name="path">The path to load the resource from.</param>
 		/// <returns>The loaded resource, or null if the resource does not exist.</returns>
-		public static T LoadResource<T>(string path) where T : Resource
+		public static T? LoadResource<T>(string path) where T : Resource
 		{
 			if (!ResourceLoader.Exists(path, nameof(T))) return null;
 
