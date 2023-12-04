@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dsyqv187j7w76"]
+[gd_scene load_steps=8 format=3 uid="uid://dsyqv187j7w76"]
 
 [ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/overlay/components/yat_window/YatWindow.tscn" id="2_0wq7x"]
 [ext_resource type="Theme" uid="uid://bbo6sgir4ilud" path="res://addons/yat/src/scenes/overlay/components/terminal/theme/yat_terminal_theme.tres" id="2_8e34l"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/terminal/components/input/Input.cs" id="3_vlo1w"]
 [ext_resource type="PackedScene" uid="uid://dnjobwvlxce2m" path="res://addons/yat/src/scenes/overlay/components/terminal/components/autocompletion/Autocompletion.tscn" id="4_qug7a"]
 [ext_resource type="PackedScene" uid="uid://byapbl7njd52y" path="res://addons/yat/src/scenes/overlay/components/terminal/components/terminal_context/TerminalContext.tscn" id="6_letxx"]
+[ext_resource type="PackedScene" uid="uid://dmmf70stqcfgm" path="res://addons/yat/src/scenes/overlay/components/terminal/components/selected_node/SelectedNode.tscn" id="7_r2rl8"]
 
 [node name="Terminal" instance=ExtResource("2_0wq7x")]
 title = "YAT"
@@ -56,3 +57,5 @@ script = ExtResource("3_vlo1w")
 unique_name_in_owner = true
 title = "Context menu"
 visible = false
+
+[node name="SelectedNode" parent="." index="1" instance=ExtResource("7_r2rl8")]
