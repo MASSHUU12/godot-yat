@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Not passed boolean options do not have the value set to false by default.
+-   TryConvert method accepts fallback values.
+-   Moved LruCache under Yat.Helpers namespace.
+-   TKey & TValue in LruCache must not be null.
+-   Reduced chance of null values in project.
+-   Command information updates when autocompletion is used.
+-   Some places in the code use #nullable enable.
 
 ## [1.11.0-beta 2023-11-30]
 
