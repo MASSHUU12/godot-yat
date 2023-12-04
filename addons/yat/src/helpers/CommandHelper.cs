@@ -61,12 +61,12 @@ namespace YAT.Helpers
 		/// <param name="args">The arguments dictionary.</param>
 		/// <param name="passedArgs">The arguments passed to the command.</param>
 		/// <returns>True if the arguments are valid, false otherwise.</returns>
-		private static bool ValidateCommandArguments(string name, Dictionary<string, object> args, string[] passedArgs)
+		private static bool ValidateCommandArguments(string name, Dictionary<string, object?> args, string[] passedArgs)
 		{
 			for (int i = 0; i < args.Count; i++)
 			{
 				string argName = args.Keys.ElementAt(i);
-				object argType = args.Values.ElementAt(i);
+				object? argType = args.Values.ElementAt(i);
 
 				if (!ValidateCommandArgument(argName, argType, args, passedArgs[i]))
 					return false;
@@ -77,8 +77,8 @@ namespace YAT.Helpers
 
 		public static bool ValidateCommandArgument(
 			string name,
-			object type,
-			Dictionary<string, object> args,
+			object? type,
+			Dictionary<string, object?> args,
 			string passedArg,
 			bool log = true
 		)
