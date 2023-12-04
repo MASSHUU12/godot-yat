@@ -3,7 +3,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>godotyat</RootNamespace>
-    <Nullable>enable</Nullable>
+	<!-- This option does not work well with Godot.NET.Sdk -->
+    <!-- <Nullable>enable</Nullable> -->
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
