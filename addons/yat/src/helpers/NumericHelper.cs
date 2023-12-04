@@ -27,26 +27,26 @@ namespace YAT.Helpers
 		/// contains the converted value if the conversion succeeded,
 		/// or the default value of T if the conversion failed.</param>
 		/// <returns>true if the conversion succeeded; otherwise, false.</returns>
-		public static bool TryConvert<T>(this string input, out T output) where T : IConvertible, IComparable<T>
+		public static bool TryConvert<T>(this string input, out T output, T fallback = default!) where T : IConvertible, IComparable<T>
 		{
+			output = fallback;
+
 			var converter = TypeDescriptor.GetConverter(typeof(T));
 
-			if (converter.CanConvertFrom(typeof(string)))
+			if (converter == null || !converter.CanConvertFrom(typeof(string)))
 			{
-				try
-				{
-					output = (T)converter.ConvertFrom(input);
-					return true;
-				}
-				catch (Exception)
-				{
-					output = default;
-					return false;
-				}
+				return false;
 			}
 
-			output = default;
-			return false;
+			try
+			{
+				output = (T)converter.ConvertFrom(input)!;
+				return true;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
 		}
 
 		/// <summary>

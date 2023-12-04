@@ -3,6 +3,9 @@
     <TargetFramework>net7.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>godotyat</RootNamespace>
+	<!-- This option does not work well with Godot.NET.Sdk -->
+    <!-- <Nullable>enable</Nullable> -->
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="script_templates/**/*.cs" />

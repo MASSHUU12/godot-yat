@@ -1,13 +1,14 @@
 using System;
 using System.Linq;
 
+#nullable enable
 namespace YAT.Attributes
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public sealed class ArgumentAttribute : Attribute
 	{
 		public string Name { get; private set; }
-		public object Type { get; set; }
+		public object? Type { get; set; }
 		public string Description { get; private set; }
 
 		public ArgumentAttribute(string name, string type, string Description = "")
@@ -22,7 +23,7 @@ namespace YAT.Attributes
 		/// </summary>
 		/// <param name="dataType">The string representation of the data type to parse.</param>
 		/// <returns>The parsed object or type, or null if the data type could not be parsed.</returns>
-		private static object ParseDataType(string dataType)
+		private static object? ParseDataType(string dataType)
 		{
 			var data = dataType?.Trim();
 
@@ -30,7 +31,7 @@ namespace YAT.Attributes
 
 			if (data.StartsWith("[") && data.EndsWith("]"))
 			{
-				string[] values = dataType.Trim('[', ']').Split(',').Select(v => v.Trim()).ToArray();
+				string[] values = data.Trim('[', ']').Split(',').Select(v => v.Trim()).ToArray();
 				return values;
 			}
 

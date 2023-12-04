@@ -4,6 +4,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 
+#nullable enable
 namespace YAT.Interfaces
 {
 	public partial interface IExtension
@@ -18,11 +19,11 @@ namespace YAT.Interfaces
 		public virtual string GenerateExtensionManual(params string[] args)
 		{
 			StringBuilder sb = new();
-			ExtensionAttribute attribute = AttributeHelper.GetAttribute<ExtensionAttribute>(this);
+			ExtensionAttribute? attribute = AttributeHelper.GetAttribute<ExtensionAttribute>(this);
 
-			if (string.IsNullOrEmpty(attribute.Manual))
+			if (string.IsNullOrEmpty(attribute?.Manual))
 			{
-				return $"Extension {attribute.Name} does not have a manual.";
+				return $"Extension {attribute?.Name} does not have a manual.";
 			}
 
 			sb.AppendLine($"[font_size=18]{attribute.Name}[/font_size]");

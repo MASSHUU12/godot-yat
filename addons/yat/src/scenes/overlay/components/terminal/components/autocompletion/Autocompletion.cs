@@ -55,48 +55,49 @@ public partial class Autocompletion : PanelContainer
 	/// </summary>
 	/// <param name="tokens">The tokens representing the command and its arguments.</param>
 	/// <returns>The generated command information.</returns>
+#nullable enable
 	private string GenerateCommandInfo(string[] tokens)
 	{
 		var command = _yat.Commands[tokens[0]];
-		var commandAttribute = command.GetAttribute<CommandAttribute>();
+		CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>()!;
 		var commandArguments = command.GetAttributes<ArgumentAttribute>();
 
 		StringBuilder commandInfo = new();
 		commandInfo.Append(commandAttribute.Name);
 
-		if (commandArguments is not null)
+		if (commandArguments is null) return commandInfo.ToString();
+
+		for (int i = 0; i < commandArguments.Length; i++)
 		{
-			for (int i = 0; i < commandArguments.Length; i++)
-			{
-				string key = commandArguments[i].Name;
-				var arg = commandArguments[i].Type;
-				bool current = tokens.Length - 1 == i;
-				bool valid = CommandHelper.ValidateCommandArgument(
-					commandAttribute.Name,
-					arg,
-					new Dictionary<string, object>() { { key, arg } },
-					(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,
-					false
-				);
+			string key = commandArguments[i].Name;
+			var arg = commandArguments[i].Type;
+			bool current = tokens.Length - 1 == i;
+			bool valid = CommandHelper.ValidateCommandArgument(
+				commandAttribute.Name,
+				arg,
+				new Dictionary<string, object?>() { { key, arg } },
+				(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,
+				false
+			);
 
-				string argument = string.Format(
-					" {0}{1}<{2}:{3}>{4}{5}",
-					valid ? string.Empty : $"[color={_yat.Options.ErrorColor.ToHtml()}]",
-					current ? "[b]" : string.Empty,
-					key,
-					(arg is string[]) ? "options" : arg,
-					current ? "[/b]" : string.Empty,
-					valid ? string.Empty : "[/color]"
-				);
+			string argument = string.Format(
+				" {0}{1}<{2}:{3}>{4}{5}",
+				valid ? string.Empty : $"[color={_yat.Options.ErrorColor.ToHtml()}]",
+				current ? "[b]" : string.Empty,
+				key,
+				(arg is string[]) ? "options" : arg,
+				current ? "[/b]" : string.Empty,
+				valid ? string.Empty : "[/color]"
+			);
 
-				commandInfo.Append(argument);
+			commandInfo.Append(argument);
 
-				if (i < commandArguments.Length - 1) commandInfo.Append(' ');
-			}
+			if (i < commandArguments.Length - 1) commandInfo.Append(' ');
 		}
 
 		return commandInfo.ToString();
 	}
+#nullable disable
 
 	/// <summary>
 	/// Displays the command information in the terminal.
@@ -166,6 +167,8 @@ public partial class Autocompletion : PanelContainer
 		_input.Text = suggestions[suggestionIndex];
 
 		_input.MoveCaretToEnd();
+
+		UpdateCommandInfo(_input.Text);
 	}
 
 	/// <summary>
@@ -176,10 +179,10 @@ public partial class Autocompletion : PanelContainer
 	private string[] GenerateCommandSuggestions(string token)
 	{
 		return _yat.Commands
-			.Where(x => x.Value.GetAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
-			.Select(x => x.Value.GetAttribute<CommandAttribute>()?.Name)
-			.Where(name => !string.IsNullOrEmpty(name))
-			.Distinct()
-			.ToArray();
+			?.Where(x => x.Value.GetAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
+			?.Select(x => x.Value.GetAttribute<CommandAttribute>()?.Name ?? string.Empty)
+			?.Where(name => !string.IsNullOrEmpty(name))
+			?.Distinct()
+			?.ToArray() ?? Array.Empty<string>();
 	}
 }

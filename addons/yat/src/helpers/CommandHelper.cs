@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
+#nullable enable
 namespace YAT.Helpers
 {
 	public static class CommandHelper
@@ -18,16 +18,24 @@ namespace YAT.Helpers
 		/// <param name="passedArgs">The arguments passed to the command.</param>
 		/// <param name="args">The dictionary of arguments.</param>
 		/// <returns>True if the passed data is valid, false otherwise.</returns>
-		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
+		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object?>? args) where T : Attribute
 		{
 			Debug.Assert(typeof(T) == typeof(ArgumentAttribute) || typeof(T) == typeof(OptionAttribute));
 
-			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
-			var argsArr = command.GetType().GetCustomAttributes(typeof(T), false) as T[];
+			CommandAttribute? commandAttribute = command.GetAttribute<CommandAttribute>();
+
+			if (commandAttribute is null)
+			{
+				LogHelper.MissingAttribute("CommandAttribute", command.GetType().Name);
+				args = null;
+				return false;
+			}
+
+			T[] argsArr = command.GetType().GetCustomAttributes(typeof(T), false) as T[] ?? Array.Empty<T>();
 
 			if (typeof(T) == typeof(ArgumentAttribute))
 			{
-				args = argsArr.ToDictionary(a => (a as ArgumentAttribute).Name, a => (a as ArgumentAttribute).Type);
+				args = argsArr.ToDictionary(a => (a as ArgumentAttribute)!.Name, a => (a as ArgumentAttribute)!.Type);
 				if (passedArgs.Length < args.Count)
 				{
 					LogHelper.MissingArguments(commandAttribute.Name, args.Keys.ToArray());
@@ -39,9 +47,9 @@ namespace YAT.Helpers
 			else if (typeof(T) == typeof(OptionAttribute))
 			{
 				args = argsArr.ToDictionary(
-					a => (a as OptionAttribute).Name,
-					a => (object)new Tuple<object, object>(
-						(a as OptionAttribute).Type, (a as OptionAttribute).DefaultValue
+					a => (a as OptionAttribute)?.Name ?? string.Empty,
+					a => (object?)new Tuple<object?, object?>(
+						(a as OptionAttribute)?.Type, (a as OptionAttribute)?.DefaultValue
 					)
 				);
 
@@ -61,12 +69,12 @@ namespace YAT.Helpers
 		/// <param name="args">The arguments dictionary.</param>
 		/// <param name="passedArgs">The arguments passed to the command.</param>
 		/// <returns>True if the arguments are valid, false otherwise.</returns>
-		private static bool ValidateCommandArguments(string name, Dictionary<string, object> args, string[] passedArgs)
+		private static bool ValidateCommandArguments(string name, Dictionary<string, object?> args, string[] passedArgs)
 		{
 			for (int i = 0; i < args.Count; i++)
 			{
 				string argName = args.Keys.ElementAt(i);
-				object argType = args.Values.ElementAt(i);
+				object? argType = args.Values.ElementAt(i);
 
 				if (!ValidateCommandArgument(argName, argType, args, passedArgs[i]))
 					return false;
@@ -77,8 +85,8 @@ namespace YAT.Helpers
 
 		public static bool ValidateCommandArgument(
 			string name,
-			object type,
-			Dictionary<string, object> args,
+			object? type,
+			Dictionary<string, object?> args,
 			string passedArg,
 			bool log = true
 		)
@@ -96,7 +104,7 @@ namespace YAT.Helpers
 						break;
 					}
 
-					object convertedArg = ConvertStringToType(opt, passedArg);
+					object? convertedArg = ConvertStringToType(opt, passedArg);
 
 					if (convertedArg is not null)
 					{
@@ -114,7 +122,7 @@ namespace YAT.Helpers
 			}
 			else
 			{
-				object convertedArg = ConvertStringToType(
+				object? convertedArg = ConvertStringToType(
 					type?.ToString() ?? name, passedArg
 				);
 
@@ -137,22 +145,22 @@ namespace YAT.Helpers
 		/// <param name="opts">The dictionary of options.</param>
 		/// <param name="passedOpts">The array of passed options.</param>
 		/// <returns>True if the command options are valid, false otherwise.</returns>
-		private static bool ValidateCommandOptions(string name, Dictionary<string, object> opts, string[] passedOpts)
+		private static bool ValidateCommandOptions(string name, Dictionary<string, object?> opts, string[] passedOpts)
 		{
 			foreach (var optEntry in opts)
 			{
 				string optName = optEntry.Key;
-				object optType = ((Tuple<object, object>)optEntry.Value).Item1;
+				object? optType = ((Tuple<object?, object?>?)optEntry.Value)?.Item1;
 
 				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName), string.Empty)
 								.Split('=', 2, StringSplitOptions.TrimEntries);
-				string passedOptName = passedOpt?[0];
-				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
+				string? passedOptName = passedOpt?[0];
+				string? passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
 				// If option is not passed then set the option to its default value
 				if (string.IsNullOrEmpty(passedOptName))
 				{
-					opts[optName] = ((Tuple<object, object>)opts[optName]).Item2;
+					opts[optName] = ((Tuple<object?, object?>?)opts[optName])?.Item2;
 					continue;
 				}
 
@@ -178,7 +186,7 @@ namespace YAT.Helpers
 
 				bool ProcessOptionValue(string valueType, Action<object> set)
 				{
-					object converted = ConvertStringToType(valueType, passedOptValue);
+					object? converted = ConvertStringToType(valueType, passedOptValue);
 
 					if (converted is null)
 					{
@@ -237,7 +245,7 @@ namespace YAT.Helpers
 							break;
 						}
 
-						object converted = ConvertStringToType(opt, passedOptValue);
+						object? converted = ConvertStringToType(opt, passedOptValue);
 
 						if (converted is not null)
 						{
@@ -268,10 +276,10 @@ namespace YAT.Helpers
 		/// <param name="max">Contains the maximum value of the range if the parse succeeded,
 		/// or the default value of <typeparamref name="T"/> if the parse failed.</param>
 		/// <returns><c>true</c> if the parse succeeded; otherwise, <c>false</c>.</returns>
-		private static bool GetRange<T>(string arg, out T min, out T max) where T : IConvertible, IComparable<T>
+		private static bool GetRange<T>(string arg, out T min, out T max) where T : notnull, IConvertible, IComparable<T>
 		{
-			min = default;
-			max = default;
+			min = default!;
+			max = default!;
 
 			if (!arg.Contains('(') || !arg.Contains(')')) return false;
 
@@ -280,8 +288,8 @@ namespace YAT.Helpers
 
 			if (range.Length != 2) return false;
 
-			if (!NumericHelper.TryConvert(range[0], out min)) return false;
-			if (!NumericHelper.TryConvert(range[1], out max)) return false;
+			if (!NumericHelper.TryConvert<T>(range[0], out min)) return false;
+			if (!NumericHelper.TryConvert<T>(range[1], out max)) return false;
 
 			return true;
 		}
@@ -292,7 +300,7 @@ namespace YAT.Helpers
 		/// <param name="type">The type to convert the value to.</param>
 		/// <param name="value">The string value to convert.</param>
 		/// <returns>The converted value, or null if the conversion fails.</returns>
-		private static object ConvertStringToType(string type, string value)
+		private static object? ConvertStringToType(string type, string value)
 		{
 			var t = type.ToLower();
 
@@ -316,9 +324,9 @@ namespace YAT.Helpers
 		/// <remarks>
 		/// This method uses the NumericHelper class to perform the conversion and range checking.
 		/// </remarks>
-		private static object TryConvertNumeric<T>(string type, string value) where T : IConvertible, IComparable<T>
+		private static object? TryConvertNumeric<T>(string type, string value) where T : notnull, IConvertible, IComparable<T>
 		{
-			if (!NumericHelper.TryConvert(value, out T result)) return null;
+			if (!NumericHelper.TryConvert<T>(value, out T result)) return null;
 
 			if (GetRange(type, out T min, out T max))
 				return NumericHelper.IsWithinRange(result, min, max) ? result : null;
