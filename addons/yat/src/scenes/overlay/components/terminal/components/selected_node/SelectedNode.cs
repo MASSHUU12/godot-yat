@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Helpers;
 
 namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
 {
@@ -8,6 +9,8 @@ namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
 		public delegate void CurrentNodeChangedEventHandler(Node node);
 		[Signal]
 		public delegate void CurrentNodeChangeFailedEventHandler(RejectionReason reason);
+		[Signal]
+		public delegate void MethodCalledEventHandler(string method, Variant returnValue, MethodStatus status);
 
 		public Node CurrentNode { get; private set; }
 
@@ -17,8 +20,17 @@ namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
 			InvalidNodePath
 		}
 
+		public enum MethodStatus
+		{
+			Success,
+			Failed
+		}
+
+		private Terminal _terminal;
+
 		public override void _Ready()
 		{
+			_terminal = GetNode<Terminal>("../");
 			CurrentNode = GetTree().Root;
 		}
 
@@ -44,6 +56,29 @@ namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
 
 			CurrentNode = newSelectedNode;
 			EmitSignal(SignalName.CurrentNodeChanged, CurrentNode);
+
+			return true;
+		}
+
+		/// <summary>
+		/// Calls a method on the current node and prints the result to the terminal.
+		/// </summary>
+		/// <param name="method">The name of the method to call.</param>
+		/// <param name="args">The arguments to pass to the method.</param>
+		/// <returns>True if the method was called successfully, false otherwise.</returns>
+		public bool CallMethod(string method, params Variant[] args)
+		{
+			if (!CurrentNode.HasMethod(method))
+			{
+				LogHelper.UnknownMethod(CurrentNode.Name, method);
+				EmitSignal(SignalName.MethodCalled, method, new(), (ushort)MethodStatus.Failed);
+				return false;
+			}
+
+			var result = CurrentNode.Call(method, args);
+			_terminal.Print(result.ToString());
+
+			EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Success);
 
 			return true;
 		}
