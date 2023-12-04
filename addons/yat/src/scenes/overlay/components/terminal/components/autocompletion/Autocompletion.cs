@@ -165,6 +165,8 @@ public partial class Autocompletion : PanelContainer
 		_input.Text = suggestions[suggestionIndex];
 
 		_input.MoveCaretToEnd();
+
+		UpdateCommandInfo(_input.Text);
 	}
 
 	/// <summary>
