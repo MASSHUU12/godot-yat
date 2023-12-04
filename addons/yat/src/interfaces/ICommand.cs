@@ -66,7 +66,7 @@ namespace YAT.Interfaces
 		/// <returns>The manual for the command.</returns>
 		public virtual string GenerateCommandManual()
 		{
-			CommandAttribute attribute = AttributeHelper.GetAttribute<CommandAttribute>(this);
+			CommandAttribute? attribute = AttributeHelper.GetAttribute<CommandAttribute>(this);
 
 			if (string.IsNullOrEmpty(attribute?.Manual)) return "This command does not have a manual.";
 
