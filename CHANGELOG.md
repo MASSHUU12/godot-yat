@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   SelectedNode scene.
+-   UnknownMethod method for LogHelper.
+-   CurrentNodeChanged signal.
+-   CurrentNodeChangeFailed signal.
+-   MethodCalled signal.
+
 ## [1.12.0-beta 2023-12-04]
 
 ### Added
