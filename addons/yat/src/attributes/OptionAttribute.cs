@@ -1,5 +1,6 @@
 using System;
 
+#nullable enable
 namespace YAT.Attributes
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]

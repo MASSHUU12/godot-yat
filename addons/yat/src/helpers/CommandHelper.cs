@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 
+#nullable enable
 namespace YAT.Helpers
 {
 	public static class CommandHelper
@@ -18,7 +18,7 @@ namespace YAT.Helpers
 		/// <param name="passedArgs">The arguments passed to the command.</param>
 		/// <param name="args">The dictionary of arguments.</param>
 		/// <returns>True if the passed data is valid, false otherwise.</returns>
-		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object?> args) where T : Attribute
+		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object?>? args) where T : Attribute
 		{
 			Debug.Assert(typeof(T) == typeof(ArgumentAttribute) || typeof(T) == typeof(OptionAttribute));
 
@@ -47,9 +47,9 @@ namespace YAT.Helpers
 			else if (typeof(T) == typeof(OptionAttribute))
 			{
 				args = argsArr.ToDictionary(
-					a => (a as OptionAttribute).Name,
-					a => (object)new Tuple<object, object>(
-						(a as OptionAttribute).Type, (a as OptionAttribute).DefaultValue
+					a => (a as OptionAttribute)?.Name ?? string.Empty,
+					a => (object?)new Tuple<object?, object?>(
+						(a as OptionAttribute)?.Type, (a as OptionAttribute)?.DefaultValue
 					)
 				);
 
@@ -145,12 +145,12 @@ namespace YAT.Helpers
 		/// <param name="opts">The dictionary of options.</param>
 		/// <param name="passedOpts">The array of passed options.</param>
 		/// <returns>True if the command options are valid, false otherwise.</returns>
-		private static bool ValidateCommandOptions(string name, Dictionary<string, object> opts, string[] passedOpts)
+		private static bool ValidateCommandOptions(string name, Dictionary<string, object?> opts, string[] passedOpts)
 		{
 			foreach (var optEntry in opts)
 			{
 				string optName = optEntry.Key;
-				object optType = ((Tuple<object, object>)optEntry.Value).Item1;
+				object? optType = ((Tuple<object?, object?>?)optEntry.Value)?.Item1;
 
 				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName), string.Empty)
 								.Split('=', 2, StringSplitOptions.TrimEntries);
@@ -160,7 +160,7 @@ namespace YAT.Helpers
 				// If option is not passed then set the option to its default value
 				if (string.IsNullOrEmpty(passedOptName))
 				{
-					opts[optName] = ((Tuple<object, object>)opts[optName]).Item2;
+					opts[optName] = ((Tuple<object?, object?>?)opts[optName])?.Item2;
 					continue;
 				}
 

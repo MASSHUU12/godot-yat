@@ -55,6 +55,7 @@ public partial class Autocompletion : PanelContainer
 	/// </summary>
 	/// <param name="tokens">The tokens representing the command and its arguments.</param>
 	/// <returns>The generated command information.</returns>
+#nullable enable
 	private string GenerateCommandInfo(string[] tokens)
 	{
 		var command = _yat.Commands[tokens[0]];
@@ -96,6 +97,7 @@ public partial class Autocompletion : PanelContainer
 
 		return commandInfo.ToString();
 	}
+#nullable disable
 
 	/// <summary>
 	/// Displays the command information in the terminal.

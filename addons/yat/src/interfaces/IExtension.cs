@@ -4,6 +4,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 
+#nullable enable
 namespace YAT.Interfaces
 {
 	public partial interface IExtension
