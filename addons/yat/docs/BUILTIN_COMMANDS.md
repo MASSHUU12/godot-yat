@@ -28,3 +28,4 @@
 | ping          | N/A    | Sends ICMP (Internet Control Message Protocol) echo request to the server.       |
 | ip            | N/A    | Displays your private IP addresses.                                              |
 | ls            | N/A    | Lists the contents of the current directory.                                     |
+| cn            | N/A    | Changes the selected node to the specified node path.                            |
