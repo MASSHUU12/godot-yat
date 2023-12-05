@@ -47,7 +47,9 @@ namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
 				return false;
 			}
 
-			var newSelectedNode = GetNodeOrNull(node);
+			var newSelectedNode = CurrentNode.GetNodeOrNull(node);
+			newSelectedNode ??= GetNodeOrNull(node);
+
 			if (!IsInstanceValid(newSelectedNode))
 			{
 				EmitSignal(SignalName.CurrentNodeChangeFailed, (ushort)RejectionReason.InvalidNode);
