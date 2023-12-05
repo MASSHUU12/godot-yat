@@ -59,3 +59,4 @@ title = "Context menu"
 visible = false
 
 [node name="SelectedNode" parent="." index="1" instance=ExtResource("7_r2rl8")]
+unique_name_in_owner = true

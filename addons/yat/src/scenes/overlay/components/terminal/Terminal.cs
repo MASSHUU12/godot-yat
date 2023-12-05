@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode;
 
 namespace YAT.Scenes.Overlay.Components.Terminal
 {
@@ -6,6 +7,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 	{
 		public Input Input { get; private set; }
 		public TerminalContext Context { get; private set; }
+		public SelectedNode SelectedNode { get; private set; }
 
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
@@ -43,6 +45,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 
+			SelectedNode = GetNode<SelectedNode>("%SelectedNode");
 			Context = GetNode<TerminalContext>("%TerminalContext");
 
 			_commandManager = _yat.GetNode<CommandManager>("CommandManager");
