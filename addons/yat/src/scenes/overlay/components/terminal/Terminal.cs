@@ -46,6 +46,8 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 			_yat.OptionsChanged += UpdateOptions;
 
 			SelectedNode = GetNode<SelectedNode>("%SelectedNode");
+			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
+
 			Context = GetNode<TerminalContext>("%TerminalContext");
 
 			_commandManager = _yat.GetNode<CommandManager>("CommandManager");
@@ -60,6 +62,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 
 			CloseRequested += () => _yat.ToggleOverlay();
 
+			OnCurrentNodeChanged(SelectedNode.CurrentNode);
 			UpdateOptions(_yat.Options);
 		}
 
@@ -124,10 +127,15 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 
 		private void UpdateOptions(YatOptions options)
 		{
-			_promptLabel.Text = options.Prompt;
+			OnCurrentNodeChanged(SelectedNode.CurrentNode);
 			_promptLabel.Visible = options.ShowPrompt;
 			Size = new((int)options.DefaultWidth, (int)options.DefaultHeight);
 			Output.ScrollFollowing = options.AutoScroll;
+		}
+
+		private void OnCurrentNodeChanged(Node node)
+		{
+			_promptLabel.Text = $"{node.GetPath()} {_yat.Options.Prompt}";
 		}
 
 		/// <summary>
