@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using Godot;
 using YAT.Attributes;
 using YAT.Enums;
@@ -13,23 +12,54 @@ using static YAT.Scenes.Overlay.Components.Terminal.Terminal;
 namespace YAT.Commands
 {
 	[Command("ls", "Lists the contents of the current directory.", "[b]Usage[/b]: ls")]
-	[Threaded]
 	[Argument("path", "string", "The path to list the contents of.")]
+	[Option("-n", null, "Displays the children of the current node.", false)]
 	public sealed class Ls : ICommand
 	{
 		public YAT Yat { get; set; }
 		public Ls(YAT Yat) => this.Yat = Yat;
 
-		private CancellationToken _ct;
-
-		public CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
+		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
 		{
 			string path = (string)cArgs["path"];
-			path = ProjectSettings.GlobalizePath(path);
+			bool n = (bool)cArgs["-n"];
 
-			_ct = ct;
+			return n
+				? PrintNodeChildren(path)
+				: PrintDirectoryContents(ProjectSettings.GlobalizePath(path));
+		}
 
-			return PrintDirectoryContents(path);
+		private CommandResult PrintNodeChildren(string path)
+		{
+			Node node = path != "."
+				? Yat.Terminal.SelectedNode.GetNodeOrNull(path)
+				: Yat.Terminal.SelectedNode;
+
+			if (!GodotObject.IsInstanceValid(node))
+			{
+				Yat.Terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
+				return CommandResult.Failure;
+			}
+
+			var children = node.GetChildren();
+
+			if (children == null || children.Count == 0)
+			{
+				Yat.Terminal.Print($"Node '{path}' has no children.", PrintType.Warning);
+				return CommandResult.Success;
+			}
+
+			StringBuilder sb = new();
+
+			foreach (Node child in children)
+			{
+				sb.Append($"[{child.Name}] ({child.GetType().Name}) - {child.GetPath()}");
+				sb.AppendLine();
+			}
+
+			Yat.Terminal.Print(sb.ToString());
+
+			return CommandResult.Success;
 		}
 
 		private CommandResult PrintDirectoryContents(string path)
@@ -86,8 +116,6 @@ namespace YAT.Commands
 			// Get the maximum length of the file size and last write time strings.
 			foreach (FileSystemInfo info in infos)
 			{
-				if (_ct.IsCancellationRequested) return;
-
 				maxLastWriteTimeLength = Math.Max(
 										maxLastWriteTimeLength,
 										info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").Length
@@ -103,8 +131,6 @@ namespace YAT.Commands
 			// Append the details of each FileSystemInfo object to the StringBuilder.
 			foreach (FileSystemInfo info in infos)
 			{
-				if (_ct.IsCancellationRequested) return;
-
 				var fileSizeString = NumericHelper.FileSizeToString(
 									info is FileInfo
 									? ((FileInfo)info).Length
