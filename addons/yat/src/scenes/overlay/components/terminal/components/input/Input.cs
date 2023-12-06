@@ -23,6 +23,14 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 		/// <param name="command">The command to be submitted.</param>
 		private void OnTextSubmitted(string command)
 		{
+			// If the input string starts with a specified character,
+			// treat it as a method call on the selected node
+			if (command.StartsWith('$'))
+			{
+				_yat.Terminal.SelectedNode.ParseAndCallMethods(command);
+				Clear();
+			}
+
 			var input = TextHelper.SanitizeText(command);
 			input = TextHelper.ConcatenateSentence(input);
 
