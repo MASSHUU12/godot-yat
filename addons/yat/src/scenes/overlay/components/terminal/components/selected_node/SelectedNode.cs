@@ -62,13 +62,61 @@ namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
 			return true;
 		}
 
+		public bool ParseAndCallMethods(string input)
+		{
+			_terminal.Print("Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n", Terminal.PrintType.Warning);
+
+			string[] tokens = TextHelper.SplitClean(input, ".");
+			Variant result = new();
+
+			if (tokens.Length == 0) return false;
+
+			// TODO: Method chaining
+
+			foreach (string token in tokens)
+			{
+				var parts = token.Split("(", 2,
+					System.StringSplitOptions.RemoveEmptyEntries |
+					System.StringSplitOptions.TrimEntries
+				);
+				string name = parts[0];
+				string args = parts.Length > 1 ? parts[1][..^1] : null;
+				args = args == string.Empty ? null : args;
+
+				if (args is null
+					? !CallMethod(name, out result)
+					: !CallMethod(name, out result, args)
+				) return false;
+			}
+
+			return true;
+		}
+
 		/// <summary>
 		/// Calls a method on the current node and prints the result to the terminal.
 		/// </summary>
 		/// <param name="method">The name of the method to call.</param>
+		/// <param name="result">The result of the method call.</param>
 		/// <param name="args">The arguments to pass to the method.</param>
 		/// <returns>True if the method was called successfully, false otherwise.</returns>
-		public bool CallMethod(string method, params Variant[] args)
+		public bool CallMethod(string method, out Variant result, params Variant[] args)
+		{
+			result = new();
+
+			if (!ValidateMethod(method)) return false;
+
+			result = args.Length == 0
+				? CurrentNode.Call(method)
+				: CurrentNode.Call(method, args);
+
+			_terminal.Print(result.ToString());
+
+			EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Success);
+
+			return true;
+		}
+
+		private bool ValidateMethod(string method)
 		{
 			if (!CurrentNode.HasMethod(method))
 			{
@@ -76,11 +124,6 @@ namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
 				EmitSignal(SignalName.MethodCalled, method, new(), (ushort)MethodStatus.Failed);
 				return false;
 			}
-
-			var result = CurrentNode.Call(method, args);
-			_terminal.Print(result.ToString());
-
-			EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Success);
 
 			return true;
 		}
