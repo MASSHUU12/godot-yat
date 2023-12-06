@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://c4jcws6fnnmwc"]
 
 [ext_resource type="PackedScene" uid="uid://jdyvooorqjp2" path="res://addons/yat/src/scenes/context_menu/context_submenu/ContextSubmenu.tscn" id="1_k8rcb"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/terminal/components/terminal_context/quic_commands_context/QuickCommandsContext.cs" id="2_rkejc"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/terminal/components/terminal_context/quick_commands/QuickCommands.cs" id="3_xutee"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal/components/terminal_context/quic_commands_context/QuickCommandsContext.cs" id="2_rkejc"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal/components/terminal_context/quick_commands/QuickCommands.cs" id="3_xutee"]
 
 [sub_resource type="Resource" id="Resource_14y2t"]
 script = ExtResource("3_xutee")

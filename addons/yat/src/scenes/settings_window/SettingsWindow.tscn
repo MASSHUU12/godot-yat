@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://liha0ppubuti"]
 
-[ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/overlay/components/yat_window/YatWindow.tscn" id="1_2pep7"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/overlay/components/settings_window/SettingsWindow.cs" id="2_2707c"]
+[ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/yat_window/YatWindow.tscn" id="1_2pep7"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/settings_window/SettingsWindow.cs" id="2_2707c"]
 
 [node name="SettingsWindow" instance=ExtResource("1_2pep7")]
 script = ExtResource("2_2707c")
