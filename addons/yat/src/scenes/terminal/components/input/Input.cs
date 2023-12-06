@@ -1,17 +1,18 @@
 using Godot;
 using YAT.Helpers;
+using YAT.Scenes.CommandManager;
 
 namespace YAT.Scenes.Terminal
 {
 	public partial class Input : LineEdit
 	{
 		private YAT _yat;
-		private CommandManager _commandManager;
+		private CommandManager.CommandManager _commandManager;
 
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
-			_commandManager = _yat.GetNode<CommandManager>("CommandManager");
+			_commandManager = _yat.GetNode<CommandManager.CommandManager>("CommandManager");
 
 			TextSubmitted += OnTextSubmitted;
 		}

@@ -1,5 +1,6 @@
 using Godot;
 using YAT.Helpers;
+using YAT.Scenes.ContextMenu;
 
 namespace YAT.Scenes.Terminal
 {

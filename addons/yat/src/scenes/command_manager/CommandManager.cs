@@ -9,7 +9,7 @@ using YAT.Helpers;
 using YAT.Interfaces;
 using static YAT.Scenes.Terminal.Terminal;
 
-namespace YAT.Scenes
+namespace YAT.Scenes.CommandManager
 {
 	public partial class CommandManager : Node
 	{

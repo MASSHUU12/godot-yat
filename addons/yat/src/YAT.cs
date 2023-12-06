@@ -4,7 +4,7 @@ using YAT.Attributes;
 using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Scenes;
+using YAT.Scenes.CommandManager;
 using YAT.Scenes.Terminal;
 
 namespace YAT
