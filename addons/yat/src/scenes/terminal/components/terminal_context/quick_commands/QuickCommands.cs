@@ -1,7 +1,7 @@
 using Godot;
 using Godot.Collections;
 
-namespace YAT.Scenes.Overlay.Components.Terminal
+namespace YAT.Scenes.Terminal
 {
 	public partial class QuickCommands : Resource
 	{

@@ -1,7 +1,6 @@
 using Godot;
-using YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode;
 
-namespace YAT.Scenes.Overlay.Components.Terminal
+namespace YAT.Scenes.Terminal
 {
 	public partial class Terminal : YatWindow.YatWindow
 	{

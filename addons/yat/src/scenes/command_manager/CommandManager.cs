@@ -7,7 +7,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Scenes.Overlay.Components.Terminal;
+using static YAT.Scenes.Terminal.Terminal;
 
 namespace YAT.Scenes
 {
@@ -134,7 +134,7 @@ namespace YAT.Scenes
 
 			await ToSignal(this, SignalName.CommandFinished);
 
-			_yat.Terminal.Print("Command execution finished.", Terminal.PrintType.Success);
+			_yat.Terminal.Print("Command execution finished.", PrintType.Success);
 		}
 
 		/// <summary>

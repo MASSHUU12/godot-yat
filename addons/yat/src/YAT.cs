@@ -5,7 +5,7 @@ using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes;
-using YAT.Scenes.Overlay.Components.Terminal;
+using YAT.Scenes.Terminal;
 
 namespace YAT
 {
@@ -57,7 +57,7 @@ namespace YAT
 		{
 			CheckYatEnableSettings();
 
-			Terminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/overlay/components/terminal/Terminal.tscn").Instantiate<Terminal>();
+			Terminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/terminal/Terminal.tscn").Instantiate<Terminal>();
 			Terminal.Ready += () =>
 			{
 				LogHelper.Terminal = Terminal;

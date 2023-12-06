@@ -1,7 +1,7 @@
 using Godot;
 using YAT.Helpers;
 
-namespace YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode
+namespace YAT.Scenes.Terminal
 {
 	public partial class SelectedNode : Node
 	{
