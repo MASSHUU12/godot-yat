@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.13.0-beta 2023-12-06]
 
 ### Added
 
