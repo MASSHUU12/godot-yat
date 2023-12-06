@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Scenes.Overlay.Components.Terminal.Components.SelectedNode;
 
 namespace YAT.Scenes.Overlay.Components.Terminal
 {
@@ -6,6 +7,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 	{
 		public Input Input { get; private set; }
 		public TerminalContext Context { get; private set; }
+		public SelectedNode SelectedNode { get; private set; }
 
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
@@ -43,6 +45,9 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 
+			SelectedNode = GetNode<SelectedNode>("%SelectedNode");
+			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
+
 			Context = GetNode<TerminalContext>("%TerminalContext");
 
 			_commandManager = _yat.GetNode<CommandManager>("CommandManager");
@@ -57,6 +62,7 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 
 			CloseRequested += () => _yat.ToggleOverlay();
 
+			OnCurrentNodeChanged(SelectedNode.CurrentNode);
 			UpdateOptions(_yat.Options);
 		}
 
@@ -121,10 +127,15 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 
 		private void UpdateOptions(YatOptions options)
 		{
-			_promptLabel.Text = options.Prompt;
+			OnCurrentNodeChanged(SelectedNode.CurrentNode);
 			_promptLabel.Visible = options.ShowPrompt;
 			Size = new((int)options.DefaultWidth, (int)options.DefaultHeight);
 			Output.ScrollFollowing = options.AutoScroll;
+		}
+
+		private void OnCurrentNodeChanged(Node node)
+		{
+			_promptLabel.Text = $"{node.GetPath()} {_yat.Options.Prompt}";
 		}
 
 		/// <summary>

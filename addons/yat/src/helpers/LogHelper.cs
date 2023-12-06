@@ -121,6 +121,17 @@ namespace YAT.Helpers
 			PrintMessage(message, Terminal.PrintType.Error);
 		}
 
+		public static void UnknownMethod(string sceneName, string method)
+		{
+			var message = string.Format(
+				"{0} does not have a method named {1}.",
+				sceneName,
+				method
+			);
+
+			PrintMessage(message, Terminal.PrintType.Error);
+		}
+
 		public static void Error(string message) => PrintMessage(message, Terminal.PrintType.Error);
 	}
 }

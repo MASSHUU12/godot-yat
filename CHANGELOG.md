@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   SelectedNode scene.
+-   UnknownMethod method for LogHelper.
+-   CurrentNodeChanged signal.
+-   CurrentNodeChangeFailed signal.
+-   MethodCalled signal.
+-   Cn command.
+-   Support for scene tree for Ls command.
+-   -s option for Whereami command for printing info about currently selected node.
+-   -m option for Whereami command for printing the methods of the selected node.
+-   SplitClean method to TextHelper.
+-   Ability to run methods on a selected node (experimental).
+
+### Changed
+
+-   Ls command is no longer threaded.
+
 ## [1.12.0-beta 2023-12-04]
 
 ### Added

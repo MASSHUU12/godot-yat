@@ -66,6 +66,7 @@ namespace YAT
 
 			AddCommand(new Ls(this));
 			AddCommand(new Ip(this));
+			AddCommand(new Cn(this));
 			AddCommand(new Cls(this));
 			AddCommand(new Man(this));
 			AddCommand(new Set(this));
