@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://b0caaqjmiluf7"]
+
+[ext_resource type="StyleBox" uid="uid://cg7clw201sub3" path="res://addons/yat/src/scenes/yat_window/theme/yat_window_theme.tres" id="1_5da5f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eeww4"]
+bg_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[resource]
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_eeww4")
+Window/styles/embedded_border = ExtResource("1_5da5f")
+Window/styles/embedded_unfocused_border = ExtResource("1_5da5f")

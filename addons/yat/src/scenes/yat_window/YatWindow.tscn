@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://o1hlj04h0rri"]
+
+[ext_resource type="Theme" uid="uid://b0caaqjmiluf7" path="res://addons/yat/src/scenes/yat_window/theme/yat_yatwindow_theme.tres" id="1_cty0e"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/yat_window/YatWindow.cs" id="2_1mdws"]
+
+[node name="YatWindow" type="Window"]
+disable_3d = true
+title = "Window"
+position = Vector2i(0, 36)
+size = Vector2i(512, 256)
+transient = true
+min_size = Vector2i(256, 144)
+content_scale_mode = 2
+theme = ExtResource("1_cty0e")
+script = ExtResource("2_1mdws")
+
+[node name="Content" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

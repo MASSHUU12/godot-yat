@@ -2,7 +2,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Scenes.Overlay.Components.Terminal;
+using YAT.Scenes.Terminal;
 
 namespace YAT.Commands
 {

@@ -1,9 +1,12 @@
 using Godot;
 
-public partial class ContextSubmenu : PopupMenu
+namespace YAT.Scenes.ContextMenu
 {
-	public override void _Ready()
+	public partial class ContextSubmenu : PopupMenu
 	{
-		Hide();
+		public override void _Ready()
+		{
+			Hide();
+		}
 	}
 }

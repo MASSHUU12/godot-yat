@@ -1,5 +1,5 @@
 using Godot;
-using YAT.Scenes.Overlay.Components.Terminal;
+using YAT.Scenes.Terminal;
 
 namespace YAT.Helpers
 {
