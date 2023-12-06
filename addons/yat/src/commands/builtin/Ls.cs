@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Godot;
 using YAT.Attributes;
@@ -53,16 +54,17 @@ namespace YAT.Commands
 					? (string)value
 					: string.Empty;
 
-				string[] arguments = methods.Current.TryGetValue("arguments", out value)
-					? (string[])value
+				string[] arguments = methods.Current.TryGetValue("args", out value)
+					? value.AsGodotArray<Godot.Collections.Dictionary<string, Variant>>()
+						.Select(arg => $"[u]{arg["name"]}[/u]: {((Variant.Type)(int)arg["type"]).ToString()}").ToArray()
 					: Array.Empty<string>();
 
 				int returns = methods.Current.TryGetValue("return", out value)
 					? value.AsGodotDictionary<string, int>()["type"]
 					: 0;
 
-				sb.Append($"{name}");
-				sb.Append($"({string.Join(", ", arguments)}) - ");
+				sb.Append($"[b]{name}[/b]");
+				sb.Append($"({string.Join(", ", arguments)}) -> ");
 				sb.Append(((Variant.Type)returns).ToString());
 				sb.AppendLine();
 			}
