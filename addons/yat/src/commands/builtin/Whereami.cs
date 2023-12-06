@@ -7,6 +7,7 @@ namespace YAT.Commands
 {
 	[Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
 	[Option("-l", null, "Prints the full path to the scene file.", false)]
+	[Option("-s", null, "Prints info about currently selected node.", false)]
 	public partial class Whereami : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -17,6 +18,9 @@ namespace YAT.Commands
 		{
 			var scene = Yat.GetTree().CurrentScene;
 			var longForm = (bool)cArgs["-l"];
+			var s = (bool)cArgs["-s"];
+
+			scene = s ? Yat.Terminal.SelectedNode.CurrentNode : scene;
 
 			Yat.Terminal.Print(
 				scene.GetPath() +
