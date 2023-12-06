@@ -33,7 +33,7 @@ namespace YAT.Commands
 			Yat.Terminal.Print("Options will be improved in the future.", Terminal.PrintType.Warning);
 
 			_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate<YatWindow>();
-			Yat.Overlay.AddChild(_optionsWindowInstance);
+			Yat.Windows.AddChild(_optionsWindowInstance);
 
 			return CommandResult.Success;
 		}
