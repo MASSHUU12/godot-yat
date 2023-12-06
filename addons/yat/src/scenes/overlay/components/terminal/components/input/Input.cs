@@ -27,8 +27,9 @@ namespace YAT.Scenes.Overlay.Components.Terminal
 			// treat it as a method call on the selected node
 			if (command.StartsWith('$'))
 			{
-				_yat.Terminal.SelectedNode.ParseAndCallMethods(command);
+				_yat.Terminal.SelectedNode.ParseAndCallMethods(command[1..]);
 				Clear();
+				return;
 			}
 
 			var input = TextHelper.SanitizeText(command);
