@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   YAT have Windows node to store currently displayed windows.
+
+### Changed
+
+-   Moved YatWindow under YAT.Scenes.YatWindow namespace.
+-   Moved Terminal under YAT.Scenes.Terminal namespace.
+-   Moved SettingsWindow under YAT.Scenes.SettingsWindow namespace.
+-   Moved CommandManager under YAT.Scenes.CommandManager namespace.
+
+### Removed
+
+-   Overlay.
+
 ## [1.13.0-beta 2023-12-06]
 
 ### Added
