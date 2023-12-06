@@ -14,6 +14,7 @@ namespace YAT.Commands
 	[Command("ls", "Lists the contents of the current directory.", "[b]Usage[/b]: ls")]
 	[Argument("path", "string", "The path to list the contents of.")]
 	[Option("-n", null, "Displays the children of the current node.", false)]
+	[Option("-m", null, "Lists the methods of the current node.", false)]
 	public sealed class Ls : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -23,10 +24,52 @@ namespace YAT.Commands
 		{
 			string path = (string)cArgs["path"];
 			bool n = (bool)cArgs["-n"];
+			bool m = (bool)cArgs["-m"];
 
-			return n
-				? PrintNodeChildren(path)
-				: PrintDirectoryContents(ProjectSettings.GlobalizePath(path));
+			if (n) return PrintNodeChildren(path);
+			if (m) return PrintNodeMethods(path);
+			return PrintDirectoryContents(ProjectSettings.GlobalizePath(path));
+		}
+
+		private CommandResult PrintNodeMethods(string path)
+		{
+			Node node = path != "."
+				? Yat.Terminal.SelectedNode.GetNodeOrNull(path)
+				: Yat.Terminal.SelectedNode;
+
+			if (!GodotObject.IsInstanceValid(node))
+			{
+				Yat.Terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
+				return CommandResult.Failure;
+			}
+
+			var methods = node.GetMethodList().GetEnumerator();
+
+			StringBuilder sb = new();
+
+			while (methods.MoveNext())
+			{
+				string name = methods.Current.TryGetValue("name", out var value)
+					? (string)value
+					: string.Empty;
+
+				string[] arguments = methods.Current.TryGetValue("arguments", out value)
+					? (string[])value
+					: Array.Empty<string>();
+
+				int returns = methods.Current.TryGetValue("return", out value)
+					? value.AsGodotDictionary<string, int>()["type"]
+					: 0;
+
+				sb.Append($"{name}");
+				sb.Append($"({string.Join(", ", arguments)}) - ");
+				sb.Append(((Variant.Type)returns).ToString());
+				sb.AppendLine();
+			}
+
+			Yat.Terminal.Print(sb.ToString());
+
+			return CommandResult.Success;
 		}
 
 		private CommandResult PrintNodeChildren(string path)
