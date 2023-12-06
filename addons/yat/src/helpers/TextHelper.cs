@@ -36,11 +36,7 @@ namespace YAT.Helpers
 		/// <returns>An array of sanitized strings.</returns>
 		public static string[] SanitizeText(string text)
 		{
-			return text.Split(' ', System.StringSplitOptions.TrimEntries |
-								System.StringSplitOptions.RemoveEmptyEntries)
-						.Select(token => token.Trim())
-						.Where(token => !string.IsNullOrEmpty(token))
-						.ToArray();
+			return SplitClean(text, " ");
 		}
 
 		/// <summary>
@@ -130,6 +126,23 @@ namespace YAT.Helpers
 		public static bool EndsWith(string text, params char[] value)
 		{
 			return value.Any(text.EndsWith);
+		}
+
+		/// <summary>
+		/// Splits the given text using the specified separator,
+		/// trims each token, removes empty tokens,
+		/// and returns an array of the resulting tokens.
+		/// </summary>
+		/// <param name="text">The text to split.</param>
+		/// <param name="separator">The separator used to split the text.</param>
+		/// <returns>An array of the resulting tokens.</returns>
+		public static string[] SplitClean(string text, string separator)
+		{
+			return text.Split(separator, System.StringSplitOptions.TrimEntries |
+									System.StringSplitOptions.RemoveEmptyEntries)
+						.Select(token => token.Trim())
+						.Where(token => !string.IsNullOrEmpty(token))
+						.ToArray();
 		}
 	}
 }
