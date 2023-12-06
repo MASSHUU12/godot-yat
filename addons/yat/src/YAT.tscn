@@ -10,3 +10,5 @@ script = ExtResource("1_683p6")
 Options = ExtResource("2_6miw0")
 
 [node name="CommandManager" parent="." instance=ExtResource("3_11rsn")]
+
+[node name="Windows" type="Node" parent="."]

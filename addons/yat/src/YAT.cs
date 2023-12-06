@@ -41,26 +41,32 @@ namespace YAT
 
 		[Export] public YatOptions Options { get; set; } = new();
 
-		public Scenes.Overlay.Overlay Overlay { get; private set; }
 		public Terminal Terminal { get; private set; }
-		public readonly LinkedList<string> History = new();
-		public LinkedListNode<string> HistoryNode = null;
-		public OptionsManager OptionsManager { get; private set; }
-		public CommandManager CommandManager { get; private set; }
+		public Node Windows { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
-		private Window _root;
+		public readonly LinkedList<string> History = new();
+		public LinkedListNode<string> HistoryNode = null;
+
+		public OptionsManager OptionsManager { get; private set; }
+		public CommandManager CommandManager { get; private set; }
+
 		private bool _yatEnabled = true;
 
 		public override void _Ready()
 		{
 			CheckYatEnableSettings();
 
-			_root = GetTree().Root;
+			Terminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/overlay/components/terminal/Terminal.tscn").Instantiate<Terminal>();
+			Terminal.Ready += () =>
+			{
+				LogHelper.Terminal = Terminal;
+				OptionsManager.Load();
 
-			Overlay = GD.Load<PackedScene>("res://addons/yat/src/scenes/overlay/Overlay.tscn").Instantiate<Scenes.Overlay.Overlay>();
-			Overlay.Ready += OnOverlayReady;
+				EmitSignal(SignalName.YatReady);
+			};
 
+			Windows = GetNode<Node>("./Windows");
 			OptionsManager = new(this, Options);
 			CommandManager = GetNode<CommandManager>("./CommandManager");
 
@@ -118,15 +124,15 @@ namespace YAT
 		{
 			if (!_yatEnabled) return;
 
-			if (Overlay.IsInsideTree()) CloseOverlay();
+			if (Terminal.IsInsideTree()) CloseOverlay();
 			else OpenOverlay();
 		}
 
 		private void OpenOverlay()
 		{
-			if (Overlay.IsInsideTree()) return;
+			if (Terminal.IsInsideTree()) return;
 
-			_root.AddChild(Overlay);
+			Windows.AddChild(Terminal);
 			// Grabbing focus this way prevents writing to the input field
 			// from the previous frame.
 			Terminal.Input.CallDeferred("grab_focus");
@@ -135,20 +141,11 @@ namespace YAT
 
 		private void CloseOverlay()
 		{
-			if (!Overlay.IsInsideTree()) return;
+			if (!Terminal.IsInsideTree()) return;
 
 			Terminal.Input.ReleaseFocus();
-			_root.RemoveChild(Overlay);
+			Windows.RemoveChild(Terminal);
 			EmitSignal(SignalName.OverlayClosed);
-		}
-
-		private void OnOverlayReady()
-		{
-			Terminal = Overlay.Terminal;
-			LogHelper.Terminal = Terminal;
-			OptionsManager.Load();
-
-			EmitSignal(SignalName.YatReady);
 		}
 
 		/// <summary>
