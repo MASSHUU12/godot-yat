@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpg2hilncaxuv"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/performance_monitor/components/os/Os.cs" id="1_u3gy1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0b8ph"]
+
+[node name="Os" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_0b8ph")
+script = ExtResource("1_u3gy1")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+text = "OS"
