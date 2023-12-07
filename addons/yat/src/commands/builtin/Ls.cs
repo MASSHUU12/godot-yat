@@ -166,7 +166,7 @@ namespace YAT.Commands
 										info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").Length
 				);
 				maxFileSizeLength = Math.Max(maxFileSizeLength, (info is FileInfo file)
-									? NumericHelper.FileSizeToString(file.Length).Length
+									? NumericHelper.SizeToString(file.Length).Length
 									: 0
 				);
 			}
@@ -176,7 +176,7 @@ namespace YAT.Commands
 			// Append the details of each FileSystemInfo object to the StringBuilder.
 			foreach (FileSystemInfo info in infos)
 			{
-				var fileSizeString = NumericHelper.FileSizeToString(
+				var fileSizeString = NumericHelper.SizeToString(
 									info is FileInfo
 									? ((FileInfo)info).Length
 									: 0

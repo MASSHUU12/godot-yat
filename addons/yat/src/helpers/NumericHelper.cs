@@ -50,11 +50,11 @@ namespace YAT.Helpers
 		}
 
 		/// <summary>
-		/// Converts a file size in bytes to a human-readable string representation.
+		/// Converts a size in bytes to a human-readable string representation.
 		/// </summary>
 		/// <param name="fileSize">The file size in bytes.</param>
 		/// <returns>A string representing the file size in a human-readable format.</returns>
-		public static string FileSizeToString(long fileSize)
+		public static string SizeToString(long fileSize)
 		{
 			const int byteConversion = 1024;
 			double bytes = fileSize;

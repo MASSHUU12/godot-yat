@@ -28,12 +28,12 @@ namespace YAT.Scenes.PerformanceMonitor
 
 			_label.Clear();
 			_label.AppendText(
-				$"Memory: {NumericHelper.FileSizeToString(physical.AsInt64())}\n" +
+				$"Memory: {NumericHelper.SizeToString(physical.AsInt64())}\n" +
 				$"Free: {(
 					freePercent < 15
-					? $"[color={_yat.Options.ErrorColor}]{NumericHelper.FileSizeToString(free.AsInt64())}[/color]"
-					: NumericHelper.FileSizeToString(free.AsInt64()))}\n" +
-				$"Stack: {NumericHelper.FileSizeToString(stack.AsInt64())}"
+					? $"[color={_yat.Options.ErrorColor}]{NumericHelper.SizeToString(free.AsInt64())}[/color]"
+					: NumericHelper.SizeToString(free.AsInt64()))}\n" +
+				$"Stack: {NumericHelper.SizeToString(stack.AsInt64())}"
 			);
 		}
 	}
