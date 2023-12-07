@@ -5,6 +5,8 @@ namespace YAT.Scenes.PerformanceMonitor
 {
 	public partial class Fps : Control, IPerformanceMonitorComponent
 	{
+		public bool UseColors { get; set; }
+
 		private Label _label;
 
 		public override void _Ready()

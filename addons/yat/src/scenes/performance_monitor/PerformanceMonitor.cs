@@ -20,7 +20,11 @@ namespace YAT.Scenes.PerformanceMonitor
 			AddComponent(GD.Load<PackedScene>("res://addons/yat/src/scenes/performance_monitor/components/fps/Fps.tscn").Instantiate<Fps>());
 		}
 
-		public void AddComponent(Node component)
+		/// <summary>
+		/// Adds a component to the performance monitor.
+		/// </summary>
+		/// <param name="component">The component to add.</param>
+		public void AddComponent(Node component, bool useColors = true)
 		{
 			if (component is not IPerformanceMonitorComponent)
 			{
@@ -31,8 +35,12 @@ namespace YAT.Scenes.PerformanceMonitor
 				return;
 			}
 
+			var cmp = component as IPerformanceMonitorComponent;
+
 			_components.AddChild(component);
-			_timer.Timeout += (component as IPerformanceMonitorComponent).Update;
+
+			cmp.UseColors = useColors;
+			_timer.Timeout += cmp.Update;
 		}
 	}
 }
