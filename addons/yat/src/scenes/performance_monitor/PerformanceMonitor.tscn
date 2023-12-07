@@ -4,7 +4,8 @@
 [ext_resource type="Script" path="res://addons/yat/src/scenes/performance_monitor/PerformanceMonitor.cs" id="2_ucfds"]
 
 [node name="PerformanceMonitor" instance=ExtResource("1_fyvg5")]
-size = Vector2i(256, 144)
+transparent_bg = true
+size = Vector2i(128, 128)
 transient = false
 unresizable = true
 borderless = true
@@ -12,7 +13,14 @@ always_on_top = true
 transparent = true
 unfocusable = true
 min_size = Vector2i(0, 0)
+theme = null
 script = ExtResource("2_ucfds")
+
+[node name="Content" parent="." index="0"]
+offset_right = -128.0
+offset_bottom = -128.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Content" index="0"]
 layout_mode = 2
