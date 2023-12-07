@@ -16,9 +16,6 @@ namespace YAT.Scenes.PerformanceMonitor
 			_components = GetNode<VBoxContainer>("%Components");
 
 			Move(WindowPosition.TopLeft, 16);
-
-			AddComponent(GD.Load<PackedScene>("res://addons/yat/src/scenes/performance_monitor/components/fps/Fps.tscn").Instantiate<Fps>());
-			AddComponent(GD.Load<PackedScene>("res://addons/yat/src/scenes/performance_monitor/components/os/Os.tscn").Instantiate<Os>());
 		}
 
 		/// <summary>
