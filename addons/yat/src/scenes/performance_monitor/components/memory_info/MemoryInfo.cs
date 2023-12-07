@@ -1,0 +1,40 @@
+using Godot;
+using YAT.Helpers;
+using YAT.Interfaces;
+
+namespace YAT.Scenes.PerformanceMonitor
+{
+	public partial class MemoryInfo : PanelContainer, IPerformanceMonitorComponent
+	{
+		public bool UseColors { get; set; }
+
+		private YAT _yat;
+		private RichTextLabel _label;
+
+		public override void _Ready()
+		{
+			_yat = GetNode<YAT>("/root/YAT");
+			_label = GetNode<RichTextLabel>("RichTextLabel");
+		}
+
+		public void Update()
+		{
+			var mem = OS.GetMemoryInfo();
+			var physical = mem["physical"];
+			var free = mem["free"];
+			var stack = mem["stack"];
+
+			var freePercent = (float)free / (float)physical * 100f;
+
+			_label.Clear();
+			_label.AppendText(
+				$"Memory: {NumericHelper.FileSizeToString(physical.AsInt64())}\n" +
+				$"Free: {(
+					freePercent < 15
+					? $"[color={_yat.Options.ErrorColor}]{NumericHelper.FileSizeToString(free.AsInt64())}[/color]"
+					: NumericHelper.FileSizeToString(free.AsInt64()))}\n" +
+				$"Stack: {NumericHelper.FileSizeToString(stack.AsInt64())}"
+			);
+		}
+	}
+}
