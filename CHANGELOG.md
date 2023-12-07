@@ -6,7 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
--   YAT have Windows node to store currently displayed windows.
+-   Windows node for YAT to store currently displayed windows.
+-   Move method to YatWindow to move window (e.q. top left, bottom right).
+-   PerformanceMonitor scene.
+-   IPerformanceMonitorComponent interface.
+-   FPS component for PerformanceMonitor.
+-   OS component for PerformanceMonitor.
+-   Monitor command.
 
 ### Changed
 
