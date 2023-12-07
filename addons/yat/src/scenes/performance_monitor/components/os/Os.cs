@@ -10,6 +10,7 @@ namespace YAT.Scenes.PerformanceMonitor
 		private readonly string _osName = OS.GetName();
 		private readonly string _osVersion = OS.GetVersion();
 		private readonly string _displayServerName = DisplayServer.GetName();
+		private readonly string _locale = OS.GetLocale();
 		private string _osInfo;
 
 		private Label _label;
@@ -18,7 +19,7 @@ namespace YAT.Scenes.PerformanceMonitor
 		{
 			_label = GetNode<Label>("Label");
 
-			_osInfo = $"{_osName} {_osVersion} {(_osName == _displayServerName
+			_osInfo = $"{_osName} {_osVersion} {_locale} {(_osName == _displayServerName
 				? string.Empty
 				: $"({_displayServerName})")}";
 
