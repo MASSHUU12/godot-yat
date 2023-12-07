@@ -10,10 +10,7 @@ All notable changes to this project will be documented in this file.
 -   Move method to YatWindow to move window (e.q. top left, bottom right).
 -   PerformanceMonitor scene.
 -   IPerformanceMonitorComponent interface.
--   FPS component for PerformanceMonitor.
--   OS component for PerformanceMonitor.
--   CPU info component for PerformanceMonitor.
--   RAM info component for PerformanceMonitor.
+-   FPS, OS, CPU, RAM components for PerformanceMonitor.
 -   Monitor command.
 
 ### Changed
