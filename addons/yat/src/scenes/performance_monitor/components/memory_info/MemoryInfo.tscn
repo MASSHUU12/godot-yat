@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cy3kq15d8pc2k"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/performance_monitor/components/memory_info/MemoryInfo.cs" id="1_o5hka"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_or4kd"]
+
+[node name="MemoryInfo" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxEmpty_or4kd")
+script = ExtResource("1_o5hka")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+bbcode_enabled = true
+text = "ram"
+fit_content = true
+autowrap_mode = 0

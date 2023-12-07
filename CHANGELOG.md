@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 -   IPerformanceMonitorComponent interface.
 -   FPS component for PerformanceMonitor.
 -   OS component for PerformanceMonitor.
+-   CPU info component for PerformanceMonitor.
+-   RAM info component for PerformanceMonitor.
 -   Monitor command.
 
 ### Changed
@@ -20,6 +22,8 @@ All notable changes to this project will be documented in this file.
 -   Moved Terminal under YAT.Scenes.Terminal namespace.
 -   Moved SettingsWindow under YAT.Scenes.SettingsWindow namespace.
 -   Moved CommandManager under YAT.Scenes.CommandManager namespace.
+-   Renamed method FileSizeToString to SizeToString.
+-   SizeToString supports specifying precision.
 
 ### Removed
 
