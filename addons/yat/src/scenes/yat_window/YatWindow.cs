@@ -4,22 +4,84 @@ namespace YAT.Scenes.YatWindow
 {
 	public partial class YatWindow : Window
 	{
-		public override void _Ready()
+		public enum WindowPosition
 		{
-			MoveToTheDefaultPosition();
+			TopLeft,
+			TopRight,
+			BottomLeft,
+			BottomRight,
+			Center
 		}
 
-		/// <summary>
-		/// Moves the terminal window to the default position at the center of the viewport.
-		/// </summary>
-		private void MoveToTheDefaultPosition()
+		public void Move(WindowPosition position, uint offset = 0)
 		{
-			var center = GetTree().Root.GetViewport().GetVisibleRect().GetCenter();
+			switch (position)
+			{
+				case WindowPosition.TopLeft:
+					MoveTopLeft(offset);
+					break;
+				case WindowPosition.TopRight:
+					MoveTopRight(offset);
+					break;
+				case WindowPosition.BottomRight:
+					MoveBottomRight(offset);
+					break;
+				case WindowPosition.BottomLeft:
+					MoveBottomLeft(offset);
+					break;
+				case WindowPosition.Center:
+					MoveToTheCenter();
+					break;
+			}
+		}
+
+		protected void MoveTopLeft(uint offset)
+		{
+			Position = new(
+				(int)(0 + offset),
+				(int)(0 + offset)
+			);
+		}
+
+		protected void MoveTopRight(uint offset)
+		{
+			var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
+			var bottomLeft = viewportRect.Position + viewportRect.Size;
+			var rect = GetVisibleRect();
 
 			Position = new(
-				(int)(center.X - Size.X / 2),
-				(int)(center.Y - Size.Y / 2)
+				(int)(bottomLeft.X - rect.Size.X - offset),
+				(int)(0 + offset)
 			);
+		}
+
+		protected void MoveBottomRight(uint offset)
+		{
+			var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
+			var topRight = viewportRect.Position + viewportRect.Size;
+			var rect = GetVisibleRect();
+
+			Position = new(
+				(int)(topRight.X - rect.Size.X - offset),
+				(int)(topRight.Y - rect.Size.Y - offset)
+			);
+		}
+
+		protected void MoveBottomLeft(uint offset)
+		{
+			var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
+			var bottomLeft = viewportRect.Position + viewportRect.Size;
+			var rect = GetVisibleRect();
+
+			Position = new(
+				(int)(0 + offset),
+				(int)(bottomLeft.Y - rect.Size.Y - offset)
+			);
+		}
+
+		protected void MoveToTheCenter()
+		{
+			MoveToCenter();
 		}
 	}
 }

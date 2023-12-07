@@ -88,6 +88,7 @@ namespace YAT
 			AddCommand(new Options(this));
 			AddCommand(new Restart(this));
 			AddCommand(new History(this));
+			AddCommand(new Monitor(this));
 			AddCommand(new Whereami(this));
 			AddCommand(new Commands.QuickCommands(this));
 		}

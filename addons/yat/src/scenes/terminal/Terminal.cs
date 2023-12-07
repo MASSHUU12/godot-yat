@@ -39,8 +39,6 @@ namespace YAT.Scenes.Terminal
 
 		public override void _Ready()
 		{
-			base._Ready();
-
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 
@@ -63,6 +61,7 @@ namespace YAT.Scenes.Terminal
 
 			OnCurrentNodeChanged(SelectedNode.CurrentNode);
 			UpdateOptions(_yat.Options);
+			MoveToCenter();
 		}
 
 		public override void _Input(InputEvent @event)
