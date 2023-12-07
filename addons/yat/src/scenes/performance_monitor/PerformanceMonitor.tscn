@@ -7,7 +7,7 @@
 
 [node name="PerformanceMonitor" instance=ExtResource("1_fyvg5")]
 transparent_bg = true
-size = Vector2i(128, 128)
+size = Vector2i(256, 144)
 wrap_controls = true
 transient = false
 unresizable = true
