@@ -12,6 +12,7 @@ namespace YAT.Commands
 	[Argument("action", "[open, close]", "Opens or closes the performance monitor.")]
 	[Option("-fps", null, "Shows the FPS in the performance monitor.", false)]
 	[Option("-os", null, "Shows the OS information in the performance monitor.", false)]
+	[Option("-cpu", null, "Shows the CPU information in the performance monitor.", false)]
 	public sealed class Monitor : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -20,6 +21,8 @@ namespace YAT.Commands
 		private static readonly PackedScene _monitor = GD.Load<PackedScene>(
 			"res://addons/yat/src/scenes/performance_monitor/PerformanceMonitor.tscn"
 		);
+
+		private const string _componentsPath = "res://addons/yat/src/scenes/";
 
 		public Monitor(YAT Yat) => this.Yat = Yat;
 
@@ -43,6 +46,7 @@ namespace YAT.Commands
 		{
 			bool fps = (bool)cArgs["-fps"];
 			bool os = (bool)cArgs["-os"];
+			bool cpu = (bool)cArgs["-cpu"];
 
 			List<Node> components = new();
 			bool instanceValid = GodotObject.IsInstanceValid(_monitorInstance);
@@ -54,12 +58,16 @@ namespace YAT.Commands
 			}
 
 			if (fps) components.Add(GD.Load<PackedScene>(
-				"res://addons/yat/src/scenes/performance_monitor/components/fps/Fps.tscn"
+				_componentsPath + "performance_monitor/components/fps/Fps.tscn"
 			).Instantiate<Fps>());
 
 			if (os) components.Add(GD.Load<PackedScene>(
-				"res://addons/yat/src/scenes/performance_monitor/components/os/Os.tscn"
+				_componentsPath + "performance_monitor/components/os/Os.tscn"
 			).Instantiate<Os>());
+
+			if (cpu) components.Add(GD.Load<PackedScene>(
+				_componentsPath + "performance_monitor/components/cpu_info/CpuInfo.tscn"
+			).Instantiate<CpuInfo>());
 
 			if (components.Count == 0)
 			{
