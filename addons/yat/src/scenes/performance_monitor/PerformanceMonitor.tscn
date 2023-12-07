@@ -4,17 +4,23 @@
 [ext_resource type="Script" path="res://addons/yat/src/scenes/performance_monitor/PerformanceMonitor.cs" id="2_ucfds"]
 
 [node name="PerformanceMonitor" instance=ExtResource("1_fyvg5")]
+size = Vector2i(256, 144)
 transient = false
 unresizable = true
 borderless = true
 always_on_top = true
 transparent = true
 unfocusable = true
+min_size = Vector2i(0, 0)
 script = ExtResource("2_ucfds")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Content" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="Content" index="0"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Content/VBoxContainer" index="0"]
+[node name="Components" type="VBoxContainer" parent="Content/MarginContainer" index="0"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "FPS 2137"
+
+[node name="Timer" type="Timer" parent="." index="1"]
+wait_time = 0.5
+autostart = true
