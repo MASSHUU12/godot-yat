@@ -8,7 +8,7 @@ using YAT.Scenes.Terminal;
 
 namespace YAT.Commands
 {
-	[Command("monitor", "Opens the performance monitor.", "[b]Usage:[/b] monitor", "mn")]
+	[Command("monitor", "Manages the performance monitor.", "[b]Usage:[/b] monitor", "mn")]
 	[Argument("action", "[open, close]", "Opens or closes the performance monitor.")]
 	[Option("-fps", null, "Shows the FPS in the performance monitor.", false)]
 	[Option("-os", null, "Shows the OS information in the performance monitor.", false)]
