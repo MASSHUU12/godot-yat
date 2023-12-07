@@ -53,8 +53,9 @@ namespace YAT.Helpers
 		/// Converts a size in bytes to a human-readable string representation.
 		/// </summary>
 		/// <param name="fileSize">The file size in bytes.</param>
+		/// <param name="precision">The number of decimal places to use.</param>
 		/// <returns>A string representing the file size in a human-readable format.</returns>
-		public static string SizeToString(long fileSize)
+		public static string SizeToString(long fileSize, int precision = 2)
 		{
 			const int byteConversion = 1024;
 			double bytes = fileSize;
@@ -62,14 +63,15 @@ namespace YAT.Helpers
 			if (bytes < byteConversion) return $"{bytes} B";
 
 			double kilobytes = bytes / byteConversion;
-			if (kilobytes < byteConversion) return $"{kilobytes:0.##} KB";
+			if (kilobytes < byteConversion) return $"{kilobytes.ToString($"F{precision}")} KB";
 
 			double megabytes = kilobytes / byteConversion;
-			if (megabytes < byteConversion) return $"{megabytes:0.##} MB";
+			if (megabytes < byteConversion) return $"{megabytes.ToString($"F{precision}")} MB";
 
 			double gigabytes = megabytes / byteConversion;
 
-			return $"{gigabytes:0.##} GB";
+			return $"{gigabytes.ToString($"F{precision}")} GB";
 		}
+
 	}
 }
