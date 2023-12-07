@@ -7,16 +7,24 @@ namespace YAT.Scenes.PerformanceMonitor
 	{
 		public bool UseColors { get; set; }
 
-		private Label _label;
+		private RichTextLabel _label;
+		private YAT _yat;
 
 		public override void _Ready()
 		{
-			_label = GetNode<Label>("Label");
+			_yat = GetNode<YAT>("/root/YAT");
+			_label = GetNode<RichTextLabel>("RichTextLabel");
 		}
 
 		public void Update()
 		{
-			_label.Text = $"{Performance.GetMonitor(Performance.Monitor.TimeFps)} FPS";
+			var fps = Performance.GetMonitor(Performance.Monitor.TimeFps);
+			var opts = _yat.Options;
+
+			_label.Clear();
+			if (UseColors) _label.PushColor(fps < 30 ? opts.ErrorColor : opts.SuccessColor);
+			_label.AppendText($"{fps} FPS");
+			if (UseColors) _label.Pop();
 		}
 	}
 }

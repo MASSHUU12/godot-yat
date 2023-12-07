@@ -11,8 +11,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h3116")
 
-[node name="Label" type="Label" parent="."]
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+bbcode_enabled = true
 text = "0 FPS"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
