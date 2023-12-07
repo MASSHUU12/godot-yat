@@ -22,7 +22,7 @@ namespace YAT.Commands
 			"res://addons/yat/src/scenes/performance_monitor/PerformanceMonitor.tscn"
 		);
 
-		private const string _componentsPath = "res://addons/yat/src/scenes/";
+		private const string _componentsPath = "res://addons/yat/src/scenes/performance_monitor/components/";
 
 		public Monitor(YAT Yat) => this.Yat = Yat;
 
@@ -58,15 +58,15 @@ namespace YAT.Commands
 			}
 
 			if (fps) components.Add(GD.Load<PackedScene>(
-				_componentsPath + "performance_monitor/components/fps/Fps.tscn"
+				_componentsPath + "fps/Fps.tscn"
 			).Instantiate<Fps>());
 
 			if (os) components.Add(GD.Load<PackedScene>(
-				_componentsPath + "performance_monitor/components/os/Os.tscn"
+				_componentsPath + "os/Os.tscn"
 			).Instantiate<Os>());
 
 			if (cpu) components.Add(GD.Load<PackedScene>(
-				_componentsPath + "performance_monitor/components/cpu_info/CpuInfo.tscn"
+				_componentsPath + "cpu_info/CpuInfo.tscn"
 			).Instantiate<CpuInfo>());
 
 			if (components.Count == 0)
