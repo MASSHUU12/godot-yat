@@ -16,18 +16,17 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 
 ## Features
 
--   Many built-in commands
--   Extensible commands
--   Threaded commands
--   Custom commands and extensions
 -   Quick Commands
--   Running methods on nodes (experimental)
--   Automatic input validation (arguments, options)
 -   Autocompletion
--   Ability to restrict access to the plugin
 -   Script templates
+-   Performance monitor
+-   Tiny size (< 150 KB)
+-   Many built-in commands (over 20)
+-   Access to the node tree (experimental)
+-   Ability to restrict access to the plugin
 -   Plugin customization (limited at this point)
--   Ability to create custom windows
+-   Automatic input validation (arguments, options)
+-   Custom commands (regular & threaded), extensions and windows
 
 ## Showcase
 
