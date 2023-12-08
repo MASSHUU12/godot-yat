@@ -7,11 +7,29 @@ offset_right = 61.0
 offset_bottom = 34.0
 script = ExtResource("1_h3116")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "0 FPS"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+
+[node name="Times" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 11
+theme_override_font_sizes/bold_font_size = 11
+theme_override_font_sizes/italics_font_size = 11
+theme_override_font_sizes/bold_italics_font_size = 11
+theme_override_font_sizes/mono_font_size = 11
+bbcode_enabled = true
+text = "Process: 0 ms
+Physics: 0 ms"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
