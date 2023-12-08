@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using YAT.Attributes;
 using YAT.Enums;
@@ -9,7 +10,6 @@ using YAT.Scenes.Terminal;
 namespace YAT.Commands
 {
 	[Command("stats", "Manages the game monitor.", "[b]Usage:[/b] stats", "st")]
-	[Argument("action", "[open, close]", "Opens or closes the game monitor.")]
 	[Option("-fps", null, "Shows the FPS in the game monitor.", false)]
 	[Option("-os", null, "Shows the OS information in the game monitor.", false)]
 	[Option("-cpu", null, "Shows the CPU information in the game monitor.", false)]
@@ -29,18 +29,8 @@ namespace YAT.Commands
 
 		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
 		{
-			string action = (string)cArgs["action"];
-
-			switch (action)
-			{
-				case "open":
-					return Open(cArgs);
-				case "close":
-					return Close();
-				default:
-					Yat.Terminal.Print("Invalid action.", Terminal.PrintType.Error);
-					return CommandResult.Failure;
-			}
+			if (cArgs.Any((arg) => (bool)arg.Value)) return Open(cArgs);
+			return Close();
 		}
 
 		private CommandResult Open(Dictionary<string, object> cArgs)
@@ -59,27 +49,10 @@ namespace YAT.Commands
 				_monitorInstance = null;
 			}
 
-			if (fps) components.Add(GD.Load<PackedScene>(
-				_componentsPath + "fps/Fps.tscn"
-			).Instantiate<Fps>());
-
-			if (ram) components.Add(GD.Load<PackedScene>(
-				_componentsPath + "memory_info/MemoryInfo.tscn"
-			).Instantiate<MemoryInfo>());
-
-			if (os) components.Add(GD.Load<PackedScene>(
-				_componentsPath + "os/Os.tscn"
-			).Instantiate<Os>());
-
-			if (cpu) components.Add(GD.Load<PackedScene>(
-				_componentsPath + "cpu_info/CpuInfo.tscn"
-			).Instantiate<CpuInfo>());
-
-			if (components.Count == 0)
-			{
-				Yat.Terminal.Print("No components were selected.", Terminal.PrintType.Error);
-				return CommandResult.Failure;
-			}
+			if (fps) components.Add(GD.Load<PackedScene>(_componentsPath + "fps/Fps.tscn").Instantiate<Fps>());
+			if (ram) components.Add(GD.Load<PackedScene>(_componentsPath + "memory_info/MemoryInfo.tscn").Instantiate<MemoryInfo>());
+			if (os) components.Add(GD.Load<PackedScene>(_componentsPath + "os/Os.tscn").Instantiate<Os>());
+			if (cpu) components.Add(GD.Load<PackedScene>(_componentsPath + "cpu_info/CpuInfo.tscn").Instantiate<CpuInfo>());
 
 			_monitorInstance = _monitor.Instantiate<Monitor>();
 
