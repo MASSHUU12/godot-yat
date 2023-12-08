@@ -15,6 +15,7 @@ namespace YAT.Commands
 	[Option("-cpu", null, "Shows the CPU information in the game monitor.", false)]
 	[Option("-mem", null, "Shows memory information in the game monitor.", false)]
 	[Option("-engine", null, "Shows the engine information in the game monitor.", false)]
+	[Option("-objects", null, "Shows the objects information in the game monitor.", false)]
 	[Option("-lookingat", null, "Shows the info about node the player is looking at. Only in 3D.", false)]
 	public sealed class Stats : ICommand
 	{
@@ -42,6 +43,7 @@ namespace YAT.Commands
 			bool cpu = (bool)cArgs["-cpu"];
 			bool mem = (bool)cArgs["-mem"];
 			bool engine = (bool)cArgs["-engine"];
+			bool objects = (bool)cArgs["-objects"];
 			bool lookingAt = (bool)cArgs["-lookingat"];
 
 			List<Node> components = new();
@@ -58,6 +60,7 @@ namespace YAT.Commands
 			if (os) components.Add(GD.Load<PackedScene>(_componentsPath + "os/Os.tscn").Instantiate<Os>());
 			if (cpu) components.Add(GD.Load<PackedScene>(_componentsPath + "cpu_info/CpuInfo.tscn").Instantiate<CpuInfo>());
 			if (engine) components.Add(GD.Load<PackedScene>(_componentsPath + "engine_info/EngineInfo.tscn").Instantiate<EngineInfo>());
+			if (objects) components.Add(GD.Load<PackedScene>(_componentsPath + "scene_objects/SceneObjects.tscn").Instantiate<SceneObjects>());
 			if (lookingAt) components.Add(GD.Load<PackedScene>(_componentsPath + "looking_at/LookingAt.tscn").Instantiate<LookingAt>());
 
 			_monitorInstance = _monitor.Instantiate<Monitor>();
