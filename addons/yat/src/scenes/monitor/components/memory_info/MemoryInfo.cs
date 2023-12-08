@@ -2,9 +2,9 @@ using Godot;
 using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace YAT.Scenes.PerformanceMonitor
+namespace YAT.Scenes.Monitor
 {
-	public partial class MemoryInfo : PanelContainer, IPerformanceMonitorComponent
+	public partial class MemoryInfo : PanelContainer, IMonitorComponent
 	{
 		public bool UseColors { get; set; }
 

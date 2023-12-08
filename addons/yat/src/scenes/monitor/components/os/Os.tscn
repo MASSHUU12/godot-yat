@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dpg2hilncaxuv"]
 
-[ext_resource type="Script" path="res://addons/yat/src/scenes/performance_monitor/components/os/Os.cs" id="1_u3gy1"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/monitor/components/os/Os.cs" id="1_u3gy1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0b8ph"]
 

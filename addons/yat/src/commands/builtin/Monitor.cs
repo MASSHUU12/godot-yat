@@ -3,29 +3,29 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Scenes.PerformanceMonitor;
+using YAT.Scenes.Monitor;
 using YAT.Scenes.Terminal;
 
 namespace YAT.Commands
 {
-	[Command("monitor", "Manages the performance monitor.", "[b]Usage:[/b] monitor", "mn")]
-	[Argument("action", "[open, close]", "Opens or closes the performance monitor.")]
-	[Option("-fps", null, "Shows the FPS in the performance monitor.", false)]
-	[Option("-os", null, "Shows the OS information in the performance monitor.", false)]
-	[Option("-cpu", null, "Shows the CPU information in the performance monitor.", false)]
-	[Option("-ram", null, "Shows the RAM information in the performance monitor.", false)]
-	public sealed class Monitor : ICommand
+	[Command("stats", "Manages the game monitor.", "[b]Usage:[/b] stats", "st")]
+	[Argument("action", "[open, close]", "Opens or closes the game monitor.")]
+	[Option("-fps", null, "Shows the FPS in the game monitor.", false)]
+	[Option("-os", null, "Shows the OS information in the game monitor.", false)]
+	[Option("-cpu", null, "Shows the CPU information in the game monitor.", false)]
+	[Option("-ram", null, "Shows the RAM information in the game monitor.", false)]
+	public sealed class Stats : ICommand
 	{
 		public YAT Yat { get; set; }
 
-		private static PerformanceMonitor _monitorInstance;
+		private static Monitor _monitorInstance;
 		private static readonly PackedScene _monitor = GD.Load<PackedScene>(
-			"res://addons/yat/src/scenes/performance_monitor/PerformanceMonitor.tscn"
+			"res://addons/yat/src/scenes/monitor/Monitor.tscn"
 		);
 
-		private const string _componentsPath = "res://addons/yat/src/scenes/performance_monitor/components/";
+		private const string _componentsPath = "res://addons/yat/src/scenes/monitor/components/";
 
-		public Monitor(YAT Yat) => this.Yat = Yat;
+		public Stats(YAT Yat) => this.Yat = Yat;
 
 		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
 		{
@@ -81,7 +81,7 @@ namespace YAT.Commands
 				return CommandResult.Failure;
 			}
 
-			_monitorInstance = _monitor.Instantiate<PerformanceMonitor>();
+			_monitorInstance = _monitor.Instantiate<Monitor>();
 
 			Yat.Windows.AddChild(_monitorInstance);
 
@@ -97,7 +97,7 @@ namespace YAT.Commands
 		{
 			if (!GodotObject.IsInstanceValid(_monitorInstance))
 			{
-				Yat.Terminal.Print("The performance monitor is not open.", Terminal.PrintType.Error);
+				Yat.Terminal.Print("The game monitor is not open.", Terminal.PrintType.Error);
 				return CommandResult.Failure;
 			}
 

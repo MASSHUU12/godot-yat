@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://dekp8nra5yo6u"]
 
 [ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/yat_window/YatWindow.tscn" id="1_fyvg5"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/performance_monitor/PerformanceMonitor.cs" id="2_ucfds"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/monitor/Monitor.cs" id="2_ucfds"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gfxii"]
 
-[node name="PerformanceMonitor" instance=ExtResource("1_fyvg5")]
+[node name="Monitor" instance=ExtResource("1_fyvg5")]
 transparent_bg = true
 size = Vector2i(256, 144)
 wrap_controls = true
