@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://co0tw21o78ucy"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/monitor/components/scene_objects/SceneObjects.cs" id="1_l7kc7"]
+
+[node name="SceneObjects" type="PanelContainer"]
+script = ExtResource("1_l7kc7")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
