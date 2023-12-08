@@ -1,9 +1,9 @@
 using Godot;
 using YAT.Interfaces;
 
-namespace YAT.Scenes.PerformanceMonitor
+namespace YAT.Scenes.Monitor
 {
-	public partial class PerformanceMonitor : YatWindow.YatWindow
+	public partial class Monitor : YatWindow.YatWindow
 	{
 		private YAT _yat;
 		private Timer _timer;
@@ -27,7 +27,7 @@ namespace YAT.Scenes.PerformanceMonitor
 			if (component is not IMonitorComponent)
 			{
 				_yat.Terminal.Print(
-					$"Component {component.Name} does not implement IPerformanceMonitorComponent",
+					$"Component {component.Name} does not implement IMonitorComponent",
 					Terminal.Terminal.PrintType.Error
 				);
 				return;

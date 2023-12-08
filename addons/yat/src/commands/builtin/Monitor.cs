@@ -3,7 +3,7 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Scenes.PerformanceMonitor;
+using YAT.Scenes.Monitor;
 using YAT.Scenes.Terminal;
 
 namespace YAT.Commands
@@ -18,12 +18,12 @@ namespace YAT.Commands
 	{
 		public YAT Yat { get; set; }
 
-		private static PerformanceMonitor _monitorInstance;
+		private static Monitor _monitorInstance;
 		private static readonly PackedScene _monitor = GD.Load<PackedScene>(
-			"res://addons/yat/src/scenes/performance_monitor/PerformanceMonitor.tscn"
+			"res://addons/yat/src/scenes/monitor/Monitor.tscn"
 		);
 
-		private const string _componentsPath = "res://addons/yat/src/scenes/performance_monitor/components/";
+		private const string _componentsPath = "res://addons/yat/src/scenes/monitor/components/";
 
 		public Monitor(YAT Yat) => this.Yat = Yat;
 
