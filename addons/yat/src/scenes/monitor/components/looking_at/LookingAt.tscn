@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4na0nuvbhst6"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/monitor/components/looking_at/LookingAt.cs" id="1_owuv6"]
+
+[node name="LookingAt" type="PanelContainer"]
+script = ExtResource("1_owuv6")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Looking at: Nothing"
