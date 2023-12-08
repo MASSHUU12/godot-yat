@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjd2m6hgh0hmq"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/monitor/components/engine_info/EngineInfo.cs" id="1_0jabc"]
+
+[node name="EngineInfo" type="PanelContainer"]
+script = ExtResource("1_0jabc")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
