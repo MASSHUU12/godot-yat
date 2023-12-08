@@ -13,7 +13,7 @@ namespace YAT.Commands
 	[Option("-fps", null, "Shows the FPS in the game monitor.", false)]
 	[Option("-os", null, "Shows the OS information in the game monitor.", false)]
 	[Option("-cpu", null, "Shows the CPU information in the game monitor.", false)]
-	[Option("-ram", null, "Shows the RAM information in the game monitor.", false)]
+	[Option("-mem", null, "Shows memory information in the game monitor.", false)]
 	[Option("-engine", null, "Shows the engine information in the game monitor.", false)]
 	[Option("-lookingat", null, "Shows the info about node the player is looking at. Only in 3D.", false)]
 	public sealed class Stats : ICommand
@@ -40,7 +40,7 @@ namespace YAT.Commands
 			bool fps = (bool)cArgs["-fps"];
 			bool os = (bool)cArgs["-os"];
 			bool cpu = (bool)cArgs["-cpu"];
-			bool ram = (bool)cArgs["-ram"];
+			bool mem = (bool)cArgs["-mem"];
 			bool engine = (bool)cArgs["-engine"];
 			bool lookingAt = (bool)cArgs["-lookingat"];
 
@@ -54,7 +54,7 @@ namespace YAT.Commands
 			}
 
 			if (fps) components.Add(GD.Load<PackedScene>(_componentsPath + "fps/Fps.tscn").Instantiate<Fps>());
-			if (ram) components.Add(GD.Load<PackedScene>(_componentsPath + "memory_info/MemoryInfo.tscn").Instantiate<MemoryInfo>());
+			if (mem) components.Add(GD.Load<PackedScene>(_componentsPath + "memory_info/MemoryInfo.tscn").Instantiate<MemoryInfo>());
 			if (os) components.Add(GD.Load<PackedScene>(_componentsPath + "os/Os.tscn").Instantiate<Os>());
 			if (cpu) components.Add(GD.Load<PackedScene>(_componentsPath + "cpu_info/CpuInfo.tscn").Instantiate<CpuInfo>());
 			if (engine) components.Add(GD.Load<PackedScene>(_componentsPath + "engine_info/EngineInfo.tscn").Instantiate<EngineInfo>());
