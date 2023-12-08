@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 -   Move method to YatWindow to move window (e.q. top left, bottom right).
 -   Monitor scene.
 -   IMonitorComponent interface.
--   FPS, OS, CPU, RAM, Engine, LookingAt components for Monitor.
+-   FPS, OS, CPU, memory, Engine, LookingAt components for Monitor.
 -   Stats command.
 
 ### Changed
