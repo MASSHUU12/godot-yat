@@ -8,6 +8,8 @@ script = ExtResource("1_o5hka")
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 2
 bbcode_enabled = true
-text = "ram"
+text = "Memory: 0 GB
+Free: 0 GB
+Stack: 0 MB"
 fit_content = true
 autowrap_mode = 0

@@ -33,7 +33,7 @@ namespace YAT.Scenes.Monitor
 					freePercent < 15
 					? $"[color={_yat.Options.ErrorColor}]{NumericHelper.SizeToString(free.AsInt64(), 3)}[/color]"
 					: NumericHelper.SizeToString(free.AsInt64(), 3))}\n" +
-				$"Stack: {NumericHelper.SizeToString(stack.AsInt64(), 3)}"
+				$"Stack: {NumericHelper.SizeToString(stack.AsInt64(), 1)}"
 			);
 		}
 	}
