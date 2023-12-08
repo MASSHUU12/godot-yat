@@ -8,10 +8,10 @@ All notable changes to this project will be documented in this file.
 
 -   Windows node for YAT to store currently displayed windows.
 -   Move method to YatWindow to move window (e.q. top left, bottom right).
--   PerformanceMonitor scene.
--   IPerformanceMonitorComponent interface.
--   FPS, OS, CPU, RAM components for PerformanceMonitor.
--   Monitor command.
+-   Monitor scene.
+-   IMonitorComponent interface.
+-   FPS, OS, CPU, RAM components for Monitor.
+-   Stats command.
 
 ### Changed
 
