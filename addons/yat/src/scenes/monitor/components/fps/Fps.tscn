@@ -1,16 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://coabiqpqlqj55"]
+[gd_scene load_steps=2 format=3 uid="uid://coabiqpqlqj55"]
 
 [ext_resource type="Script" path="res://addons/yat/src/scenes/monitor/components/fps/Fps.cs" id="1_h3116"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i2uke"]
-
 [node name="Fps" type="PanelContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_i2uke")
+offset_right = 61.0
+offset_bottom = 34.0
 script = ExtResource("1_h3116")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
