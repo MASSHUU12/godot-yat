@@ -14,6 +14,7 @@ namespace YAT.Commands
 	[Option("-os", null, "Shows the OS information in the game monitor.", false)]
 	[Option("-cpu", null, "Shows the CPU information in the game monitor.", false)]
 	[Option("-ram", null, "Shows the RAM information in the game monitor.", false)]
+	[Option("-engine", null, "Shows the engine information in the game monitor.", false)]
 	public sealed class Stats : ICommand
 	{
 		public YAT Yat { get; set; }
@@ -39,6 +40,7 @@ namespace YAT.Commands
 			bool os = (bool)cArgs["-os"];
 			bool cpu = (bool)cArgs["-cpu"];
 			bool ram = (bool)cArgs["-ram"];
+			bool engine = (bool)cArgs["-engine"];
 
 			List<Node> components = new();
 			bool instanceValid = GodotObject.IsInstanceValid(_monitorInstance);
@@ -53,6 +55,7 @@ namespace YAT.Commands
 			if (ram) components.Add(GD.Load<PackedScene>(_componentsPath + "memory_info/MemoryInfo.tscn").Instantiate<MemoryInfo>());
 			if (os) components.Add(GD.Load<PackedScene>(_componentsPath + "os/Os.tscn").Instantiate<Os>());
 			if (cpu) components.Add(GD.Load<PackedScene>(_componentsPath + "cpu_info/CpuInfo.tscn").Instantiate<CpuInfo>());
+			if (engine) components.Add(GD.Load<PackedScene>(_componentsPath + "engine_info/EngineInfo.tscn").Instantiate<EngineInfo>());
 
 			_monitorInstance = _monitor.Instantiate<Monitor>();
 
