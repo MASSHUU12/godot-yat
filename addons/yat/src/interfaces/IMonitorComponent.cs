@@ -1,6 +1,6 @@
 namespace YAT.Interfaces
 {
-	public interface IPerformanceMonitorComponent
+	public interface IMonitorComponent
 	{
 		public bool UseColors { get; set; }
 

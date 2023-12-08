@@ -24,7 +24,7 @@ namespace YAT.Scenes.PerformanceMonitor
 		/// <param name="component">The component to add.</param>
 		public void AddComponent(Node component, bool useColors = true)
 		{
-			if (component is not IPerformanceMonitorComponent)
+			if (component is not IMonitorComponent)
 			{
 				_yat.Terminal.Print(
 					$"Component {component.Name} does not implement IPerformanceMonitorComponent",
@@ -33,7 +33,7 @@ namespace YAT.Scenes.PerformanceMonitor
 				return;
 			}
 
-			var cmp = component as IPerformanceMonitorComponent;
+			var cmp = component as IMonitorComponent;
 
 			_components.AddChild(component);
 

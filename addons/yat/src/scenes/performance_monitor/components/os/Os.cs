@@ -3,7 +3,7 @@ using YAT.Interfaces;
 
 namespace YAT.Scenes.PerformanceMonitor
 {
-	public partial class Os : PanelContainer, IPerformanceMonitorComponent
+	public partial class Os : PanelContainer, IMonitorComponent
 	{
 		public bool UseColors { get; set; }
 
