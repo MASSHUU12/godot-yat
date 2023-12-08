@@ -1,7 +1,7 @@
 using Godot;
 using YAT.Interfaces;
 
-namespace YAT.Scenes.PerformanceMonitor
+namespace YAT.Scenes.Monitor
 {
 	public partial class Os : PanelContainer, IMonitorComponent
 	{
