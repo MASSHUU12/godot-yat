@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Removed
+
+-   OverlayOpened & OverlayClosed signals.
+
 ## [1.14.0-beta 2023-12-08]
 
 ### Added

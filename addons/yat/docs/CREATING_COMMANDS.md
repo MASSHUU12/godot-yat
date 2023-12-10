@@ -5,20 +5,20 @@
 
 ## Table of Contents
 
--   [Table of Contents](#table-of-contents)
--   [Creating commands](#creating-commands)
-    -   [Threaded commands](#threaded-commands)
-    -   [Overridable methods](#overridable-methods)
-        -   [GenerateCommandManual](#generatecommandmanual)
--   [Adding commands](#adding-commands)
--   [Making commands extendable](#making-commands-extendable)
-    -   [Overridable methods](#overridable-methods-1)
-        -   [GenerateExtensionsManual](#generateextensionsmanual)
--   [Extending commands](#extending-commands)
-    -   [Overridable methods](#overridable-methods-2)
-        -   [GenerateExtensionManual](#generateextensionmanual)
--   [Creating custom windows](#creating-custom-windows)
--   [Signals](#signals)
+- [Table of Contents](#table-of-contents)
+- [Creating commands](#creating-commands)
+	- [Threaded commands](#threaded-commands)
+	- [Overridable methods](#overridable-methods)
+		- [GenerateCommandManual](#generatecommandmanual)
+- [Adding commands](#adding-commands)
+- [Making commands extendable](#making-commands-extendable)
+	- [Overridable methods](#overridable-methods-1)
+		- [GenerateExtensionsManual](#generateextensionsmanual)
+- [Extending commands](#extending-commands)
+	- [Overridable methods](#overridable-methods-2)
+		- [GenerateExtensionManual](#generateextensionmanual)
+- [Creating custom windows](#creating-custom-windows)
+- [Signals](#signals)
 
 ## Creating commands
 
@@ -166,8 +166,6 @@ In progress.
 | Name            | Arguments             | Description                                          |
 | --------------- | --------------------- | ---------------------------------------------------- |
 | OptionsChanged  | YatOptions            | Sent when YAT options have changed                   |
-| OverlayOpened   | N/A                   | Sent when overlay has been opened                    |
-| OverlayClosed   | N/A                   | Sent when overlay has been closed                    |
 | YatReady        | N/A                   | Sent when YAT is ready                               |
 | CommandStarted  | command, args         | Signal emitted when a command execution has started. |
 | CommandFinished | command, args, result | Signal emitted when a command has been executed      |
