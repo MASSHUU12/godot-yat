@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+-   The documentation has been revamped and expanded.
+
 ### Removed
 
 -   OverlayOpened & OverlayClosed signals.
