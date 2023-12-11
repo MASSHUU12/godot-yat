@@ -62,7 +62,7 @@ The second argument has three possibilities, it can take `"left"`, `"right"` or 
 
 Options are defined as follows:
 
--   `-opt` - passed option must match the name of the option. If option is present it returns `true` if not `false`.
+-   `-opt` - passed option must match the name of the option. If option is present it returns `true` if not `null`.
 -   `-opt=data_type` - value of passed option must be of the specified data type.
 -   `-opt=option1|data_type|option3` - value of passed option must be of the specified data type or one of the specified options.
 -   `-opt=data_type...` - value of passed option must be an array of values of the specified data type.
