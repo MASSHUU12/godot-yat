@@ -29,7 +29,7 @@ public CommandResult Execute(CancellationToken ct, params string[] args)
 ```
 
 Basic version, passes raw arguments, works with and without automatic validation.
-Accepts the `CancellationToken`, which indicates when the command was asked to terminate prematurely
+Accepts the `CancellationToken`, which indicates when the command was asked to terminate prematurely.
 
 ```csharp
 public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
