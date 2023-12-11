@@ -59,10 +59,6 @@ You can find an example of such a class in [example](./example) folder.
 
 This method generates extension documentation based on the metadata added via the `Extension` attribute.
 
-## Creating custom windows
-
-In progress.
-
 ## Signals
 
 | Name            | Arguments             | Description                                          |
