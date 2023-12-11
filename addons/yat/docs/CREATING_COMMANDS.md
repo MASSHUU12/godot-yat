@@ -7,6 +7,8 @@
 
 Instructions on how to create a `regular command` can be found [here](./REGULAR_COMMANDS.md), while one that runs on a `separate thread` can be found [here](./THREADED_COMMANDS.md).
 
+Information about automatic input validation can be found [here](./AUTOMATIC_INPUT_VALIDATION.md).
+
 ### Overridable methods
 
 #### GenerateCommandManual
