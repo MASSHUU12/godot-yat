@@ -22,16 +22,6 @@ namespace YAT
 		/// <param name="options">The new YatOptions.</param>
 		[Signal]
 		public delegate void OptionsChangedEventHandler(YatOptions options);
-		/// <summary>
-		/// A signal that is emitted when the overlay is opened.
-		/// </summary>
-		[Signal]
-		public delegate void OverlayOpenedEventHandler();
-		/// <summary>
-		/// Signal that is emitted when the overlay is closed.
-		/// </summary>
-		[Signal]
-		public delegate void OverlayClosedEventHandler();
 		[Signal]
 		/// <summary>
 		/// A signal that is emitted when the YAT addon is ready.
@@ -137,7 +127,6 @@ namespace YAT
 			// Grabbing focus this way prevents writing to the input field
 			// from the previous frame.
 			Terminal.Input.CallDeferred("grab_focus");
-			EmitSignal(SignalName.OverlayOpened);
 		}
 
 		private void CloseOverlay()
@@ -146,7 +135,6 @@ namespace YAT
 
 			Terminal.Input.ReleaseFocus();
 			Windows.RemoveChild(Terminal);
-			EmitSignal(SignalName.OverlayClosed);
 		}
 
 		/// <summary>

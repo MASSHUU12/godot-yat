@@ -3,15 +3,15 @@
 	<p>Here you will find information on the operation of the terminal.</p>
 </div>
 
-## Terminal
-
 ### Aborting the command
 
-Interrupting a command is possible only if it runs on a separate thread (and if its work does not end in a fraction of a second).
+> Note that sending an interrupt signal does not necessarily mean immediate termination of the command.
+>
+> Whether and when the command terminates depends on the command and whether it respects the request.
+
+Interrupting a command is possible only if it runs on a `separate thread` (and if its work does not end in a fraction of a second).
 
 To terminate the command you must use the keybinding `yat_terminal_interrupt`.
-
-> Remember that sending an interrupt signal does not necessarily mean that the operation of the command will immediately end.
 
 ### Context menu
 
