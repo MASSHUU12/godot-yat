@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+-   TerminalOpened & TerminalClosed signals.
+
 ### Changed
 
 -   The documentation has been revamped and expanded.
