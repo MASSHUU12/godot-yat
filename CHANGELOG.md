@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.14.1-beta 2023-12-12]
 
 ### Added
 
@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   The documentation has been revamped and expanded.
+-   Log information when YAT enters/exits the tree.
 
 ### Removed
 
