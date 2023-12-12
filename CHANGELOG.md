@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+-   TerminalOpened & TerminalClosed signals.
+
 ### Changed
 
 -   The documentation has been revamped and expanded.
@@ -11,6 +15,11 @@ All notable changes to this project will be documented in this file.
 ### Removed
 
 -   OverlayOpened & OverlayClosed signals.
+
+### Fixed
+
+-   The terminal toggle button no longer writes to the input
+    (it's a workaround, the input is unfortunately cleared every time the terminal is opened).
 
 ## [1.14.0-beta 2023-12-08]
 

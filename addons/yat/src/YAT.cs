@@ -27,6 +27,10 @@ namespace YAT
 		/// A signal that is emitted when the YAT addon is ready.
 		/// </summary>
 		public delegate void YatReadyEventHandler();
+		[Signal]
+		public delegate void TerminalOpenedEventHandler();
+		[Signal]
+		public delegate void TerminalClosedEventHandler();
 		#endregion
 
 		[Export] public YatOptions Options { get; set; } = new();
@@ -83,12 +87,9 @@ namespace YAT
 			AddCommand(new Commands.QuickCommands(this));
 		}
 
-		public override void _Input(InputEvent @event)
+		public override void _UnhandledInput(InputEvent @event)
 		{
-			if (@event.IsActionPressed("yat_toggle"))
-			{
-				ToggleOverlay();
-			}
+			if (@event.IsActionPressed("yat_toggle")) ToggleTerminal();
 		}
 
 		/// <summary>
@@ -111,30 +112,30 @@ namespace YAT
 			}
 		}
 
-		public void ToggleOverlay()
+		public void ToggleTerminal()
 		{
 			if (!_yatEnabled) return;
 
-			if (Terminal.IsInsideTree()) CloseOverlay();
-			else OpenOverlay();
+			if (Terminal.IsInsideTree()) CloseTerminal();
+			else OpenTerminal();
 		}
 
-		private void OpenOverlay()
+		private void OpenTerminal()
 		{
 			if (Terminal.IsInsideTree()) return;
 
 			Windows.AddChild(Terminal);
-			// Grabbing focus this way prevents writing to the input field
-			// from the previous frame.
-			Terminal.Input.CallDeferred("grab_focus");
+
+			EmitSignal(SignalName.TerminalOpened);
 		}
 
-		private void CloseOverlay()
+		private void CloseTerminal()
 		{
 			if (!Terminal.IsInsideTree()) return;
 
-			Terminal.Input.ReleaseFocus();
 			Windows.RemoveChild(Terminal);
+
+			EmitSignal(SignalName.TerminalClosed);
 		}
 
 		/// <summary>
