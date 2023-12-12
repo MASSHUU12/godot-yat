@@ -69,3 +69,5 @@ This method generates extension documentation based on the metadata added via th
 | YatReady        | N/A                   | Sent when YAT is ready                               |
 | CommandStarted  | command, args         | Signal emitted when a command execution has started. |
 | CommandFinished | command, args, result | Signal emitted when a command has been executed      |
+| TerminalOpened  | N/A                   | Emitted when terminal is opened.                     |
+| TerminalClosed  | N/A                   | Emitted when terminal is closed.                     |
