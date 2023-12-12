@@ -57,7 +57,7 @@ namespace YAT.Scenes.Terminal
 			Output = GetNode<RichTextLabel>("%Output");
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
-			CloseRequested += () => _yat.ToggleOverlay();
+			CloseRequested += () => _yat.ToggleTerminal();
 
 			OnCurrentNodeChanged(SelectedNode.CurrentNode);
 			UpdateOptions(_yat.Options);
