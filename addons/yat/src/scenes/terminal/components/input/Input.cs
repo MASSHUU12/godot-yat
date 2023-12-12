@@ -1,6 +1,5 @@
 using Godot;
 using YAT.Helpers;
-using YAT.Scenes.CommandManager;
 
 namespace YAT.Scenes.Terminal
 {
@@ -12,6 +11,9 @@ namespace YAT.Scenes.Terminal
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
+			// This 'fixes' the issue where terminal toggle key is writing to the input
+			_yat.TerminalOpened += () => { GrabFocus(); Clear(); };
+
 			_commandManager = _yat.GetNode<CommandManager.CommandManager>("CommandManager");
 
 			TextSubmitted += OnTextSubmitted;
