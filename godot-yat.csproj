@@ -1,9 +1,9 @@
-<Project Sdk="Godot.NET.Sdk/4.2.0">
+<Project Sdk="Godot.NET.Sdk/4.2.1">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>godotyat</RootNamespace>
-	<!-- This option does not work well with Godot.NET.Sdk -->
+    <!-- This option does not work well with Godot.NET.Sdk -->
     <!-- <Nullable>enable</Nullable> -->
     <Optimize>true</Optimize>
   </PropertyGroup>
