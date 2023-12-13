@@ -30,3 +30,4 @@
 | ls            | N/A    | Lists the contents of the current directory.                                     |
 | cn            | N/A    | Changes the selected node to the specified node path.                            |
 | stats         | st     | Manages the game monitor.                                                        |
+| cs            | N/A    | Changes the scene.                                                               |
