@@ -11,9 +11,10 @@ Information about automatic input validation can be found [here](./AUTOMATIC_INP
 
 ### Overridable methods
 
-#### GenerateCommandManual
-
-This method generates command documentation based on the metadata added via the `Command` attribute.
+-   GenerateCommandManual
+-   GenerateArgumentsManual
+-   GenerateOptionsManual
+-   GenerateSignalsManual
 
 ## Adding commands
 
