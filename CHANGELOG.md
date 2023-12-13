@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 -   Godot .NET SDK version to 4.2.1.
 -   Included example folder in exported repo.
 
+### Fixed
+
+-   Arguments & options with multiple values were displayed incorrectly in manuals.
+
 ## [1.14.1-beta 2023-12-12]
 
 ### Added
