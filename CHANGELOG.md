@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+-   Keybindings helper class.
+-   Automatic loading of default key bindings.
+
 ### Changed
 
 -   Godot .NET SDK version to 4.2.1.

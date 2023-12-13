@@ -5,16 +5,20 @@
 
 ## Keybindings
 
-To use this extension, you need to create these keybindings in your project.
+YAT automatically adds the default actions and key bindings needed for the plugin to work properly.
+
+All actions used have the prefix `yat`, so there should be no conflicts with actions specific to your project.
+
+You can find all the used actions below.
 
 ### YAT
 
 -   `yat_toggle` - Toggles the state of the overlay.
+-   `yat_context_menu` - Allows to call the context menu.
 -   `yat_terminal_history_next` - Displays the next command from history.
 -   `yat_terminal_history_previous` - Displays the previous command from history.
 -   `yat_terminal_interrupt` - Used to stop command working on separate thread.
 -   `yat_terminal_autocompletion` - Used to scroll through suggestions from autocompletion.
--   `yat_context_menu` - Allows to call the context menu.
 
 ### Example
 
@@ -23,13 +27,17 @@ To use this extension, you need to create these keybindings in your project.
 -   `yat_example_player_move_forward`
 -   `yat_example_player_move_backward`
 
-### Suggested keybindings
+### Default keybindings
 
 -   yat_toggle: `~`
 -   yat_terminal_interrupt: `Ctrl + C`
 -   yat_context_menu: `Right Mouse Button`
 -   yat_terminal_history_next: `Arrow Down`
 -   yat_terminal_history_previous: `Arrow Up`
+-   yat_example_player_move_left: `A`
+-   yat_example_player_move_right: `D`
+-   yat_example_player_move_forward: `W`
+-   yat_example_player_move_backward: `S`
 
 ## Options
 
