@@ -107,7 +107,9 @@ namespace YAT.Interfaces
 
 			foreach (var attr in attributes)
 			{
-				sb.AppendLine($"[b]{attr.Name}[/b]: {attr.Type} - {attr.Description}");
+				sb.AppendLine($"[b]{attr.Name}[/b]: {(attr.Type is string[] type
+						? string.Join(" | ", type)
+						: attr.Type)} - {attr.Description}");
 			}
 
 			return sb.ToString();
@@ -136,7 +138,9 @@ namespace YAT.Interfaces
 
 			foreach (var attr in attributes)
 			{
-				sb.AppendLine($"[b]{attr.Name}[/b]: {attr.Type} - {attr.Description}");
+				sb.AppendLine($"[b]{attr.Name}[/b]: {(attr.Type is string[] type
+						? string.Join(" | ", type)
+						: attr.Type)} - {attr.Description}");
 			}
 
 			return sb.ToString();
