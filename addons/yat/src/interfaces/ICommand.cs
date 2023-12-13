@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using YAT.Attributes;
@@ -141,6 +142,28 @@ namespace YAT.Interfaces
 				sb.AppendLine($"[b]{attr.Name}[/b]: {(attr.Type is string[] type
 						? string.Join(" | ", type)
 						: attr.Type)} - {attr.Description}");
+			}
+
+			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Generates a manual for the signals of the command.
+		/// </summary>
+		/// <returns>A string containing the generated manual.</returns>
+		public virtual string GenerateSignalsManual()
+		{
+			var signals = Reflection.GetEvents(this, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
+
+			if (signals.Length == 0) return "This command does not have any signals.";
+
+			StringBuilder sb = new();
+
+			sb.AppendLine("[p align=center][font_size=18]Signals[/font_size][/p]");
+
+			foreach (var signal in signals)
+			{
+				sb.AppendLine(signal.Name);
 			}
 
 			return sb.ToString();
