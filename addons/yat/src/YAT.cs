@@ -85,6 +85,8 @@ namespace YAT
 			AddCommand(new Stats(this));
 			AddCommand(new Whereami(this));
 			AddCommand(new Commands.QuickCommands(this));
+
+			Keybindings.LoadDefaultActions();
 		}
 
 		public override void _UnhandledInput(InputEvent @event)
