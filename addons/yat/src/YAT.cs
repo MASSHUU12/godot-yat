@@ -67,6 +67,7 @@ namespace YAT
 			AddCommand(new Ls(this));
 			AddCommand(new Ip(this));
 			AddCommand(new Cn(this));
+			AddCommand(new Cs(this));
 			AddCommand(new Cls(this));
 			AddCommand(new Man(this));
 			AddCommand(new Set(this));
@@ -78,11 +79,11 @@ namespace YAT
 			AddCommand(new Ping(this));
 			AddCommand(new Pause(this));
 			AddCommand(new Watch(this));
+			AddCommand(new Stats(this));
 			AddCommand(new Cowsay(this));
 			AddCommand(new Options(this));
 			AddCommand(new Restart(this));
 			AddCommand(new History(this));
-			AddCommand(new Stats(this));
 			AddCommand(new Whereami(this));
 			AddCommand(new Commands.QuickCommands(this));
 
