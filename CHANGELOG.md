@@ -9,6 +9,8 @@ All notable changes to this project will be documented in this file.
 -   Keybindings helper class.
 -   Automatic loading of default key bindings.
 -   Cs command for changing scenes.
+-   Reflection helper class.
+-   Automatic generation of documentation for signals.
 
 ### Changed
 
