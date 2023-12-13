@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Godot .NET SDK version to 4.2.1.
+-   Included example folder in exported repo.
 
 ## [1.14.1-beta 2023-12-12]
 
