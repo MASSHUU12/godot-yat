@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 -   EOL in .editorconfig to LF.
 
+### Fixed
+
+-   YatWindow do not scale with the main viewport.
+
 ## [1.15.0-beta 2023-12-13]
 
 ### Added
