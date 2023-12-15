@@ -19,6 +19,8 @@ namespace YAT.Scenes.SettingsWindow
 
 		public override void _Ready()
 		{
+			base._Ready();
+
 			_yat = GetNode<YAT>("/root/YAT");
 
 			_save = GetNode<Button>("%Save");

@@ -11,6 +11,8 @@ namespace YAT.Scenes.Monitor
 
 		public override void _Ready()
 		{
+			base._Ready();
+
 			_yat = GetNode<YAT>("/root/YAT");
 			_timer = GetNode<Timer>("Timer");
 			_components = GetNode<VBoxContainer>("%Components");
