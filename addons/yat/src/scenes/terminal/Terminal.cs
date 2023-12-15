@@ -39,6 +39,8 @@ namespace YAT.Scenes.Terminal
 
 		public override void _Ready()
 		{
+			base._Ready();
+
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 

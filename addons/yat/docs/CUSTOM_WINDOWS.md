@@ -17,3 +17,10 @@ You can add your window this way:
 ```csharp
 Yat.Windows.AddChild(_yourWindow);
 ```
+
+### Scaling with the main viewport
+
+The `YatWindow` is able to scale to always contain itself in the `main viewport`.
+To use this functionality, all you need to do is to use `base._Ready();` in the `_Ready` method of your window.
+
+Using the variable `ViewportEdgeOffset` you can adjust how much the YatWindow will be smaller than the main viewport.

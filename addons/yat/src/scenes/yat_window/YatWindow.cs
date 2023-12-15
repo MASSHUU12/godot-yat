@@ -4,6 +4,12 @@ namespace YAT.Scenes.YatWindow
 {
 	public partial class YatWindow : Window
 	{
+		[Export(PropertyHint.Range, "0, 128, 1")]
+		public int ViewportEdgeOffset = 48;
+
+		private YAT _yat;
+		private Viewport _viewport;
+
 		public enum WindowPosition
 		{
 			TopLeft,
@@ -11,6 +17,26 @@ namespace YAT.Scenes.YatWindow
 			BottomLeft,
 			BottomRight,
 			Center
+		}
+
+		public override void _Ready()
+		{
+			_yat = GetNode<YAT>("/root/YAT");
+			_viewport = _yat.GetTree().Root.GetViewport();
+			_viewport.SizeChanged += OnViewportSizeChanged;
+
+			OnViewportSizeChanged();
+		}
+
+		private void OnViewportSizeChanged()
+		{
+			var viewportSize = (Vector2I)_viewport.GetVisibleRect().Size;
+
+			MaxSize = MaxSize with
+			{
+				X = viewportSize.X - ViewportEdgeOffset,
+				Y = viewportSize.Y - ViewportEdgeOffset
+			};
 		}
 
 		public void Move(WindowPosition position, uint offset = 0)
