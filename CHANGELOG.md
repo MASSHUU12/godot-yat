@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+-   EOL in .editorconfig to LF.
+
 ## [1.15.0-beta 2023-12-13]
 
 ### Added
