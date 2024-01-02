@@ -12,7 +12,7 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 ## Prerequisites
 
 -   [.NET SDK 7](https://dotnet.microsoft.com/en-us/download)
--   [.NET enabled Godot 4.2](https://godotengine.org/download/windows/)
+-   [.NET enabled Godot ^4.0](https://godotengine.org/download/windows/)
 
 ## Features
 
