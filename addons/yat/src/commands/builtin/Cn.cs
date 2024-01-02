@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Scenes.Terminal;
 
 namespace YAT.Commands
 {
@@ -21,6 +22,8 @@ namespace YAT.Commands
 		{
 			var path = cArgs["node_path"] as string;
 			var result = Yat.Terminal.SelectedNode.ChangeSelectedNode(path);
+
+			if (!result) Yat.Terminal.Print($"Invalid node path: {path}", Terminal.PrintType.Error);
 
 			return result ? CommandResult.Success : CommandResult.Failure;
 		}
