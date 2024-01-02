@@ -34,15 +34,9 @@ namespace YAT.Commands
 
 		private CommandResult PrintNodeMethods(string path)
 		{
-			Node node = path != "."
-				? Yat.Terminal.SelectedNode.GetNodeOrNull(path)
-				: Yat.Terminal.SelectedNode;
+			Node node = GetNodeFromPathOrSelected(ref path);
 
-			if (!GodotObject.IsInstanceValid(node))
-			{
-				Yat.Terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
-				return CommandResult.Failure;
-			}
+			if (node is null) return CommandResult.Failure;
 
 			var methods = node.GetMethodList().GetEnumerator();
 
@@ -76,19 +70,13 @@ namespace YAT.Commands
 
 		private CommandResult PrintNodeChildren(string path)
 		{
-			Node node = path != "."
-				? Yat.Terminal.SelectedNode.GetNodeOrNull(path)
-				: Yat.Terminal.SelectedNode;
+			Node node = GetNodeFromPathOrSelected(ref path);
 
-			if (!GodotObject.IsInstanceValid(node))
-			{
-				Yat.Terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
-				return CommandResult.Failure;
-			}
+			if (node is null) return CommandResult.Failure;
 
 			var children = node.GetChildren();
 
-			if (children == null || children.Count == 0)
+			if (children.Count == 0)
 			{
 				Yat.Terminal.Print($"Node '{path}' has no children.", PrintType.Warning);
 				return CommandResult.Success;
@@ -105,6 +93,21 @@ namespace YAT.Commands
 			Yat.Terminal.Print(sb.ToString());
 
 			return CommandResult.Success;
+		}
+
+		private Node GetNodeFromPathOrSelected(ref string path)
+		{
+			Node node = (path == "." || path == "./")
+				? Yat.Terminal.SelectedNode.CurrentNode
+				: Yat.Terminal.SelectedNode.GetNodeOrNull(path);
+
+			var newPath = node?.GetPath();
+			path = newPath is null ? path : newPath;
+
+			if (GodotObject.IsInstanceValid(node)) return node;
+
+			Yat.Terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
+			return null;
 		}
 
 		private CommandResult PrintDirectoryContents(string path)
