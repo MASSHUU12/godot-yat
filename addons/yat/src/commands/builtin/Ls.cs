@@ -36,7 +36,7 @@ namespace YAT.Commands
 		{
 			Node node = path != "."
 				? Yat.Terminal.SelectedNode.GetNodeOrNull(path)
-				: Yat.Terminal.SelectedNode;
+				: Yat.Terminal.SelectedNode.CurrentNode;
 
 			if (!GodotObject.IsInstanceValid(node))
 			{
@@ -78,7 +78,7 @@ namespace YAT.Commands
 		{
 			Node node = path != "."
 				? Yat.Terminal.SelectedNode.GetNodeOrNull(path)
-				: Yat.Terminal.SelectedNode;
+				: Yat.Terminal.SelectedNode.CurrentNode;
 
 			if (!GodotObject.IsInstanceValid(node))
 			{
