@@ -94,17 +94,17 @@ namespace YAT.Interfaces
 		{
 			var attributes = AttributeHelper.GetAttributes<ArgumentAttribute>(this);
 
-			if (attributes is null) return "This command does not have any arguments.";
+			if (attributes is null) return "\nThis command does not have any arguments.";
 
 			StringBuilder sb = new();
 
-			sb.AppendLine("[p align=center][font_size=18]Arguments[/font_size][/p]");
-
 			if (attributes.Length == 0)
 			{
-				sb.AppendLine("This command does not have any arguments.");
+				sb.AppendLine("\nThis command does not have any arguments.");
 				return sb.ToString();
 			}
+
+			sb.AppendLine("[p align=center][font_size=18]Arguments[/font_size][/p]");
 
 			foreach (var attr in attributes)
 			{
@@ -125,17 +125,17 @@ namespace YAT.Interfaces
 		{
 			var attributes = AttributeHelper.GetAttributes<OptionAttribute>(this);
 
-			if (attributes is null) return "This command does not have any options.";
+			if (attributes is null) return "\nThis command does not have any options.";
 
 			StringBuilder sb = new();
 
-			sb.AppendLine("[p align=center][font_size=18]Options[/font_size][/p]");
-
 			if (attributes.Length == 0)
 			{
-				sb.AppendLine("This command does not have any options.");
+				sb.AppendLine("\nThis command does not have any options.");
 				return sb.ToString();
 			}
+
+			sb.AppendLine("[p align=center][font_size=18]Options[/font_size][/p]");
 
 			foreach (var attr in attributes)
 			{
@@ -155,7 +155,7 @@ namespace YAT.Interfaces
 		{
 			var signals = Reflection.GetEvents(this, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
 
-			if (signals.Length == 0) return "This command does not have any signals.";
+			if (signals.Length == 0) return "\nThis command does not have any signals.";
 
 			StringBuilder sb = new();
 
