@@ -7,10 +7,12 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Godot .NET SDK version to 4.3.0-dev.1.
+-   Logged messages from ls command are more descriptive.
 
 ### Fixed
 
 -   "Options"/"Arguments" headers were displaying where a command had no options/arguments.
+-   Ls command used path to the SelectedNode scene instead of path to the currently selected node.
 
 ## [1.15.1-beta 2023-12-15]
 
