@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 -   Godot .NET SDK version to 4.3.0-dev.1.
 -   Logged messages from ls command are more descriptive.
+-   Cn command logs error when path is invalid.
+-   CurrentNode variable renamed to Current in SelectedNode scene.
 
 ### Fixed
 
