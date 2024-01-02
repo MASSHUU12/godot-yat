@@ -61,7 +61,7 @@ namespace YAT.Scenes.Terminal
 
 			CloseRequested += () => _yat.ToggleTerminal();
 
-			OnCurrentNodeChanged(SelectedNode.CurrentNode);
+			OnCurrentNodeChanged(SelectedNode.Current);
 			UpdateOptions(_yat.Options);
 			MoveToCenter();
 		}
@@ -127,7 +127,7 @@ namespace YAT.Scenes.Terminal
 
 		private void UpdateOptions(YatOptions options)
 		{
-			OnCurrentNodeChanged(SelectedNode.CurrentNode);
+			OnCurrentNodeChanged(SelectedNode.Current);
 			_promptLabel.Visible = options.ShowPrompt;
 			Size = new((int)options.DefaultWidth, (int)options.DefaultHeight);
 			Output.ScrollFollowing = options.AutoScroll;

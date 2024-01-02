@@ -20,7 +20,7 @@ namespace YAT.Commands
 			var longForm = (bool)cArgs["-l"];
 			var s = (bool)cArgs["-s"];
 
-			scene = s ? Yat.Terminal.SelectedNode.CurrentNode : scene;
+			scene = s ? Yat.Terminal.SelectedNode.Current : scene;
 
 			Yat.Terminal.Print(
 				scene.GetPath() +

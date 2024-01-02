@@ -12,7 +12,7 @@ namespace YAT.Scenes.Terminal
 		[Signal]
 		public delegate void MethodCalledEventHandler(string method, Variant returnValue, MethodStatus status);
 
-		public Node CurrentNode { get; private set; }
+		public Node Current { get; private set; }
 
 		public enum RejectionReason
 		{
@@ -31,7 +31,7 @@ namespace YAT.Scenes.Terminal
 		public override void _Ready()
 		{
 			_terminal = GetNode<Terminal>("../");
-			CurrentNode = GetTree().Root;
+			Current = GetTree().Root;
 		}
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace YAT.Scenes.Terminal
 				return false;
 			}
 
-			var newSelectedNode = CurrentNode.GetNodeOrNull(node);
+			var newSelectedNode = Current.GetNodeOrNull(node);
 			newSelectedNode ??= GetNodeOrNull(node);
 
 			if (!IsInstanceValid(newSelectedNode))
@@ -56,8 +56,8 @@ namespace YAT.Scenes.Terminal
 				return false;
 			}
 
-			CurrentNode = newSelectedNode;
-			EmitSignal(SignalName.CurrentNodeChanged, CurrentNode);
+			Current = newSelectedNode;
+			EmitSignal(SignalName.CurrentNodeChanged, Current);
 
 			return true;
 		}
@@ -106,8 +106,8 @@ namespace YAT.Scenes.Terminal
 			if (!ValidateMethod(method)) return false;
 
 			result = args.Length == 0
-				? CurrentNode.Call(method)
-				: CurrentNode.Call(method, args);
+				? Current.Call(method)
+				: Current.Call(method, args);
 
 			_terminal.Print(result.ToString());
 
@@ -118,9 +118,9 @@ namespace YAT.Scenes.Terminal
 
 		private bool ValidateMethod(string method)
 		{
-			if (!CurrentNode.HasMethod(method))
+			if (!Current.HasMethod(method))
 			{
-				LogHelper.UnknownMethod(CurrentNode.Name, method);
+				LogHelper.UnknownMethod(Current.Name, method);
 				EmitSignal(SignalName.MethodCalled, method, new(), (ushort)MethodStatus.Failed);
 				return false;
 			}

@@ -98,7 +98,7 @@ namespace YAT.Commands
 		private Node GetNodeFromPathOrSelected(ref string path)
 		{
 			Node node = (path == "." || path == "./")
-				? Yat.Terminal.SelectedNode.CurrentNode
+				? Yat.Terminal.SelectedNode.Current
 				: Yat.Terminal.SelectedNode.GetNodeOrNull(path);
 
 			var newPath = node?.GetPath();
