@@ -13,7 +13,14 @@ namespace YAT.Commands
 		"Changes the selected node to the specified node path.",
 		"[b]Usage[/b]: cn [i]node_path[/i]"
 	)]
-	[Argument("node_path", "string", "The node path of the new selected node.")]
+	[Argument(
+		"node_path",
+		"string",
+		"The node path of the new selected node.\n" +
+		"Use [i]&[/i] to use the RayCast method to get the node path where the camera is looking at.\n" +
+		"Use [i]&[b]ray_length[/b][/i] to specify the ray length (default 256).\n" +
+		"Example: [i]&[/i] or [i]&[b]256[/b][/i]"
+	)]
 	public partial class Cn : ICommand
 	{
 		public YAT Yat { get; set; }
