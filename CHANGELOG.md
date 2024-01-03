@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 -   Logged messages from ls command are more descriptive.
 -   Cn command logs error when path is invalid.
 -   CurrentNode variable renamed to Current in SelectedNode scene.
+-   Cn command now can switch current node to the one at which the camera is looking at.
 
 ### Fixed
 
