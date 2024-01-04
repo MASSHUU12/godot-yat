@@ -52,7 +52,12 @@ theme = SubResource("Theme_qh8tk")
 [node name="HBoxContainer" type="HBoxContainer" parent="Content/VBoxContainer/InputLine" index="0"]
 layout_mode = 2
 
-[node name="PromptLabel" type="Label" parent="Content/VBoxContainer/InputLine/HBoxContainer" index="0"]
+[node name="SelectedNodePath" type="Label" parent="Content/VBoxContainer/InputLine/HBoxContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "/root"
+
+[node name="PromptLabel" type="Label" parent="Content/VBoxContainer/InputLine/HBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
@@ -60,7 +65,7 @@ text = ">"
 vertical_alignment = 1
 max_lines_visible = 1
 
-[node name="Input" type="LineEdit" parent="Content/VBoxContainer/InputLine/HBoxContainer" index="1"]
+[node name="Input" type="LineEdit" parent="Content/VBoxContainer/InputLine/HBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

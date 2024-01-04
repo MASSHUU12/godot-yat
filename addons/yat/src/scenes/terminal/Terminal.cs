@@ -33,6 +33,7 @@ namespace YAT.Scenes.Terminal
 
 		private YAT _yat;
 		private Label _promptLabel;
+		private Label _selectedNodeLabel;
 		private RichTextLabel Output;
 		private string _prompt = "> ";
 		private CommandManager.CommandManager _commandManager;
@@ -54,6 +55,7 @@ namespace YAT.Scenes.Terminal
 			_commandManager.CommandFinished += (command, args, result) => Title = "YAT";
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
+			_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
 			Input = GetNode<Input>("%Input");
 
 			Output = GetNode<RichTextLabel>("%Output");
@@ -135,7 +137,7 @@ namespace YAT.Scenes.Terminal
 
 		private void OnCurrentNodeChanged(Node node)
 		{
-			_promptLabel.Text = $"{node.GetPath()} {_yat.Options.Prompt}";
+			_selectedNodeLabel.Text = node.GetPath();
 		}
 
 		/// <summary>
