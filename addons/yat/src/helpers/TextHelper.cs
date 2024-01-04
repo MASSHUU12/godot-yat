@@ -158,90 +158,49 @@ namespace YAT.Helpers
 		/// The path with some of the middle directory paths replaced with an ellipsis
 		/// (or the entire path if it is already shorter than maxLength)
 		/// </returns>
-		/// <remarks>
-		/// Shortens the path by removing some of the "middle directories"
-		/// in the path and inserting an ellipsis.
-		/// If the filename and root path (drive letter or UNC server name)
-		/// in itself exceeds the maxLength, the filename will be cut to fit.
-		/// UNC-paths and relative paths are also supported.
-		/// The inserted ellipsis is not a true ellipsis char, but a string of three dots.
-		/// </remarks>
-		/// <example>
-		/// ShortenPath(@"c:\websites\myproject\www_myproj\App_Data\themegafile.txt", 50)
-		/// Result: "c:\websites\myproject\...\App_Data\themegafile.txt"
-		///
-		/// ShortenPath(@"c:\websites\myproject\www_myproj\App_Data\theextremelylongfilename_morelength.txt", 30)
-		/// Result: "c:\...gfilename_morelength.txt"
-		///
-		/// ShortenPath(@"\\myserver\theshare\myproject\www_myproj\App_Data\theextremelylongfilename_morelength.txt", 30)
-		/// Result: "\\myserver\...e_morelength.txt"
-		///
-		/// ShortenPath(@"\\myserver\theshare\myproject\www_myproj\App_Data\themegafile.txt", 50)
-		/// Result: "\\myserver\theshare\...\App_Data\themegafile.txt"
-		///
-		/// ShortenPath(@"\\192.168.1.178\theshare\myproject\www_myproj\App_Data\themegafile.txt", 50)
-		/// Result: "\\192.168.1.178\theshare\...\themegafile.txt"
-		///
-		/// ShortenPath(@"\theshare\myproject\www_myproj\App_Data\", 30)
-		/// Result: "\theshare\...\App_Data\"
-		///
-		/// ShortenPath(@"\theshare\myproject\www_myproj\App_Data\themegafile.txt", 35)
-		/// Result: "\theshare\...\themegafile.txt"
-		/// </example>
 		public static string ShortenPath(string path, ushort maxLength, string ellipsisChar = "...")
 		{
 			if (string.IsNullOrEmpty(path) || maxLength <= ellipsisChar.Length) return ellipsisChar;
 			if (path.Length <= maxLength) return path;
 
-			int ellipsisLength = ellipsisChar.Length;
-			var dirSeparatorChar = Path.DirectorySeparatorChar.ToString();
+			var dirSeparator = Path.DirectorySeparatorChar.ToString();
 			bool isFirstPartsTurn = true;
 
-			string[] pathParts = path.Split(dirSeparatorChar);
+			string[] pathParts = path.Split(dirSeparator);
 			StringBuilder result = new();
 
 			int totalLength = 0;
 			int startIdx = 0;
 			int endIdx = pathParts.Length - 1;
 
-			while (startIdx <= endIdx && totalLength + ellipsisLength <= maxLength)
+			while (startIdx <= endIdx && totalLength + ellipsisChar.Length <= maxLength)
 			{
+				var partToAdd = isFirstPartsTurn
+					? pathParts[startIdx] + dirSeparator
+					: dirSeparator + pathParts[endIdx];
+
+				if (totalLength + partToAdd.Length > maxLength) break;
+
 				if (isFirstPartsTurn)
 				{
-					string partToAdd = pathParts[startIdx] + dirSeparatorChar;
-					if (totalLength + partToAdd.Length <= maxLength)
-					{
-						result.Append(partToAdd);
-						totalLength += partToAdd.Length;
-						startIdx++;
-						if (partToAdd != dirSeparatorChar)
-						{
-							isFirstPartsTurn = false;
-						}
-					}
-					else break;
+					result.Append(partToAdd);
+					startIdx++;
 				}
 				else
 				{
-					string partToAdd = dirSeparatorChar + pathParts[endIdx];
-					if (totalLength + partToAdd.Length <= maxLength)
-					{
-						result.Insert(0, partToAdd);
-						totalLength += partToAdd.Length;
-						endIdx--;
-						if (partToAdd != dirSeparatorChar)
-						{
-							isFirstPartsTurn = true;
-						}
-					}
-					else break;
+					result.Insert(0, partToAdd);
+					endIdx--;
 				}
+
+				totalLength += partToAdd.Length;
+
+				if (partToAdd != dirSeparator) isFirstPartsTurn = !isFirstPartsTurn;
 			}
 
-			string lastPart = string.Join(dirSeparatorChar, pathParts, startIdx, endIdx - startIdx + 1);
-			if (lastPart.Length + ellipsisLength > maxLength)
+			string lastPart = string.Join(dirSeparator, pathParts, startIdx, endIdx - startIdx + 1);
+			if (lastPart.Length + ellipsisChar.Length > maxLength)
 			{
-				lastPart = lastPart.Substring(lastPart.Length - (maxLength - ellipsisLength));
+				lastPart = lastPart[^(maxLength - ellipsisChar.Length)..];
 			}
 
 			return result.ToString() + ellipsisChar + lastPart;
