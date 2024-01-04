@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+-   ShortenPath method to the TextHelper class.
+
 ### Changed
 
 -   Godot .NET SDK version to 4.3.0-dev.1.
@@ -11,6 +15,7 @@ All notable changes to this project will be documented in this file.
 -   Cn command logs error when path is invalid.
 -   CurrentNode variable renamed to Current in SelectedNode scene.
 -   Cn command now can switch current node to the one at which the camera is looking at.
+-   Path to the currently selected node displayed in the terminal is limited to 20 characters.
 
 ### Fixed
 
