@@ -20,7 +20,7 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 -   Autocompletion
 -   Script templates
 -   Performance monitor
--   Tiny size (< 150 KB)
+-   Tiny size (< 175 KB)
 -   Many built-in commands (over 20)
 -   Access to the node tree (experimental)
 -   Ability to restrict access to the plugin
