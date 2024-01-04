@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Helpers;
 
 namespace YAT.Scenes.Terminal
 {
@@ -137,7 +138,7 @@ namespace YAT.Scenes.Terminal
 
 		private void OnCurrentNodeChanged(Node node)
 		{
-			_selectedNodeLabel.Text = node.GetPath();
+			_selectedNodeLabel.Text = TextHelper.ShortenPath(node?.GetPath() ?? string.Empty, 20);
 		}
 
 		/// <summary>
