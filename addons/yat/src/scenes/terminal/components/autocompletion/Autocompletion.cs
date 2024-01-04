@@ -24,7 +24,7 @@ namespace YAT.Scenes.Terminal
 			_yat = GetNode<YAT>("/root/YAT");
 			_text = GetNode<RichTextLabel>("%Text");
 			_container = GetNode<MarginContainer>("./MarginContainer");
-			_input = GetNode<Input>("../HBoxContainer/Input");
+			_input = GetNode<Input>("../InputLine/HBoxContainer/Input");
 			_input.TextChanged += UpdateCommandInfo;
 
 			_container.Visible = false;

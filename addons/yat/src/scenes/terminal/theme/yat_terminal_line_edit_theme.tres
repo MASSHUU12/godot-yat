@@ -3,6 +3,4 @@
 [resource]
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
+bg_color = Color(0.6, 0.6, 0.6, 0)

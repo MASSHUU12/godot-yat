@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace YAT.Helpers
 {
@@ -143,6 +145,65 @@ namespace YAT.Helpers
 						.Select(token => token.Trim())
 						.Where(token => !string.IsNullOrEmpty(token))
 						.ToArray();
+		}
+
+		/// <summary>
+		/// Shortens a file path to the specified length.
+		///
+		/// Adapted from https://stackoverflow.com/a/4638913
+		/// </summary>
+		/// <param name="path">The file path to shorten</param>
+		/// <param name="maxLength">The max length of the output path (including the ellipsis if inserted)</param>
+		/// <returns>
+		/// The path with some of the middle directory paths replaced with an ellipsis
+		/// (or the entire path if it is already shorter than maxLength)
+		/// </returns>
+		public static string ShortenPath(string path, ushort maxLength, string ellipsisChar = "...")
+		{
+			if (string.IsNullOrEmpty(path) || maxLength <= ellipsisChar.Length) return ellipsisChar;
+			if (path.Length <= maxLength) return path;
+
+			var dirSeparator = Path.DirectorySeparatorChar.ToString();
+			bool isFirstPartsTurn = true;
+
+			string[] pathParts = path.Split(dirSeparator);
+			StringBuilder result = new();
+
+			int totalLength = 0;
+			int startIdx = 0;
+			int endIdx = pathParts.Length - 1;
+
+			while (startIdx <= endIdx && totalLength + ellipsisChar.Length <= maxLength)
+			{
+				var partToAdd = isFirstPartsTurn
+					? pathParts[startIdx] + dirSeparator
+					: dirSeparator + pathParts[endIdx];
+
+				if (totalLength + partToAdd.Length > maxLength) break;
+
+				if (isFirstPartsTurn)
+				{
+					result.Append(partToAdd);
+					startIdx++;
+				}
+				else
+				{
+					result.Insert(0, partToAdd);
+					endIdx--;
+				}
+
+				totalLength += partToAdd.Length;
+
+				if (partToAdd != dirSeparator) isFirstPartsTurn = !isFirstPartsTurn;
+			}
+
+			string lastPart = string.Join(dirSeparator, pathParts, startIdx, endIdx - startIdx + 1);
+			if (lastPart.Length + ellipsisChar.Length > maxLength)
+			{
+				lastPart = lastPart[^(maxLength - ellipsisChar.Length)..];
+			}
+
+			return result.ToString() + ellipsisChar + lastPart;
 		}
 	}
 }
