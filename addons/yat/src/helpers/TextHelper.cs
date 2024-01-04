@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace YAT.Helpers
 {
@@ -187,73 +188,77 @@ namespace YAT.Helpers
 		/// ShortenPath(@"\theshare\myproject\www_myproj\App_Data\themegafile.txt", 35)
 		/// Result: "\theshare\...\themegafile.txt"
 		/// </example>
-		public static string ShortenPath(string path, int maxLength, string ellipsisChar = "...")
+		public static string ShortenPath(string path, ushort maxLength, string ellipsisChar = "...")
 		{
+			if (string.IsNullOrEmpty(path) || maxLength <= ellipsisChar.Length) return ellipsisChar;
+			if (path.Length <= maxLength) return path;
+
 			int ellipsisLength = ellipsisChar.Length;
 
-			char dirSeperatorChar = Path.DirectorySeparatorChar;
-			string directorySeperator = dirSeperatorChar.ToString();
-
-			// Basic guards
-			if (path.Length <= maxLength) return path;
-			if (maxLength <= ellipsisLength) return ellipsisChar;
+			var dirSeperatorChar = Path.DirectorySeparatorChar.ToString();
 
 			// Alternate between taking a section from the start (firstPart) or the path and the end (lastPart)
 			bool isFirstPartsTurn = true; // Drive letter has first priority, so start with that and see what else there is room for
 
-			string firstPart = string.Empty;
-			string lastPart = string.Empty;
+			var firstPart = string.Empty;
+			var lastPart = string.Empty;
 
 			int firstPartsUsed = 0;
 			int lastPartsUsed = 0;
 
 			string[] pathParts = path.Split(dirSeperatorChar);
+			StringBuilder result = new();
+
 			for (int i = 0; i < pathParts.Length; i++)
 			{
 				if (isFirstPartsTurn)
 				{
-					string partToAdd = pathParts[firstPartsUsed] + directorySeperator;
-					if ((firstPart.Length + lastPart.Length + partToAdd.Length + ellipsisLength) > maxLength)
+					string partToAdd = pathParts[firstPartsUsed] + dirSeperatorChar;
+					if ((result.Length + partToAdd.Length + ellipsisLength) > maxLength)
 					{
 						break;
 					}
-					firstPart += partToAdd;
-					if (partToAdd == directorySeperator)
+
+					result.Append(partToAdd);
+					firstPartsUsed++;
+
+					if (partToAdd == dirSeperatorChar)
 					{
 						// This is most likely the first part of and UNC or relative path
 						// Do not switch to lastpart, as these are not "true" directory seperators
 						// Otherwise "\\myserver\theshare\outproject\www_project\file.txt" becomes "\\...\www_project\file.txt" instead of the intended "\\myserver\...\file.txt")
 					}
 					else isFirstPartsTurn = false;
-					firstPartsUsed++;
 				}
 				else
 				{
 					int index = pathParts.Length - lastPartsUsed - 1; // -1 because of length vs. zero-based indexing
-					string partToAdd = directorySeperator + pathParts[index];
-					if ((firstPart.Length + lastPart.Length + partToAdd.Length + ellipsisLength) > maxLength)
+					string partToAdd = dirSeperatorChar + pathParts[index];
+					if ((result.Length + partToAdd.Length + ellipsisLength) > maxLength)
 					{
 						break;
 					}
-					lastPart = partToAdd + lastPart;
-					if (partToAdd == directorySeperator)
+
+					result.Insert(0, partToAdd);
+					lastPartsUsed++;
+
+					if (partToAdd == dirSeperatorChar)
 					{
 						// This is most likely the last part of a relative path (e.g. "\websites\myproject\www_myproj\App_Data\")
 						// Do not proceed to processing firstPart yet
 					}
 					else isFirstPartsTurn = true;
-					lastPartsUsed++;
 				}
 			}
 
 			if (lastPart == string.Empty)
 			{
 				// The filename (and root path) in itself was longer than maxLength, shorten it
-				lastPart = pathParts[pathParts.Length - 1]; // This is the equivalent of "Path.GetFileName(pathToShorten)"
+				lastPart = pathParts[pathParts.Length - 1];
 				lastPart = lastPart.Substring(lastPart.Length + ellipsisLength + firstPart.Length - maxLength, maxLength - ellipsisLength - firstPart.Length);
 			}
 
-			return firstPart + ellipsisChar + lastPart;
+			return result.ToString() + ellipsisChar + lastPart;
 		}
 	}
 }
