@@ -36,8 +36,8 @@ namespace YAT.Scenes.Terminal
 				return;
 			}
 
-			var input = TextHelper.SanitizeText(command);
-			input = TextHelper.ConcatenateSentence(input);
+			var input = Helpers.Text.SanitizeText(command);
+			input = Helpers.Text.ConcatenateSentence(input);
 
 			if (input.Length == 0 || _commandManager.Locked) return;
 

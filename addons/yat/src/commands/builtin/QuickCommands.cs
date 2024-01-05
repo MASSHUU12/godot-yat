@@ -37,7 +37,7 @@ namespace YAT.Commands
 				default:
 					foreach (var qc in Yat.Terminal.Context.QuickCommands.QuickCommands.Commands)
 					{
-						Yat.Terminal.Print($"[b]{qc.Key}[/b] - {TextHelper.EscapeBBCode(qc.Value)}");
+						Yat.Terminal.Print($"[b]{qc.Key}[/b] - {Text.EscapeBBCode(qc.Value)}");
 					}
 					break;
 			}

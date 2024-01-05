@@ -66,7 +66,7 @@ namespace YAT.Scenes.Terminal
 		{
 			_terminal.Print("Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n", Terminal.PrintType.Warning);
 
-			string[] tokens = TextHelper.SplitClean(input, ".");
+			string[] tokens = Text.SplitClean(input, ".");
 			Variant result = new();
 
 			if (tokens.Length == 0) return false;

@@ -8,7 +8,7 @@ namespace YAT.Helpers
 	/// <summary>
 	/// Provides helper methods for working with text.
 	/// </summary>
-	public static class TextHelper
+	public static class Text
 	{
 		/// <summary>
 		/// Escapes BBCode tags in the given text by replacing '[' with '[lb]'.
