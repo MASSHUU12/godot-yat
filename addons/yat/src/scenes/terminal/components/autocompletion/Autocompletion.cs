@@ -45,7 +45,7 @@ namespace YAT.Scenes.Terminal
 		/// <param name="text">The text to update the command information with.</param>
 		private void UpdateCommandInfo(string text)
 		{
-			var tokens = TextHelper.SanitizeText(text);
+			var tokens = Text.SanitizeText(text);
 
 			if (!AreTokensValid(tokens)) return;
 
@@ -145,7 +145,7 @@ namespace YAT.Scenes.Terminal
 			suggestions = Array.Empty<string>();
 			suggestionIndex = 0;
 
-			var tokens = TextHelper.SanitizeText(_input.Text);
+			var tokens = Text.SanitizeText(_input.Text);
 
 			if (tokens.Length == 1)
 			{

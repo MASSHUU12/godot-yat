@@ -139,7 +139,7 @@ namespace YAT.Scenes.Terminal
 
 		private void OnCurrentNodeChanged(Node node)
 		{
-			_selectedNodeLabel.Text = TextHelper.ShortenPath(node?.GetPath() ?? string.Empty, 20);
+			_selectedNodeLabel.Text = Text.ShortenPath(node?.GetPath() ?? string.Empty, 20);
 		}
 
 		/// <summary>

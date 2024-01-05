@@ -65,9 +65,9 @@ namespace YAT.Commands
 			var command = Yat.History.ElementAt(index);
 
 			Yat.Terminal.Print(
-				$"Executing command at index {index}: {TextHelper.EscapeBBCode(command)}"
+				$"Executing command at index {index}: {Text.EscapeBBCode(command)}"
 			);
-			Yat.CommandManager.Run(TextHelper.SanitizeText(command));
+			Yat.CommandManager.Run(Text.SanitizeText(command));
 		}
 
 		private void ShowHistory()
@@ -79,7 +79,7 @@ namespace YAT.Commands
 			int i = 0;
 			foreach (string command in Yat.History)
 			{
-				sb.AppendLine($"{i++}: {TextHelper.EscapeBBCode(command)}");
+				sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
 			}
 
 			Yat.Terminal.Print(sb.ToString());
