@@ -35,8 +35,7 @@ namespace YAT.Commands
 					ShowHistory();
 					break;
 				default:
-					if (int.TryParse(args[1], out int index))
-						ExecuteFromHistory(index);
+					if (int.TryParse(args[1], out int index)) ExecuteFromHistory(index);
 					else
 					{
 						Yat.Terminal.Print($"Invalid action: {args[1]}");
@@ -73,16 +72,15 @@ namespace YAT.Commands
 		private void ShowHistory()
 		{
 			StringBuilder sb = new();
-
 			sb.AppendLine("Terminal history:");
 
-			int i = 0;
+			ushort i = 0;
 			foreach (string command in Yat.History)
 			{
 				sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
 			}
 
-			Yat.Terminal.Print(sb.ToString());
+			Yat.Terminal.Print(sb);
 		}
 	}
 }
