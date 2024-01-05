@@ -16,16 +16,9 @@ namespace YAT
 	public partial class YAT : Node
 	{
 		#region Signals
-		/// <summary>
-		/// Signal emitted when the YatOptions have been changed.
-		/// </summary>
-		/// <param name="options">The new YatOptions.</param>
 		[Signal]
 		public delegate void OptionsChangedEventHandler(YatOptions options);
 		[Signal]
-		/// <summary>
-		/// A signal that is emitted when the YAT addon is ready.
-		/// </summary>
 		public delegate void YatReadyEventHandler();
 		[Signal]
 		public delegate void TerminalOpenedEventHandler();
