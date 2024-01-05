@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Simplified logic of ls command.
+-   Renamed TextHelper class to Text.
 
 ## [1.15.2-beta 2024-01-04]
 
