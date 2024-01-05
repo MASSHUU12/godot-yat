@@ -1,3 +1,4 @@
+using System.Text;
 using Godot;
 using YAT.Helpers;
 
@@ -164,6 +165,8 @@ namespace YAT.Scenes.Terminal
 			Output.CallDeferred("append_text", text);
 			Output.CallDeferred("pop_all");
 		}
+
+		public void Print(StringBuilder text, PrintType type = PrintType.Normal) => Print(text.ToString(), type);
 
 		/// <summary>
 		/// Clears the output text of the terminal window.
