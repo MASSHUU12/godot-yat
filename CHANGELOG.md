@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   Scene helper class with PrintChildren & GetFromPathOrDefault methods.
+-   Print method overload to Terminal accepting StringBuilder.
+
+### Changed
+
+-   Simplified logic of ls command.
+
 ## [1.15.2-beta 2024-01-04]
 
 ### Added
