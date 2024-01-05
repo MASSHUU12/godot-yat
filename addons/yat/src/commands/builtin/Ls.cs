@@ -27,16 +27,22 @@ namespace YAT.Commands
 			bool n = (bool)cArgs["-n"];
 			bool m = (bool)cArgs["-m"];
 
-			if (n) return PrintNodeChildren(path);
+			if (n) return Scene.PrintChildren(Yat.Terminal, path)
+				? CommandResult.Success
+				: CommandResult.Failure;
 			if (m) return PrintNodeMethods(path);
 			return PrintDirectoryContents(ProjectSettings.GlobalizePath(path));
 		}
 
 		private CommandResult PrintNodeMethods(string path)
 		{
-			Node node = GetNodeFromPathOrSelected(ref path);
+			Node node = Scene.GetFromPathOrDefault(path, Yat.Terminal.SelectedNode.Current, out path);
 
-			if (node is null) return CommandResult.Failure;
+			if (node is null)
+			{
+				Yat.Terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
+				return CommandResult.Failure;
+			}
 
 			var methods = node.GetMethodList().GetEnumerator();
 
@@ -66,48 +72,6 @@ namespace YAT.Commands
 			Yat.Terminal.Print(sb.ToString());
 
 			return CommandResult.Success;
-		}
-
-		private CommandResult PrintNodeChildren(string path)
-		{
-			Node node = GetNodeFromPathOrSelected(ref path);
-
-			if (node is null) return CommandResult.Failure;
-
-			var children = node.GetChildren();
-
-			if (children.Count == 0)
-			{
-				Yat.Terminal.Print($"Node '{path}' has no children.", PrintType.Warning);
-				return CommandResult.Success;
-			}
-
-			StringBuilder sb = new();
-
-			foreach (Node child in children)
-			{
-				sb.Append($"[{child.Name}] ({child.GetType().Name}) - {child.GetPath()}");
-				sb.AppendLine();
-			}
-
-			Yat.Terminal.Print(sb.ToString());
-
-			return CommandResult.Success;
-		}
-
-		private Node GetNodeFromPathOrSelected(ref string path)
-		{
-			Node node = (path == "." || path == "./")
-				? Yat.Terminal.SelectedNode.Current
-				: Yat.Terminal.SelectedNode.GetNodeOrNull(path);
-
-			var newPath = node?.GetPath();
-			path = newPath is null ? path : newPath;
-
-			if (GodotObject.IsInstanceValid(node)) return node;
-
-			Yat.Terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
-			return null;
 		}
 
 		private CommandResult PrintDirectoryContents(string path)
@@ -156,7 +120,7 @@ namespace YAT.Commands
 		/// </summary>
 		/// <param name="sb">The StringBuilder to append the details to.</param>
 		/// <param name="infos">The array of FileSystemInfo objects to retrieve details from.</param>
-		private void AppendDetails(StringBuilder sb, FileSystemInfo[] infos)
+		private static void AppendDetails(StringBuilder sb, FileSystemInfo[] infos)
 		{
 			int maxFileSizeLength = 0;
 			int maxLastWriteTimeLength = 0;
