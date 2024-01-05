@@ -39,7 +39,7 @@ namespace YAT.Helpers
 				sb.AppendLine();
 			}
 
-			terminal.Print(sb.ToString());
+			terminal.Print(sb);
 
 			return true;
 		}
