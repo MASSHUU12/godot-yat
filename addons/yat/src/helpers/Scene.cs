@@ -32,6 +32,7 @@ namespace YAT.Helpers
 			}
 
 			StringBuilder sb = new();
+			sb.AppendLine($"Found {children.Count} children of '{node.Name}' node:");
 
 			foreach (Node child in children)
 			{
