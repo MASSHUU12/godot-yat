@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 -   Scene helper class with PrintChildren & GetFromPathOrDefault methods.
 -   Print method overload to Terminal accepting StringBuilder.
+-   EditorTerminal scene to the bottom panel of the editor.
 
 ### Changed
 
