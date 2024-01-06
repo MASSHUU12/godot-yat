@@ -1,6 +1,5 @@
 #if TOOLS
 using Godot;
-using YAT.Scenes.EditorTerminal;
 
 [Tool]
 public partial class Plugin : EditorPlugin
@@ -32,7 +31,7 @@ public partial class Plugin : EditorPlugin
 	public override void _ExitTree()
 	{
 		RemoveAutoloadSingleton(_name);
-		RemoveControlFromBottomPanel(_editorTerminal);
+		// RemoveControlFromBottomPanel(_editorTerminal);
 		GD.Print($"{_name} {_version} unloaded!");
 	}
 }
