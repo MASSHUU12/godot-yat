@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=3 uid="uid://dfig0yknmx6b7"]
+
+[ext_resource type="Theme" uid="uid://csssl8ua88ca4" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_theme.tres" id="1_mdg7i"]
+[ext_resource type="PackedScene" uid="uid://dnjobwvlxce2m" path="res://addons/yat/src/scenes/terminal/components/autocompletion/Autocompletion.tscn" id="1_ysjwg"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal/components/input/Input.cs" id="2_u6p8f"]
+[ext_resource type="PackedScene" uid="uid://dmmf70stqcfgm" path="res://addons/yat/src/scenes/terminal/components/selected_node/SelectedNode.tscn" id="3_ujq0m"]
+[ext_resource type="PackedScene" uid="uid://byapbl7njd52y" path="res://addons/yat/src/scenes/terminal/components/terminal_context/TerminalContext.tscn" id="4_756t5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6fw"]
+bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Theme" id="Theme_osqyf"]
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_ow6fw")
+
+[node name="BaseTerminal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_mdg7i")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Output" type="RichTextLabel" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
+text = "YAT - Yet Another Terminal
+MIT 2023 - MASSHUU12
+
+"
+shortcut_keys_enabled = false
+selection_enabled = true
+
+[node name="Autocompletion" parent="PanelContainer/VBoxContainer" instance=ExtResource("1_ysjwg")]
+layout_mode = 2
+
+[node name="InputLine" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_osqyf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/InputLine"]
+layout_mode = 2
+
+[node name="SelectedNodePath" type="Label" parent="PanelContainer/VBoxContainer/InputLine/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "/root"
+
+[node name="PromptLabel" type="Label" parent="PanelContainer/VBoxContainer/InputLine/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = ">"
+
+[node name="Input" type="LineEdit" parent="PanelContainer/VBoxContainer/InputLine/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+caret_blink = true
+script = ExtResource("2_u6p8f")
+
+[node name="SelectedNode" parent="." instance=ExtResource("3_ujq0m")]
+unique_name_in_owner = true
+
+[node name="TerminalContext" parent="." instance=ExtResource("4_756t5")]
+unique_name_in_owner = true
+title = "Context menu"
+visible = false

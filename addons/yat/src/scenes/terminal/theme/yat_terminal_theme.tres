@@ -1,8 +1,8 @@
 [gd_resource type="Theme" load_steps=4 format=3 uid="uid://bbo6sgir4ilud"]
 
-[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/src/scenes/terminal/theme/yat_terminal_label_theme.tres" id="1_fha50"]
-[ext_resource type="StyleBox" uid="uid://cysgs5mb1c0jj" path="res://addons/yat/src/scenes/terminal/theme/yat_terminal_rich_text_label_theme.tres" id="1_kk14i"]
-[ext_resource type="StyleBox" uid="uid://dron3rskgcrdd" path="res://addons/yat/src/scenes/terminal/theme/yat_terminal_line_edit_theme.tres" id="2_mpq62"]
+[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_label_theme.tres" id="1_fha50"]
+[ext_resource type="StyleBox" uid="uid://cysgs5mb1c0jj" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_rich_text_label_theme.tres" id="1_kk14i"]
+[ext_resource type="StyleBox" uid="uid://dron3rskgcrdd" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_line_edit_theme.tres" id="2_mpq62"]
 
 [resource]
 HBoxContainer/constants/separation = 0

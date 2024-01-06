@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://byapbl7njd52y" path="res://addons/yat/src/scenes/terminal/components/terminal_context/TerminalContext.tscn" id="6_letxx"]
 [ext_resource type="PackedScene" uid="uid://dmmf70stqcfgm" path="res://addons/yat/src/scenes/terminal/components/selected_node/SelectedNode.tscn" id="7_r2rl8"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6fw"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5t61k"]
 bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
@@ -16,7 +16,7 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [sub_resource type="Theme" id="Theme_qh8tk"]
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_ow6fw")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_5t61k")
 
 [node name="Terminal" instance=ExtResource("2_0wq7x")]
 title = "YAT"
