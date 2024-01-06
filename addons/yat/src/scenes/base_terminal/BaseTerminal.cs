@@ -70,19 +70,19 @@ namespace YAT.Scenes.BaseTerminal
 			UpdateOptions(_yat.Options);
 		}
 
-		public override void _UnhandledInput(InputEvent @event)
+		public override void _Input(InputEvent @event)
 		{
 			// Handle history navigation if the Terminal window is open.
 			if (IsInsideTree())
 			{
 				if (@event.IsActionPressed("yat_terminal_history_previous"))
 				{
-					if (_yat.HistoryNode == null && _yat.History.Count > 0)
+					if (_yat.HistoryNode is null && _yat.History.Count > 0)
 					{
 						_yat.HistoryNode = _yat.History.Last;
 						Input.Text = _yat.HistoryNode.Value;
 					}
-					else if (_yat.HistoryNode?.Previous != null)
+					else if (_yat.HistoryNode?.Previous is not null)
 					{
 						_yat.HistoryNode = _yat.HistoryNode.Previous;
 						Input.Text = _yat.HistoryNode.Value;
@@ -93,7 +93,7 @@ namespace YAT.Scenes.BaseTerminal
 
 				if (@event.IsActionPressed("yat_terminal_history_next"))
 				{
-					if (_yat.HistoryNode != null && _yat.HistoryNode.Next != null)
+					if (_yat.HistoryNode is not null && _yat.HistoryNode.Next is not null)
 					{
 						_yat.HistoryNode = _yat.HistoryNode.Next;
 						Input.Text = _yat.HistoryNode.Value;
@@ -108,7 +108,7 @@ namespace YAT.Scenes.BaseTerminal
 				}
 
 				if (@event.IsActionPressed("yat_terminal_interrupt") &&
-					_commandManager.Cts != null)
+					_commandManager.Cts is not null)
 				{
 					Print("Command cancellation requested.", PrintType.Warning);
 

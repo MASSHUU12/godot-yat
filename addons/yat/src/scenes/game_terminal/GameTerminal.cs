@@ -21,7 +21,7 @@ namespace YAT.Scenes.GameTerminal
 			MoveToCenter();
 		}
 
-		public override void _UnhandledInput(InputEvent @event)
+		public override void _Input(InputEvent @event)
 		{
 			if (@event.IsActionPressed("yat_toggle"))
 			{
