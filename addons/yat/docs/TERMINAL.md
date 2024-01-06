@@ -29,3 +29,10 @@ Example of adding a command to Quick Commands:
 ```bash
 $ qc add -name="Red Hello" -command="echo [color=red]Hello[/color]"
 ```
+
+### Signals
+
+| Name                 | Arguments      | Description                                        |
+| -------------------- | -------------- | -------------------------------------------------- |
+| CloseRequested       | N/A            | Sent when terminal is requested to close.          |
+| TitleChangeRequested | title (string) | Sent when change to terminal's title is requested. |
