@@ -15,7 +15,6 @@ namespace YAT
 	/// YAT (Yet Another Terminal) is an addon that provides a customizable, in-game terminal for your project.
 	/// This class is the main entry point for the addon, and provides access to the terminal, options, and commands.
 	/// </summary>
-	[Tool]
 	public partial class YAT : Node
 	{
 		#region Signals
@@ -43,24 +42,17 @@ namespace YAT
 
 		public override void _Ready()
 		{
-			if (!Engine.IsEditorHint())
-			{
-				CheckYatEnableSettings();
+			CheckYatEnableSettings();
 
-				_gameTerminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/game_terminal/GameTerminal.tscn").Instantiate<GameTerminal>();
-				_gameTerminal.Ready += () =>
-				{
-					Terminal = _gameTerminal.BaseTerminal;
-					LogHelper.Terminal = Terminal;
-					OptionsManager.Load();
-
-					EmitSignal(SignalName.YatReady);
-				};
-			}
-			else
+			_gameTerminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/game_terminal/GameTerminal.tscn").Instantiate<GameTerminal>();
+			_gameTerminal.Ready += () =>
 			{
-				Terminal = EditorInterface.Singleton.GetBaseControl().GetNode("BottomPanel").GetNode<EditorTerminal>("EditorTerminal").BaseTerminal;
-			}
+				Terminal = _gameTerminal.BaseTerminal;
+				LogHelper.Terminal = Terminal;
+				OptionsManager.Load();
+
+				EmitSignal(SignalName.YatReady);
+			};
 
 			Windows = GetNode<Node>("./Windows");
 			OptionsManager = new(this, Options);
