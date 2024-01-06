@@ -4,8 +4,9 @@ using YAT.Attributes;
 using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 using YAT.Scenes.CommandManager;
-using YAT.Scenes.Terminal;
+using YAT.Scenes.GameTerminal;
 
 namespace YAT
 {
@@ -28,7 +29,7 @@ namespace YAT
 
 		[Export] public YatOptions Options { get; set; } = new();
 
-		public Terminal Terminal { get; private set; }
+		public BaseTerminal Terminal { get; private set; }
 		public Node Windows { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
@@ -39,12 +40,14 @@ namespace YAT
 		public CommandManager CommandManager { get; private set; }
 
 		private bool _yatEnabled = true;
+		private GameTerminal _gameTerminal;
 
 		public override void _Ready()
 		{
 			CheckYatEnableSettings();
 
-			Terminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/terminal/Terminal.tscn").Instantiate<Terminal>();
+			_gameTerminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/game_terminal/GameTerminal.tscn").Instantiate<GameTerminal>();
+			Terminal = _gameTerminal.BaseTerminal;
 			Terminal.Ready += () =>
 			{
 				LogHelper.Terminal = Terminal;
