@@ -3,8 +3,7 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Scenes.Terminal;
-
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 namespace YAT.Commands
 {
 	[Command("cat", "Prints content of a file.", "[b]Usage[/b]: cat [i]file[/i]")]
@@ -23,7 +22,7 @@ namespace YAT.Commands
 
 			if (!FileAccess.FileExists(fileName))
 			{
-				Yat.Terminal.Print($"File '{fileName}' does not exist.", Terminal.PrintType.Error);
+				Yat.Terminal.Print($"File '{fileName}' does not exist.", PrintType.Error);
 				return CommandResult.InvalidArguments;
 			}
 
@@ -37,7 +36,7 @@ namespace YAT.Commands
 				{
 					Yat.Terminal.Print(
 						$"Line limit of {lineLimit} reached.",
-						Terminal.PrintType.Warning
+						PrintType.Warning
 					);
 					break;
 				}

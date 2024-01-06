@@ -1,5 +1,5 @@
 using Godot;
-using YAT.Scenes.Terminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT
 {
@@ -35,7 +35,7 @@ namespace YAT
 					_yat.Terminal.Print("Options saved successfully.");
 					break;
 				default:
-					_yat.Terminal.Print("Failed to save options.", Terminal.PrintType.Error);
+					_yat.Terminal.Print("Failed to save options.", PrintType.Error);
 					break;
 			}
 		}

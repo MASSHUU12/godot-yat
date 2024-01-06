@@ -4,7 +4,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Scenes.Terminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -40,7 +40,7 @@ namespace YAT.Commands
 			if (path.StartsWith(RAY_CAST_PREFIX)) result = ChangeSelectedNode(GetNodePath(path));
 			else result = ChangeSelectedNode(path);
 
-			if (!result) Yat.Terminal.Print($"Invalid node path: {path}", Terminal.PrintType.Error);
+			if (!result) Yat.Terminal.Print($"Invalid node path: {path}", PrintType.Error);
 
 			return result ? CommandResult.Success : CommandResult.Failure;
 		}
@@ -51,7 +51,7 @@ namespace YAT.Commands
 
 			if (result is null)
 			{
-				Yat.Terminal.Print("No collider found.", Terminal.PrintType.Error);
+				Yat.Terminal.Print("No collider found.", PrintType.Error);
 				return null;
 			}
 

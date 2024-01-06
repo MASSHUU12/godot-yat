@@ -2,7 +2,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Scenes.Terminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -24,7 +24,7 @@ namespace YAT.Commands
 
 			if (action != "list" && string.IsNullOrEmpty(name))
 			{
-				Yat.Terminal.Print("You need to provide a command name for this action.", Terminal.PrintType.Error);
+				Yat.Terminal.Print("You need to provide a command name for this action.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 
@@ -49,7 +49,7 @@ namespace YAT.Commands
 		{
 			if (string.IsNullOrEmpty(command))
 			{
-				Yat.Terminal.Print("You need to provide command for this action.", Terminal.PrintType.Error);
+				Yat.Terminal.Print("You need to provide command for this action.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 
@@ -59,7 +59,7 @@ namespace YAT.Commands
 			if (status) message = $"Added quick command '{name}'.";
 			else message = $"Failed to add quick command '{name}'.";
 
-			Yat.Terminal.Print(message, status ? Terminal.PrintType.Success : Terminal.PrintType.Error);
+			Yat.Terminal.Print(message, status ? PrintType.Success : PrintType.Error);
 
 			return status ? CommandResult.Success : CommandResult.Failure;
 		}
@@ -72,7 +72,7 @@ namespace YAT.Commands
 			if (status) message = $"Removed quick command '{name}'.";
 			else message = $"Failed to remove quick command '{name}'.";
 
-			Yat.Terminal.Print(message, status ? Terminal.PrintType.Success : Terminal.PrintType.Error);
+			Yat.Terminal.Print(message, status ? PrintType.Success : PrintType.Error);
 
 			return status ? CommandResult.Success : CommandResult.Failure;
 		}

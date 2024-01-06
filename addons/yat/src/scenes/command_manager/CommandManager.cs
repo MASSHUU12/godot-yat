@@ -7,7 +7,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
-using static YAT.Scenes.Terminal.Terminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Scenes.CommandManager
 {
