@@ -5,7 +5,6 @@ using YAT.Helpers;
 
 namespace YAT.Scenes.BaseTerminal
 {
-	[Tool]
 	public partial class BaseTerminal : Control
 	{
 		[Signal] public delegate void CloseRequestedEventHandler();
@@ -58,7 +57,7 @@ namespace YAT.Scenes.BaseTerminal
 
 			Context = GetNode<TerminalContext>("TerminalContext");
 
-			_commandManager = _yat.GetNode<CommandManager.CommandManager>("CommandManager");
+			_commandManager = _yat.CommandManager;
 			_commandManager.CommandStarted += (command, args) =>
 				EmitSignal(SignalName.TitleChanged, "YAT - " + command);
 			_commandManager.CommandFinished += (command, args, result) =>
