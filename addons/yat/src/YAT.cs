@@ -6,6 +6,7 @@ using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
 using YAT.Scenes.CommandManager;
+using YAT.Scenes.EditorTerminal;
 using YAT.Scenes.GameTerminal;
 
 namespace YAT
@@ -14,6 +15,7 @@ namespace YAT
 	/// YAT (Yet Another Terminal) is an addon that provides a customizable, in-game terminal for your project.
 	/// This class is the main entry point for the addon, and provides access to the terminal, options, and commands.
 	/// </summary>
+	[Tool]
 	public partial class YAT : Node
 	{
 		#region Signals
@@ -33,9 +35,6 @@ namespace YAT
 		public Node Windows { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
-		public readonly LinkedList<string> History = new();
-		public LinkedListNode<string> HistoryNode = null;
-
 		public OptionsManager OptionsManager { get; private set; }
 		public CommandManager CommandManager { get; private set; }
 
@@ -44,17 +43,24 @@ namespace YAT
 
 		public override void _Ready()
 		{
-			CheckYatEnableSettings();
-
-			_gameTerminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/game_terminal/GameTerminal.tscn").Instantiate<GameTerminal>();
-			_gameTerminal.Ready += () =>
+			if (!Engine.IsEditorHint())
 			{
-				Terminal = _gameTerminal.BaseTerminal;
-				LogHelper.Terminal = Terminal;
-				OptionsManager.Load();
+				CheckYatEnableSettings();
 
-				EmitSignal(SignalName.YatReady);
-			};
+				_gameTerminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/game_terminal/GameTerminal.tscn").Instantiate<GameTerminal>();
+				_gameTerminal.Ready += () =>
+				{
+					Terminal = _gameTerminal.BaseTerminal;
+					LogHelper.Terminal = Terminal;
+					OptionsManager.Load();
+
+					EmitSignal(SignalName.YatReady);
+				};
+			}
+			else
+			{
+				Terminal = EditorInterface.Singleton.GetBaseControl().GetNode("BottomPanel").GetNode<EditorTerminal>("EditorTerminal").BaseTerminal;
+			}
 
 			Windows = GetNode<Node>("./Windows");
 			OptionsManager = new(this, Options);
@@ -88,7 +94,8 @@ namespace YAT
 
 		public override void _UnhandledInput(InputEvent @event)
 		{
-			if (@event.IsActionPressed("yat_toggle")) ToggleTerminal();
+			if (!Engine.IsEditorHint() && @event.IsActionPressed("yat_toggle"))
+				ToggleTerminal();
 		}
 
 		/// <summary>

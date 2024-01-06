@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.Text;
 using Godot;
 using YAT.Helpers;
 
 namespace YAT.Scenes.BaseTerminal
 {
+	[Tool]
 	public partial class BaseTerminal : Control
 	{
 		[Signal] public delegate void CloseRequestedEventHandler();
@@ -12,6 +14,9 @@ namespace YAT.Scenes.BaseTerminal
 		public Input Input { get; private set; }
 		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
+
+		public readonly LinkedList<string> History = new();
+		public LinkedListNode<string> HistoryNode = null;
 
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
@@ -77,15 +82,15 @@ namespace YAT.Scenes.BaseTerminal
 			{
 				if (@event.IsActionPressed("yat_terminal_history_previous"))
 				{
-					if (_yat.HistoryNode is null && _yat.History.Count > 0)
+					if (HistoryNode is null && History.Count > 0)
 					{
-						_yat.HistoryNode = _yat.History.Last;
-						Input.Text = _yat.HistoryNode.Value;
+						HistoryNode = History.Last;
+						Input.Text = HistoryNode.Value;
 					}
-					else if (_yat.HistoryNode?.Previous is not null)
+					else if (HistoryNode?.Previous is not null)
 					{
-						_yat.HistoryNode = _yat.HistoryNode.Previous;
-						Input.Text = _yat.HistoryNode.Value;
+						HistoryNode = HistoryNode.Previous;
+						Input.Text = HistoryNode.Value;
 					}
 
 					Input.CallDeferred(nameof(Input.MoveCaretToEnd));
@@ -93,14 +98,14 @@ namespace YAT.Scenes.BaseTerminal
 
 				if (@event.IsActionPressed("yat_terminal_history_next"))
 				{
-					if (_yat.HistoryNode is not null && _yat.HistoryNode.Next is not null)
+					if (HistoryNode is not null && HistoryNode.Next is not null)
 					{
-						_yat.HistoryNode = _yat.HistoryNode.Next;
-						Input.Text = _yat.HistoryNode.Value;
+						HistoryNode = HistoryNode.Next;
+						Input.Text = HistoryNode.Value;
 					}
 					else
 					{
-						_yat.HistoryNode = null;
+						HistoryNode = null;
 						Input.Text = string.Empty;
 					}
 
