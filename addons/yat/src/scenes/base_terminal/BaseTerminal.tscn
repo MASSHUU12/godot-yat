@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfig0yknmx6b7"]
+[gd_scene load_steps=9 format=3 uid="uid://dfig0yknmx6b7"]
 
+[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.cs" id="1_gwi3k"]
 [ext_resource type="Theme" uid="uid://csssl8ua88ca4" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_theme.tres" id="1_mdg7i"]
-[ext_resource type="PackedScene" uid="uid://dnjobwvlxce2m" path="res://addons/yat/src/scenes/terminal/components/autocompletion/Autocompletion.tscn" id="1_ysjwg"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal/components/input/Input.cs" id="2_u6p8f"]
-[ext_resource type="PackedScene" uid="uid://dmmf70stqcfgm" path="res://addons/yat/src/scenes/terminal/components/selected_node/SelectedNode.tscn" id="3_ujq0m"]
-[ext_resource type="PackedScene" uid="uid://byapbl7njd52y" path="res://addons/yat/src/scenes/terminal/components/terminal_context/TerminalContext.tscn" id="4_756t5"]
+[ext_resource type="PackedScene" uid="uid://duldfph1vr1yb" path="res://addons/yat/src/scenes/base_terminal/components/autocompletion/Autocompletion.tscn" id="3_6vb77"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/input/Input.cs" id="4_4lcgu"]
+[ext_resource type="PackedScene" uid="uid://dx1optgaua8wt" path="res://addons/yat/src/scenes/base_terminal/components/terminal_context/TerminalContext.tscn" id="5_mu1cs"]
+[ext_resource type="PackedScene" uid="uid://b2ljvgvvny52r" path="res://addons/yat/src/scenes/base_terminal/components/selected_node/SelectedNode.tscn" id="6_prlgb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6fw"]
 bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
@@ -23,6 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_gwi3k")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -49,7 +51,7 @@ MIT 2023 - MASSHUU12
 shortcut_keys_enabled = false
 selection_enabled = true
 
-[node name="Autocompletion" parent="PanelContainer/VBoxContainer" instance=ExtResource("1_ysjwg")]
+[node name="Autocompletion" parent="PanelContainer/VBoxContainer" instance=ExtResource("3_6vb77")]
 layout_mode = 2
 
 [node name="InputLine" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
@@ -74,12 +76,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 caret_blink = true
-script = ExtResource("2_u6p8f")
+script = ExtResource("4_4lcgu")
 
-[node name="SelectedNode" parent="." instance=ExtResource("3_ujq0m")]
-unique_name_in_owner = true
+[node name="TerminalContext" parent="." instance=ExtResource("5_mu1cs")]
 
-[node name="TerminalContext" parent="." instance=ExtResource("4_756t5")]
-unique_name_in_owner = true
-title = "Context menu"
-visible = false
+[node name="SelectedNode" parent="." instance=ExtResource("6_prlgb")]

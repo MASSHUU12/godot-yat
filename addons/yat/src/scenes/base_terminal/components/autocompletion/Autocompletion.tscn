@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://duldfph1vr1yb"]
+
+[ext_resource type="Theme" uid="uid://s0wkxsjl6ere" path="res://addons/yat/src/scenes/terminal/components/autocompletion/theme/yat_autocompletion_theme.tres" id="1_cn3vc"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal/components/autocompletion/Autocompletion.cs" id="2_5lpve"]
+
+[node name="Autocompletion" type="PanelContainer"]
+offset_right = 193.0
+offset_bottom = 23.0
+size_flags_horizontal = 0
+theme = ExtResource("1_cn3vc")
+script = ExtResource("2_5lpve")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="Text" type="RichTextLabel" parent="MarginContainer"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "command arg arg2 -o -o2"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false

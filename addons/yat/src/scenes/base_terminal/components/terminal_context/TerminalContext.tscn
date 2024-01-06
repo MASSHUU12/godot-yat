@@ -1,0 +1,16 @@
+[gd_scene load_steps=6 format=3 uid="uid://dx1optgaua8wt"]
+
+[ext_resource type="PackedScene" uid="uid://cqk7b35vstfc8" path="res://addons/yat/src/scenes/context_menu/ContextMenu.tscn" id="1_nttre"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal/components/terminal_context/TerminalContext.cs" id="2_d4prk"]
+[ext_resource type="PackedScene" uid="uid://c4jcws6fnnmwc" path="res://addons/yat/src/scenes/terminal/components/terminal_context/quic_commands_context/QuickCommandsContext.tscn" id="3_kfcti"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal/components/terminal_context/quick_commands/QuickCommands.cs" id="4_4oasj"]
+
+[sub_resource type="Resource" id="Resource_msn3d"]
+script = ExtResource("4_4oasj")
+Commands = {}
+
+[node name="TerminalContext" instance=ExtResource("1_nttre")]
+script = ExtResource("2_d4prk")
+
+[node name="QuickCommandsContext" parent="." index="3" instance=ExtResource("3_kfcti")]
+QuickCommands = SubResource("Resource_msn3d")
