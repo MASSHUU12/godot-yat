@@ -2,7 +2,7 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Scenes.Terminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -36,7 +36,7 @@ namespace YAT.Commands
 			{
 				EmitSignal(SignalName.SceneChangeFailed, scene, (short)FailureReason.SceneDoesNotExist);
 
-				Yat.Terminal.Print($"Scene '{scene}' does not exist.", Terminal.PrintType.Error);
+				Yat.Terminal.Print($"Scene '{scene}' does not exist.", PrintType.Error);
 
 				return CommandResult.Failure;
 			}
@@ -53,14 +53,14 @@ namespace YAT.Commands
 					: FailureReason.SceneCantInstantiate
 				));
 
-				Yat.Terminal.Print($"Failed to change scene to '{scene}'.", Terminal.PrintType.Error);
+				Yat.Terminal.Print($"Failed to change scene to '{scene}'.", PrintType.Error);
 
 				return CommandResult.Failure;
 			}
 
 			EmitSignal(SignalName.SceneChanged, scene);
 
-			Yat.Terminal.Print($"Changed scene to '{scene}'.", Terminal.PrintType.Success);
+			Yat.Terminal.Print($"Changed scene to '{scene}'.", PrintType.Success);
 
 			return CommandResult.Success;
 		}

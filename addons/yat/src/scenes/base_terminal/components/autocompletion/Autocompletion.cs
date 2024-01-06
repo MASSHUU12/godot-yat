@@ -6,7 +6,7 @@ using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
 
-namespace YAT.Scenes.Terminal
+namespace YAT.Scenes.BaseTerminal
 {
 	public partial class Autocompletion : PanelContainer
 	{

@@ -1,7 +1,7 @@
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Scenes.Terminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -24,7 +24,7 @@ namespace YAT.Commands
 				return extension.Execute(this, args[1..]);
 			}
 
-			Yat.Terminal.Print("Variable not found.", Terminal.PrintType.Error);
+			Yat.Terminal.Print("Variable not found.", PrintType.Error);
 			return CommandResult.Failure;
 		}
 	}

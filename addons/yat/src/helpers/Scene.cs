@@ -1,7 +1,7 @@
 using System.Text;
 using Godot;
-using YAT.Scenes.Terminal;
-using static YAT.Scenes.Terminal.Terminal;
+using YAT.Scenes.BaseTerminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Helpers
 {
@@ -13,7 +13,7 @@ namespace YAT.Helpers
 		/// <param name="terminal">The terminal to print the children to.</param>
 		/// <param name="path">The path of the node whose children should be printed.</param>
 		/// <returns><c>true</c> if the children were printed successfully; otherwise, <c>false</c>.</returns>
-		public static bool PrintChildren(Terminal terminal, string path)
+		public static bool PrintChildren(BaseTerminal terminal, string path)
 		{
 			Node node = GetFromPathOrDefault(path, terminal.SelectedNode.Current, out path);
 

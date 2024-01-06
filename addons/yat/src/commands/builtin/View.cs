@@ -3,7 +3,7 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Scenes.Terminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -54,7 +54,7 @@ namespace YAT.Commands
 
 					if (iMode < 0 || iMode > max)
 					{
-						Yat.Terminal.Print($"Invalid mode: {mode}.", Terminal.PrintType.Error);
+						Yat.Terminal.Print($"Invalid mode: {mode}.", PrintType.Error);
 						return CommandResult.InvalidArguments;
 					}
 

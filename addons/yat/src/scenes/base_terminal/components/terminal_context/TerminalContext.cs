@@ -1,4 +1,4 @@
-namespace YAT.Scenes.Terminal
+namespace YAT.Scenes.BaseTerminal
 {
 	public partial class TerminalContext : ContextMenu.ContextMenu
 	{

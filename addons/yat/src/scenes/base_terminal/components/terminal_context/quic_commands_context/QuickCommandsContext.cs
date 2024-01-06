@@ -2,7 +2,7 @@ using Godot;
 using YAT.Helpers;
 using YAT.Scenes.ContextMenu;
 
-namespace YAT.Scenes.Terminal
+namespace YAT.Scenes.BaseTerminal
 {
 	public partial class QuickCommandsContext : ContextSubmenu
 	{

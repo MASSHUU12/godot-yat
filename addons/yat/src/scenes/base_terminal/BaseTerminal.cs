@@ -1,14 +1,21 @@
+using System.Collections.Generic;
 using System.Text;
 using Godot;
 using YAT.Helpers;
 
-namespace YAT.Scenes.Terminal
+namespace YAT.Scenes.BaseTerminal
 {
-	public partial class Terminal : YatWindow.YatWindow
+	public partial class BaseTerminal : Control
 	{
+		[Signal] public delegate void CloseRequestedEventHandler();
+		[Signal] public delegate void TitleChangedEventHandler(string title);
+
 		public Input Input { get; private set; }
 		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
+
+		public readonly LinkedList<string> History = new();
+		public LinkedListNode<string> HistoryNode = null;
 
 		/// <summary>
 		/// The type of message to print in the YatTerminal.
@@ -42,19 +49,19 @@ namespace YAT.Scenes.Terminal
 
 		public override void _Ready()
 		{
-			base._Ready();
-
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 
-			SelectedNode = GetNode<SelectedNode>("%SelectedNode");
+			SelectedNode = GetNode<SelectedNode>("SelectedNode");
 			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
-			Context = GetNode<TerminalContext>("%TerminalContext");
+			Context = GetNode<TerminalContext>("TerminalContext");
 
-			_commandManager = _yat.GetNode<CommandManager.CommandManager>("CommandManager");
-			_commandManager.CommandStarted += (command, args) => Title = "YAT - " + command;
-			_commandManager.CommandFinished += (command, args, result) => Title = "YAT";
+			_commandManager = _yat.CommandManager;
+			_commandManager.CommandStarted += (command, args) =>
+				EmitSignal(SignalName.TitleChanged, "YAT - " + command);
+			_commandManager.CommandFinished += (command, args, result) =>
+				EmitSignal(SignalName.TitleChanged, "YAT");
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
 			_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
@@ -63,11 +70,8 @@ namespace YAT.Scenes.Terminal
 			Output = GetNode<RichTextLabel>("%Output");
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
-			CloseRequested += () => _yat.ToggleTerminal();
-
 			OnCurrentNodeChanged(SelectedNode.Current);
 			UpdateOptions(_yat.Options);
-			MoveToCenter();
 		}
 
 		public override void _Input(InputEvent @event)
@@ -77,15 +81,15 @@ namespace YAT.Scenes.Terminal
 			{
 				if (@event.IsActionPressed("yat_terminal_history_previous"))
 				{
-					if (_yat.HistoryNode == null && _yat.History.Count > 0)
+					if (HistoryNode is null && History.Count > 0)
 					{
-						_yat.HistoryNode = _yat.History.Last;
-						Input.Text = _yat.HistoryNode.Value;
+						HistoryNode = History.Last;
+						Input.Text = HistoryNode.Value;
 					}
-					else if (_yat.HistoryNode?.Previous != null)
+					else if (HistoryNode?.Previous is not null)
 					{
-						_yat.HistoryNode = _yat.HistoryNode.Previous;
-						Input.Text = _yat.HistoryNode.Value;
+						HistoryNode = HistoryNode.Previous;
+						Input.Text = HistoryNode.Value;
 					}
 
 					Input.CallDeferred(nameof(Input.MoveCaretToEnd));
@@ -93,14 +97,14 @@ namespace YAT.Scenes.Terminal
 
 				if (@event.IsActionPressed("yat_terminal_history_next"))
 				{
-					if (_yat.HistoryNode != null && _yat.HistoryNode.Next != null)
+					if (HistoryNode is not null && HistoryNode.Next is not null)
 					{
-						_yat.HistoryNode = _yat.HistoryNode.Next;
-						Input.Text = _yat.HistoryNode.Value;
+						HistoryNode = HistoryNode.Next;
+						Input.Text = HistoryNode.Value;
 					}
 					else
 					{
-						_yat.HistoryNode = null;
+						HistoryNode = null;
 						Input.Text = string.Empty;
 					}
 
@@ -108,7 +112,7 @@ namespace YAT.Scenes.Terminal
 				}
 
 				if (@event.IsActionPressed("yat_terminal_interrupt") &&
-					_commandManager.Cts != null)
+					_commandManager.Cts is not null)
 				{
 					Print("Command cancellation requested.", PrintType.Warning);
 
@@ -121,11 +125,6 @@ namespace YAT.Scenes.Terminal
 				{
 					Context.ShowNextToMouse();
 				}
-			}
-
-			if (@event.IsActionPressed("yat_toggle"))
-			{
-				CallDeferred("emit_signal", SignalName.CloseRequested);
 			}
 		}
 

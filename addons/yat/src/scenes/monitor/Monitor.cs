@@ -1,5 +1,6 @@
 using Godot;
 using YAT.Interfaces;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Scenes.Monitor
 {
@@ -30,7 +31,7 @@ namespace YAT.Scenes.Monitor
 			{
 				_yat.Terminal.Print(
 					$"Component {component.Name} does not implement IMonitorComponent",
-					Terminal.Terminal.PrintType.Error
+					PrintType.Error
 				);
 				return;
 			}

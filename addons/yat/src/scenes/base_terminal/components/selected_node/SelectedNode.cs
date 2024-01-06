@@ -1,7 +1,7 @@
 using Godot;
 using YAT.Helpers;
 
-namespace YAT.Scenes.Terminal
+namespace YAT.Scenes.BaseTerminal
 {
 	public partial class SelectedNode : Node
 	{
@@ -26,11 +26,11 @@ namespace YAT.Scenes.Terminal
 			Failed
 		}
 
-		private Terminal _terminal;
+		private BaseTerminal _terminal;
 
 		public override void _Ready()
 		{
-			_terminal = GetNode<Terminal>("../");
+			_terminal = GetNode<BaseTerminal>("../");
 			Current = GetTree().Root;
 		}
 
@@ -64,7 +64,7 @@ namespace YAT.Scenes.Terminal
 
 		public bool ParseAndCallMethods(string input)
 		{
-			_terminal.Print("Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n", Terminal.PrintType.Warning);
+			_terminal.Print("Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n", BaseTerminal.PrintType.Warning);
 
 			string[] tokens = Text.SplitClean(input, ".");
 			Variant result = new();

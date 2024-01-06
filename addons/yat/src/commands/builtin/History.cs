@@ -49,19 +49,19 @@ namespace YAT.Commands
 
 		private void ClearHistory()
 		{
-			Yat.History.Clear();
+			Yat.Terminal.History.Clear();
 			Yat.Terminal.Print("Terminal history cleared.");
 		}
 
 		private void ExecuteFromHistory(int index)
 		{
-			if (index < 0 || index >= Yat.History.Count)
+			if (index < 0 || index >= Yat.Terminal.History.Count)
 			{
 				Yat.Terminal.Print($"Invalid index: {index}");
 				return;
 			}
 
-			var command = Yat.History.ElementAt(index);
+			var command = Yat.Terminal.History.ElementAt(index);
 
 			Yat.Terminal.Print(
 				$"Executing command at index {index}: {Text.EscapeBBCode(command)}"
@@ -75,7 +75,7 @@ namespace YAT.Commands
 			sb.AppendLine("Terminal history:");
 
 			ushort i = 0;
-			foreach (string command in Yat.History)
+			foreach (string command in Yat.Terminal.History)
 			{
 				sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
 			}

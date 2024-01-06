@@ -5,7 +5,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes.Monitor;
-using YAT.Scenes.Terminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -79,7 +79,7 @@ namespace YAT.Commands
 		{
 			if (!GodotObject.IsInstanceValid(_monitorInstance))
 			{
-				Yat.Terminal.Print("The game monitor is not open.", Terminal.PrintType.Error);
+				Yat.Terminal.Print("The game monitor is not open.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 

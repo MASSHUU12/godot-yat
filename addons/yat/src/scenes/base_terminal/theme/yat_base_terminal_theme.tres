@@ -1,0 +1,27 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://csssl8ua88ca4"]
+
+[ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_label_theme.tres" id="1_oqkbl"]
+[ext_resource type="StyleBox" uid="uid://dron3rskgcrdd" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_line_edit_theme.tres" id="2_bmswo"]
+[ext_resource type="StyleBox" uid="uid://dvbv662ikwtt5" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_panel_container_theme.tres" id="3_haqrw"]
+[ext_resource type="StyleBox" uid="uid://cysgs5mb1c0jj" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_rich_text_label_theme.tres" id="3_s35bd"]
+
+[resource]
+HBoxContainer/constants/separation = 0
+Label/colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
+Label/font_sizes/font_size = 14
+Label/styles/normal = ExtResource("1_oqkbl")
+LineEdit/colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
+LineEdit/colors/font_placeholder_color = Color(0.875, 0.875, 0.875, 0.6)
+LineEdit/font_sizes/font_size = 14
+LineEdit/styles/focus = ExtResource("2_bmswo")
+LineEdit/styles/normal = ExtResource("2_bmswo")
+LineEdit/styles/read_only = ExtResource("2_bmswo")
+PanelContainer/styles/panel = ExtResource("3_haqrw")
+RichTextLabel/colors/default_color = Color(0.87451, 0.87451, 0.87451, 0.501961)
+RichTextLabel/font_sizes/bold_font_size = 14
+RichTextLabel/font_sizes/bold_italics_font_size = 14
+RichTextLabel/font_sizes/italics_font_size = 14
+RichTextLabel/font_sizes/mono_font_size = 14
+RichTextLabel/font_sizes/normal_font_size = 14
+RichTextLabel/styles/focus = ExtResource("3_s35bd")
+RichTextLabel/styles/normal = ExtResource("3_s35bd")

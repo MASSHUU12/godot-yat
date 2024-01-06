@@ -1,11 +1,12 @@
 using Godot;
-using YAT.Scenes.Terminal;
+using YAT.Scenes.BaseTerminal;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Helpers
 {
 	public static class LogHelper
 	{
-		public static Terminal Terminal
+		public static BaseTerminal Terminal
 		{
 			get => _terminal;
 			set
@@ -15,7 +16,7 @@ namespace YAT.Helpers
 			}
 		}
 
-		private static Terminal _terminal;
+		private static BaseTerminal _terminal;
 		private static bool _terminalValid = false;
 
 		/// <summary>
@@ -24,7 +25,7 @@ namespace YAT.Helpers
 		/// <param name="message">The message to print.</param>
 		/// <param name="printType">The type of message to print.</param>
 		/// <param name="useGDTerminal">Whether to print also to the Godot terminal.</param>
-		private static void PrintMessage(string message, Terminal.PrintType printType = Terminal.PrintType.Error, bool useGDTerminal = false)
+		private static void PrintMessage(string message, PrintType printType = PrintType.Error, bool useGDTerminal = false)
 		{
 			if (useGDTerminal) GD.PushError(message);
 			if (_terminalValid) Terminal.Print(message, printType);
@@ -50,7 +51,7 @@ namespace YAT.Helpers
 				name
 			);
 
-			PrintMessage(message, Terminal.PrintType.Error, useGDTerminal);
+			PrintMessage(message, PrintType.Error, useGDTerminal);
 		}
 
 		/// <summary>
@@ -68,7 +69,7 @@ namespace YAT.Helpers
 				expected
 			);
 
-			PrintMessage(message, Terminal.PrintType.Error);
+			PrintMessage(message, PrintType.Error);
 		}
 
 		/// <summary>
@@ -84,7 +85,7 @@ namespace YAT.Helpers
 				string.Join(", ", args)
 			);
 
-			PrintMessage(message, Terminal.PrintType.Error);
+			PrintMessage(message, PrintType.Error);
 		}
 
 		/// <summary>
@@ -102,7 +103,7 @@ namespace YAT.Helpers
 				expected
 			);
 
-			PrintMessage(message, Terminal.PrintType.Error);
+			PrintMessage(message, PrintType.Error);
 		}
 
 		/// <summary>
@@ -118,7 +119,7 @@ namespace YAT.Helpers
 				option
 			);
 
-			PrintMessage(message, Terminal.PrintType.Error);
+			PrintMessage(message, PrintType.Error);
 		}
 
 		public static void UnknownMethod(string sceneName, string method)
@@ -129,9 +130,9 @@ namespace YAT.Helpers
 				method
 			);
 
-			PrintMessage(message, Terminal.PrintType.Error);
+			PrintMessage(message, PrintType.Error);
 		}
 
-		public static void Error(string message) => PrintMessage(message, Terminal.PrintType.Error);
+		public static void Error(string message) => PrintMessage(message, PrintType.Error);
 	}
 }

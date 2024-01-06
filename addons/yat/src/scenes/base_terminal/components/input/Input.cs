@@ -1,11 +1,11 @@
 using Godot;
-using YAT.Helpers;
 
-namespace YAT.Scenes.Terminal
+namespace YAT.Scenes.BaseTerminal
 {
 	public partial class Input : LineEdit
 	{
 		private YAT _yat;
+		private BaseTerminal _terminal;
 		private CommandManager.CommandManager _commandManager;
 
 		public override void _Ready()
@@ -14,6 +14,7 @@ namespace YAT.Scenes.Terminal
 			// This 'fixes' the issue where terminal toggle key is writing to the input
 			_yat.TerminalOpened += () => { GrabFocus(); Clear(); };
 
+			_terminal = GetNode<BaseTerminal>("../../../../../");
 			_commandManager = _yat.GetNode<CommandManager.CommandManager>("CommandManager");
 
 			TextSubmitted += OnTextSubmitted;
@@ -49,9 +50,9 @@ namespace YAT.Scenes.Terminal
 
 		private void AddToTheHistory(string command)
 		{
-			_yat.HistoryNode = null;
-			_yat.History.AddLast(command);
-			if (_yat.History.Count > _yat.Options.HistoryLimit) _yat.History.RemoveFirst();
+			_terminal.HistoryNode = null;
+			_terminal.History.AddLast(command);
+			if (_terminal.History.Count > _yat.Options.HistoryLimit) _terminal.History.RemoveFirst();
 		}
 
 		/// <summary>

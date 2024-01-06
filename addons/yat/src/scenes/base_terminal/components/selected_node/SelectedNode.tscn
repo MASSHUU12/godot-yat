@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2ljvgvvny52r"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/selected_node/SelectedNode.cs" id="1_dkjle"]
+
+[node name="SelectedNode" type="Node"]
+script = ExtResource("1_dkjle")
