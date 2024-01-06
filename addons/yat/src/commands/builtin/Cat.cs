@@ -4,6 +4,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
+
 namespace YAT.Commands
 {
 	[Command("cat", "Prints content of a file.", "[b]Usage[/b]: cat [i]file[/i]")]

@@ -47,9 +47,9 @@ namespace YAT
 			CheckYatEnableSettings();
 
 			_gameTerminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/game_terminal/GameTerminal.tscn").Instantiate<GameTerminal>();
-			Terminal = _gameTerminal.BaseTerminal;
-			Terminal.Ready += () =>
+			_gameTerminal.Ready += () =>
 			{
+				Terminal = _gameTerminal.BaseTerminal;
 				LogHelper.Terminal = Terminal;
 				OptionsManager.Load();
 
@@ -115,24 +115,24 @@ namespace YAT
 		{
 			if (!_yatEnabled) return;
 
-			if (Terminal.IsInsideTree()) CloseTerminal();
+			if (_gameTerminal.IsInsideTree()) CloseTerminal();
 			else OpenTerminal();
 		}
 
 		private void OpenTerminal()
 		{
-			if (Terminal.IsInsideTree()) return;
+			if (_gameTerminal.IsInsideTree()) return;
 
-			Windows.AddChild(Terminal);
+			Windows.AddChild(_gameTerminal);
 
 			EmitSignal(SignalName.TerminalOpened);
 		}
 
 		private void CloseTerminal()
 		{
-			if (!Terminal.IsInsideTree()) return;
+			if (!_gameTerminal.IsInsideTree()) return;
 
-			Windows.RemoveChild(Terminal);
+			Windows.RemoveChild(_gameTerminal);
 
 			EmitSignal(SignalName.TerminalClosed);
 		}
