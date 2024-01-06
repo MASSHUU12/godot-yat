@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://duldfph1vr1yb"]
 
-[ext_resource type="Theme" uid="uid://s0wkxsjl6ere" path="res://addons/yat/src/scenes/terminal/components/autocompletion/theme/yat_autocompletion_theme.tres" id="1_cn3vc"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal/components/autocompletion/Autocompletion.cs" id="2_5lpve"]
+[ext_resource type="Theme" uid="uid://dsum3emookvm" path="res://addons/yat/src/scenes/base_terminal/components/autocompletion/theme/yat_autocompletion_theme.tres" id="1_cn3vc"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/autocompletion/Autocompletion.cs" id="2_5lpve"]
 
 [node name="Autocompletion" type="PanelContainer"]
 offset_right = 193.0

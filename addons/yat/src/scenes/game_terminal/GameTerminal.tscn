@@ -26,7 +26,7 @@ RichTextLabel/font_sizes/normal_font_size = 14
 RichTextLabel/styles/focus = ExtResource("5_iupxt")
 RichTextLabel/styles/normal = ExtResource("5_iupxt")
 
-[node name="Terminal" instance=ExtResource("2_0wq7x")]
+[node name="GameTerminal" instance=ExtResource("2_0wq7x")]
 title = "YAT"
 size = Vector2i(728, 384)
 script = ExtResource("2_17k82")
