@@ -15,7 +15,7 @@ To terminate the command you must use the keybinding `yat_terminal_interrupt`.
 
 ### Context menu
 
-YAT uses the keybinding `yat_context_menu` to launch the context menu, so if you haven't created one, you need to do so to use the context menu.
+YAT uses the keybinding `yat_context_menu` to launch the context menu.
 
 #### Quick Commands
 
