@@ -64,7 +64,7 @@ namespace YAT.Scenes.BaseTerminal
 
 		public bool ParseAndCallMethods(string input)
 		{
-			_terminal.Print("Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n", Terminal.PrintType.Warning);
+			_terminal.Print("Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n", BaseTerminal.PrintType.Warning);
 
 			string[] tokens = Text.SplitClean(input, ".");
 			Variant result = new();
