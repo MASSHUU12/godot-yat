@@ -24,6 +24,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_gwi3k")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
@@ -45,9 +47,7 @@ size_flags_vertical = 3
 focus_mode = 2
 bbcode_enabled = true
 text = "YAT - Yet Another Terminal
-MIT 2023 - MASSHUU12
-
-"
+MIT 2023 - MASSHUU12"
 shortcut_keys_enabled = false
 selection_enabled = true
 

@@ -45,15 +45,13 @@ namespace YAT.Scenes.BaseTerminal
 
 		public override void _Ready()
 		{
-			base._Ready();
-
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
 
-			SelectedNode = GetNode<SelectedNode>("%SelectedNode");
+			SelectedNode = GetNode<SelectedNode>("SelectedNode");
 			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
-			Context = GetNode<TerminalContext>("%TerminalContext");
+			Context = GetNode<TerminalContext>("TerminalContext");
 
 			_commandManager = _yat.GetNode<CommandManager.CommandManager>("CommandManager");
 			_commandManager.CommandStarted += (command, args) =>
@@ -68,13 +66,11 @@ namespace YAT.Scenes.BaseTerminal
 			Output = GetNode<RichTextLabel>("%Output");
 			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
 
-			CloseRequested += () => _yat.ToggleTerminal();
-
 			OnCurrentNodeChanged(SelectedNode.Current);
 			UpdateOptions(_yat.Options);
 		}
 
-		public override void _Input(InputEvent @event)
+		public override void _UnhandledInput(InputEvent @event)
 		{
 			// Handle history navigation if the Terminal window is open.
 			if (IsInsideTree())
@@ -125,11 +121,6 @@ namespace YAT.Scenes.BaseTerminal
 				{
 					Context.ShowNextToMouse();
 				}
-			}
-
-			if (@event.IsActionPressed("yat_toggle"))
-			{
-				CallDeferred("emit_signal", SignalName.CloseRequested);
 			}
 		}
 

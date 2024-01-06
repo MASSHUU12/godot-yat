@@ -119,7 +119,7 @@ namespace YAT
 			else OpenTerminal();
 		}
 
-		private void OpenTerminal()
+		public void OpenTerminal()
 		{
 			if (_gameTerminal.IsInsideTree()) return;
 
@@ -128,7 +128,7 @@ namespace YAT
 			EmitSignal(SignalName.TerminalOpened);
 		}
 
-		private void CloseTerminal()
+		public void CloseTerminal()
 		{
 			if (!_gameTerminal.IsInsideTree()) return;
 

@@ -1,3 +1,5 @@
+using Godot;
+
 namespace YAT.Scenes.GameTerminal
 {
 	public partial class GameTerminal : YatWindow.YatWindow
@@ -14,10 +16,17 @@ namespace YAT.Scenes.GameTerminal
 
 			BaseTerminal = GetNode<BaseTerminal.BaseTerminal>("Content/BaseTerminal");
 			BaseTerminal.TitleChanged += title => Title = title;
-			CloseRequested += _yat.ToggleTerminal;
-			BaseTerminal.CloseRequested += _yat.ToggleTerminal;
+			CloseRequested += _yat.CloseTerminal;
 
 			MoveToCenter();
+		}
+
+		public override void _UnhandledInput(InputEvent @event)
+		{
+			if (@event.IsActionPressed("yat_toggle"))
+			{
+				CallDeferred("emit_signal", SignalName.CloseRequested);
+			}
 		}
 	}
 }
