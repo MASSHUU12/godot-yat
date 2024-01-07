@@ -11,15 +11,11 @@ namespace YAT.Commands
 	{
 		private readonly LRUCache<string, string> cache = new(10);
 
-		public YAT Yat { get; set; }
-
-		public Man(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			var commandName = args[1];
+			var commandName = args.Arguments[1];
 
-			if (!Yat.Commands.TryGetValue(commandName, out var command))
+			if (!args.Yat.Commands.TryGetValue(commandName, out var command))
 			{
 				LogHelper.UnknownCommand(commandName);
 				return CommandResult.InvalidCommand;
@@ -28,7 +24,7 @@ namespace YAT.Commands
 			// Check if the command manual is already in the cache.
 			if (cache.Get(commandName) is string manual)
 			{
-				Yat.Terminal.Print(manual);
+				args.Terminal.Print(manual);
 				return CommandResult.Success;
 			}
 
@@ -42,7 +38,7 @@ namespace YAT.Commands
 
 			cache.Add(commandName, manual);
 
-			Yat.Terminal.Print(manual);
+			args.Terminal.Print(manual);
 
 			return CommandResult.Success;
 		}
