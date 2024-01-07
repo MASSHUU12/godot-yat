@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 -   Terminal history is managed by BaseTerminal instead of YAT.
 -   Documentation for terminal updated.
 -   UIDs are used instead of paths to scenes.
+-   Refactored view command.
 
 ## [1.15.2-beta 2024-01-04]
 

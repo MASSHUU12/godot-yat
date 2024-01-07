@@ -30,12 +30,12 @@ public partial class Player : CharacterBody3D
 		_camera = GetNode<Camera3D>("Head/Camera3D");
 
 		_yat = GetNode<YAT.YAT>("/root/YAT");
-		_yat.Terminal.TreeEntered += () =>
+		_yat.TerminalOpened += () =>
 		{
 			_playerHaveControl = false;
 			Input.MouseMode = Input.MouseModeEnum.Visible;
 		};
-		_yat.Terminal.TreeExited += () =>
+		_yat.TerminalClosed += () =>
 		{
 			_playerHaveControl = true;
 			Input.MouseMode = Input.MouseModeEnum.Captured;
