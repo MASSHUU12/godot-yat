@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 -   Scene helper class with PrintChildren & GetFromPathOrDefault methods.
 -   Print method overload to Terminal accepting StringBuilder.
 -   BaseTerminal scene.
--   CloseRequested & TitleChanged signals to the BaseTerminal.
+-   CloseRequested & TitleChangeRequested signals to the BaseTerminal.
 
 ### Changed
 
@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file.
 -   Renamed TextHelper class to Text.
 -   Terminal renamed to GameTerminal.
 -   Terminal history is managed by BaseTerminal instead of YAT.
+-   Documentation for terminal updated.
+-   UIDs are used instead of paths to scenes.
 
 ## [1.15.2-beta 2024-01-04]
 
