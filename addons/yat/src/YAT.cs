@@ -6,7 +6,6 @@ using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
 using YAT.Scenes.CommandManager;
-using YAT.Scenes.EditorTerminal;
 using YAT.Scenes.GameTerminal;
 
 namespace YAT
@@ -44,7 +43,7 @@ namespace YAT
 		{
 			CheckYatEnableSettings();
 
-			_gameTerminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/game_terminal/GameTerminal.tscn").Instantiate<GameTerminal>();
+			_gameTerminal = GD.Load<PackedScene>("uid://dsyqv187j7w76").Instantiate<GameTerminal>();
 			_gameTerminal.Ready += () =>
 			{
 				Terminal = _gameTerminal.BaseTerminal;
