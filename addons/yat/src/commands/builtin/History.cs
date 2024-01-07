@@ -4,6 +4,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -20,13 +21,15 @@ namespace YAT.Commands
 	[Argument("action", "[clear, list, int]", "The action to perform.")]
 	public partial class History : ICommand
 	{
-		public YAT Yat { get; set; }
+		private YAT _yat;
+		private BaseTerminal _terminal;
 
-		public History(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			switch (args[1])
+			_yat = args.Yat;
+			_terminal = args.Terminal;
+
+			switch (args.Arguments[1])
 			{
 				case "clear":
 					ClearHistory();
@@ -35,10 +38,10 @@ namespace YAT.Commands
 					ShowHistory();
 					break;
 				default:
-					if (int.TryParse(args[1], out int index)) ExecuteFromHistory(index);
+					if (int.TryParse(args.Arguments[1], out int index)) ExecuteFromHistory(index);
 					else
 					{
-						Yat.Terminal.Print($"Invalid action: {args[1]}");
+						_terminal.Print($"Invalid action: {args.Arguments[1]}");
 						return CommandResult.Failure;
 					}
 					break;
@@ -49,24 +52,24 @@ namespace YAT.Commands
 
 		private void ClearHistory()
 		{
-			Yat.Terminal.History.Clear();
-			Yat.Terminal.Print("Terminal history cleared.");
+			_terminal.History.Clear();
+			_terminal.Print("Terminal history cleared.");
 		}
 
 		private void ExecuteFromHistory(int index)
 		{
-			if (index < 0 || index >= Yat.Terminal.History.Count)
+			if (index < 0 || index >= _terminal.History.Count)
 			{
-				Yat.Terminal.Print($"Invalid index: {index}");
+				_terminal.Print($"Invalid index: {index}");
 				return;
 			}
 
-			var command = Yat.Terminal.History.ElementAt(index);
+			var command = _terminal.History.ElementAt(index);
 
-			Yat.Terminal.Print(
+			_terminal.Print(
 				$"Executing command at index {index}: {Text.EscapeBBCode(command)}"
 			);
-			Yat.CommandManager.Run(Text.SanitizeText(command));
+			_yat.CommandManager.Run(Text.SanitizeText(command));
 		}
 
 		private void ShowHistory()
@@ -75,12 +78,12 @@ namespace YAT.Commands
 			sb.AppendLine("Terminal history:");
 
 			ushort i = 0;
-			foreach (string command in Yat.Terminal.History)
+			foreach (string command in _terminal.History)
 			{
 				sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
 			}
 
-			Yat.Terminal.Print(sb);
+			_terminal.Print(sb);
 		}
 	}
 }
