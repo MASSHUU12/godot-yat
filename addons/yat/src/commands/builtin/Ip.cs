@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using System.Text;
 using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -11,13 +11,13 @@ namespace YAT.Commands
 	[Argument("action", "[addr]", "The action to perform.")]
 	public sealed class Ip : ICommand
 	{
-		public YAT Yat { get; set; }
+		private BaseTerminal _terminal;
 
-		public Ip(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			string action = cArgs["action"] as string;
+			string action = args.ConvertedArgs["action"] as string;
+
+			_terminal = args.Terminal;
 
 			if (action == "addr") PrintLocalInterfaces();
 
@@ -41,7 +41,7 @@ namespace YAT.Commands
 				sb.AppendLine();
 			}
 
-			Yat.Terminal.Print(sb.ToString());
+			_terminal.Print(sb.ToString());
 		}
 	}
 }
