@@ -1,38 +1,41 @@
 #if TOOLS
 using Godot;
 
-[Tool]
-public partial class Plugin : EditorPlugin
+namespace YAT
 {
-	private string _version;
-	private const string _name = "YAT";
-
-	private Control _editorTerminal;
-
-	public override void _Notification(int what)
+	[Tool]
+	public partial class Plugin : EditorPlugin
 	{
-		if (what == NotificationParented) _version = GetPluginVersion();
-	}
+		private string _version;
+		private const string _name = "YAT";
 
-	public override void _EnterTree()
-	{
-		//_editorTerminal = GD.Load<PackedScene>("uid://metx3g4g8my").Instantiate<Control>();
+		private Control _editorTerminal;
 
-		AddAutoloadSingleton(_name, "res://addons/yat/src/YAT.tscn");
-		// AddControlToBottomPanel(
-		// 	_editorTerminal,
-		// 	"Terminal"
-		// );
+		public override void _Notification(int what)
+		{
+			if (what == NotificationParented) _version = GetPluginVersion();
+		}
 
-		GD.Print($"{_name} {_version} loaded!");
-		GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]https://github.com/MASSHUU12/godot-yat/tree/main[/url].");
-	}
+		public override void _EnterTree()
+		{
+			//_editorTerminal = GD.Load<PackedScene>("uid://metx3g4g8my").Instantiate<Control>();
 
-	public override void _ExitTree()
-	{
-		RemoveAutoloadSingleton(_name);
-		// RemoveControlFromBottomPanel(_editorTerminal);
-		GD.Print($"{_name} {_version} unloaded!");
+			AddAutoloadSingleton(_name, "res://addons/yat/src/YAT.tscn");
+			// AddControlToBottomPanel(
+			// 	_editorTerminal,
+			// 	"Terminal"
+			// );
+
+			GD.Print($"{_name} {_version} loaded!");
+			GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]https://github.com/MASSHUU12/godot-yat/tree/main[/url].");
+		}
+
+		public override void _ExitTree()
+		{
+			RemoveAutoloadSingleton(_name);
+			// RemoveControlFromBottomPanel(_editorTerminal);
+			GD.Print($"{_name} {_version} unloaded!");
+		}
 	}
 }
 #endif
