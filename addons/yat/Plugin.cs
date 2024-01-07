@@ -19,10 +19,10 @@ public partial class Plugin : EditorPlugin
 		_editorTerminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/editor_terminal/EditorTerminal.tscn").Instantiate<Control>();
 
 		AddAutoloadSingleton(_name, "res://addons/yat/src/YAT.tscn");
-		AddControlToBottomPanel(
-			_editorTerminal,
-			"Terminal"
-		);
+		// AddControlToBottomPanel(
+		// 	_editorTerminal,
+		// 	"Terminal"
+		// );
 
 		GD.Print($"{_name} {_version} loaded!");
 		GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]https://github.com/MASSHUU12/godot-yat/tree/main[/url].");
