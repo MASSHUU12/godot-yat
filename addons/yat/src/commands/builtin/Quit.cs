@@ -7,14 +7,10 @@ namespace YAT.Commands
 	[Command("quit", "Quits the game.", "[b]Usage[/b]: quit", "exit")]
 	public partial class Quit : ICommand
 	{
-		public YAT Yat { get; set; }
-
-		public Quit(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			Yat.Terminal.Print("Quitting...");
-			Yat.GetTree().Quit();
+			args.Terminal.Print("Quitting...");
+			args.Yat.GetTree().Quit();
 
 			return CommandResult.Success;
 		}
