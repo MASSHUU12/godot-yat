@@ -19,18 +19,17 @@ namespace YAT.Commands
 	[Option("-lookingat", null, "Shows the info about node the player is looking at. Only in 3D.", false)]
 	public sealed class Stats : ICommand
 	{
-		public YAT Yat { get; set; }
-
+		private YAT _yat;
 		private static Monitor _monitorInstance;
 		private static readonly PackedScene _monitor = GD.Load<PackedScene>(
 			"uid://dekp8nra5yo6u"
 		);
 
-		public Stats(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			if (cArgs.Any((arg) => (bool)arg.Value)) return Open(cArgs);
+			_yat = args.Yat;
+
+			if (args.ConvertedArgs.Any((arg) => (bool)arg.Value)) return Open(args.ConvertedArgs);
 			return Close();
 		}
 
@@ -63,7 +62,7 @@ namespace YAT.Commands
 
 			_monitorInstance = _monitor.Instantiate<Monitor>();
 
-			Yat.Windows.AddChild(_monitorInstance);
+			_yat.Windows.AddChild(_monitorInstance);
 
 			foreach (Node component in components)
 			{
@@ -77,7 +76,7 @@ namespace YAT.Commands
 		{
 			if (!GodotObject.IsInstanceValid(_monitorInstance))
 			{
-				Yat.Terminal.Print("The game monitor is not open.", PrintType.Error);
+				_yat.Terminal.Print("The game monitor is not open.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 
