@@ -2,6 +2,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
@@ -12,19 +13,19 @@ namespace YAT.Commands
 	[Option("-command", "string", "The command to execute when the quick command is called.")]
 	public sealed class QuickCommands : ICommand
 	{
-		public YAT Yat { get; set; }
+		private BaseTerminal _terminal;
 
-		public QuickCommands(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(System.Collections.Generic.Dictionary<string, object> cArgs, params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			string action = (string)cArgs["action"];
-			string name = cArgs.TryGetValue("-name", out object nameObj) ? (string)nameObj : null;
-			string command = cArgs.TryGetValue("-command", out object commandObj) ? (string)commandObj : null;
+			string action = (string)args.ConvertedArgs["action"];
+			string name = args.ConvertedArgs.TryGetValue("-name", out object nameObj) ? (string)nameObj : null;
+			string command = args.ConvertedArgs.TryGetValue("-command", out object commandObj) ? (string)commandObj : null;
+
+			_terminal = args.Terminal;
 
 			if (action != "list" && string.IsNullOrEmpty(name))
 			{
-				Yat.Terminal.Print("You need to provide a command name for this action.", PrintType.Error);
+				_terminal.Print("You need to provide a command name for this action.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 
@@ -35,9 +36,9 @@ namespace YAT.Commands
 				case "remove":
 					return RemoveQuickCommand(name);
 				default:
-					foreach (var qc in Yat.Terminal.Context.QuickCommands.QuickCommands.Commands)
+					foreach (var qc in _terminal.Context.QuickCommands.QuickCommands.Commands)
 					{
-						Yat.Terminal.Print($"[b]{qc.Key}[/b] - {Text.EscapeBBCode(qc.Value)}");
+						_terminal.Print($"[b]{qc.Key}[/b] - {Text.EscapeBBCode(qc.Value)}");
 					}
 					break;
 			}
@@ -49,30 +50,30 @@ namespace YAT.Commands
 		{
 			if (string.IsNullOrEmpty(command))
 			{
-				Yat.Terminal.Print("You need to provide command for this action.", PrintType.Error);
+				_terminal.Print("You need to provide command for this action.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 
-			bool status = Yat.Terminal.Context.QuickCommands.AddQuickCommand(name, command);
+			bool status = _terminal.Context.QuickCommands.AddQuickCommand(name, command);
 			string message;
 
 			if (status) message = $"Added quick command '{name}'.";
 			else message = $"Failed to add quick command '{name}'.";
 
-			Yat.Terminal.Print(message, status ? PrintType.Success : PrintType.Error);
+			_terminal.Print(message, status ? PrintType.Success : PrintType.Error);
 
 			return status ? CommandResult.Success : CommandResult.Failure;
 		}
 
 		private CommandResult RemoveQuickCommand(string name)
 		{
-			bool status = Yat.Terminal.Context.QuickCommands.RemoveQuickCommand(name);
+			bool status = _terminal.Context.QuickCommands.RemoveQuickCommand(name);
 			string message;
 
 			if (status) message = $"Removed quick command '{name}'.";
 			else message = $"Failed to remove quick command '{name}'.";
 
-			Yat.Terminal.Print(message, status ? PrintType.Success : PrintType.Error);
+			_terminal.Print(message, status ? PrintType.Success : PrintType.Error);
 
 			return status ? CommandResult.Success : CommandResult.Failure;
 		}
