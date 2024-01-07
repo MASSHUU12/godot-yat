@@ -23,10 +23,8 @@ namespace YAT.Commands
 
 		private static Monitor _monitorInstance;
 		private static readonly PackedScene _monitor = GD.Load<PackedScene>(
-			"res://addons/yat/src/scenes/monitor/Monitor.tscn"
+			"uid://dekp8nra5yo6u"
 		);
-
-		private const string _componentsPath = "res://addons/yat/src/scenes/monitor/components/";
 
 		public Stats(YAT Yat) => this.Yat = Yat;
 
@@ -55,13 +53,13 @@ namespace YAT.Commands
 				_monitorInstance = null;
 			}
 
-			if (fps) components.Add(GD.Load<PackedScene>(_componentsPath + "fps/Fps.tscn").Instantiate<Fps>());
-			if (mem) components.Add(GD.Load<PackedScene>(_componentsPath + "memory_info/MemoryInfo.tscn").Instantiate<MemoryInfo>());
-			if (os) components.Add(GD.Load<PackedScene>(_componentsPath + "os/Os.tscn").Instantiate<Os>());
-			if (cpu) components.Add(GD.Load<PackedScene>(_componentsPath + "cpu_info/CpuInfo.tscn").Instantiate<CpuInfo>());
-			if (engine) components.Add(GD.Load<PackedScene>(_componentsPath + "engine_info/EngineInfo.tscn").Instantiate<EngineInfo>());
-			if (objects) components.Add(GD.Load<PackedScene>(_componentsPath + "scene_objects/SceneObjects.tscn").Instantiate<SceneObjects>());
-			if (lookingAt) components.Add(GD.Load<PackedScene>(_componentsPath + "looking_at/LookingAt.tscn").Instantiate<LookingAt>());
+			if (fps) components.Add(GD.Load<PackedScene>("uid://coabiqpqlqj55").Instantiate<Fps>());
+			if (mem) components.Add(GD.Load<PackedScene>("uid://cy3kq15d8pc2k").Instantiate<MemoryInfo>());
+			if (os) components.Add(GD.Load<PackedScene>("uid://dpg2hilncaxuv").Instantiate<Os>());
+			if (cpu) components.Add(GD.Load<PackedScene>("uid://bvjj8sj77c6wi").Instantiate<CpuInfo>());
+			if (engine) components.Add(GD.Load<PackedScene>("uid://cjd2m6hgh0hmq").Instantiate<EngineInfo>());
+			if (objects) components.Add(GD.Load<PackedScene>("uid://co0tw21o78ucy").Instantiate<SceneObjects>());
+			if (lookingAt) components.Add(GD.Load<PackedScene>("uid://b4na0nuvbhst6").Instantiate<LookingAt>());
 
 			_monitorInstance = _monitor.Instantiate<Monitor>();
 

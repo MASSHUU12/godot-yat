@@ -8,7 +8,7 @@ namespace YAT.Scenes.BaseTerminal
 	public partial class BaseTerminal : Control
 	{
 		[Signal] public delegate void CloseRequestedEventHandler();
-		[Signal] public delegate void TitleChangedEventHandler(string title);
+		[Signal] public delegate void TitleChangeRequestedEventHandler(string title);
 
 		public Input Input { get; private set; }
 		public TerminalContext Context { get; private set; }
@@ -59,9 +59,9 @@ namespace YAT.Scenes.BaseTerminal
 
 			_commandManager = _yat.CommandManager;
 			_commandManager.CommandStarted += (command, args) =>
-				EmitSignal(SignalName.TitleChanged, "YAT - " + command);
+				EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
 			_commandManager.CommandFinished += (command, args, result) =>
-				EmitSignal(SignalName.TitleChanged, "YAT");
+				EmitSignal(SignalName.TitleChangeRequested, "YAT");
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
 			_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
