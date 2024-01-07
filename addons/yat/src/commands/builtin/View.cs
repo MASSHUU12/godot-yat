@@ -1,8 +1,9 @@
 using System;
-using Godot;
+using System.Collections.Generic;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using static Godot.RenderingServer;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
@@ -26,50 +27,48 @@ namespace YAT.Commands
 
 		public View(YAT Yat) => this.Yat = Yat;
 
+		private readonly int MAX_DRAW_MODE = Enum.GetValues(typeof(ViewportDebugDraw)).Length - 1;
+
+		private readonly Dictionary<string, ViewportDebugDraw> modeMappings = new()
+		{
+			{"normal", ViewportDebugDraw.Disabled},
+			{"unshaded", ViewportDebugDraw.Unshaded},
+			{"lightning", ViewportDebugDraw.Lighting},
+			{"overdraw", ViewportDebugDraw.Overdraw},
+			{"wireframe", ViewportDebugDraw.Wireframe}
+		};
+
 		public CommandResult Execute(params string[] args)
 		{
 			var mode = args[1];
-			RenderingServer.ViewportDebugDraw debugDraw = RenderingServer.ViewportDebugDraw.Disabled;
 
-			switch (mode)
+			if (modeMappings.TryGetValue(mode, out ViewportDebugDraw debugDraw))
+				return SetDebugDraw(debugDraw);
+
+			if (!int.TryParse(mode, out var iMode))
 			{
-				case "normal":
-					debugDraw = RenderingServer.ViewportDebugDraw.Disabled;
-					break;
-				case "unshaded":
-					debugDraw = RenderingServer.ViewportDebugDraw.Unshaded;
-					break;
-				case "lightning":
-					debugDraw = RenderingServer.ViewportDebugDraw.Lighting;
-					break;
-				case "overdraw":
-					debugDraw = RenderingServer.ViewportDebugDraw.Overdraw;
-					break;
-				case "wireframe":
-					debugDraw = RenderingServer.ViewportDebugDraw.Wireframe;
-					break;
-				default:
-					var iMode = int.TryParse(mode, out var i) ? i : -1;
-					var max = Enum.GetValues(typeof(RenderingServer.ViewportDebugDraw)).Length - 1;
-
-					if (iMode < 0 || iMode > max)
-					{
-						Yat.Terminal.Print($"Invalid mode: {mode}.", PrintType.Error);
-						return CommandResult.InvalidArguments;
-					}
-
-					debugDraw = (RenderingServer.ViewportDebugDraw)iMode;
-					break;
+				Yat.Terminal.Print($"Invalid mode: {mode}.", PrintType.Error);
+				return CommandResult.InvalidArguments;
 			}
 
-			RenderingServer.ViewportSetDebugDraw(
-				Yat.GetViewport().GetViewportRid(),
-				debugDraw
-			);
+			if (!IsValidMode((ushort)iMode))
+			{
+				Yat.Terminal.Print($"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}.", PrintType.Error);
+				return CommandResult.InvalidArguments;
+			}
 
-			Yat.Terminal.Print($"Set viewport debug draw to {debugDraw} ({(uint)debugDraw}).");
+			return SetDebugDraw((ViewportDebugDraw)iMode);
+		}
+
+		private CommandResult SetDebugDraw(ViewportDebugDraw debugDraw)
+		{
+			ViewportSetDebugDraw(Yat.GetViewport().GetViewportRid(), debugDraw);
+
+			Yat.Terminal.Print($"Set viewport debug draw to {debugDraw} ({(ushort)debugDraw}).");
 
 			return CommandResult.Success;
 		}
+
+		private bool IsValidMode(ushort mode) => mode >= 0 && mode <= MAX_DRAW_MODE;
 	}
 }
