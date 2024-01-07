@@ -14,7 +14,7 @@ namespace YAT.Commands
 
 		private static YatWindow _optionsWindowInstance;
 		private static readonly PackedScene _optionsWindow = GD.Load<PackedScene>(
-			"res://addons/yat/src/scenes/settings_window/SettingsWindow.tscn"
+			"uid://liha0ppubuti"
 		);
 
 		public Options(YAT Yat) => this.Yat = Yat;
