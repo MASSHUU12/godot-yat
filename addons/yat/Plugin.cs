@@ -16,7 +16,7 @@ public partial class Plugin : EditorPlugin
 
 	public override void _EnterTree()
 	{
-		_editorTerminal = GD.Load<PackedScene>("res://addons/yat/src/scenes/editor_terminal/EditorTerminal.tscn").Instantiate<Control>();
+		//_editorTerminal = GD.Load<PackedScene>("uid://metx3g4g8my").Instantiate<Control>();
 
 		AddAutoloadSingleton(_name, "res://addons/yat/src/YAT.tscn");
 		// AddControlToBottomPanel(
