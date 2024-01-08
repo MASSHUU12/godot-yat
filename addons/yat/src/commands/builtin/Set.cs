@@ -17,7 +17,7 @@ namespace YAT.Commands
 			if (Extensions.ContainsKey(variable))
 			{
 				var extension = Extensions[variable];
-				return extension.Execute(this, args.Arguments[1..]);
+				return extension.Execute(args with { Arguments = args.Arguments[1..] });
 			}
 
 			args.Terminal.Print("Variable not found.", PrintType.Error);
