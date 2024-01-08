@@ -97,7 +97,7 @@ namespace YAT.Scenes.CommandManager
 		{
 			string commandName = input[0];
 			var command = _yat.Commands[commandName];
-			CommandArguments args = new(_yat, _yat.Terminal, commandName, input, cArgs, Cts?.Token);
+			CommandArguments args = new(_yat, _yat.Terminal, command, commandName, input, cArgs, Cts?.Token);
 
 			Locked = true;
 			var result = command.Execute(args);
@@ -119,7 +119,7 @@ namespace YAT.Scenes.CommandManager
 			{
 				string commandName = input[0];
 				var command = _yat.Commands[commandName];
-				CommandArguments args = new(_yat, _yat.Terminal, commandName, input, cArgs, Cts.Token);
+				CommandArguments args = new(_yat, _yat.Terminal, command, commandName, input, cArgs, Cts.Token);
 
 				Locked = true;
 				var result = command.Execute(args);
