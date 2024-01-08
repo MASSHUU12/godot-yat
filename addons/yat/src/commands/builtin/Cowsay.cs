@@ -19,14 +19,14 @@ namespace YAT.Commands
 	[Option("-y", null, "Youthful", false)]
 	public sealed class Cowsay : ICommand
 	{
-		public YAT Yat { get; set; }
+		private YAT _yat;
 
-		public Cowsay(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
 			char eye = 'o';
 			char tongue = ' ';
+
+			_yat = args.Yat;
 
 			var eyes = new Dictionary<string, char>
 			{
@@ -48,7 +48,7 @@ namespace YAT.Commands
 
 			foreach (var (key, value) in eyes)
 			{
-				if (!(bool)cArgs[key]) continue;
+				if (!(bool)args.ConvertedArgs[key]) continue;
 
 				eye = value;
 				if (tongues.ContainsKey(key)) tongue = tongues[key];
@@ -56,7 +56,7 @@ namespace YAT.Commands
 				break;
 			}
 
-			PrintCow(args[1], eye, tongue);
+			PrintCow(args.Arguments[1], eye, tongue);
 
 			return CommandResult.Success;
 		}
@@ -98,7 +98,7 @@ namespace YAT.Commands
 			StringBuilder sb = new();
 			sb.AppendLine(string.Join('\n', bubble));
 			sb.AppendLine(string.Join('\n', cow));
-			Yat.Terminal.Print(sb.ToString());
+			_yat.Terminal.Print(sb.ToString());
 		}
 	}
 }

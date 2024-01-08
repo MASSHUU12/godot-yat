@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using YAT.Attributes;
 using YAT.Enums;
@@ -17,29 +16,26 @@ namespace YAT.Commands
 	[Argument("interval", "float(0.5, 60)", "The interval at which to run the command.")]
 	public partial class Watch : ICommand
 	{
-		public YAT Yat { get; set; }
+		private const uint SECONDS_MULTIPLIER = 1000;
 
-		public Watch(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			const uint SECONDS_MULTIPLIER = 1000;
+			ICommand command = args.Yat.Commands.TryGetValue((string)args.ConvertedArgs["command"], out var c) ? c : null;
 
-			ICommand command = Yat.Commands.TryGetValue((string)cArgs["command"], out var c) ? c : null;
-
-			if (command == null)
+			if (command is null)
 			{
-				LogHelper.Error($"Command '{cArgs["command"]}' not found, exiting watch.");
+				LogHelper.Error($"Command '{args.ConvertedArgs["command"]}' not found, exiting watch.");
 				return CommandResult.InvalidArguments;
 			}
 
-			float interval = (float)cArgs["interval"];
+			float interval = (float)args.ConvertedArgs["interval"];
+			CommandArguments newArgs = args with { Arguments = args.Arguments[2..] };
 
-			while (!ct.IsCancellationRequested)
+			while (!args.CancellationToken.Value.IsCancellationRequested)
 			{
-				if (command.Execute(args[2..]) != CommandResult.Success)
+				if (command.Execute(newArgs) != CommandResult.Success)
 				{
-					LogHelper.Error($"Error executing command '{args[1]}', exiting watch.");
+					LogHelper.Error($"Error executing command '{args.Arguments[1]}', exiting watch.");
 					return CommandResult.Failure;
 				}
 

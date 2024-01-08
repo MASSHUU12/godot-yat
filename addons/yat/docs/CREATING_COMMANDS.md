@@ -5,9 +5,58 @@
 
 ## Creating commands
 
-Instructions on how to create a `regular command` can be found [here](./REGULAR_COMMANDS.md), while one that runs on a `separate thread` can be found [here](./THREADED_COMMANDS.md).
-
 Information about automatic input validation can be found [here](./AUTOMATIC_INPUT_VALIDATION.md).
+
+To create a command, you need to create C# file and implement `ICommand` interface.
+
+In addition, you must use the `Command` attribute to add the necessary metadata for the command.
+
+The `Command` attribute accepts the command `name`, its `description`, `manual` and `aliases`.
+The description and manual have BBCode support.
+
+The execution of the command begins in the `Execute` method.
+The `Execute` method accepts `CommandArguments`, which contains probably all the things your command could ever need, these are things like: reference to YAT and BaseTerminal, arguments, converted arguments, cancellation token and more.
+
+As an example, let's look at Cls command:
+
+```csharp
+using YAT.Attributes;
+using YAT.Enums;
+using YAT.Interfaces;
+
+namespace YAT.Commands
+{
+	[Command(
+		"cls",
+		"Clears the console.",
+		"[b]Usage[/b]: cls",
+		"clear"
+	)]
+	public sealed class Cls : ICommand
+	{
+		public CommandResult Execute(CommandArguments args)
+		{
+			args.Terminal.Clear();
+
+			return CommandResult.Success;
+		}
+	}
+}
+```
+
+### Threaded commands
+
+> [!IMPORTANT]
+> Using engine features via a command running on a separate thread can be problematic.
+>
+> Fortunately, rather most errors can be circumvented by using:
+> CallDeferred, CallThreadSafe or CallDeferredThreadGroup.
+
+Creating a command that runs on a separate thread looks very similar to creating a regular command.
+
+Therefore, first create a regular command and then add a `Threaded` attribute to it, which allows it to run on a separate thread.
+
+In the passed `CommandArguments` you can find the `CancellationToken` which indicates when the command was asked to terminate prematurely.
 
 ### Overridable methods
 
@@ -22,7 +71,7 @@ To add a command to the YAT all you have to do is call `AddCommand` method on YA
 
 ```csharp
 var yat = GetNode<YAT>("/root/YAT");
-yat.AddCommand(new Cls(yat));
+yat.AddCommand(new Cls());
 ```
 
 ## Making commands extendable

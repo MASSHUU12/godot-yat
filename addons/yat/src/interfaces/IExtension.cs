@@ -4,12 +4,11 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 
-#nullable enable
 namespace YAT.Interfaces
 {
 	public partial interface IExtension
 	{
-		public CommandResult Execute(ICommand command, params string[] args);
+		public CommandResult Execute(CommandArguments args);
 
 		/// <summary>
 		/// Generates the manual for the extension.
@@ -19,7 +18,7 @@ namespace YAT.Interfaces
 		public virtual string GenerateExtensionManual(params string[] args)
 		{
 			StringBuilder sb = new();
-			ExtensionAttribute? attribute = AttributeHelper.GetAttribute<ExtensionAttribute>(this);
+			ExtensionAttribute attribute = AttributeHelper.GetAttribute<ExtensionAttribute>(this);
 
 			if (string.IsNullOrEmpty(attribute?.Manual))
 			{

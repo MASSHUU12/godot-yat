@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
@@ -12,63 +10,20 @@ namespace YAT.Interfaces
 	public partial interface ICommand
 	{
 		/// <summary>
-		/// Gets or sets the YAT instance associated with this command.
-		/// </summary>
-		public YAT Yat { get; set; }
-
-		/// <summary>
 		/// Represents the result of executing a command.
 		/// </summary>
-		/// <param name="cArgs">The converted arguments for the command.</param>
 		/// <param name="args">The arguments passed to the command.</param>
 		/// <returns>The result of the command execution.</returns>
-		public virtual CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
-		{
-			return CommandResult.NotImplemented;
-		}
-
-		/// <summary>
-		/// Executes the YAT command with the given arguments.
-		/// </summary>
-		/// <param name="args">The arguments passed to the command.</param>
-		/// <returns>The result of the command execution.</returns>
-		public virtual CommandResult Execute(params string[] args)
-		{
-			return CommandResult.NotImplemented;
-		}
-
-		/// <summary>
-		/// Executes the YAT command with the given arguments.
-		/// </summary>
-		/// <param name="cArgs">The converted arguments for the command.</param>
-		/// <param name="ct">The cancellation token.</param>
-		/// <param name="args">The arguments passed to the command.</param>
-		/// <returns>The result of the command execution.</returns>
-		public virtual CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
-		{
-			return CommandResult.NotImplemented;
-		}
-
-		/// <summary>
-		/// Executes the YAT command with the given arguments.
-		/// </summary>
-		/// <param name="ct">The cancellation token.</param>
-		/// <param name="args">The arguments passed to the command.</param>
-		/// <returns>The result of the command execution.</returns>
-		public virtual CommandResult Execute(CancellationToken ct, params string[] args)
-		{
-			return CommandResult.NotImplemented;
-		}
+		public CommandResult Execute(CommandArguments args);
 
 		/// <summary>
 		/// Generates the manual for the command, including its name,
 		/// description, manual, and aliases.
 		/// </summary>
 		/// <returns>The manual for the command.</returns>
-#nullable enable
 		public virtual string GenerateCommandManual()
 		{
-			CommandAttribute? attribute = AttributeHelper.GetAttribute<CommandAttribute>(this);
+			CommandAttribute attribute = AttributeHelper.GetAttribute<CommandAttribute>(this);
 
 			if (string.IsNullOrEmpty(attribute?.Manual)) return "This command does not have a manual.";
 
@@ -84,7 +39,6 @@ namespace YAT.Interfaces
 
 			return sb.ToString();
 		}
-#nullable disable
 
 		/// <summary>
 		/// Generates a manual for the arguments of the command.

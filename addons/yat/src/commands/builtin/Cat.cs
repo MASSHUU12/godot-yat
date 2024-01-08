@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Godot;
 using YAT.Attributes;
 using YAT.Enums;
@@ -12,18 +11,14 @@ namespace YAT.Commands
 	[Option("-l", "int(1:99)", "Limits the number of lines to print.", -1)]
 	public sealed class Cat : ICommand
 	{
-		public YAT Yat { get; set; }
-
-		public Cat(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			string fileName = (string)cArgs["file"];
-			int lineLimit = (int)cArgs["-l"];
+			string fileName = (string)args.ConvertedArgs["file"];
+			int lineLimit = (int)args.ConvertedArgs["-l"];
 
 			if (!FileAccess.FileExists(fileName))
 			{
-				Yat.Terminal.Print($"File '{fileName}' does not exist.", PrintType.Error);
+				args.Terminal.Print($"File '{fileName}' does not exist.", PrintType.Error);
 				return CommandResult.InvalidArguments;
 			}
 
@@ -35,14 +30,14 @@ namespace YAT.Commands
 				string line = file.GetLine();
 				if (lineLimit > 0 && ++lineCount > lineLimit)
 				{
-					Yat.Terminal.Print(
+					args.Terminal.Print(
 						$"Line limit of {lineLimit} reached.",
 						PrintType.Warning
 					);
 					break;
 				}
 
-				Yat.Terminal.Print(line);
+				args.Terminal.Print(line);
 			}
 
 			return CommandResult.Success;

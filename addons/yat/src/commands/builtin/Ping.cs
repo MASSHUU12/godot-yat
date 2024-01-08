@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using YAT.Attributes;
 using YAT.Enums;
@@ -20,23 +19,19 @@ namespace YAT.Commands
 	[Option("-fragment", null, "Fragment the packet.", false)]
 	public sealed class Ping : ICommand
 	{
-		public YAT Yat { get; set; }
-
-		public Ping(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(Dictionary<string, object> cArgs, CancellationToken ct, params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			string target = (string)cArgs["target"];
-			bool fragment = (bool)cArgs["-fragment"];
-			int timeout = (int)cArgs["-timeout"];
-			int bytes = (int)cArgs["-bytes"];
-			int ttl = (int)cArgs["-ttl"];
-			int delay = (int)cArgs["-delay"];
+			string target = (string)args.ConvertedArgs["target"];
+			bool fragment = (bool)args.ConvertedArgs["-fragment"];
+			int timeout = (int)args.ConvertedArgs["-timeout"];
+			int bytes = (int)args.ConvertedArgs["-bytes"];
+			int ttl = (int)args.ConvertedArgs["-ttl"];
+			int delay = (int)args.ConvertedArgs["-delay"];
 			delay *= 1000;
 
 			byte[] buffer = System.Text.Encoding.ASCII.GetBytes(GenerateData(bytes));
 
-			while (!ct.IsCancellationRequested)
+			while (!args.CancellationToken.Value.IsCancellationRequested)
 			{
 				System.Net.NetworkInformation.Ping ping = new();
 				System.Net.NetworkInformation.PingOptions options = new()
@@ -48,9 +43,9 @@ namespace YAT.Commands
 
 				if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
 				{
-					Yat.Terminal.Print($"Reply from {reply.Address}: bytes={reply.Buffer.Length} time={reply.RoundtripTime}ms TTL={reply.Options.Ttl}");
+					args.Terminal.Print($"Reply from {reply.Address}: bytes={reply.Buffer.Length} time={reply.RoundtripTime}ms TTL={reply.Options.Ttl}");
 				}
-				else Yat.Terminal.Print($"Request timed out.");
+				else args.Terminal.Print($"Request timed out.");
 
 				Thread.Sleep(delay);
 			}

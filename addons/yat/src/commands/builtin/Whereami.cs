@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
@@ -10,19 +9,15 @@ namespace YAT.Commands
 	[Option("-s", null, "Prints info about currently selected node.", false)]
 	public partial class Whereami : ICommand
 	{
-		public YAT Yat { get; set; }
-
-		public Whereami(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			var scene = Yat.GetTree().CurrentScene;
-			var longForm = (bool)cArgs["-l"];
-			var s = (bool)cArgs["-s"];
+			var scene = args.Yat.GetTree().CurrentScene;
+			var longForm = (bool)args.ConvertedArgs["-l"];
+			var s = (bool)args.ConvertedArgs["-s"];
 
-			scene = s ? Yat.Terminal.SelectedNode.Current : scene;
+			scene = s ? args.Terminal.SelectedNode.Current : scene;
 
-			Yat.Terminal.Print(
+			args.Terminal.Print(
 				scene.GetPath() +
 				(longForm ? " (" + scene.SceneFilePath + ")" : string.Empty)
 			);

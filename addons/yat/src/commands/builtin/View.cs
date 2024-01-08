@@ -23,10 +23,6 @@ namespace YAT.Commands
 	[Argument("type", "[normal, unshaded, lightning, overdraw, wireframe, int]", "The type of debug draw to use.")]
 	public partial class View : ICommand
 	{
-		public YAT Yat { get; set; }
-
-		public View(YAT Yat) => this.Yat = Yat;
-
 		private readonly int MAX_DRAW_MODE = Enum.GetValues(typeof(ViewportDebugDraw)).Length - 1;
 
 		private readonly Dictionary<string, ViewportDebugDraw> modeMappings = new()
@@ -38,22 +34,26 @@ namespace YAT.Commands
 			{"wireframe", ViewportDebugDraw.Wireframe}
 		};
 
-		public CommandResult Execute(params string[] args)
+		private YAT _yat;
+
+		public CommandResult Execute(CommandArguments args)
 		{
-			var mode = args[1];
+			var mode = args.Arguments[1];
+
+			_yat = args.Yat;
 
 			if (modeMappings.TryGetValue(mode, out ViewportDebugDraw debugDraw))
 				return SetDebugDraw(debugDraw);
 
 			if (!int.TryParse(mode, out var iMode))
 			{
-				Yat.Terminal.Print($"Invalid mode: {mode}.", PrintType.Error);
+				args.Terminal.Print($"Invalid mode: {mode}.", PrintType.Error);
 				return CommandResult.InvalidArguments;
 			}
 
 			if (!IsValidMode((ushort)iMode))
 			{
-				Yat.Terminal.Print($"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}.", PrintType.Error);
+				args.Terminal.Print($"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}.", PrintType.Error);
 				return CommandResult.InvalidArguments;
 			}
 
@@ -62,9 +62,9 @@ namespace YAT.Commands
 
 		private CommandResult SetDebugDraw(ViewportDebugDraw debugDraw)
 		{
-			ViewportSetDebugDraw(Yat.GetViewport().GetViewportRid(), debugDraw);
+			ViewportSetDebugDraw(_yat.GetViewport().GetViewportRid(), debugDraw);
 
-			Yat.Terminal.Print($"Set viewport debug draw to {debugDraw} ({(ushort)debugDraw}).");
+			_yat.Terminal.Print($"Set viewport debug draw to {debugDraw} ({(ushort)debugDraw}).");
 
 			return CommandResult.Success;
 		}

@@ -97,10 +97,10 @@ namespace YAT.Scenes.CommandManager
 		{
 			string commandName = input[0];
 			var command = _yat.Commands[commandName];
+			CommandArguments args = new(_yat, _yat.Terminal, command, commandName, input, cArgs, Cts?.Token);
 
 			Locked = true;
-			var result = command.Execute(input);
-			result = result == CommandResult.NotImplemented ? command.Execute(cArgs, input) : result;
+			var result = command.Execute(args);
 			Locked = false;
 
 			EmitSignal(SignalName.CommandFinished, commandName, input, (ushort)result);
@@ -119,10 +119,10 @@ namespace YAT.Scenes.CommandManager
 			{
 				string commandName = input[0];
 				var command = _yat.Commands[commandName];
+				CommandArguments args = new(_yat, _yat.Terminal, command, commandName, input, cArgs, Cts.Token);
 
 				Locked = true;
-				var result = command.Execute(Cts.Token, input);
-				result = result == CommandResult.NotImplemented ? command.Execute(cArgs, Cts.Token, input) : result;
+				var result = command.Execute(args);
 				Locked = false;
 
 				CallDeferredThreadGroup(

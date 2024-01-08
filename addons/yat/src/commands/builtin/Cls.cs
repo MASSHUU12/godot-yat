@@ -10,15 +10,11 @@ namespace YAT.Commands
 		"[b]Usage[/b]: cls",
 		"clear"
 	)]
-	public partial class Cls : ICommand
+	public sealed class Cls : ICommand
 	{
-		public YAT Yat { get; set; }
-
-		public Cls(YAT Yat) => this.Yat = Yat;
-
-		public CommandResult Execute(params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			Yat.Terminal.Clear();
+			args.Terminal.Clear();
 
 			return CommandResult.Success;
 		}

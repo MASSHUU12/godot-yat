@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 -   Print method overload to Terminal accepting StringBuilder.
 -   BaseTerminal scene.
 -   CloseRequested & TitleChangeRequested signals to the BaseTerminal.
+-   CommandArguments record.
 
 ### Changed
 
@@ -17,9 +18,16 @@ All notable changes to this project will be documented in this file.
 -   Renamed TextHelper class to Text.
 -   Terminal renamed to GameTerminal.
 -   Terminal history is managed by BaseTerminal instead of YAT.
--   Documentation for terminal updated.
+-   Documentation for terminal & command creation updated.
 -   UIDs are used instead of paths to scenes.
 -   Refactored view command.
+-   Command and extension creation has been completely revamped.
+-   Builtin commands have been adjusted to the new system.
+
+### Removed
+
+-   REGULAR_COMMANDS.md.
+-   THREADED_COMMANDS.md.
 
 ## [1.15.2-beta 2024-01-04]
 

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,6 +7,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
@@ -18,16 +18,17 @@ namespace YAT.Commands
 	[Option("-m", null, "Lists the methods of the current node.", false)]
 	public sealed class Ls : ICommand
 	{
-		public YAT Yat { get; set; }
-		public Ls(YAT Yat) => this.Yat = Yat;
+		private BaseTerminal _terminal;
 
-		public CommandResult Execute(Dictionary<string, object> cArgs, params string[] args)
+		public CommandResult Execute(CommandArguments args)
 		{
-			string path = (string)cArgs["path"];
-			bool n = (bool)cArgs["-n"];
-			bool m = (bool)cArgs["-m"];
+			string path = (string)args.ConvertedArgs["path"];
+			bool n = (bool)args.ConvertedArgs["-n"];
+			bool m = (bool)args.ConvertedArgs["-m"];
 
-			if (n) return Scene.PrintChildren(Yat.Terminal, path)
+			_terminal = args.Terminal;
+
+			if (n) return Scene.PrintChildren(_terminal, path)
 				? CommandResult.Success
 				: CommandResult.Failure;
 			if (m) return PrintNodeMethods(path);
@@ -36,11 +37,11 @@ namespace YAT.Commands
 
 		private CommandResult PrintNodeMethods(string path)
 		{
-			Node node = Scene.GetFromPathOrDefault(path, Yat.Terminal.SelectedNode.Current, out path);
+			Node node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
 
 			if (node is null)
 			{
-				Yat.Terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
+				_terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 
@@ -69,7 +70,7 @@ namespace YAT.Commands
 				sb.AppendLine();
 			}
 
-			Yat.Terminal.Print(sb.ToString());
+			_terminal.Print(sb.ToString());
 
 			return CommandResult.Success;
 		}
@@ -78,7 +79,7 @@ namespace YAT.Commands
 		{
 			if (!Directory.Exists(path))
 			{
-				Yat.Terminal.Print($"Directory '{path}' does not exist.", PrintType.Error);
+				_terminal.Print($"Directory '{path}' does not exist.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 
@@ -94,21 +95,21 @@ namespace YAT.Commands
 
 				AppendDetails(sb, fileSystemInfos);
 
-				Yat.Terminal.Print(sb.ToString());
+				_terminal.Print(sb.ToString());
 			}
 			catch (UnauthorizedAccessException)
 			{
-				Yat.Terminal.Print($"Access to '{path}' is denied.", PrintType.Error);
+				_terminal.Print($"Access to '{path}' is denied.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 			catch (PathTooLongException)
 			{
-				Yat.Terminal.Print($"Path '{path}' is too long.", PrintType.Error);
+				_terminal.Print($"Path '{path}' is too long.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 			catch (Exception ex)
 			{
-				Yat.Terminal.Print($"Error accessing directory '{path}': {ex.Message}", PrintType.Error);
+				_terminal.Print($"Error accessing directory '{path}': {ex.Message}", PrintType.Error);
 				return CommandResult.Failure;
 			}
 
