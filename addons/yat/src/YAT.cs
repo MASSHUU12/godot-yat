@@ -48,6 +48,7 @@ namespace YAT
 			{
 				Terminal = _gameTerminal.BaseTerminal;
 				LogHelper.Terminal = Terminal;
+				Log.Terminal = Terminal;
 				OptionsManager.Load();
 
 				EmitSignal(SignalName.YatReady);
