@@ -98,7 +98,7 @@ namespace YAT
 			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
 				is not CommandAttribute attribute)
 			{
-				LogHelper.MissingAttribute("CommandAttribute", command.GetType().Name);
+				Log.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
 				return;
 			}
 

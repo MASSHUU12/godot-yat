@@ -17,7 +17,7 @@ namespace YAT.Commands
 
 			if (!args.Yat.Commands.TryGetValue(commandName, out var command))
 			{
-				LogHelper.UnknownCommand(commandName);
+				Log.Error(Messages.UnknownCommand(commandName));
 				return CommandResult.InvalidCommand;
 			}
 

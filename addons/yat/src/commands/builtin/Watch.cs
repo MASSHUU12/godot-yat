@@ -24,7 +24,7 @@ namespace YAT.Commands
 
 			if (command is null)
 			{
-				LogHelper.Error($"Command '{args.ConvertedArgs["command"]}' not found, exiting watch.");
+				Log.Error($"Command '{args.ConvertedArgs["command"]}' not found, exiting watch.");
 				return CommandResult.InvalidArguments;
 			}
 
@@ -35,7 +35,7 @@ namespace YAT.Commands
 			{
 				if (command.Execute(newArgs) != CommandResult.Success)
 				{
-					LogHelper.Error($"Error executing command '{args.Arguments[1]}', exiting watch.");
+					Log.Error($"Error executing command '{args.Arguments[1]}', exiting watch.");
 					return CommandResult.Failure;
 				}
 

@@ -26,7 +26,7 @@ namespace YAT.Helpers
 
 			if (commandAttribute is null)
 			{
-				LogHelper.MissingAttribute("CommandAttribute", command.GetType().Name);
+				Log.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
 				args = null;
 				return false;
 			}
@@ -38,7 +38,7 @@ namespace YAT.Helpers
 				args = argsArr.ToDictionary(a => (a as ArgumentAttribute)!.Name, a => (a as ArgumentAttribute)!.Type);
 				if (passedArgs.Length < args.Count)
 				{
-					LogHelper.MissingArguments(commandAttribute.Name, args.Keys.ToArray());
+					Log.Error(Messages.MissingArguments(commandAttribute.Name, args.Keys.ToArray()));
 					return false;
 				}
 
@@ -116,7 +116,9 @@ namespace YAT.Helpers
 
 				if (!found)
 				{
-					if (log) LogHelper.InvalidArgument(name, name, string.Join(", ", options));
+					if (log) Log.Error(
+						Messages.InvalidArgument(name, name, string.Join(", ", options))
+					);
 					return false;
 				}
 			}
@@ -128,7 +130,9 @@ namespace YAT.Helpers
 
 				if (convertedArg is null)
 				{
-					if (log) LogHelper.InvalidArgument(name, name, (string)(type ?? name));
+					if (log) Log.Error(
+						Messages.InvalidArgument(name, name, (string)(type ?? name))
+					);
 					return false;
 				}
 
@@ -169,7 +173,7 @@ namespace YAT.Helpers
 				{
 					if (!string.IsNullOrEmpty(passedOptValue))
 					{
-						LogHelper.InvalidArgument(name, optName, optName);
+						Log.Error(Messages.InvalidArgument(name, optName, optName));
 						return false;
 					}
 
@@ -180,7 +184,7 @@ namespace YAT.Helpers
 				// If option is passed but it doesn't have a value
 				if (string.IsNullOrEmpty(passedOptValue))
 				{
-					LogHelper.MissingValue(name, optName);
+					Log.Error(Messages.MissingValue(name, optName));
 					return false;
 				}
 
@@ -190,7 +194,7 @@ namespace YAT.Helpers
 
 					if (converted is null)
 					{
-						LogHelper.InvalidArgument(name, optName, valueType ?? optName);
+						Log.Error(Messages.InvalidArgument(name, optName, valueType ?? optName));
 						return false;
 					}
 
@@ -257,7 +261,7 @@ namespace YAT.Helpers
 
 					if (!found)
 					{
-						LogHelper.InvalidArgument(name, optName, string.Join(", ", options));
+						Log.Error(Messages.InvalidArgument(name, optName, string.Join(", ", options)));
 						return false;
 					}
 				}
