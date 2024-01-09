@@ -52,7 +52,7 @@ namespace YAT.Scenes.CommandManager
 
 			if (!_yat.Commands.ContainsKey(commandName))
 			{
-				LogHelper.UnknownCommand(commandName);
+				Log.Error(Messages.UnknownCommand(commandName));
 				return;
 			}
 
@@ -134,7 +134,7 @@ namespace YAT.Scenes.CommandManager
 
 			await ToSignal(this, SignalName.CommandFinished);
 
-			_yat.Terminal.Print("Command execution finished.", PrintType.Success);
+			Log.Success("Command execution finished.");
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Helpers;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT
@@ -32,10 +33,10 @@ namespace YAT
 			switch (ResourceSaver.Save(_yat.Options, _optionsPath))
 			{
 				case Error.Ok:
-					_yat.Terminal.Print("Options saved successfully.");
+					Log.Print("Options saved successfully.");
 					break;
 				default:
-					_yat.Terminal.Print("Failed to save options.", PrintType.Error);
+					Log.Error("Failed to save options.");
 					break;
 			}
 		}
@@ -47,13 +48,12 @@ namespace YAT
 		{
 			if (!ResourceLoader.Exists(_optionsPath))
 			{
-				_yat.Terminal.Print("Options file does not exist, leaving options unchanged.");
+				Log.Print("Options file does not exist, leaving options unchanged.");
 				return;
 			}
 
 			_yat.Options = ResourceLoader.Load<YatOptions>(_optionsPath);
 			_yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
-			_yat.Terminal.Print("Options loaded successfully.");
 		}
 
 		/// <summary>
@@ -64,7 +64,7 @@ namespace YAT
 			_yat.Options = _defaultOptions;
 			_yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
 
-			_yat.Terminal.Print("Restored default options.");
+			Log.Success("Restored default options.");
 		}
 	}
 }

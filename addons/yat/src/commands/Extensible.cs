@@ -20,7 +20,7 @@ namespace YAT.Commands
 				is not ExtensionAttribute attribute
 			)
 			{
-				LogHelper.MissingAttribute("ExtensionAttribute", extension.GetType().Name);
+				Log.Error(Messages.MissingAttribute("ExtensionAttribute", extension.GetType().Name));
 				return;
 			}
 

@@ -19,7 +19,7 @@ namespace YAT.Helpers
 
 			if (node is null)
 			{
-				terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
+				Log.Error(Messages.InvalidNodePath(path));
 				return false;
 			}
 
@@ -28,6 +28,7 @@ namespace YAT.Helpers
 			if (children.Count == 0)
 			{
 				terminal.Print($"Node '{path}' has no children.", PrintType.Warning);
+				Log.Warning(Messages.NodeHasNoChildren(path));
 				return true;
 			}
 

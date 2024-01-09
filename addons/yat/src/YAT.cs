@@ -48,6 +48,7 @@ namespace YAT
 			{
 				Terminal = _gameTerminal.BaseTerminal;
 				LogHelper.Terminal = Terminal;
+				Log.Terminal = Terminal;
 				OptionsManager.Load();
 
 				EmitSignal(SignalName.YatReady);
@@ -85,8 +86,7 @@ namespace YAT
 
 		public override void _UnhandledInput(InputEvent @event)
 		{
-			if (!Engine.IsEditorHint() && @event.IsActionPressed("yat_toggle"))
-				ToggleTerminal();
+			if (@event.IsActionPressed("yat_toggle")) ToggleTerminal();
 		}
 
 		/// <summary>
@@ -98,7 +98,7 @@ namespace YAT
 			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
 				is not CommandAttribute attribute)
 			{
-				LogHelper.MissingAttribute("CommandAttribute", command.GetType().Name);
+				Log.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
 				return;
 			}
 

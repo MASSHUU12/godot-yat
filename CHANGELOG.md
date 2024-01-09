@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   New logging mechanism.
+-   Messages class.
+
+### Changed
+
+-   The content of some messages has been changed.
+
+### Deprecated
+
+-   LogHelper.
+
 ## [1.16.0-beta 2024-01-08]
 
 ### Added
