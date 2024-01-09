@@ -1,9 +1,11 @@
+using System;
 using Godot;
 using YAT.Scenes.BaseTerminal;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Helpers
 {
+	[Obsolete("Use Log & Messages instead.")]
 	public static class LogHelper
 	{
 		public static BaseTerminal Terminal
