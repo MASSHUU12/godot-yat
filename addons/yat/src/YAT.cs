@@ -85,8 +85,7 @@ namespace YAT
 
 		public override void _UnhandledInput(InputEvent @event)
 		{
-			if (!Engine.IsEditorHint() && @event.IsActionPressed("yat_toggle"))
-				ToggleTerminal();
+			if (@event.IsActionPressed("yat_toggle")) ToggleTerminal();
 		}
 
 		/// <summary>
