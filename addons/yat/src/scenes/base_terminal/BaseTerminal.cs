@@ -79,7 +79,7 @@ namespace YAT.Scenes.BaseTerminal
 			// Handle history navigation if the Terminal window is open.
 			if (IsInsideTree())
 			{
-				if (@event.IsActionPressed("yat_terminal_history_previous"))
+				if (@event.IsActionPressed(Keybindings.TerminalHistoryPrevious))
 				{
 					if (HistoryNode is null && History.Count > 0)
 					{
@@ -95,7 +95,7 @@ namespace YAT.Scenes.BaseTerminal
 					Input.CallDeferred(nameof(Input.MoveCaretToEnd));
 				}
 
-				if (@event.IsActionPressed("yat_terminal_history_next"))
+				if (@event.IsActionPressed(Keybindings.TerminalHistoryNext))
 				{
 					if (HistoryNode is not null && HistoryNode.Next is not null)
 					{
@@ -111,7 +111,7 @@ namespace YAT.Scenes.BaseTerminal
 					Input.CallDeferred(nameof(Input.MoveCaretToEnd));
 				}
 
-				if (@event.IsActionPressed("yat_terminal_interrupt") &&
+				if (@event.IsActionPressed(Keybindings.TerminalInterrupt) &&
 					_commandManager.Cts is not null)
 				{
 					Print("Command cancellation requested.", PrintType.Warning);
@@ -121,7 +121,7 @@ namespace YAT.Scenes.BaseTerminal
 					_commandManager.Cts = null;
 				}
 
-				if (@event.IsActionPressed("yat_context_menu"))
+				if (@event.IsActionPressed(Keybindings.ContextMenu))
 				{
 					Context.ShowNextToMouse();
 				}

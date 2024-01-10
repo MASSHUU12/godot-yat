@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Helpers;
 
 public partial class Player : CharacterBody3D
 {
@@ -110,8 +111,8 @@ public partial class Player : CharacterBody3D
 	private static Vector2 GetInputVector()
 	{
 		return Input.GetVector(
-			"yat_example_player_move_left", "yat_example_player_move_right",
-			"yat_example_player_move_forward", "yat_example_player_move_backward"
+			Keybindings.ExamplePlayerMoveLeft, Keybindings.ExamplePlayerMoveRight,
+			Keybindings.ExamplePlayerMoveForward, Keybindings.ExamplePlayerMoveBackward
 		);
 	}
 }
