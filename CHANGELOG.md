@@ -10,12 +10,14 @@ All notable changes to this project will be documented in this file.
 -   Messages class.
 -   yat_terminal_autocompletion_previous input action.
 -   Ability to display previous suggestion from autocompletion.
+-   InputInfo scene with CommandInfo component.
 
 ### Changed
 
 -   The content of some messages has been changed.
 -   Renamed action yat_terminal_autocompletion to yat_terminal_autocompletion_next.
 -   The creation of default keybindings has been rewritten.
+-   Separated command info from autocompletion.
 
 ### Deprecated
 
