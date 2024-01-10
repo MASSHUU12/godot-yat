@@ -11,9 +11,9 @@ All actions used have the prefix `yat`, so there should be no conflicts with act
 
 You can find all the used actions below.
 
-### YAT
+## YAT
 
--   `yat_toggle` - Toggles the state of the overlay.
+-   `yat_terminal_toggle` - Toggles the state of the overlay.
 -   `yat_context_menu` - Allows to call the context menu.
 -   `yat_terminal_history_next` - Displays the next command from history.
 -   `yat_terminal_history_previous` - Displays the previous command from history.
@@ -21,7 +21,7 @@ You can find all the used actions below.
 -   `yat_terminal_autocompletion_next` - Used to display next suggestions from autocompletion.
 -   `yat_terminal_autocompletion_previous` - Used to display previous suggestions from autocompletion.
 
-### Example
+## Example
 
 -   `yat_example_player_move_left`
 -   `yat_example_player_move_right`
@@ -30,11 +30,16 @@ You can find all the used actions below.
 
 ### Default keybindings
 
--   yat_toggle: `~`
+-   yat_terminal_toggle: `~`
 -   yat_terminal_interrupt: `Ctrl + C`
 -   yat_context_menu: `Right Mouse Button`
 -   yat_terminal_history_next: `Arrow Down`
 -   yat_terminal_history_previous: `Arrow Up`
+-   yat_terminal_autocompletion_next: `Tab`
+-   yat_terminal_autocompletion_previous: `Shift + Tab`
+
+#### Example
+
 -   yat_example_player_move_left: `A`
 -   yat_example_player_move_right: `D`
 -   yat_example_player_move_forward: `W`
