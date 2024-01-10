@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dfig0yknmx6b7"]
+[gd_scene load_steps=11 format=3 uid="uid://dfig0yknmx6b7"]
 
 [ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.cs" id="1_gwi3k"]
 [ext_resource type="Theme" uid="uid://csssl8ua88ca4" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_theme.tres" id="1_mdg7i"]
 [ext_resource type="PackedScene" uid="uid://duldfph1vr1yb" path="res://addons/yat/src/scenes/base_terminal/components/autocompletion/Autocompletion.tscn" id="3_6vb77"]
+[ext_resource type="PackedScene" uid="uid://crxh4uxlaoyrq" path="res://addons/yat/src/scenes/base_terminal/components/input_info/InputInfo.tscn" id="3_evvr3"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/input/Input.cs" id="4_4lcgu"]
+[ext_resource type="PackedScene" uid="uid://c522nry8jbfon" path="res://addons/yat/src/scenes/base_terminal/components/input_info/components/command_info/CommandInfo.tscn" id="4_eo32s"]
 [ext_resource type="PackedScene" uid="uid://dx1optgaua8wt" path="res://addons/yat/src/scenes/base_terminal/components/terminal_context/TerminalContext.tscn" id="5_mu1cs"]
 [ext_resource type="PackedScene" uid="uid://b2ljvgvvny52r" path="res://addons/yat/src/scenes/base_terminal/components/selected_node/SelectedNode.tscn" id="6_prlgb"]
 
@@ -47,8 +49,12 @@ MIT 2023 - MASSHUU12"
 shortcut_keys_enabled = false
 selection_enabled = true
 
-[node name="Autocompletion" parent="PanelContainer/VBoxContainer" instance=ExtResource("3_6vb77")]
+[node name="InputInfo" parent="PanelContainer/VBoxContainer" instance=ExtResource("3_evvr3")]
 layout_mode = 2
+
+[node name="CommandInfo" parent="PanelContainer/VBoxContainer/InputInfo" node_paths=PackedStringArray("InputInfo", "Input") instance=ExtResource("4_eo32s")]
+InputInfo = NodePath("..")
+Input = NodePath("../../InputLine/HBoxContainer/Input")
 
 [node name="InputLine" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -77,3 +83,8 @@ script = ExtResource("4_4lcgu")
 [node name="TerminalContext" parent="." instance=ExtResource("5_mu1cs")]
 
 [node name="SelectedNode" parent="." instance=ExtResource("6_prlgb")]
+
+[node name="Components" type="Node" parent="."]
+
+[node name="Autocompletion" parent="Components" node_paths=PackedStringArray("CommandInfo") instance=ExtResource("3_6vb77")]
+CommandInfo = NodePath("../../PanelContainer/VBoxContainer/InputInfo/CommandInfo")
