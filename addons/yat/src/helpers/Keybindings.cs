@@ -1,114 +1,43 @@
+using System;
+using System.Collections.Generic;
 using Godot;
-using Godot.Collections;
 
 namespace YAT.Helpers
 {
 	public static class Keybindings
 	{
-		private static readonly Array<Dictionary> _defaultActions = new()
+		private static readonly List<Tuple<string, InputEvent>> _defaultActions = new()
 		{
-			new()
-			{
-				{"name", "yat_toggle"},
-				{"type", (short)ActionType.Key},
-				{"key", (long)Key.Quoteleft},
-			},
-			new()
-			{
-				{"name", "yat_context_menu"},
-				{"type", (short)ActionType.Mouse},
-				{"mask", (long)MouseButtonMask.Right},
-				{"index", (short)MouseButton.Right}
-			},
-			new()
-			{
-				{"name", "yat_terminal_history_previous"},
-				{"type", (short)ActionType.Key},
-				{"key", (long)Key.Up},
-			},
-			new()
-			{
-				{"name", "yat_terminal_history_next"},
-				{"type", (short)ActionType.Key},
-				{"key", (long)Key.Down},
-			},
-			new()
-			{
-				{"name", "yat_terminal_interrupt"},
-				{"type", (short)ActionType.Key},
-				{"key", (long)Key.C},
-				{"ctrl", true}
-			},
-			new()
-			{
-				{"name", "yat_terminal_autocompletion_next"},
-				{"type", (short)ActionType.Key},
-				{"key", (long)Key.Tab},
-			},
-			new()
-			{
-				{"name", "yat_example_player_move_left"},
-				{"type", (short)ActionType.Key},
-				{"key", (long)Key.A},
-			},
-			new()
-			{
-				{"name", "yat_example_player_move_right"},
-				{"type", (short)ActionType.Key},
-				{"key", (long)Key.D},
-			},
-			new()
-			{
-				{"name", "yat_example_player_move_forward"},
-				{"type", (short)ActionType.Key},
-				{"key", (long)Key.W},
-			},
-			new()
-			{
-				{"name", "yat_example_player_move_backward"},
-				{"type", (short)ActionType.Key},
-				{"key", (long)Key.S},
-			}
+			new("yat_toggle", new InputEventKey { PhysicalKeycode = Key.Quoteleft }),
+			new("yat_context_menu", new InputEventMouseButton {
+				ButtonMask = MouseButtonMask.Right,
+				ButtonIndex = MouseButton.Right
+			}),
+			new("yat_terminal_history_previous", new InputEventKey { PhysicalKeycode = Key.Up }),
+			new("yat_terminal_history_next", new InputEventKey { PhysicalKeycode = Key.Down }),
+			new("yat_terminal_interrupt", new InputEventKey {
+				PhysicalKeycode = Key.C,
+				CtrlPressed = true
+			}),
+			new("yat_terminal_autocompletion_next", new InputEventKey { PhysicalKeycode = Key.Tab }),
+			new("yat_terminal_autocompletion_previous", new InputEventKey {
+				PhysicalKeycode = Key.Tab,
+				ShiftPressed = true
+			}),
+			new("yat_example_player_move_left", new InputEventKey { PhysicalKeycode = Key.A }),
+			new("yat_example_player_move_right", new InputEventKey { PhysicalKeycode = Key.D }),
+			new("yat_example_player_move_forward", new InputEventKey { PhysicalKeycode = Key.W }),
+			new("yat_example_player_move_backward", new InputEventKey { PhysicalKeycode = Key.S }),
 		};
-
-		private enum ActionType
-		{
-			Key,
-			Mouse
-		}
 
 		public static void LoadDefaultActions()
 		{
 			foreach (var action in _defaultActions)
 			{
-				string name = action["name"].ToString();
+				if (InputMap.HasAction(action.Item1)) continue;
 
-				if (InputMap.HasAction(name)) continue;
-
-				InputMap.AddAction((string)action["name"]);
-
-				ActionType type = action["type"].As<ActionType>();
-				InputEvent iEvent;
-
-				if (type == ActionType.Key)
-				{
-					iEvent = new InputEventKey
-					{
-						PhysicalKeycode = action["key"].As<Key>(),
-						CtrlPressed = action.TryGetValue("ctrl", out var ctrl) && (bool)ctrl
-					};
-				}
-				else
-				{
-					iEvent = new InputEventMouseButton
-					{
-						ButtonMask = action["mask"].As<MouseButtonMask>(),
-						ButtonIndex = action["index"].As<MouseButton>(),
-						CtrlPressed = action.TryGetValue("ctrl", out var ctrl) && (bool)ctrl
-					};
-				}
-
-				InputMap.ActionAddEvent(name, iEvent);
+				InputMap.AddAction(action.Item1);
+				InputMap.ActionAddEvent(action.Item1, action.Item2);
 			}
 		}
 	}
