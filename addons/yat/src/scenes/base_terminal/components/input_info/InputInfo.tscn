@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://crxh4uxlaoyrq"]
+
+[ext_resource type="Theme" uid="uid://dsum3emookvm" path="res://addons/yat/src/scenes/base_terminal/components/input_info/theme/yat_input_info_theme.tres" id="1_hqw0x"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/input_info/InputInfo.cs" id="1_yrxu5"]
+
+[node name="InputInfo" type="PanelContainer"]
+size_flags_horizontal = 0
+theme = ExtResource("1_hqw0x")
+script = ExtResource("1_yrxu5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="Text" type="RichTextLabel" parent="MarginContainer"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+bbcode_enabled = true
+text = "command arg arg2 -o -o2"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
