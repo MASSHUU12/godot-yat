@@ -41,7 +41,7 @@ namespace YAT.Helpers
 			},
 			new()
 			{
-				{"name", "yat_terminal_autocompletion"},
+				{"name", "yat_terminal_autocompletion_next"},
 				{"type", (short)ActionType.Key},
 				{"key", (long)Key.Tab},
 			},

@@ -32,7 +32,7 @@ namespace YAT.Scenes.BaseTerminal
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event.IsActionPressed("yat_terminal_autocompletion") && _input.HasFocus())
+			if (@event.IsActionPressed("yat_terminal_autocompletion_next") && _input.HasFocus())
 			{
 				Autocomplete();
 				_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
