@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
+using YAT.Scenes.BaseTerminal.Components.InputInfo;
 
 namespace YAT.Scenes.BaseTerminal
 {
-	public partial class Autocompletion : PanelContainer
+	public partial class Autocompletion : Node
 	{
+		[Export] public CommandInfo CommandInfo { get; set; }
+
 		private YAT _yat;
-		private RichTextLabel _text;
-		private MarginContainer _container;
 		private Input _input;
 
 		private string cachedInput = string.Empty;
@@ -21,12 +21,8 @@ namespace YAT.Scenes.BaseTerminal
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
-			_text = GetNode<RichTextLabel>("%Text");
-			_container = GetNode<MarginContainer>("./MarginContainer");
-			_input = GetNode<Input>("../InputLine/HBoxContainer/Input");
-			_input.TextChanged += UpdateCommandInfo;
 
-			_container.Visible = false;
+			_input = CommandInfo.Input;
 		}
 
 		public override void _Input(InputEvent @event)
@@ -43,75 +39,6 @@ namespace YAT.Scenes.BaseTerminal
 				Autocomplete();
 				_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
 			}
-		}
-
-		private void UpdateCommandInfo(string text)
-		{
-			var tokens = Text.SanitizeText(text);
-
-			if (!AreTokensValid(tokens)) return;
-
-			DisplayCommandInfo(GenerateCommandInfo(tokens));
-		}
-
-		private string GenerateCommandInfo(string[] tokens)
-		{
-			var command = _yat.Commands[tokens[0]];
-			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>()!;
-			var commandArguments = command.GetAttributes<ArgumentAttribute>();
-
-			StringBuilder commandInfo = new();
-			commandInfo.Append(commandAttribute.Name);
-
-			if (commandArguments is null) return commandInfo.ToString();
-
-			for (int i = 0; i < commandArguments.Length; i++)
-			{
-				string key = commandArguments[i].Name;
-				var arg = commandArguments[i].Type;
-				bool current = tokens.Length - 1 == i;
-				bool valid = CommandHelper.ValidateCommandArgument(
-					commandAttribute.Name,
-					arg,
-					new() { { key, arg } },
-					(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,
-					false
-				);
-
-				string argument = string.Format(
-					" {0}{1}<{2}:{3}>{4}{5}",
-					valid ? string.Empty : $"[color={_yat.Options.ErrorColor.ToHtml()}]",
-					current ? "[b]" : string.Empty,
-					key,
-					(arg is string[]) ? "options" : arg,
-					current ? "[/b]" : string.Empty,
-					valid ? string.Empty : "[/color]"
-				);
-
-				commandInfo.Append(argument);
-
-				if (i < commandArguments.Length - 1) commandInfo.Append(' ');
-			}
-
-			return commandInfo.ToString();
-		}
-
-		private void DisplayCommandInfo(string commandInfo)
-		{
-			_text.Clear();
-			_text.AppendText(commandInfo);
-		}
-
-		private bool AreTokensValid(string[] tokens)
-		{
-			if (tokens.Length == 0 || !_yat.Commands.ContainsKey(tokens[0]))
-			{
-				_container.Visible = false;
-				return false;
-			}
-
-			_container.Visible = true;
-			return true;
 		}
 
 		private void Autocomplete(bool next = true)
@@ -148,7 +75,7 @@ namespace YAT.Scenes.BaseTerminal
 
 			_input.MoveCaretToEnd();
 
-			UpdateCommandInfo(_input.Text);
+			CommandInfo.UpdateCommandInfo(_input.Text);
 		}
 
 		private void UsePreviousSuggestion()
@@ -160,7 +87,7 @@ namespace YAT.Scenes.BaseTerminal
 
 			_input.MoveCaretToEnd();
 
-			UpdateCommandInfo(_input.Text);
+			CommandInfo.UpdateCommandInfo(_input.Text);
 		}
 
 		private LinkedList<string> GenerateCommandSuggestions(string token)
