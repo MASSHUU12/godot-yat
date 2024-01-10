@@ -18,7 +18,8 @@ You can find all the used actions below.
 -   `yat_terminal_history_next` - Displays the next command from history.
 -   `yat_terminal_history_previous` - Displays the previous command from history.
 -   `yat_terminal_interrupt` - Used to stop command working on separate thread.
--   `yat_terminal_autocompletion` - Used to scroll through suggestions from autocompletion.
+-   `yat_terminal_autocompletion_next` - Used to display next suggestions from autocompletion.
+-   `yat_terminal_autocompletion_previous` - Used to display previous suggestions from autocompletion.
 
 ### Example
 
