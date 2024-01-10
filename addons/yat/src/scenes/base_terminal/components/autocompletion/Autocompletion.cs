@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +15,8 @@ namespace YAT.Scenes.BaseTerminal
 		private Input _input;
 
 		private string cachedInput = string.Empty;
-		private string[] suggestions = Array.Empty<string>();
-		private uint suggestionIndex = 0;
+		private LinkedList<string> suggestions = new();
+		private LinkedListNode<string> currentSuggestion;
 
 		public override void _Ready()
 		{
@@ -133,7 +132,7 @@ namespace YAT.Scenes.BaseTerminal
 		/// </summary>
 		private void Autocomplete()
 		{
-			if (suggestions.Length > 0 &&
+			if (suggestions.Count > 0 &&
 				(_input.Text == cachedInput || suggestions.Contains(_input.Text))
 			)
 			{
@@ -142,8 +141,8 @@ namespace YAT.Scenes.BaseTerminal
 			}
 
 			cachedInput = _input.Text;
-			suggestions = Array.Empty<string>();
-			suggestionIndex = 0;
+			suggestions = new();
+			currentSuggestion = null;
 
 			var tokens = Text.SanitizeText(_input.Text);
 
@@ -151,7 +150,7 @@ namespace YAT.Scenes.BaseTerminal
 			{
 				suggestions = GenerateCommandSuggestions(tokens[0]);
 
-				if (suggestions.Length > 0) UseNextSuggestion();
+				if (suggestions.Count > 0) UseNextSuggestion();
 
 				return;
 			}
@@ -163,10 +162,10 @@ namespace YAT.Scenes.BaseTerminal
 		/// </summary>
 		private void UseNextSuggestion()
 		{
-			if (suggestions.Length == 0) return;
+			if (suggestions.Count == 0) return;
 
-			suggestionIndex = (uint)((suggestionIndex + 1) % suggestions.Length);
-			_input.Text = suggestions[suggestionIndex];
+			currentSuggestion = currentSuggestion?.Next ?? suggestions.First;
+			_input.Text = currentSuggestion.Value;
 
 			_input.MoveCaretToEnd();
 
@@ -178,15 +177,16 @@ namespace YAT.Scenes.BaseTerminal
 		/// </summary>
 		/// <param name="token">The current input state.</param>
 		/// <returns>An array of command suggestions.</returns>
-		private string[] GenerateCommandSuggestions(string token)
+		private LinkedList<string> GenerateCommandSuggestions(string token)
 		{
-			return _yat.Commands
+			var listSuggestions = _yat.Commands
 				?.Where(x => x.Value.GetAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
 				?.Select(x => x.Value.GetAttribute<CommandAttribute>()?.Name ?? string.Empty)
 				?.Where(name => !string.IsNullOrEmpty(name))
 				?.Distinct()
-				?.ToArray() ?? Array.Empty<string>();
+				?.ToList();
+
+			return listSuggestions is null ? new() : new(listSuggestions);
 		}
 	}
-
 }
