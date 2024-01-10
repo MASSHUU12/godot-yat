@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 -   New logging mechanism.
 -   Messages class.
 -   yat_terminal_autocompletion_previous input action.
+-   Ability to display previous suggestion from autocompletion.
 
 ### Changed
 
