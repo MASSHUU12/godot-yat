@@ -24,7 +24,7 @@ namespace YAT.Scenes.GameTerminal
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event.IsActionPressed(Keybindings.Toggle))
+			if (@event.IsActionPressed(Keybindings.TerminalToggle))
 			{
 				CallDeferred("emit_signal", SignalName.CloseRequested);
 			}

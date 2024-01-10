@@ -20,7 +20,7 @@ public partial class Game : Node3D
 
 		foreach (var action in inputMap)
 		{
-			if (action == Keybindings.Toggle)
+			if (action == Keybindings.TerminalToggle)
 			{
 				var inputEvent = InputMap.ActionGetEvents(action);
 

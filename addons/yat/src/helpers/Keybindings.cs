@@ -6,7 +6,7 @@ namespace YAT.Helpers
 {
 	public static class Keybindings
 	{
-		public static readonly StringName Toggle = new("yat_toggle");
+		public static readonly StringName TerminalToggle = new("yat_terminal_toggle");
 		public static readonly StringName ContextMenu = new("yat_context_menu");
 		public static readonly StringName TerminalHistoryPrevious = new("yat_terminal_history_previous");
 		public static readonly StringName TerminalHistoryNext = new("yat_terminal_history_next");
@@ -21,7 +21,7 @@ namespace YAT.Helpers
 
 		private static readonly List<Tuple<string, InputEvent>> _defaultActions = new()
 		{
-			new(Toggle, new InputEventKey { PhysicalKeycode = Key.Quoteleft }),
+			new(TerminalToggle, new InputEventKey { PhysicalKeycode = Key.Quoteleft }),
 			new(ContextMenu, new InputEventMouseButton {
 				ButtonMask = MouseButtonMask.Right,
 				ButtonIndex = MouseButton.Right

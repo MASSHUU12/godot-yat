@@ -86,7 +86,7 @@ namespace YAT
 
 		public override void _UnhandledInput(InputEvent @event)
 		{
-			if (@event.IsActionPressed(Keybindings.Toggle)) ToggleTerminal();
+			if (@event.IsActionPressed(Keybindings.TerminalToggle)) ToggleTerminal();
 		}
 
 		/// <summary>
