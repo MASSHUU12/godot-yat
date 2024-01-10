@@ -31,17 +31,20 @@ namespace YAT.Scenes.BaseTerminal
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event.IsActionPressed("yat_terminal_autocompletion_next") && _input.HasFocus())
+			if (!_input.HasFocus()) return;
+
+			if (@event.IsActionPressed("yat_terminal_autocompletion_previous"))
+			{
+				Autocomplete(false);
+				_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
+			}
+			else if (@event.IsActionPressed("yat_terminal_autocompletion_next"))
 			{
 				Autocomplete();
 				_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
 			}
 		}
 
-		/// <summary>
-		/// Updates the command information based on the provided text.
-		/// </summary>
-		/// <param name="text">The text to update the command information with.</param>
 		private void UpdateCommandInfo(string text)
 		{
 			var tokens = Text.SanitizeText(text);
@@ -51,12 +54,6 @@ namespace YAT.Scenes.BaseTerminal
 			DisplayCommandInfo(GenerateCommandInfo(tokens));
 		}
 
-		/// <summary>
-		/// Generates the command information based on the given tokens.
-		/// </summary>
-		/// <param name="tokens">The tokens representing the command and its arguments.</param>
-		/// <returns>The generated command information.</returns>
-#nullable enable
 		private string GenerateCommandInfo(string[] tokens)
 		{
 			var command = _yat.Commands[tokens[0]];
@@ -76,7 +73,7 @@ namespace YAT.Scenes.BaseTerminal
 				bool valid = CommandHelper.ValidateCommandArgument(
 					commandAttribute.Name,
 					arg,
-					new Dictionary<string, object?>() { { key, arg } },
+					new() { { key, arg } },
 					(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,
 					false
 				);
@@ -98,23 +95,13 @@ namespace YAT.Scenes.BaseTerminal
 
 			return commandInfo.ToString();
 		}
-#nullable disable
 
-		/// <summary>
-		/// Displays the command information in the terminal.
-		/// </summary>
-		/// <param name="commandInfo">The command information to display.</param>
 		private void DisplayCommandInfo(string commandInfo)
 		{
 			_text.Clear();
 			_text.AppendText(commandInfo);
 		}
 
-		/// <summary>
-		/// Checks if the given tokens are valid.
-		/// </summary>
-		/// <param name="tokens">The tokens to be checked.</param>
-		/// <returns>True if the tokens are valid, false otherwise.</returns>
 		private bool AreTokensValid(string[] tokens)
 		{
 			if (tokens.Length == 0 || !_yat.Commands.ContainsKey(tokens[0]))
@@ -127,16 +114,12 @@ namespace YAT.Scenes.BaseTerminal
 			return true;
 		}
 
-		/// <summary>
-		/// Provides suggestions for autocompletion of user input in the terminal.
-		/// </summary>
-		private void Autocomplete()
+		private void Autocomplete(bool next = true)
 		{
-			if (suggestions.Count > 0 &&
-				(_input.Text == cachedInput || suggestions.Contains(_input.Text))
-			)
+			if (suggestions.Count > 0 && (_input.Text == cachedInput || suggestions.Contains(_input.Text)))
 			{
-				UseNextSuggestion();
+				if (next) UseNextSuggestion();
+				else UsePreviousSuggestion();
 				return;
 			}
 
@@ -156,10 +139,6 @@ namespace YAT.Scenes.BaseTerminal
 			}
 		}
 
-		/// <summary>
-		/// Selects the next suggestion from the list of suggestions
-		/// and updates the text input with it.
-		/// </summary>
 		private void UseNextSuggestion()
 		{
 			if (suggestions.Count == 0) return;
@@ -172,11 +151,18 @@ namespace YAT.Scenes.BaseTerminal
 			UpdateCommandInfo(_input.Text);
 		}
 
-		/// <summary>
-		/// Generates an array of command suggestions based on the input state.
-		/// </summary>
-		/// <param name="token">The current input state.</param>
-		/// <returns>An array of command suggestions.</returns>
+		private void UsePreviousSuggestion()
+		{
+			if (suggestions.Count == 0) return;
+
+			currentSuggestion = currentSuggestion?.Previous ?? suggestions.Last;
+			_input.Text = currentSuggestion.Value;
+
+			_input.MoveCaretToEnd();
+
+			UpdateCommandInfo(_input.Text);
+		}
+
 		private LinkedList<string> GenerateCommandSuggestions(string token)
 		{
 			var listSuggestions = _yat.Commands
