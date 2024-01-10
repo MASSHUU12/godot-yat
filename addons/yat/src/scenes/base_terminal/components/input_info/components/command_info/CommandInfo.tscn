@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c522nry8jbfon"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/input_info/components/command_info/CommandInfo.cs" id="1_cjppm"]
+
+[node name="CommandInfo" type="Node"]
+script = ExtResource("1_cjppm")
