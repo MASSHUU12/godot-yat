@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Helpers;
 
 namespace YAT.Scenes.GameTerminal
 {
@@ -23,7 +24,7 @@ namespace YAT.Scenes.GameTerminal
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event.IsActionPressed("yat_toggle"))
+			if (@event.IsActionPressed(Keybindings.TerminalToggle))
 			{
 				CallDeferred("emit_signal", SignalName.CloseRequested);
 			}

@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Helpers;
 
 namespace YAT.Scenes.ContextMenu
 {
@@ -18,10 +19,7 @@ namespace YAT.Scenes.ContextMenu
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event.IsActionPressed("yat_context_menu"))
-			{
-				ShowNextToMouse();
-			}
+			if (@event.IsActionPressed(Keybindings.ContextMenu)) ShowNextToMouse();
 		}
 
 		/// <summary>

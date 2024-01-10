@@ -18,6 +18,8 @@ All notable changes to this project will be documented in this file.
 -   Renamed action yat_terminal_autocompletion to yat_terminal_autocompletion_next.
 -   The creation of default keybindings has been rewritten.
 -   Separated command info from autocompletion.
+-   Renamed action yat_toggle to yat_terminal_toggle.
+-   Action names are stored as static variables of the Keybindings class.
 
 ### Deprecated
 

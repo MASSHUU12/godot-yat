@@ -6,28 +6,41 @@ namespace YAT.Helpers
 {
 	public static class Keybindings
 	{
+		public static readonly StringName TerminalToggle = new("yat_terminal_toggle");
+		public static readonly StringName ContextMenu = new("yat_context_menu");
+		public static readonly StringName TerminalHistoryPrevious = new("yat_terminal_history_previous");
+		public static readonly StringName TerminalHistoryNext = new("yat_terminal_history_next");
+		public static readonly StringName TerminalInterrupt = new("yat_terminal_interrupt");
+		public static readonly StringName TerminalAutocompletionNext = new("yat_terminal_autocompletion_next");
+		public static readonly StringName TerminalAutocompletionPrevious = new("yat_terminal_autocompletion_previous");
+
+		public static readonly StringName ExamplePlayerMoveLeft = new("yat_example_player_move_left");
+		public static readonly StringName ExamplePlayerMoveRight = new("yat_example_player_move_right");
+		public static readonly StringName ExamplePlayerMoveForward = new("yat_example_player_move_forward");
+		public static readonly StringName ExamplePlayerMoveBackward = new("yat_example_player_move_backward");
+
 		private static readonly List<Tuple<string, InputEvent>> _defaultActions = new()
 		{
-			new("yat_toggle", new InputEventKey { PhysicalKeycode = Key.Quoteleft }),
-			new("yat_context_menu", new InputEventMouseButton {
+			new(TerminalToggle, new InputEventKey { PhysicalKeycode = Key.Quoteleft }),
+			new(ContextMenu, new InputEventMouseButton {
 				ButtonMask = MouseButtonMask.Right,
 				ButtonIndex = MouseButton.Right
 			}),
-			new("yat_terminal_history_previous", new InputEventKey { PhysicalKeycode = Key.Up }),
-			new("yat_terminal_history_next", new InputEventKey { PhysicalKeycode = Key.Down }),
-			new("yat_terminal_interrupt", new InputEventKey {
+			new(TerminalHistoryPrevious, new InputEventKey { PhysicalKeycode = Key.Up }),
+			new(TerminalHistoryNext, new InputEventKey { PhysicalKeycode = Key.Down }),
+			new(TerminalInterrupt, new InputEventKey {
 				PhysicalKeycode = Key.C,
 				CtrlPressed = true
 			}),
-			new("yat_terminal_autocompletion_next", new InputEventKey { PhysicalKeycode = Key.Tab }),
-			new("yat_terminal_autocompletion_previous", new InputEventKey {
+			new(TerminalAutocompletionNext, new InputEventKey { PhysicalKeycode = Key.Tab }),
+			new(TerminalAutocompletionPrevious, new InputEventKey {
 				PhysicalKeycode = Key.Tab,
 				ShiftPressed = true
 			}),
-			new("yat_example_player_move_left", new InputEventKey { PhysicalKeycode = Key.A }),
-			new("yat_example_player_move_right", new InputEventKey { PhysicalKeycode = Key.D }),
-			new("yat_example_player_move_forward", new InputEventKey { PhysicalKeycode = Key.W }),
-			new("yat_example_player_move_backward", new InputEventKey { PhysicalKeycode = Key.S }),
+			new(ExamplePlayerMoveLeft, new InputEventKey { PhysicalKeycode = Key.A }),
+			new(ExamplePlayerMoveRight, new InputEventKey { PhysicalKeycode = Key.D }),
+			new(ExamplePlayerMoveForward, new InputEventKey { PhysicalKeycode = Key.W }),
+			new(ExamplePlayerMoveBackward, new InputEventKey { PhysicalKeycode = Key.S }),
 		};
 
 		public static void LoadDefaultActions()

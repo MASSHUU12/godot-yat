@@ -1,5 +1,6 @@
 using Godot;
 using YAT.Commands;
+using YAT.Helpers;
 
 public partial class Game : Node3D
 {
@@ -19,7 +20,7 @@ public partial class Game : Node3D
 
 		foreach (var action in inputMap)
 		{
-			if (action == "yat_toggle")
+			if (action == Keybindings.TerminalToggle)
 			{
 				var inputEvent = InputMap.ActionGetEvents(action);
 

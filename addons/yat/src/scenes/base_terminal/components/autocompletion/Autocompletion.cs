@@ -29,12 +29,12 @@ namespace YAT.Scenes.BaseTerminal
 		{
 			if (!_input.HasFocus()) return;
 
-			if (@event.IsActionPressed("yat_terminal_autocompletion_previous"))
+			if (@event.IsActionPressed(Keybindings.TerminalAutocompletionPrevious))
 			{
 				Autocomplete(false);
 				_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
 			}
-			else if (@event.IsActionPressed("yat_terminal_autocompletion_next"))
+			else if (@event.IsActionPressed(Keybindings.TerminalAutocompletionNext))
 			{
 				Autocomplete();
 				_input.CallDeferred("grab_focus"); // Prevent toggling the input focus

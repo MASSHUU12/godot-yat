@@ -1,6 +1,5 @@
 using Godot;
 using YAT.Helpers;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT
 {
