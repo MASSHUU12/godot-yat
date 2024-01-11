@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 -   Separated command info from autocompletion.
 -   Renamed action yat_toggle to yat_terminal_toggle.
 -   Action names are stored as static variables of the Keybindings class.
+-   Quit command now have the ability to close the terminal via -t option.
 
 ### Deprecated
 
