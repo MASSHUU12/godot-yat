@@ -11,6 +11,9 @@ All notable changes to this project will be documented in this file.
 -   yat_terminal_autocompletion_previous input action.
 -   Ability to display previous suggestion from autocompletion.
 -   InputInfo scene with CommandInfo component.
+-   Overloads for StartsWith & EndsWith methods accepting string.
+-   SearchNode method for World helper.
+-   Cn command now can search node tree for a node using '?'/'??' prefix.
 
 ### Changed
 
