@@ -108,24 +108,22 @@ namespace YAT.Helpers
 			return modifiedStrings.ToArray();
 		}
 
-		/// <summary>
-		/// Determines whether the specified string starts with any of the specified characters.
-		/// </summary>
-		/// <param name="text">The string to check.</param>
-		/// <param name="value">The characters to compare.</param>
-		/// <returns><c>true</c> if the string starts with any of the specified characters; otherwise, <c>false</c>.</returns>
 		public static bool StartsWith(string text, params char[] value)
 		{
 			return value.Any(text.StartsWith);
 		}
 
-		/// <summary>
-		/// Determines whether the specified text ends with any of the specified characters.
-		/// </summary>
-		/// <param name="text">The text to check.</param>
-		/// <param name="value">The characters to compare against the end of the text.</param>
-		/// <returns><c>true</c> if the text ends with any of the specified characters; otherwise, <c>false</c>.</returns>
+		public static bool StartsWith(string text, params string[] value)
+		{
+			return value.Any(text.StartsWith);
+		}
+
 		public static bool EndsWith(string text, params char[] value)
+		{
+			return value.Any(text.EndsWith);
+		}
+
+		public static bool EndsWith(string text, params string[] value)
 		{
 			return value.Any(text.EndsWith);
 		}
