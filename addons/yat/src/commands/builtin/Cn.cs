@@ -58,12 +58,9 @@ namespace YAT.Commands
 
 		private NodePath GetNodeFromSearch(string path)
 		{
-			Node result;
-
-			if (path.StartsWith(TREE_SHALLOW_SEARCH_PREFIX))
-				result = World.SearchNode(_terminal.SelectedNode.Current, path[2..]);
-			else
-				result = World.SearchNode(_yat.GetTree().Root, path[1..]);
+			Node result = path.StartsWith(TREE_SHALLOW_SEARCH_PREFIX)
+				? World.SearchNode(_terminal.SelectedNode.Current.GetParent(), path[2..])
+				: World.SearchNode(_yat.GetTree().Root, path[1..]);
 
 			if (result is null)
 			{
