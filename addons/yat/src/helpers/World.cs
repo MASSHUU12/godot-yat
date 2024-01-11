@@ -26,5 +26,10 @@ namespace YAT.Helpers
 
 			return camera.GetWorld3D().DirectSpaceState.IntersectRay(query);
 		}
+
+		public static Node SearchNode(Node root, string name, bool recursive = true)
+		{
+			return root.FindChild(name, recursive, false);
+		}
 	}
 }
