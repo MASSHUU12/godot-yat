@@ -31,3 +31,4 @@
 | cn            | N/A    | Changes the selected node to the specified node path.                            |
 | stats         | st     | Manages the game monitor.                                                        |
 | cs            | N/A    | Changes the scene.                                                               |
+| wenv          | N/A    | Manages the world environment.                                                   |
