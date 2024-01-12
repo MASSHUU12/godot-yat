@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 -   Action names are stored as static variables of the Keybindings class.
 -   Quit command now have the ability to close the terminal via -t option.
 -   Updated Godot .NET SDK to version 4.3.0-dev.2.
+-   Updated script templates.
 
 ### Deprecated
 
