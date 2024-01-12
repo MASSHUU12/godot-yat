@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 -   Overloads for StartsWith & EndsWith methods accepting string.
 -   SearchNode method for World helper.
 -   Cn command now can search node tree for a node using '?'/'??' prefix.
+-   Wenv command.
 
 ### Changed
 

@@ -71,6 +71,7 @@ namespace YAT
 			AddCommand(new List());
 			AddCommand(new View());
 			AddCommand(new Ping());
+			AddCommand(new Wenv());
 			AddCommand(new Pause());
 			AddCommand(new Watch());
 			AddCommand(new Stats());
