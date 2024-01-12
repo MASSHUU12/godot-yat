@@ -4,10 +4,14 @@
 	<p>YAT is an addon that provides a customizable, in-game terminal for your project.</p>
 </div>
 
-YAT stands for Yet Another Terminal, which allows you to add your own commands to cheat, debug, or anything else. This add-on allows you to create custom commands with support for displaying windows.
-
 > [!NOTE]
 > This project is in the early stages of development. Many things may be added, removed or changed.
+
+YAT stands for Yet Another Terminal. The goal of this project is to create a real terminal integrated with Godot that allows you to perform actions whether in the game, editor, or user system. This is intended to facilitate game development, debugging, and prototyping.
+
+The second goal, which is particularly important to me, is to make YAT as open as possible to change, personalization, and expansion, so that everyone can customize it as much as possible for their own project.
+
+Of course, creating such a complex and ambitious project is extremely difficult (especially alone), so it will still be in beta for a long time to come. Nevertheless, all the basic functions are working mostly correctly, and major changes breaking compatibility are not expected to arrive anytime soon.
 
 ## Prerequisites
 
@@ -20,8 +24,8 @@ YAT stands for Yet Another Terminal, which allows you to add your own commands t
 -   Autocompletion
 -   Script templates
 -   Performance monitor
--   Tiny size (< 175 KB)
--   Many built-in commands (over 20)
+-   Over 20 built-in commands
+-   Small size footprint (< 175 KB)
 -   Access to the node tree (experimental)
 -   Ability to restrict access to the plugin
 -   Plugin customization (limited at this point)
