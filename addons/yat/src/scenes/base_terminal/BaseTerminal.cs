@@ -9,6 +9,7 @@ namespace YAT.Scenes.BaseTerminal
 	{
 		[Signal] public delegate void CloseRequestedEventHandler();
 		[Signal] public delegate void TitleChangeRequestedEventHandler(string title);
+		[Signal] public delegate void PositionResetRequestedEventHandler();
 
 		public Input Input { get; private set; }
 		public TerminalContext Context { get; private set; }
