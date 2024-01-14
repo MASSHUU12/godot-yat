@@ -32,6 +32,11 @@ namespace YAT.Scenes.YatWindow
 			OnViewportSizeChanged();
 		}
 
+		public void ResetPosition()
+		{
+			Move(DefaultWindowPosition, (uint)ViewportEdgeOffset);
+		}
+
 		private void OnViewportSizeChanged()
 		{
 			var viewportSize = (Vector2I)_viewport.GetVisibleRect().Size;
