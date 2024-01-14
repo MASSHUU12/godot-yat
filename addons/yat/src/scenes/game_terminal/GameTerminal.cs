@@ -17,6 +17,7 @@ namespace YAT.Scenes.GameTerminal
 
 			BaseTerminal = GetNode<BaseTerminal.BaseTerminal>("Content/BaseTerminal");
 			BaseTerminal.TitleChangeRequested += title => Title = title;
+			BaseTerminal.PositionResetRequested += ResetPosition;
 			CloseRequested += _yat.CloseTerminal;
 
 			MoveToCenter();
