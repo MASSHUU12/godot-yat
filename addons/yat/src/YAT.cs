@@ -75,6 +75,7 @@ namespace YAT
 			AddCommand(new Pause());
 			AddCommand(new Watch());
 			AddCommand(new Stats());
+			AddCommand(new Reset());
 			AddCommand(new Cowsay());
 			AddCommand(new Options());
 			AddCommand(new Restart());
