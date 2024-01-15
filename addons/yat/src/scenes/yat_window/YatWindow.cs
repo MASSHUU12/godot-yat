@@ -10,6 +10,8 @@ namespace YAT.Scenes.YatWindow
 		[Export] public EWindowPosition DefaultWindowPosition = EWindowPosition.Center;
 		[Export] public bool AllowToGoOffscreen = true; // TODO: Implement this
 
+		public Vector2I InitialSize { get; set; }
+
 		private YAT _yat;
 		private Viewport _viewport;
 
@@ -27,6 +29,8 @@ namespace YAT.Scenes.YatWindow
 			_yat = GetNode<YAT>("/root/YAT");
 			_viewport = _yat.GetTree().Root.GetViewport();
 			_viewport.SizeChanged += OnViewportSizeChanged;
+
+			InitialSize = Size;
 
 			Move(DefaultWindowPosition, (uint)ViewportEdgeOffset);
 			OnViewportSizeChanged();
