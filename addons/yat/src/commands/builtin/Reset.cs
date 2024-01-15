@@ -14,6 +14,22 @@ namespace YAT.Commands
 	{
 		public CommandResult Execute(CommandArguments args)
 		{
+			var action = (string)args.ConvertedArgs["action"];
+
+			switch (action)
+			{
+				case "size":
+					args.Terminal.EmitSignal(nameof(args.Terminal.SizeResetRequested));
+					break;
+				case "position":
+					args.Terminal.EmitSignal(nameof(args.Terminal.PositionResetRequested));
+					break;
+				case "all":
+					args.Terminal.EmitSignal(nameof(args.Terminal.SizeResetRequested));
+					args.Terminal.EmitSignal(nameof(args.Terminal.PositionResetRequested));
+					break;
+			}
+
 			return CommandResult.Success;
 		}
 	}
