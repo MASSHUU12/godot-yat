@@ -18,7 +18,7 @@ namespace YAT.Scenes.Monitor
 			_timer = GetNode<Timer>("Timer");
 			_components = GetNode<VBoxContainer>("%Components");
 
-			Move(WindowPosition.TopLeft, 16);
+			Move(EWindowPosition.TopLeft, 16);
 		}
 
 		/// <summary>

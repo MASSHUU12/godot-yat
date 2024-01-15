@@ -7,10 +7,15 @@ namespace YAT.Scenes.YatWindow
 		[Export(PropertyHint.Range, "0, 128, 1")]
 		public int ViewportEdgeOffset = 48;
 
+		[Export] public EWindowPosition DefaultWindowPosition = EWindowPosition.Center;
+		[Export] public bool AllowToGoOffscreen = true; // TODO: Implement this
+
+		public Vector2I InitialSize { get; set; }
+
 		private YAT _yat;
 		private Viewport _viewport;
 
-		public enum WindowPosition
+		public enum EWindowPosition
 		{
 			TopLeft,
 			TopRight,
@@ -25,7 +30,15 @@ namespace YAT.Scenes.YatWindow
 			_viewport = _yat.GetTree().Root.GetViewport();
 			_viewport.SizeChanged += OnViewportSizeChanged;
 
+			InitialSize = Size;
+
+			Move(DefaultWindowPosition, (uint)ViewportEdgeOffset);
 			OnViewportSizeChanged();
+		}
+
+		public void ResetPosition()
+		{
+			Move(DefaultWindowPosition, (uint)ViewportEdgeOffset);
 		}
 
 		private void OnViewportSizeChanged()
@@ -39,23 +52,23 @@ namespace YAT.Scenes.YatWindow
 			};
 		}
 
-		public void Move(WindowPosition position, uint offset = 0)
+		public void Move(EWindowPosition position, uint offset = 0)
 		{
 			switch (position)
 			{
-				case WindowPosition.TopLeft:
+				case EWindowPosition.TopLeft:
 					MoveTopLeft(offset);
 					break;
-				case WindowPosition.TopRight:
+				case EWindowPosition.TopRight:
 					MoveTopRight(offset);
 					break;
-				case WindowPosition.BottomRight:
+				case EWindowPosition.BottomRight:
 					MoveBottomRight(offset);
 					break;
-				case WindowPosition.BottomLeft:
+				case EWindowPosition.BottomLeft:
 					MoveBottomLeft(offset);
 					break;
-				case WindowPosition.Center:
+				case EWindowPosition.Center:
 					MoveToTheCenter();
 					break;
 			}

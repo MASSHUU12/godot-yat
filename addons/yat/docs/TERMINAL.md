@@ -32,7 +32,9 @@ $ qc add -name="Red Hello" -command="echo [color=red]Hello[/color]"
 
 ### Signals
 
-| Name                 | Arguments      | Description                                        |
-| -------------------- | -------------- | -------------------------------------------------- |
-| CloseRequested       | N/A            | Sent when terminal is requested to close.          |
-| TitleChangeRequested | title (string) | Sent when change to terminal's title is requested. |
+| Name                   | Arguments      | Description                                        |
+| ---------------------- | -------------- | -------------------------------------------------- |
+| CloseRequested         | N/A            | Sent when terminal is requested to close.          |
+| TitleChangeRequested   | title (string) | Sent when change to terminal's title is requested. |
+| PositionResetRequested | N/A            | Sent when terminal position reset is requested.    |
+| SizeResetRequested     | N/A            | Sent when terminal size reset is requested.        |
