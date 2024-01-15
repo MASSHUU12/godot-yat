@@ -68,7 +68,7 @@ namespace YAT.Scenes.BaseTerminal
 			Input = GetNode<Input>("%Input");
 
 			Output = GetNode<RichTextLabel>("%Output");
-			Output.MetaClicked += (link) => OS.ShellOpen((string)link);
+			Output.MetaClicked += (link) => Godot.OS.ShellOpen((string)link);
 
 			OnCurrentNodeChanged(SelectedNode.Current);
 			UpdateOptions(_yat.Options);
