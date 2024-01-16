@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   Ability for YatWindows to set default window position.
+-   Reset command.
+-   PositionResetRequested & SizeResetRequested signal for BaseTerminal.
+-   Sys command.
+-   OS helper.
+
 ## [1.17.0-beta 2024-01-12]
 
 ### Added
