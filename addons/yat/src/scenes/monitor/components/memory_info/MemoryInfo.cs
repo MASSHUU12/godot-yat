@@ -19,7 +19,7 @@ namespace YAT.Scenes.Monitor
 
 		public void Update()
 		{
-			var mem = OS.GetMemoryInfo();
+			var mem = Godot.OS.GetMemoryInfo();
 			var physical = mem["physical"];
 			var free = mem["free"];
 			var stack = mem["stack"];
