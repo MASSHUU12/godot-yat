@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace YAT.Helpers
@@ -15,7 +16,15 @@ namespace YAT.Helpers
 			CheckDefaultTerminal();
 		}
 
-		public static void RunCommand(string command, string program, string args = "")
+		/// <summary>
+		/// Runs a command using the specified program and arguments.
+		/// </summary>
+		/// <param name="command">The command to run.</param>
+		/// <param name="program">
+		/// The program to use for running the command.
+		/// If empty, the default terminal will be used.</param>
+		/// <param name="args">The arguments to pass to the program.</param>
+		public static void RunCommand(string command, string program = "", string args = "")
 		{
 			if (Platform == _unknown) return;
 
@@ -26,22 +35,31 @@ namespace YAT.Helpers
 				program = DefaultTerminal;
 			}
 
-			if (Platform == OSPlatform.Windows) RunWindowsCommand(command, program, args);
-			else if (Platform == OSPlatform.Linux) RunLinuxCommand(command, program, args);
-			else if (Platform == OSPlatform.OSX) RunMacOSCommand(command, program, args);
-		}
+			ProcessStartInfo startInfo = new()
+			{
+				FileName = program,
+				RedirectStandardInput = true,
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				UseShellExecute = false,
+				CreateNoWindow = true
+			};
 
-		private static void RunWindowsCommand(string command, string program, string args)
-		{
-			Log.Debug($"Running command '{command}' with args '{args}' with program: {program}");
-		}
+			using Process process = new() { StartInfo = startInfo };
 
-		private static void RunLinuxCommand(string command, string program, string args)
-		{
-		}
+			process.Start();
+			process.StandardInput.WriteLine(command + ' ' + args);
+			process.StandardInput.Flush();
+			process.StandardInput.Close();
 
-		private static void RunMacOSCommand(string command, string program, string args)
-		{
+			string output = process.StandardOutput.ReadToEnd();
+			string error = process.StandardError.ReadToEnd();
+
+			process.WaitForExit();
+			process.Close();
+
+			if (!string.IsNullOrEmpty(output)) Log.Info(output);
+			if (!string.IsNullOrEmpty(error)) Log.Error(error);
 		}
 
 		private static void CheckOSPlatform()
