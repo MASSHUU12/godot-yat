@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -57,19 +58,25 @@ namespace YAT.Helpers
 
 			using Process process = new() { StartInfo = startInfo };
 
-			process.Start();
-			process.StandardInput.WriteLine(command + ' ' + args);
-			process.StandardInput.Flush();
-			process.StandardInput.Close();
+			try
+			{
+				process.Start();
+				process.StandardInput.WriteLine(command + ' ' + args);
+				process.StandardInput.Flush();
+				process.StandardInput.Close();
 
-			string output = process.StandardOutput.ReadToEnd();
-			string error = process.StandardError.ReadToEnd();
+				string output = process.StandardOutput.ReadToEnd();
+				string error = process.StandardError.ReadToEnd();
 
-			process.WaitForExit();
-			process.Close();
+				process.WaitForExit();
 
-			if (!string.IsNullOrEmpty(output)) Log.Info(output);
-			if (!string.IsNullOrEmpty(error)) Log.Error(error);
+				if (!string.IsNullOrEmpty(output)) Log.Info(output);
+				if (!string.IsNullOrEmpty(error)) Log.Error(error);
+			}
+			catch (Exception ex)
+			{
+				Log.Error($"Error executing command: {ex.Message}");
+			}
 		}
 
 		private static void CheckOSPlatform()
@@ -77,18 +84,21 @@ namespace YAT.Helpers
 			Platform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
 				? OperatingSystem.Windows
 				: RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
-				? OperatingSystem.Linux
-				: RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-				? OperatingSystem.OSX
-				: OperatingSystem.Unknown;
+					? OperatingSystem.Linux
+					: RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+						? OperatingSystem.OSX
+						: OperatingSystem.Unknown;
 		}
 
 		private static void CheckDefaultTerminal()
 		{
-			if (Platform == OperatingSystem.Windows) DefaultTerminal = "cmd.exe";
-			else if (Platform == OperatingSystem.Linux) DefaultTerminal = "/bin/bash";
-			else if (Platform == OperatingSystem.OSX) DefaultTerminal = "/bin/bash";
-			else DefaultTerminal = string.Empty;
+			DefaultTerminal = Platform switch
+			{
+				OperatingSystem.Windows => "cmd.exe",
+				OperatingSystem.Linux => "/bin/bash",
+				OperatingSystem.OSX => "/bin/bash",
+				_ => string.Empty
+			};
 		}
 	}
 }
