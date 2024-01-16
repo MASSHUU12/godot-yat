@@ -32,3 +32,4 @@
 | stats         | st     | Manages the game monitor.                                                        |
 | cs            | N/A    | Changes the scene.                                                               |
 | wenv          | N/A    | Manages the world environment.                                                   |
+| sys           | N/A    | Runs a system command.                                                           |
