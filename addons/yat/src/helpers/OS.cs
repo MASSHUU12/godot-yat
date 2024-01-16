@@ -5,10 +5,16 @@ namespace YAT.Helpers
 {
 	public static class OS
 	{
-		public static OSPlatform Platform { get; private set; }
+		public static OperatingSystem Platform { get; private set; }
 		public static string DefaultTerminal { get; private set; }
 
-		private static readonly OSPlatform _unknown = OSPlatform.Create("Unknown");
+		public enum OperatingSystem
+		{
+			Unknown,
+			Windows,
+			Linux,
+			OSX
+		}
 
 		static OS()
 		{
@@ -26,7 +32,11 @@ namespace YAT.Helpers
 		/// <param name="args">The arguments to pass to the program.</param>
 		public static void RunCommand(string command, string program = "", string args = "")
 		{
-			if (Platform == _unknown) return;
+			if (Platform == OperatingSystem.Unknown)
+			{
+				Log.Error("Cannot run command, unknown platform.");
+				return;
+			}
 
 			if (string.IsNullOrEmpty(program))
 			{
@@ -65,19 +75,19 @@ namespace YAT.Helpers
 		private static void CheckOSPlatform()
 		{
 			Platform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-				? OSPlatform.Windows
+				? OperatingSystem.Windows
 				: RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
-				? OSPlatform.Linux
+				? OperatingSystem.Linux
 				: RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-				? OSPlatform.OSX
-				: _unknown;
+				? OperatingSystem.OSX
+				: OperatingSystem.Unknown;
 		}
 
 		private static void CheckDefaultTerminal()
 		{
-			if (Platform == OSPlatform.Windows) DefaultTerminal = "cmd.exe";
-			else if (Platform == OSPlatform.Linux) DefaultTerminal = "/bin/bash";
-			else if (Platform == OSPlatform.OSX) DefaultTerminal = "/bin/bash";
+			if (Platform == OperatingSystem.Windows) DefaultTerminal = "cmd.exe";
+			else if (Platform == OperatingSystem.Linux) DefaultTerminal = "/bin/bash";
+			else if (Platform == OperatingSystem.OSX) DefaultTerminal = "/bin/bash";
 			else DefaultTerminal = string.Empty;
 		}
 	}
