@@ -37,5 +37,10 @@ namespace YAT.Helpers
 
 			return attributes;
 		}
+
+		public static bool HasAttribute<T>(this object obj) where T : Attribute
+		{
+			return Attribute.GetCustomAttribute(obj.GetType(), typeof(T)) is not null;
+		}
 	}
 }
