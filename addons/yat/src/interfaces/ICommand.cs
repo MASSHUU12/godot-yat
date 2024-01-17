@@ -23,18 +23,25 @@ namespace YAT.Interfaces
 		/// <returns>The manual for the command.</returns>
 		public virtual string GenerateCommandManual()
 		{
-			CommandAttribute attribute = AttributeHelper.GetAttribute<CommandAttribute>(this);
+			CommandAttribute command = AttributeHelper.GetAttribute<CommandAttribute>(this);
+			bool isThreaded = AttributeHelper.HasAttribute<ThreadedAttribute>(this);
 
-			if (string.IsNullOrEmpty(attribute?.Manual)) return "This command does not have a manual.";
+			if (string.IsNullOrEmpty(command?.Manual)) return "This command does not have a manual.";
 
 			StringBuilder sb = new();
 
-			sb.AppendLine($"[p align=center][font_size=22]{attribute.Name}[/font_size][/p]");
-			sb.AppendLine($"[p align=center]{attribute.Description}[/p]");
-			sb.AppendLine(attribute.Manual);
+			sb.AppendLine(
+				string.Format(
+					"[p align=center][font_size=22]{0}[/font_size] [font_size=14]{1}[/font_size][/p]",
+					command.Name,
+					isThreaded ? "[threaded]" : string.Empty
+				)
+			);
+			sb.AppendLine($"[p align=center]{command.Description}[/p]");
+			sb.AppendLine(command.Manual);
 			sb.AppendLine("\n[b]Aliases[/b]:");
-			sb.AppendLine(attribute.Aliases.Length > 0
-					? string.Join("\n", attribute.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
+			sb.AppendLine(command.Aliases.Length > 0
+					? string.Join("\n", command.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
 					: "[ul]\tNone[/ul]");
 
 			return sb.ToString();
