@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file.
 -   PositionResetRequested & SizeResetRequested signal for BaseTerminal.
 -   Sys command.
 -   OS helper.
+-   HasAttribute method to AttributeHelper.
+
+### Changed
+
+-   The man command displays information when the command being checked is threaded.
 
 ## [1.17.0-beta 2024-01-12]
 
