@@ -17,6 +17,10 @@ All notable changes to this project will be documented in this file.
 
 -   The man command displays information when the command being checked is threaded.
 
+### Removed
+
+-   LogHelper class (use Log instead).
+
 ## [1.17.0-beta 2024-01-12]
 
 ### Added
