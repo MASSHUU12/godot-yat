@@ -25,7 +25,7 @@ namespace YAT.Commands
 			"uid://dekp8nra5yo6u"
 		);
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			_yat = args.Yat;
 

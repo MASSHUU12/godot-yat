@@ -9,7 +9,7 @@ namespace YAT.Commands
 	[Option("-s", null, "Prints info about currently selected node.", false)]
 	public partial class Whereami : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var scene = args.Yat.GetTree().CurrentScene;
 			var longForm = (bool)args.ConvertedArgs["-l"];

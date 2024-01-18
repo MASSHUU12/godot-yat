@@ -13,7 +13,7 @@ namespace YAT.Commands
 		private Environment _world3DEnvironment;
 		private YAT _yat;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var action = (string)args.ConvertedArgs["action"];
 			_yat = args.Yat;

@@ -18,7 +18,7 @@ namespace YAT.Commands
 	{
 		private const uint SECONDS_MULTIPLIER = 1000;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			ICommand command = args.Yat.Commands.TryGetValue((string)args.ConvertedArgs["command"], out var c) ? c : null;
 
@@ -29,7 +29,7 @@ namespace YAT.Commands
 			}
 
 			float interval = (float)args.ConvertedArgs["interval"];
-			CommandArguments newArgs = args with { Arguments = args.Arguments[2..] };
+			CommandData newArgs = args with { Arguments = args.Arguments[2..] };
 
 			while (!args.CancellationToken.Value.IsCancellationRequested)
 			{

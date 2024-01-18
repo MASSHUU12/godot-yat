@@ -13,7 +13,7 @@ namespace YAT.Commands
 	{
 		private BaseTerminal _terminal;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			string action = args.ConvertedArgs["action"] as string;
 

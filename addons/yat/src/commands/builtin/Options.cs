@@ -15,7 +15,7 @@ namespace YAT.Commands
 			"uid://liha0ppubuti"
 		);
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var instanceValid = GodotObject.IsInstanceValid(_optionsWindowInstance);
 

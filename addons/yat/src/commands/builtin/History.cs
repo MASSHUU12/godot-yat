@@ -24,7 +24,7 @@ namespace YAT.Commands
 		private YAT _yat;
 		private BaseTerminal _terminal;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			_yat = args.Yat;
 			_terminal = args.Terminal;

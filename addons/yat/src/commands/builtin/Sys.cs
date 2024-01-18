@@ -19,7 +19,7 @@ namespace YAT.Commands
 	[Threaded]
 	public sealed class Sys : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var program = (string)args.ConvertedArgs["-program"];
 			var command = (string)args.ConvertedArgs["command"];

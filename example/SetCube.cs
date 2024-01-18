@@ -9,7 +9,7 @@ public partial class SetCube : IExtension
 {
 	public static MeshInstance3D Cube { get; set; }
 
-	public CommandResult Execute(CommandArguments args)
+	public CommandResult Execute(CommandData args)
 	{
 		if (args.Arguments.Length < 2)
 		{

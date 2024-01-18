@@ -11,7 +11,7 @@ namespace YAT.Commands
 	{
 		private readonly LRUCache<string, string> cache = new(10);
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var commandName = args.Arguments[1];
 

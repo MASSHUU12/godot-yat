@@ -20,7 +20,7 @@ namespace YAT.Commands
 	{
 		private BaseTerminal _terminal;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			string path = (string)args.ConvertedArgs["path"];
 			bool n = (bool)args.ConvertedArgs["-n"];

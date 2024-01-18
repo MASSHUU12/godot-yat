@@ -8,7 +8,7 @@ namespace YAT.Commands
 	[Option("-t", null, "Closes the terminal.", false)]
 	public partial class Quit : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var t = (bool)args.ConvertedArgs["-t"];
 

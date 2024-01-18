@@ -24,7 +24,7 @@ namespace YAT.Commands
 			SceneCantInstantiate,
 		}
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var scene = args.Arguments[1];
 

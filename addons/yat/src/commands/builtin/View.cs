@@ -36,7 +36,7 @@ namespace YAT.Commands
 
 		private YAT _yat;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var mode = args.Arguments[1];
 

@@ -12,7 +12,7 @@ namespace YAT.Commands
 	[Argument("action", "[all, position, size]", "The action to perform.")]
 	public sealed class Reset : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var action = (string)args.ConvertedArgs["action"];
 

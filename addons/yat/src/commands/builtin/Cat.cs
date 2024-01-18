@@ -11,7 +11,7 @@ namespace YAT.Commands
 	[Option("-l", "int(1:99)", "Limits the number of lines to print.", -1)]
 	public sealed class Cat : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			string fileName = (string)args.ConvertedArgs["file"];
 			int lineLimit = (int)args.ConvertedArgs["-l"];

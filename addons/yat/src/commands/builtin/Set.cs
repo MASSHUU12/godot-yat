@@ -10,7 +10,7 @@ namespace YAT.Commands
 	[Argument("value", "string", "The value to set the variable to.")]
 	public partial class Set : Extensible, ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var variable = args.Arguments[1];
 

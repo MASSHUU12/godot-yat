@@ -19,7 +19,7 @@ namespace YAT.Commands
 	[Option("-fragment", null, "Fragment the packet.", false)]
 	public sealed class Ping : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			string target = (string)args.ConvertedArgs["target"];
 			bool fragment = (bool)args.ConvertedArgs["-fragment"];

@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   The man command displays information when the command being checked is threaded.
+-   Renamed CommandArguments to CommandData.
 
 ### Removed
 

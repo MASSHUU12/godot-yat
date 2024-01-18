@@ -15,7 +15,7 @@ namespace YAT.Commands
 	{
 		private BaseTerminal _terminal;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			string action = (string)args.ConvertedArgs["action"];
 			string name = args.ConvertedArgs.TryGetValue("-name", out object nameObj) ? (string)nameObj : null;

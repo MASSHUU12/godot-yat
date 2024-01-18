@@ -4,7 +4,7 @@ using YAT.Scenes.BaseTerminal;
 
 namespace YAT.Interfaces
 {
-	public record CommandArguments(
+	public sealed record CommandData(
 		YAT Yat,
 		BaseTerminal Terminal,
 		ICommand Command,

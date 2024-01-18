@@ -10,7 +10,7 @@ namespace YAT.Commands
 	[Command("list", "List all available commands", "[b]Usage[/b]: list", "lc")]
 	public partial class List : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData args)
 		{
 			var sb = new StringBuilder();
 

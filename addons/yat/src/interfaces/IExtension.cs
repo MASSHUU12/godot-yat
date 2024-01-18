@@ -8,7 +8,7 @@ namespace YAT.Interfaces
 {
 	public partial interface IExtension
 	{
-		public CommandResult Execute(CommandArguments args);
+		public CommandResult Execute(CommandData args);
 
 		/// <summary>
 		/// Generates the manual for the extension.
