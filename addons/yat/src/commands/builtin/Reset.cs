@@ -12,21 +12,21 @@ namespace YAT.Commands
 	[Argument("action", "[all, position, size]", "The action to perform.")]
 	public sealed class Reset : ICommand
 	{
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			var action = (string)args.ConvertedArgs["action"];
+			var action = (string)data.Arguments["action"];
 
 			switch (action)
 			{
 				case "size":
-					args.Terminal.EmitSignal(nameof(args.Terminal.SizeResetRequested));
+					data.Terminal.EmitSignal(nameof(data.Terminal.SizeResetRequested));
 					break;
 				case "position":
-					args.Terminal.EmitSignal(nameof(args.Terminal.PositionResetRequested));
+					data.Terminal.EmitSignal(nameof(data.Terminal.PositionResetRequested));
 					break;
 				case "all":
-					args.Terminal.EmitSignal(nameof(args.Terminal.SizeResetRequested));
-					args.Terminal.EmitSignal(nameof(args.Terminal.PositionResetRequested));
+					data.Terminal.EmitSignal(nameof(data.Terminal.SizeResetRequested));
+					data.Terminal.EmitSignal(nameof(data.Terminal.PositionResetRequested));
 					break;
 			}
 

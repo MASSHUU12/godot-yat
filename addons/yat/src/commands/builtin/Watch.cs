@@ -18,24 +18,24 @@ namespace YAT.Commands
 	{
 		private const uint SECONDS_MULTIPLIER = 1000;
 
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			ICommand command = args.Yat.Commands.TryGetValue((string)args.ConvertedArgs["command"], out var c) ? c : null;
+			ICommand command = data.Yat.Commands.TryGetValue((string)data.Arguments["command"], out var c) ? c : null;
 
 			if (command is null)
 			{
-				Log.Error($"Command '{args.ConvertedArgs["command"]}' not found, exiting watch.");
+				Log.Error($"Command '{data.Arguments["command"]}' not found, exiting watch.");
 				return CommandResult.InvalidArguments;
 			}
 
-			float interval = (float)args.ConvertedArgs["interval"];
-			CommandData newArgs = args with { Arguments = args.Arguments[2..] };
+			float interval = (float)data.Arguments["interval"];
+			CommandData newArgs = data with { RawData = data.RawData[2..] };
 
-			while (!args.CancellationToken.Value.IsCancellationRequested)
+			while (!data.CancellationToken.Value.IsCancellationRequested)
 			{
 				if (command.Execute(newArgs) != CommandResult.Success)
 				{
-					Log.Error($"Error executing command '{args.Arguments[1]}', exiting watch.");
+					Log.Error($"Error executing command '{data.RawData[1]}', exiting watch.");
 					return CommandResult.Failure;
 				}
 

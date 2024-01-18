@@ -8,10 +8,10 @@ namespace YAT.Commands
 	[Argument("message", "string", "The text to display.")]
 	public partial class Echo : ICommand
 	{
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			var text = string.Join(" ", args.Arguments[1..^0]);
-			args.Terminal.Print(text);
+			var text = string.Join(" ", data.RawData[1..^0]);
+			data.Terminal.Print(text);
 
 			return CommandResult.Success;
 		}

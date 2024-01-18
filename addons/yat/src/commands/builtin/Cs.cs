@@ -24,22 +24,22 @@ namespace YAT.Commands
 			SceneCantInstantiate,
 		}
 
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			var scene = args.Arguments[1];
+			var scene = data.RawData[1];
 
 			if (!ResourceLoader.Exists(scene, typeof(PackedScene).Name))
 			{
 				EmitSignal(SignalName.SceneChangeFailed, scene, (short)FailureReason.SceneDoesNotExist);
 
-				args.Terminal.Print($"Scene '{scene}' does not exist.", PrintType.Error);
+				data.Terminal.Print($"Scene '{scene}' does not exist.", PrintType.Error);
 
 				return CommandResult.Failure;
 			}
 
 			EmitSignal(SignalName.SceneAboutToChange, scene);
 
-			var error = args.Yat.GetTree().ChangeSceneToFile(scene);
+			var error = data.Yat.GetTree().ChangeSceneToFile(scene);
 
 			if (error != Error.Ok)
 			{
@@ -49,14 +49,14 @@ namespace YAT.Commands
 					: FailureReason.SceneCantInstantiate
 				));
 
-				args.Terminal.Print($"Failed to change scene to '{scene}'.", PrintType.Error);
+				data.Terminal.Print($"Failed to change scene to '{scene}'.", PrintType.Error);
 
 				return CommandResult.Failure;
 			}
 
 			EmitSignal(SignalName.SceneChanged, scene);
 
-			args.Terminal.Print($"Changed scene to '{scene}'.", PrintType.Success);
+			data.Terminal.Print($"Changed scene to '{scene}'.", PrintType.Success);
 
 			return CommandResult.Success;
 		}

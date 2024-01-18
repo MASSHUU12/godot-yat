@@ -13,11 +13,11 @@ namespace YAT.Commands
 	{
 		private BaseTerminal _terminal;
 
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			string action = args.ConvertedArgs["action"] as string;
+			string action = data.Arguments["action"] as string;
 
-			_terminal = args.Terminal;
+			_terminal = data.Terminal;
 
 			if (action == "addr") PrintLocalInterfaces();
 

@@ -9,15 +9,15 @@ namespace YAT.Commands
 	[Option("-s", null, "Prints info about currently selected node.", false)]
 	public partial class Whereami : ICommand
 	{
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			var scene = args.Yat.GetTree().CurrentScene;
-			var longForm = (bool)args.ConvertedArgs["-l"];
-			var s = (bool)args.ConvertedArgs["-s"];
+			var scene = data.Yat.GetTree().CurrentScene;
+			var longForm = (bool)data.Options["-l"];
+			var s = (bool)data.Options["-s"];
 
-			scene = s ? args.Terminal.SelectedNode.Current : scene;
+			scene = s ? data.Terminal.SelectedNode.Current : scene;
 
-			args.Terminal.Print(
+			data.Terminal.Print(
 				scene.GetPath() +
 				(longForm ? " (" + scene.SceneFilePath + ")" : string.Empty)
 			);

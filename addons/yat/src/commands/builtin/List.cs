@@ -10,13 +10,13 @@ namespace YAT.Commands
 	[Command("list", "List all available commands", "[b]Usage[/b]: list", "lc")]
 	public partial class List : ICommand
 	{
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
 			var sb = new StringBuilder();
 
 			sb.AppendLine("Available commands:");
 
-			foreach (var command in args.Yat.Commands)
+			foreach (var command in data.Yat.Commands)
 			{
 				if (Attribute.GetCustomAttribute(command.Value.GetType(), typeof(CommandAttribute)) is not CommandAttribute attribute) continue;
 
@@ -28,7 +28,7 @@ namespace YAT.Commands
 				sb.AppendLine();
 			}
 
-			args.Terminal.Print(sb.ToString());
+			data.Terminal.Print(sb.ToString());
 
 			return CommandResult.Success;
 		}

@@ -34,13 +34,13 @@ namespace YAT.Commands
 		private YAT _yat;
 		private BaseTerminal _terminal;
 
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			var path = args.ConvertedArgs["node_path"] as string;
+			var path = data.Arguments["node_path"] as string;
 			bool result;
 
-			_yat = args.Yat;
-			_terminal = args.Terminal;
+			_yat = data.Yat;
+			_terminal = data.Terminal;
 
 			if (Text.StartsWith(path, TREE_SHALLOW_SEARCH_PREFIX, TREE_DEEP_SEARCH_PREFIX))
 				result = ChangeSelectedNode(GetNodeFromSearch(path));
@@ -49,7 +49,7 @@ namespace YAT.Commands
 
 			if (!result)
 			{
-				args.Terminal.Print($"Invalid node path: {path}", PrintType.Error);
+				data.Terminal.Print($"Invalid node path: {path}", PrintType.Error);
 				return CommandResult.Failure;
 			}
 

@@ -20,13 +20,13 @@ namespace YAT.Commands
 	{
 		private BaseTerminal _terminal;
 
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			string path = (string)args.ConvertedArgs["path"];
-			bool n = (bool)args.ConvertedArgs["-n"];
-			bool m = (bool)args.ConvertedArgs["-m"];
+			string path = (string)data.Arguments["path"];
+			bool n = (bool)data.Options["-n"];
+			bool m = (bool)data.Options["-m"];
 
-			_terminal = args.Terminal;
+			_terminal = data.Terminal;
 
 			if (n) return Scene.PrintChildren(_terminal, path)
 				? CommandResult.Success

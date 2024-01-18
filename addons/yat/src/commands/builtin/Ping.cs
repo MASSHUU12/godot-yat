@@ -19,19 +19,19 @@ namespace YAT.Commands
 	[Option("-fragment", null, "Fragment the packet.", false)]
 	public sealed class Ping : ICommand
 	{
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			string target = (string)args.ConvertedArgs["target"];
-			bool fragment = (bool)args.ConvertedArgs["-fragment"];
-			int timeout = (int)args.ConvertedArgs["-timeout"];
-			int bytes = (int)args.ConvertedArgs["-bytes"];
-			int ttl = (int)args.ConvertedArgs["-ttl"];
-			int delay = (int)args.ConvertedArgs["-delay"];
+			string target = (string)data.Arguments["target"];
+			bool fragment = (bool)data.Options["-fragment"];
+			int timeout = (int)data.Options["-timeout"];
+			int bytes = (int)data.Options["-bytes"];
+			int ttl = (int)data.Options["-ttl"];
+			int delay = (int)data.Options["-delay"];
 			delay *= 1000;
 
 			byte[] buffer = System.Text.Encoding.ASCII.GetBytes(GenerateData(bytes));
 
-			while (!args.CancellationToken.Value.IsCancellationRequested)
+			while (!data.CancellationToken.Value.IsCancellationRequested)
 			{
 				System.Net.NetworkInformation.Ping ping = new();
 				System.Net.NetworkInformation.PingOptions options = new()
@@ -43,9 +43,9 @@ namespace YAT.Commands
 
 				if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
 				{
-					args.Terminal.Print($"Reply from {reply.Address}: bytes={reply.Buffer.Length} time={reply.RoundtripTime}ms TTL={reply.Options.Ttl}");
+					data.Terminal.Print($"Reply from {reply.Address}: bytes={reply.Buffer.Length} time={reply.RoundtripTime}ms TTL={reply.Options.Ttl}");
 				}
-				else args.Terminal.Print($"Request timed out.");
+				else data.Terminal.Print($"Request timed out.");
 
 				Thread.Sleep(delay);
 			}

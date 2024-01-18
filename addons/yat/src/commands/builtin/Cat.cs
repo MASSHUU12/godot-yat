@@ -11,14 +11,14 @@ namespace YAT.Commands
 	[Option("-l", "int(1:99)", "Limits the number of lines to print.", -1)]
 	public sealed class Cat : ICommand
 	{
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			string fileName = (string)args.ConvertedArgs["file"];
-			int lineLimit = (int)args.ConvertedArgs["-l"];
+			string fileName = (string)data.Arguments["file"];
+			int lineLimit = (int)data.Options["-l"];
 
 			if (!FileAccess.FileExists(fileName))
 			{
-				args.Terminal.Print($"File '{fileName}' does not exist.", PrintType.Error);
+				data.Terminal.Print($"File '{fileName}' does not exist.", PrintType.Error);
 				return CommandResult.InvalidArguments;
 			}
 
@@ -30,14 +30,14 @@ namespace YAT.Commands
 				string line = file.GetLine();
 				if (lineLimit > 0 && ++lineCount > lineLimit)
 				{
-					args.Terminal.Print(
+					data.Terminal.Print(
 						$"Line limit of {lineLimit} reached.",
 						PrintType.Warning
 					);
 					break;
 				}
 
-				args.Terminal.Print(line);
+				data.Terminal.Print(line);
 			}
 
 			return CommandResult.Success;

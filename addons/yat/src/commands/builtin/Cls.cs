@@ -12,9 +12,9 @@ namespace YAT.Commands
 	)]
 	public sealed class Cls : ICommand
 	{
-		public CommandResult Execute(CommandData args)
+		public CommandResult Execute(CommandData data)
 		{
-			args.Terminal.Clear();
+			data.Terminal.Clear();
 
 			return CommandResult.Success;
 		}
