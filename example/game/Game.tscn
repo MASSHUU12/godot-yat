@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://bxbhysvcges3"]
+[gd_scene load_steps=13 format=3 uid="uid://bxbhysvcges3"]
 
 [ext_resource type="Script" path="res://example/game/Game.cs" id="1_2co8j"]
 [ext_resource type="PackedScene" uid="uid://dvnxjokqnumnn" path="res://example/player/Player.tscn" id="1_5qf0i"]
+[ext_resource type="AudioStream" uid="uid://c6jdu6yveeusj" path="res://example/assets/glaciære - two months of moments - 01 Into the Maelstrom.mp3" id="3_v48uh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q280h"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -33,6 +34,33 @@ ao_enabled = true
 material = SubResource("StandardMaterial3D_jmf44")
 size = Vector3(0.5, 0.5, 0.5)
 
+[sub_resource type="Animation" id="Animation_uojfr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Scene/Cube:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Scene/Cube:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_e10mw"]
 resource_name = "cube_movement"
 length = 3.0
@@ -60,33 +88,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(6.26573, 6.26573, 6.26573)]
-}
-
-[sub_resource type="Animation" id="Animation_uojfr"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Scene/Cube:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, -0.5, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Scene/Cube:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j6yai"]
@@ -139,3 +140,8 @@ libraries = {
 "": SubResource("AnimationLibrary_j6yai")
 }
 autoplay = "cube_movement"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_v48uh")
+volume_db = -15.0
+autoplay = true
