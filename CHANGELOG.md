@@ -7,12 +7,15 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   Ability for YatWindows to set default window position.
--   Reset command.
 -   PositionResetRequested & SizeResetRequested signal for BaseTerminal.
--   Sys command.
 -   OS helper.
 -   HasAttribute method to AttributeHelper.
--   Timescale command.
+-   Audio to the example scene "Into the Maelstrom" by glaciære licensed under CC-BY.
+-   Commands:
+    -   Reset
+    -   Sys
+    -   Timescale
+    -   Toggle audio
 
 ### Changed
 
