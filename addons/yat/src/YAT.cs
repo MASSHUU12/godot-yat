@@ -82,6 +82,7 @@ namespace YAT
 			AddCommand(new History());
 			AddCommand(new Whereami());
 			AddCommand(new Timescale());
+			AddCommand(new ToggleAudio());
 			AddCommand(new Commands.QuickCommands());
 
 			Keybindings.LoadDefaultActions();
