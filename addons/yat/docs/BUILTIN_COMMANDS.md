@@ -34,3 +34,4 @@
 | wenv          | N/A    | Manages the world environment.                                                   |
 | reset         | N/A    | Resets the terminal to its default position and/or size.                         |
 | sys           | N/A    | Runs a system command.                                                           |
+| timescale     | N/A    | Sets the timescale.                                                              |

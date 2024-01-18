@@ -24,7 +24,7 @@ Of course, creating such a complex and ambitious project is extremely difficult 
 -   Autocompletion
 -   Script templates
 -   Performance monitor
--   Over 20 built-in commands
+-   Over 25 built-in commands
 -   Small size footprint (< 175 KB)
 -   Access to the node tree (experimental)
 -   Ability to restrict access to the plugin
