@@ -8,9 +8,9 @@ namespace YAT.Interfaces
 		YAT Yat,
 		BaseTerminal Terminal,
 		ICommand Command,
-		string CommandName,
-		string[] Arguments,
-		Dictionary<string, object> ConvertedArgs,
+		string[] RawData,
+		Dictionary<string, object> Arguments,
+		Dictionary<string, object> Options,
 		CancellationToken? CancellationToken
 	);
 }
