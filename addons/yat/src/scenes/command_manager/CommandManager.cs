@@ -7,7 +7,6 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Scenes.CommandManager
 {
@@ -40,10 +39,6 @@ namespace YAT.Scenes.CommandManager
 			_yat = GetNode<YAT>("..");
 		}
 
-		/// <summary>
-		/// Executes the specified command with the given arguments.
-		/// </summary>
-		/// <param name="args">The arguments to pass to the command.</param>
 		public void Run(string[] args)
 		{
 			if (args.Length == 0) return;
@@ -74,44 +69,33 @@ namespace YAT.Scenes.CommandManager
 				}
 			}
 
-			var concatenated = ConcatenatePassedData(convertedArgs, convertedOpts);
-
 			EmitSignal(SignalName.CommandStarted, commandName, args);
 
 			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
 				_yat.Commands[commandName]
 			) is not null)
 			{
-				ExecuteThreadedCommand(args, concatenated);
+				ExecuteThreadedCommand(args, convertedArgs, convertedOpts);
 				return;
 			}
 
-			ExecuteCommand(args, concatenated);
+			ExecuteCommand(args, convertedArgs, convertedOpts);
 		}
 
-		/// <summary>
-		/// Executes the given CLI command.
-		/// </summary>
-		/// <param name="input">The input arguments for the command.</param>
-		private void ExecuteCommand(string[] input, Dictionary<string, object> cArgs)
+		private void ExecuteCommand(string[] input, Dictionary<string, object> args, Dictionary<string, object> opts)
 		{
 			string commandName = input[0];
 			var command = _yat.Commands[commandName];
-			CommandData args = new(_yat, _yat.Terminal, command, commandName, input, cArgs, Cts?.Token);
+			CommandData data = new(_yat, _yat.Terminal, command, input, args, opts, Cts?.Token);
 
 			Locked = true;
-			var result = command.Execute(args);
+			var result = command.Execute(data);
 			Locked = false;
 
 			EmitSignal(SignalName.CommandFinished, commandName, input, (ushort)result);
 		}
 
-		/// <summary>
-		/// Executes a command in a separate thread,
-		/// allowing the terminal to remain responsive.
-		/// </summary>
-		/// <param name="input">The command and its arguments.</param>
-		private async void ExecuteThreadedCommand(string[] input, Dictionary<string, object> cArgs)
+		private async void ExecuteThreadedCommand(string[] input, Dictionary<string, object> args, Dictionary<string, object> opts)
 		{
 			Cts = new();
 
@@ -119,10 +103,10 @@ namespace YAT.Scenes.CommandManager
 			{
 				string commandName = input[0];
 				var command = _yat.Commands[commandName];
-				CommandData args = new(_yat, _yat.Terminal, command, commandName, input, cArgs, Cts.Token);
+				CommandData data = new(_yat, _yat.Terminal, command, input, args, opts, Cts?.Token);
 
 				Locked = true;
-				var result = command.Execute(args);
+				var result = command.Execute(data);
 				Locked = false;
 
 				CallDeferredThreadGroup(
@@ -137,12 +121,6 @@ namespace YAT.Scenes.CommandManager
 			Log.Success("Command execution finished.");
 		}
 
-		/// <summary>
-		/// Concatenates two dictionaries and returns the result.
-		/// </summary>
-		/// <param name="args">The first dictionary to concatenate.</param>
-		/// <param name="opts">The second dictionary to concatenate.</param>
-		/// <returns>The concatenated dictionary.</returns>
 		private static Dictionary<string, object> ConcatenatePassedData(Dictionary<string, object> args, Dictionary<string, object> opts)
 		{
 			Dictionary<string, object> result = new();
