@@ -36,24 +36,24 @@ namespace YAT.Commands
 
 		private YAT _yat;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
-			var mode = args.Arguments[1];
+			var mode = data.RawData[1];
 
-			_yat = args.Yat;
+			_yat = data.Yat;
 
 			if (modeMappings.TryGetValue(mode, out ViewportDebugDraw debugDraw))
 				return SetDebugDraw(debugDraw);
 
 			if (!int.TryParse(mode, out var iMode))
 			{
-				args.Terminal.Print($"Invalid mode: {mode}.", PrintType.Error);
+				data.Terminal.Print($"Invalid mode: {mode}.", PrintType.Error);
 				return CommandResult.InvalidArguments;
 			}
 
 			if (!IsValidMode((ushort)iMode))
 			{
-				args.Terminal.Print($"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}.", PrintType.Error);
+				data.Terminal.Print($"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}.", PrintType.Error);
 				return CommandResult.InvalidArguments;
 			}
 

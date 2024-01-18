@@ -15,7 +15,7 @@ namespace YAT.Commands
 			"uid://liha0ppubuti"
 		);
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
 			var instanceValid = GodotObject.IsInstanceValid(_optionsWindowInstance);
 
@@ -26,10 +26,10 @@ namespace YAT.Commands
 				return CommandResult.Success;
 			}
 
-			args.Terminal.Print("Options will be improved in the future.", PrintType.Warning);
+			data.Terminal.Print("Options will be improved in the future.", PrintType.Warning);
 
 			_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate<YatWindow>();
-			args.Yat.Windows.AddChild(_optionsWindowInstance);
+			data.Yat.Windows.AddChild(_optionsWindowInstance);
 
 			return CommandResult.Success;
 		}

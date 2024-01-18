@@ -21,12 +21,12 @@ namespace YAT.Commands
 	{
 		private YAT _yat;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
 			char eye = 'o';
 			char tongue = ' ';
 
-			_yat = args.Yat;
+			_yat = data.Yat;
 
 			var eyes = new Dictionary<string, char>
 			{
@@ -48,7 +48,7 @@ namespace YAT.Commands
 
 			foreach (var (key, value) in eyes)
 			{
-				if (!(bool)args.ConvertedArgs[key]) continue;
+				if (!(bool)data.Options[key]) continue;
 
 				eye = value;
 				if (tongues.ContainsKey(key)) tongue = tongues[key];
@@ -56,7 +56,7 @@ namespace YAT.Commands
 				break;
 			}
 
-			PrintCow(args.Arguments[1], eye, tongue);
+			PrintCow(data.RawData[1], eye, tongue);
 
 			return CommandResult.Success;
 		}

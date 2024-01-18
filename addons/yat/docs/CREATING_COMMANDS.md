@@ -15,7 +15,7 @@ The `Command` attribute accepts the command `name`, its `description`, `manual` 
 The description and manual have BBCode support.
 
 The execution of the command begins in the `Execute` method.
-The `Execute` method accepts `CommandArguments`, which contains probably all the things your command could ever need, these are things like: reference to YAT and BaseTerminal, arguments, converted arguments, cancellation token and more.
+The `Execute` method accepts `CommandData`, which contains probably all the things your command could ever need, these are things like: reference to YAT and BaseTerminal, raw arguments & options, converted arguments & options, cancellation token and more.
 
 As an example, let's look at Cls command:
 
@@ -34,9 +34,9 @@ namespace YAT.Commands
 	)]
 	public sealed class Cls : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
-			args.Terminal.Clear();
+			data.Terminal.Clear();
 
 			return CommandResult.Success;
 		}
@@ -56,7 +56,7 @@ Creating a command that runs on a separate thread looks very similar to creating
 
 Therefore, first create a regular command and then add a `Threaded` attribute to it, which allows it to run on a separate thread.
 
-In the passed `CommandArguments` you can find the `CancellationToken` which indicates when the command was asked to terminate prematurely.
+In the passed `CommandData` you can find the `CancellationToken` which indicates when the command was asked to terminate prematurely.
 
 ### Overridable methods
 

@@ -9,17 +9,17 @@ public partial class SetCube : IExtension
 {
 	public static MeshInstance3D Cube { get; set; }
 
-	public CommandResult Execute(CommandArguments args)
+	public CommandResult Execute(CommandData data)
 	{
-		if (args.Arguments.Length < 2)
+		if (data.RawData.Length < 2)
 		{
-			args.Yat.Terminal.Print("Invalid arguments.", PrintType.Error);
+			data.Yat.Terminal.Print("Invalid arguments.", PrintType.Error);
 			return CommandResult.InvalidArguments;
 		}
 
 		try
 		{
-			Color color = new(args.Arguments[1]);
+			Color color = new(data.RawData[1]);
 			Cube.MaterialOverride = new StandardMaterial3D
 			{
 				AlbedoColor = color
@@ -27,7 +27,7 @@ public partial class SetCube : IExtension
 		}
 		catch (System.Exception)
 		{
-			args.Yat.Terminal.Print("Invalid color.", PrintType.Error);
+			data.Yat.Terminal.Print("Invalid color.", PrintType.Error);
 			return CommandResult.Failure;
 		}
 

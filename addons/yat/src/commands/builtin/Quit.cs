@@ -8,12 +8,12 @@ namespace YAT.Commands
 	[Option("-t", null, "Closes the terminal.", false)]
 	public partial class Quit : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
-			var t = (bool)args.ConvertedArgs["-t"];
+			var t = (bool)data.Options["-t"];
 
-			if (t) CloseTerminal(args.Yat);
-			else QuitTheGame(args.Yat);
+			if (t) CloseTerminal(data.Yat);
+			else QuitTheGame(data.Yat);
 
 			return CommandResult.Success;
 		}

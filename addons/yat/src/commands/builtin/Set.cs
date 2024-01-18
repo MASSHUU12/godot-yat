@@ -10,17 +10,17 @@ namespace YAT.Commands
 	[Argument("value", "string", "The value to set the variable to.")]
 	public partial class Set : Extensible, ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
-			var variable = args.Arguments[1];
+			var variable = data.RawData[1];
 
 			if (Extensions.ContainsKey(variable))
 			{
 				var extension = Extensions[variable];
-				return extension.Execute(args with { Arguments = args.Arguments[1..] });
+				return extension.Execute(data with { RawData = data.RawData[1..] });
 			}
 
-			args.Terminal.Print("Variable not found.", PrintType.Error);
+			data.Terminal.Print("Variable not found.", PrintType.Error);
 			return CommandResult.Failure;
 		}
 	}

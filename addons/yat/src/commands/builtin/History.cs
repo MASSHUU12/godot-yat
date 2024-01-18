@@ -24,12 +24,12 @@ namespace YAT.Commands
 		private YAT _yat;
 		private BaseTerminal _terminal;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
-			_yat = args.Yat;
-			_terminal = args.Terminal;
+			_yat = data.Yat;
+			_terminal = data.Terminal;
 
-			switch (args.Arguments[1])
+			switch (data.RawData[1])
 			{
 				case "clear":
 					ClearHistory();
@@ -38,10 +38,10 @@ namespace YAT.Commands
 					ShowHistory();
 					break;
 				default:
-					if (int.TryParse(args.Arguments[1], out int index)) ExecuteFromHistory(index);
+					if (int.TryParse(data.RawData[1], out int index)) ExecuteFromHistory(index);
 					else
 					{
-						_terminal.Print($"Invalid action: {args.Arguments[1]}");
+						_terminal.Print($"Invalid action: {data.RawData[1]}");
 						return CommandResult.Failure;
 					}
 					break;

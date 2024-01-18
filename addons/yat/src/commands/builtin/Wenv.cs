@@ -13,10 +13,10 @@ namespace YAT.Commands
 		private Environment _world3DEnvironment;
 		private YAT _yat;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
-			var action = (string)args.ConvertedArgs["action"];
-			_yat = args.Yat;
+			var action = (string)data.Arguments["action"];
+			_yat = data.Yat;
 
 			if (action == "remove") RemoveEnvironment();
 			else RestoreEnvironment();

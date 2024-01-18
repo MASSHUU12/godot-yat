@@ -25,23 +25,23 @@ namespace YAT.Commands
 			"uid://dekp8nra5yo6u"
 		);
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
-			_yat = args.Yat;
+			_yat = data.Yat;
 
-			if (args.ConvertedArgs.Any((arg) => (bool)arg.Value)) return Open(args.ConvertedArgs);
+			if (data.Arguments.Any((arg) => (bool)arg.Value)) return Open(data.Arguments);
 			return Close();
 		}
 
-		private CommandResult Open(Dictionary<string, object> cArgs)
+		private CommandResult Open(Dictionary<string, object> args)
 		{
-			bool fps = (bool)cArgs["-fps"];
-			bool os = (bool)cArgs["-os"];
-			bool cpu = (bool)cArgs["-cpu"];
-			bool mem = (bool)cArgs["-mem"];
-			bool engine = (bool)cArgs["-engine"];
-			bool objects = (bool)cArgs["-objects"];
-			bool lookingAt = (bool)cArgs["-lookingat"];
+			bool fps = (bool)args["-fps"];
+			bool os = (bool)args["-os"];
+			bool cpu = (bool)args["-cpu"];
+			bool mem = (bool)args["-mem"];
+			bool engine = (bool)args["-engine"];
+			bool objects = (bool)args["-objects"];
+			bool lookingAt = (bool)args["-lookingat"];
 
 			List<Node> components = new();
 			bool instanceValid = GodotObject.IsInstanceValid(_monitorInstance);

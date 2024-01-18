@@ -15,13 +15,13 @@ namespace YAT.Commands
 	{
 		private BaseTerminal _terminal;
 
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
-			string action = (string)args.ConvertedArgs["action"];
-			string name = args.ConvertedArgs.TryGetValue("-name", out object nameObj) ? (string)nameObj : null;
-			string command = args.ConvertedArgs.TryGetValue("-command", out object commandObj) ? (string)commandObj : null;
+			string action = (string)data.Arguments["action"];
+			string name = data.Options.TryGetValue("-name", out object nameObj) ? (string)nameObj : null;
+			string command = data.Options.TryGetValue("-command", out object commandObj) ? (string)commandObj : null;
 
-			_terminal = args.Terminal;
+			_terminal = data.Terminal;
 
 			if (action != "list" && string.IsNullOrEmpty(name))
 			{

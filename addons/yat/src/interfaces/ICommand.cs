@@ -14,7 +14,7 @@ namespace YAT.Interfaces
 		/// </summary>
 		/// <param name="args">The arguments passed to the command.</param>
 		/// <returns>The result of the command execution.</returns>
-		public CommandResult Execute(CommandArguments args);
+		public CommandResult Execute(CommandData args);
 
 		/// <summary>
 		/// Generates the manual for the command, including its name,
