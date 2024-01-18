@@ -12,9 +12,9 @@ namespace YAT.Interfaces
 		/// <summary>
 		/// Represents the result of executing a command.
 		/// </summary>
-		/// <param name="args">The arguments passed to the command.</param>
+		/// <param name="data">The data passed to the command.</param>
 		/// <returns>The result of the command execution.</returns>
-		public CommandResult Execute(CommandData args);
+		public CommandResult Execute(CommandData data);
 
 		/// <summary>
 		/// Generates the manual for the command, including its name,
