@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 -   Sys command.
 -   OS helper.
 -   HasAttribute method to AttributeHelper.
+-   Timescale command.
 
 ### Changed
 
