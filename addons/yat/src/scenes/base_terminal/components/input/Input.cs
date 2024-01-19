@@ -44,7 +44,7 @@ namespace YAT.Scenes.BaseTerminal
 
 			AddToTheHistory(command);
 
-			_commandManager.Run(input);
+			_commandManager.Run(input, _terminal);
 			Clear();
 		}
 
