@@ -39,7 +39,7 @@ namespace YAT.Scenes.CommandManager
 			_yat = GetNode<YAT>("..");
 		}
 
-		public void Run(string[] args)
+		public void Run(string[] args, BaseTerminal.BaseTerminal terminal)
 		{
 			if (args.Length == 0) return;
 
@@ -71,46 +71,46 @@ namespace YAT.Scenes.CommandManager
 
 			EmitSignal(SignalName.CommandStarted, commandName, args);
 
+			CommandData data = new(_yat, terminal, command, args, convertedArgs, convertedOpts, Cts?.Token);
+
 			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
 				_yat.Commands[commandName]
 			) is not null)
 			{
-				ExecuteThreadedCommand(args, convertedArgs, convertedOpts);
+				ExecuteThreadedCommand(data);
 				return;
 			}
 
-			ExecuteCommand(args, convertedArgs, convertedOpts);
+			ExecuteCommand(data);
 		}
 
-		private void ExecuteCommand(string[] input, Dictionary<string, object> args, Dictionary<string, object> opts)
+		private void ExecuteCommand(CommandData data)
 		{
-			string commandName = input[0];
+			string commandName = data.RawData[0];
 			var command = _yat.Commands[commandName];
-			CommandData data = new(_yat, _yat.Terminal, command, input, args, opts, Cts?.Token);
 
 			Locked = true;
 			var result = command.Execute(data);
 			Locked = false;
 
-			EmitSignal(SignalName.CommandFinished, commandName, input, (ushort)result);
+			EmitSignal(SignalName.CommandFinished, commandName, data.RawData, (ushort)result);
 		}
 
-		private async void ExecuteThreadedCommand(string[] input, Dictionary<string, object> args, Dictionary<string, object> opts)
+		private async void ExecuteThreadedCommand(CommandData data)
 		{
 			Cts = new();
 
 			Task task = new(() =>
 			{
-				string commandName = input[0];
+				string commandName = data.RawData[0];
 				var command = _yat.Commands[commandName];
-				CommandData data = new(_yat, _yat.Terminal, command, input, args, opts, Cts?.Token);
 
 				Locked = true;
 				var result = command.Execute(data);
 				Locked = false;
 
 				CallDeferredThreadGroup(
-					"emit_signal", SignalName.CommandFinished, commandName, input, (ushort)result
+					"emit_signal", SignalName.CommandFinished, commandName, data.RawData, (ushort)result
 				);
 			}, Cts.Token);
 
