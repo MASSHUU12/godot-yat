@@ -92,7 +92,7 @@ namespace YAT.Scenes.BaseTerminal
 				return;
 			}
 
-			_yat.CommandManager.Run(Text.SanitizeText(command));
+			_yat.CommandManager.Run(Text.SanitizeText(command), _yat.Terminal);
 		}
 	}
 }
