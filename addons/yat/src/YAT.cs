@@ -29,7 +29,7 @@ namespace YAT
 
 		[Export] public YatOptions Options { get; set; } = new();
 
-		public BaseTerminal Terminal { get; private set; }
+		public BaseTerminal Terminal { get; private set; } // TODO: Remove this
 		public Node Windows { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
