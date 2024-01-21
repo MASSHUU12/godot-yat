@@ -4,6 +4,7 @@ using System.Text;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -19,14 +20,14 @@ namespace YAT.Commands
 	[Option("-y", null, "Youthful", false)]
 	public sealed class Cowsay : ICommand
 	{
-		private YAT _yat;
+		private BaseTerminal _terminal;
 
 		public CommandResult Execute(CommandData data)
 		{
 			char eye = 'o';
 			char tongue = ' ';
 
-			_yat = data.Yat;
+			_terminal = data.Terminal;
 
 			var eyes = new Dictionary<string, char>
 			{
@@ -98,7 +99,7 @@ namespace YAT.Commands
 			StringBuilder sb = new();
 			sb.AppendLine(string.Join('\n', bubble));
 			sb.AppendLine(string.Join('\n', cow));
-			_yat.Terminal.Print(sb.ToString());
+			_terminal.Print(sb.ToString());
 		}
 	}
 }
