@@ -4,9 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+-   Generic Print method overload for BaseTerminal.
+
 ### Changed
 
 -   The terminal locking mechanism has been moved from CommandManager to BaseTerminal.
+
+### Removed
+
+-   Print method overload for BaseTerminal accepting StringBuilder.
 
 ## [1.18.0-beta 2024-01-19]
 

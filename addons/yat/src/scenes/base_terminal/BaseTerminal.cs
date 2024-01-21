@@ -168,7 +168,7 @@ namespace YAT.Scenes.BaseTerminal
 			Output.CallDeferred("pop_all");
 		}
 
-		public void Print(StringBuilder text, PrintType type = PrintType.Normal) => Print(text.ToString(), type);
+		public void Print<T>(T text, PrintType type = PrintType.Normal) => Print(text.ToString(), type);
 
 		/// <summary>
 		/// Clears the output text of the terminal window.
