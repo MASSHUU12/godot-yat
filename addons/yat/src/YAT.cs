@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using YAT.Attributes;
@@ -21,14 +22,11 @@ namespace YAT
 		public delegate void OptionsChangedEventHandler(YatOptions options);
 		[Signal]
 		public delegate void YatReadyEventHandler();
-		[Signal]
-		public delegate void TerminalOpenedEventHandler();
-		[Signal]
-		public delegate void TerminalClosedEventHandler();
 		#endregion
 
 		[Export] public YatOptions Options { get; set; } = new();
 
+		[Obsolete]
 		public BaseTerminal Terminal { get; private set; } // TODO: Remove this
 		public Node Windows { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
@@ -127,7 +125,7 @@ namespace YAT
 
 			Windows.AddChild(_gameTerminal);
 
-			EmitSignal(SignalName.TerminalOpened);
+			Terminal.EmitSignal("TerminalOpened");
 		}
 
 		public void CloseTerminal()
@@ -136,7 +134,7 @@ namespace YAT
 
 			Windows.RemoveChild(_gameTerminal);
 
-			EmitSignal(SignalName.TerminalClosed);
+			Terminal.EmitSignal("TerminalClosed");
 		}
 
 		/// <summary>
