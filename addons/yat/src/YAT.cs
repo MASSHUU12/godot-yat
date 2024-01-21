@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 using YAT.Attributes;
@@ -11,10 +10,6 @@ using YAT.Scenes.GameTerminal;
 
 namespace YAT
 {
-	/// <summary>
-	/// YAT (Yet Another Terminal) is an addon that provides a customizable, in-game terminal for your project.
-	/// This class is the main entry point for the addon, and provides access to the terminal, options, and commands.
-	/// </summary>
 	public partial class YAT : Node
 	{
 		[Signal]
