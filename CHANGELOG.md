@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+-   The terminal locking mechanism has been moved from CommandManager to BaseTerminal.
+
 ## [1.18.0-beta 2024-01-19]
 
 ### Added

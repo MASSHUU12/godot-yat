@@ -40,7 +40,7 @@ namespace YAT.Scenes.BaseTerminal
 			var input = Helpers.Text.SanitizeText(command);
 			input = Helpers.Text.ConcatenateSentence(input);
 
-			if (input.Length == 0 || _commandManager.Locked) return;
+			if (input.Length == 0 || _terminal.Locked) return;
 
 			AddToTheHistory(command);
 

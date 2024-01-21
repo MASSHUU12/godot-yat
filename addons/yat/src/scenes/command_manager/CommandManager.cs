@@ -29,7 +29,6 @@ namespace YAT.Scenes.CommandManager
 		[Signal]
 		public delegate void CommandFinishedEventHandler(string command, string[] args, CommandResult result);
 
-		public bool Locked { get; private set; }
 		public CancellationTokenSource Cts { get; set; }
 
 		private YAT _yat;
@@ -89,9 +88,9 @@ namespace YAT.Scenes.CommandManager
 			string commandName = data.RawData[0];
 			var command = _yat.Commands[commandName];
 
-			Locked = true;
+			data.Terminal.Locked = true;
 			var result = command.Execute(data);
-			Locked = false;
+			data.Terminal.Locked = false;
 
 			EmitSignal(SignalName.CommandFinished, commandName, data.RawData, (ushort)result);
 		}
@@ -105,9 +104,9 @@ namespace YAT.Scenes.CommandManager
 				string commandName = data.RawData[0];
 				var command = _yat.Commands[commandName];
 
-				Locked = true;
+				data.Terminal.Locked = true;
 				var result = command.Execute(data);
-				Locked = false;
+				data.Terminal.Locked = false;
 
 				CallDeferredThreadGroup(
 					"emit_signal", SignalName.CommandFinished, commandName, data.RawData, (ushort)result

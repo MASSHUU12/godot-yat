@@ -12,6 +12,7 @@ namespace YAT.Scenes.BaseTerminal
 		[Signal] public delegate void PositionResetRequestedEventHandler();
 		[Signal] public delegate void SizeResetRequestedEventHandler();
 
+		public bool Locked { get; set; }
 		public Input Input { get; private set; }
 		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
