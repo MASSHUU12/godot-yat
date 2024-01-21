@@ -54,17 +54,20 @@ namespace YAT.Scenes.BaseTerminal
 		{
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
+			_yat.YatReady += () =>
+			{
+				_commandManager.CommandStarted += (command, args) =>
+					EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
+				_commandManager.CommandFinished += (command, args, result) =>
+					EmitSignal(SignalName.TitleChangeRequested, "YAT");
+			};
+
+			_commandManager = _yat.CommandManager;
 
 			SelectedNode = GetNode<SelectedNode>("SelectedNode");
 			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
 			Context = GetNode<TerminalContext>("TerminalContext");
-
-			_commandManager = _yat.CommandManager;
-			_commandManager.CommandStarted += (command, args) =>
-				EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
-			_commandManager.CommandFinished += (command, args, result) =>
-				EmitSignal(SignalName.TitleChangeRequested, "YAT");
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
 			_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");

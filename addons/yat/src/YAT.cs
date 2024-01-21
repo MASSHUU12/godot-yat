@@ -4,9 +4,8 @@ using YAT.Attributes;
 using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Scenes.BaseTerminal;
 using YAT.Scenes.CommandManager;
-using YAT.Scenes.GameTerminal;
+using YAT.Scenes.TerminalManager;
 
 namespace YAT
 {
@@ -15,30 +14,26 @@ namespace YAT
 		[Signal]
 		public delegate void OptionsChangedEventHandler(YatOptions options);
 		[Signal] public delegate void YatReadyEventHandler();
-		[Signal] public delegate void TerminalOpenedEventHandler();
-		[Signal] public delegate void TerminalClosedEventHandler();
 
 		[Export] public YatOptions Options { get; set; } = new();
 
-		public BaseTerminal Terminal { get; private set; }
+		public bool YatEnabled = true;
+
 		public Node Windows { get; private set; }
 		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
 		public OptionsManager OptionsManager { get; private set; }
 		public CommandManager CommandManager { get; private set; }
-
-		private bool _yatEnabled = true;
-		private GameTerminal _gameTerminal;
+		public TerminalManager TerminalManager { get; private set; }
 
 		public override void _Ready()
 		{
 			CheckYatEnableSettings();
 
-			_gameTerminal = GD.Load<PackedScene>("uid://dsyqv187j7w76").Instantiate<GameTerminal>();
-			_gameTerminal.Ready += () =>
+			TerminalManager = GetNode<TerminalManager>("./TerminalManager");
+			TerminalManager.GameTerminal.Ready += () =>
 			{
-				Terminal = _gameTerminal.BaseTerminal;
-				Log.Terminal = Terminal;
+				Log.Terminal = TerminalManager.GameTerminal.BaseTerminal;
 				OptionsManager.Load();
 
 				EmitSignal(SignalName.YatReady);
@@ -74,14 +69,9 @@ namespace YAT
 			AddCommand(new Whereami());
 			AddCommand(new Timescale());
 			AddCommand(new ToggleAudio());
-			AddCommand(new Commands.QuickCommands());
+			AddCommand(new QuickCommands());
 
 			Keybindings.LoadDefaultActions();
-		}
-
-		public override void _UnhandledInput(InputEvent @event)
-		{
-			if (@event.IsActionPressed(Keybindings.TerminalToggle)) ToggleTerminal();
 		}
 
 		/// <summary>
@@ -104,35 +94,6 @@ namespace YAT
 			}
 		}
 
-		public void ToggleTerminal()
-		{
-			if (!_yatEnabled) return;
-
-			if (_gameTerminal.IsInsideTree()) CloseTerminal();
-			else OpenTerminal();
-		}
-
-		public void OpenTerminal()
-		{
-			if (_gameTerminal.IsInsideTree()) return;
-
-			Windows.AddChild(_gameTerminal);
-
-			EmitSignal(SignalName.TerminalOpened);
-		}
-
-		public void CloseTerminal()
-		{
-			if (!_gameTerminal.IsInsideTree()) return;
-
-			Windows.RemoveChild(_gameTerminal);
-
-			EmitSignal(SignalName.TerminalClosed);
-		}
-
-		/// <summary>
-		/// Checks if YAT is enabled based on the user's settings.
-		/// </summary>
 		private void CheckYatEnableSettings()
 		{
 			if (!Options.UseYatEnableFile) return;
@@ -144,7 +105,7 @@ namespace YAT
 				_ => "user://"
 			};
 
-			_yatEnabled = FileAccess.FileExists(path + Options.YatEnableFile);
+			YatEnabled = FileAccess.FileExists(path + Options.YatEnableFile);
 		}
 	}
 }
