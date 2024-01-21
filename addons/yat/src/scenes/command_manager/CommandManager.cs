@@ -93,27 +93,14 @@ namespace YAT.Scenes.CommandManager
 			var result = command.Execute(data);
 			data.Terminal.Locked = false;
 
-			EmitSignal(SignalName.CommandFinished, commandName, data.RawData, (ushort)result);
+			CallDeferredThreadGroup(
+				"emit_signal", SignalName.CommandFinished, commandName, data.RawData, (ushort)result
+			);
 		}
 
 		private async void ExecuteThreadedCommand(CommandData data)
 		{
-			Task task = new(() =>
-			{
-				string commandName = data.RawData[0];
-				var command = _yat.Commands[commandName];
-
-				data.Terminal.Locked = true;
-				var result = command.Execute(data);
-				data.Terminal.Locked = false;
-
-				CallDeferredThreadGroup(
-					"emit_signal", SignalName.CommandFinished, commandName, data.RawData, (ushort)result
-				);
-			}, Cts.Token);
-
-			task.Start();
-
+			new Task(() => ExecuteCommand(data), Cts.Token).Start();
 			await ToSignal(this, SignalName.CommandFinished);
 
 			Log.Success("Command execution finished.");
