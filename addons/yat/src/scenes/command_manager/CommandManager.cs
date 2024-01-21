@@ -30,6 +30,7 @@ namespace YAT.Scenes.CommandManager
 		public delegate void CommandFinishedEventHandler(string command, string[] args, CommandResult result);
 
 		public CancellationTokenSource Cts { get; set; } = new();
+		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
 		private YAT _yat;
 
@@ -38,19 +39,41 @@ namespace YAT.Scenes.CommandManager
 			_yat = GetNode<YAT>("..");
 		}
 
+		/// <summary>
+		/// Adds a CLICommand to the list of available commands.
+		/// </summary>
+		/// <param name="command">The CLICommand to add.</param>
+		public void AddCommand(ICommand command)
+		{
+			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
+				is not CommandAttribute attribute)
+			{
+				Log.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
+				return;
+			}
+
+			Commands[attribute.Name] = command;
+			foreach (string alias in attribute.Aliases) Commands[alias] = command;
+		}
+
+		public void AddCommand(params ICommand[] commands)
+		{
+			foreach (var command in commands) AddCommand(command);
+		}
+
 		public void Run(string[] args, BaseTerminal.BaseTerminal terminal)
 		{
 			if (args.Length == 0) return;
 
 			string commandName = args[0];
 
-			if (!_yat.Commands.ContainsKey(commandName))
+			if (!Commands.ContainsKey(commandName))
 			{
 				Log.Error(Messages.UnknownCommand(commandName));
 				return;
 			}
 
-			ICommand command = _yat.Commands[commandName];
+			ICommand command = Commands[commandName];
 			Dictionary<string, object> convertedArgs = null;
 			Dictionary<string, object> convertedOpts = null;
 
@@ -74,7 +97,7 @@ namespace YAT.Scenes.CommandManager
 			CommandData data = new(_yat, terminal, command, args, convertedArgs, convertedOpts, Cts.Token);
 
 			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
-				_yat.Commands[commandName]
+				Commands[commandName]
 			) is not null)
 			{
 				ExecuteThreadedCommand(data);
@@ -87,7 +110,7 @@ namespace YAT.Scenes.CommandManager
 		private void ExecuteCommand(CommandData data)
 		{
 			string commandName = data.RawData[0];
-			var command = _yat.Commands[commandName];
+			var command = Commands[commandName];
 
 			data.Terminal.Locked = true;
 			var result = command.Execute(data);

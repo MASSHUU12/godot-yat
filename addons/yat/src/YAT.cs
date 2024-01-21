@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Godot;
 using YAT.Attributes;
 using YAT.Commands;
@@ -20,7 +19,6 @@ namespace YAT
 		public bool YatEnabled = true;
 
 		public Node Windows { get; private set; }
-		public Dictionary<string, ICommand> Commands { get; private set; } = new();
 
 		public OptionsManager OptionsManager { get; private set; }
 		public CommandManager CommandManager { get; private set; }
@@ -43,55 +41,37 @@ namespace YAT
 			OptionsManager = new(this, Options);
 			CommandManager = GetNode<CommandManager>("./CommandManager");
 
-			AddCommand(new Ls());
-			AddCommand(new Ip());
-			AddCommand(new Cn());
-			AddCommand(new Cs());
-			AddCommand(new Cls());
-			AddCommand(new Man());
-			AddCommand(new Set());
-			AddCommand(new Cat());
-			AddCommand(new Sys());
-			AddCommand(new Quit());
-			AddCommand(new Echo());
-			AddCommand(new List());
-			AddCommand(new View());
-			AddCommand(new Ping());
-			AddCommand(new Wenv());
-			AddCommand(new Pause());
-			AddCommand(new Watch());
-			AddCommand(new Stats());
-			AddCommand(new Reset());
-			AddCommand(new Cowsay());
-			AddCommand(new Options());
-			AddCommand(new Restart());
-			AddCommand(new History());
-			AddCommand(new Whereami());
-			AddCommand(new Timescale());
-			AddCommand(new ToggleAudio());
-			AddCommand(new QuickCommands());
+			CommandManager.AddCommand(new ICommand[] {
+				new Ls(),
+				new Ip(),
+				new Cn(),
+				new Cs(),
+				new Cls(),
+				new Man(),
+				new Set(),
+				new Cat(),
+				new Sys(),
+				new Quit(),
+				new Echo(),
+				new List(),
+				new View(),
+				new Ping(),
+				new Wenv(),
+				new Pause(),
+				new Watch(),
+				new Stats(),
+				new Reset(),
+				new Cowsay(),
+				new Options(),
+				new Restart(),
+				new History(),
+				new Whereami(),
+				new Timescale(),
+				new ToggleAudio(),
+				new QuickCommands()
+			});
 
 			Keybindings.LoadDefaultActions();
-		}
-
-		/// <summary>
-		/// Adds a CLICommand to the list of available commands.
-		/// </summary>
-		/// <param name="command">The CLICommand to add.</param>
-		public void AddCommand(ICommand command)
-		{
-			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
-				is not CommandAttribute attribute)
-			{
-				Log.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
-				return;
-			}
-
-			Commands[attribute.Name] = command;
-			foreach (string alias in attribute.Aliases)
-			{
-				Commands[alias] = command;
-			}
 		}
 
 		private void CheckYatEnableSettings()
