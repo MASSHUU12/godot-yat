@@ -92,7 +92,7 @@ namespace YAT.Scenes.BaseTerminal
 
 		private LinkedList<string> GenerateCommandSuggestions(string token)
 		{
-			var listSuggestions = _yat.Commands
+			var listSuggestions = _yat.CommandManager.Commands
 				?.Where(x => x.Value.GetAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
 				?.Select(x => x.Value.GetAttribute<CommandAttribute>()?.Name ?? string.Empty)
 				?.Where(name => !string.IsNullOrEmpty(name))

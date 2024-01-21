@@ -16,6 +16,8 @@ All notable changes to this project will be documented in this file.
 -   CancellationToken in CommandData is no longer nullable.
 -   YatEnabled variable in YAT class is public.
 -   Moved TerminalOpened & TerminalClosed signals from YAT to TerminalManager.
+-   The ability to add commands has been moved from YAT to CommandManager.
+-   AddCommand supports an array of commands.
 
 ### Fixed
 
