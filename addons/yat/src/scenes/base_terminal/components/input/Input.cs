@@ -12,7 +12,7 @@ namespace YAT.Scenes.BaseTerminal
 		{
 			_yat = GetNode<YAT>("/root/YAT");
 			// This 'fixes' the issue where terminal toggle key is writing to the input
-			_terminal.TerminalOpened += () => { GrabFocus(); Clear(); };
+			_yat.TerminalOpened += () => { GrabFocus(); Clear(); };
 
 			_terminal = GetNode<BaseTerminal>("../../../../../");
 			_commandManager = _yat.GetNode<CommandManager.CommandManager>("CommandManager");

@@ -17,12 +17,11 @@ namespace YAT
 	/// </summary>
 	public partial class YAT : Node
 	{
-		#region Signals
 		[Signal]
 		public delegate void OptionsChangedEventHandler(YatOptions options);
-		[Signal]
-		public delegate void YatReadyEventHandler();
-		#endregion
+		[Signal] public delegate void YatReadyEventHandler();
+		[Signal] public delegate void TerminalOpenedEventHandler();
+		[Signal] public delegate void TerminalClosedEventHandler();
 
 		[Export] public YatOptions Options { get; set; } = new();
 
@@ -125,7 +124,7 @@ namespace YAT
 
 			Windows.AddChild(_gameTerminal);
 
-			Terminal.EmitSignal("TerminalOpened");
+			EmitSignal(SignalName.TerminalOpened);
 		}
 
 		public void CloseTerminal()
@@ -134,7 +133,7 @@ namespace YAT
 
 			Windows.RemoveChild(_gameTerminal);
 
-			Terminal.EmitSignal("TerminalClosed");
+			EmitSignal(SignalName.TerminalClosed);
 		}
 
 		/// <summary>
