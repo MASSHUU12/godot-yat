@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 using static Godot.RenderingServer;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
@@ -35,12 +36,14 @@ namespace YAT.Commands
 		};
 
 		private YAT _yat;
+		private BaseTerminal _terminal;
 
 		public CommandResult Execute(CommandData data)
 		{
 			var mode = data.RawData[1];
 
 			_yat = data.Yat;
+			_terminal = data.Terminal;
 
 			if (modeMappings.TryGetValue(mode, out ViewportDebugDraw debugDraw))
 				return SetDebugDraw(debugDraw);
@@ -64,7 +67,7 @@ namespace YAT.Commands
 		{
 			ViewportSetDebugDraw(_yat.GetViewport().GetViewportRid(), debugDraw);
 
-			_yat.Terminal.Print($"Set viewport debug draw to {debugDraw} ({(ushort)debugDraw}).");
+			_terminal.Print($"Set viewport debug draw to {debugDraw} ({(ushort)debugDraw}).");
 
 			return CommandResult.Success;
 		}

@@ -13,7 +13,7 @@ public partial class SetCube : IExtension
 	{
 		if (data.RawData.Length < 2)
 		{
-			data.Yat.Terminal.Print("Invalid arguments.", PrintType.Error);
+			data.Terminal.Print("Invalid arguments.", PrintType.Error);
 			return CommandResult.InvalidArguments;
 		}
 
@@ -27,7 +27,7 @@ public partial class SetCube : IExtension
 		}
 		catch (System.Exception)
 		{
-			data.Yat.Terminal.Print("Invalid color.", PrintType.Error);
+			data.Terminal.Print("Invalid color.", PrintType.Error);
 			return CommandResult.Failure;
 		}
 

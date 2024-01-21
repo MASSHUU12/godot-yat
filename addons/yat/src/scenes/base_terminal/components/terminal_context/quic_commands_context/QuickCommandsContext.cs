@@ -6,8 +6,8 @@ namespace YAT.Scenes.BaseTerminal
 {
 	public partial class QuickCommandsContext : ContextSubmenu
 	{
-		[Export]
-		public QuickCommands QuickCommands { get; set; } = new();
+		[Export] BaseTerminal Terminal { get; set; }
+		[Export] public QuickCommands QuickCommands { get; set; } = new();
 
 		private YAT _yat;
 		private const ushort _maxQuickCommands = 10;
@@ -73,10 +73,7 @@ namespace YAT.Scenes.BaseTerminal
 
 			Clear();
 
-			foreach (var command in QuickCommands.Commands)
-			{
-				AddItem(command.Key);
-			}
+			foreach (var command in QuickCommands.Commands) AddItem(command.Key);
 		}
 
 		/// <summary>
@@ -92,7 +89,7 @@ namespace YAT.Scenes.BaseTerminal
 				return;
 			}
 
-			_yat.CommandManager.Run(Text.SanitizeText(command));
+			_yat.CommandManager.Run(Text.SanitizeText(command), Terminal);
 		}
 	}
 }

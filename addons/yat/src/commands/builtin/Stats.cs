@@ -4,6 +4,7 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 using YAT.Scenes.Monitor;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
@@ -20,6 +21,7 @@ namespace YAT.Commands
 	public sealed class Stats : ICommand
 	{
 		private YAT _yat;
+		private BaseTerminal _terminal;
 		private static Monitor _monitorInstance;
 		private static readonly PackedScene _monitor = GD.Load<PackedScene>(
 			"uid://dekp8nra5yo6u"
@@ -28,6 +30,7 @@ namespace YAT.Commands
 		public CommandResult Execute(CommandData data)
 		{
 			_yat = data.Yat;
+			_terminal = data.Terminal;
 
 			if (data.Arguments.Any((arg) => (bool)arg.Value)) return Open(data.Arguments);
 			return Close();
@@ -76,7 +79,7 @@ namespace YAT.Commands
 		{
 			if (!GodotObject.IsInstanceValid(_monitorInstance))
 			{
-				_yat.Terminal.Print("The game monitor is not open.", PrintType.Error);
+				_terminal.Print("The game monitor is not open.", PrintType.Error);
 				return CommandResult.Failure;
 			}
 

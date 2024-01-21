@@ -2,6 +2,7 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
@@ -12,11 +13,14 @@ namespace YAT.Commands
 	{
 		private Environment _world3DEnvironment;
 		private YAT _yat;
+		private BaseTerminal _terminal;
 
 		public CommandResult Execute(CommandData data)
 		{
 			var action = (string)data.Arguments["action"];
+
 			_yat = data.Yat;
+			_terminal = data.Terminal;
 
 			if (action == "remove") RemoveEnvironment();
 			else RestoreEnvironment();
@@ -30,13 +34,13 @@ namespace YAT.Commands
 
 			if (world3D is null)
 			{
-				_yat.Terminal.Print("No world to restore environment to.", PrintType.Error);
+				_terminal.Print("No world to restore environment to.", PrintType.Error);
 				return;
 			}
 
 			if (_world3DEnvironment is null)
 			{
-				_yat.Terminal.Print("No environment to restore.", PrintType.Error);
+				_terminal.Print("No environment to restore.", PrintType.Error);
 				return;
 			}
 
@@ -51,13 +55,13 @@ namespace YAT.Commands
 
 			if (world3D is null)
 			{
-				_yat.Terminal.Print("No world to remove environment from.", PrintType.Error);
+				_terminal.Print("No world to remove environment from.", PrintType.Error);
 				return;
 			}
 
 			if (env is null)
 			{
-				_yat.Terminal.Print("No environment to remove.", PrintType.Error);
+				_terminal.Print("No environment to remove.", PrintType.Error);
 				return;
 			}
 

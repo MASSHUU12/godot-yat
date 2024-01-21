@@ -11,8 +11,11 @@ namespace YAT.Scenes.BaseTerminal
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
-			// This 'fixes' the issue where terminal toggle key is writing to the input
-			_yat.TerminalOpened += () => { GrabFocus(); Clear(); };
+			_yat.YatReady += () =>
+			{
+				// This 'fixes' the issue where terminal toggle key is writing to the input
+				_yat.TerminalManager.TerminalOpened += () => { GrabFocus(); Clear(); };
+			};
 
 			_terminal = GetNode<BaseTerminal>("../../../../../");
 			_commandManager = _yat.GetNode<CommandManager.CommandManager>("CommandManager");
@@ -31,7 +34,7 @@ namespace YAT.Scenes.BaseTerminal
 			// treat it as a method call on the selected node
 			if (command.StartsWith('$'))
 			{
-				_yat.Terminal.SelectedNode.ParseAndCallMethods(command[1..]);
+				_terminal.SelectedNode.ParseAndCallMethods(command[1..]);
 				AddToTheHistory(command);
 				Clear();
 				return;
@@ -40,11 +43,11 @@ namespace YAT.Scenes.BaseTerminal
 			var input = Helpers.Text.SanitizeText(command);
 			input = Helpers.Text.ConcatenateSentence(input);
 
-			if (input.Length == 0 || _commandManager.Locked) return;
+			if (input.Length == 0 || _terminal.Locked) return;
 
 			AddToTheHistory(command);
 
-			_commandManager.Run(input);
+			_commandManager.Run(input, _terminal);
 			Clear();
 		}
 

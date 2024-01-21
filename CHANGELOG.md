@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   Generic Print method overload for BaseTerminal.
+-   TerminalManager class.
+-   Reference to the TerminalManager in YAT.
+
+### Changed
+
+-   The terminal locking mechanism has been moved from CommandManager to BaseTerminal.
+-   CancellationToken in CommandData is no longer nullable.
+-   YatEnabled variable in YAT class is public.
+-   Moved TerminalOpened & TerminalClosed signals from YAT to TerminalManager.
+
+### Fixed
+
+-   Threaded commands could not be cancelled.
+
+### Removed
+
+-   Print method overload for BaseTerminal accepting StringBuilder.
+-   Reference to the BaseTerminal in YAT.
+
 ## [1.18.0-beta 2024-01-19]
 
 ### Added

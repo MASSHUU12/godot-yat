@@ -1,6 +1,7 @@
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -8,25 +9,31 @@ namespace YAT.Commands
 	[Option("-t", null, "Closes the terminal.", false)]
 	public partial class Quit : ICommand
 	{
+		private YAT _yat;
+		private BaseTerminal _terminal;
+
 		public CommandResult Execute(CommandData data)
 		{
 			var t = (bool)data.Options["-t"];
 
-			if (t) CloseTerminal(data.Yat);
-			else QuitTheGame(data.Yat);
+			_yat = data.Yat;
+			_terminal = data.Terminal;
+
+			if (t) CloseTerminal();
+			else QuitTheGame();
 
 			return CommandResult.Success;
 		}
 
-		private static void CloseTerminal(YAT yat)
+		private void CloseTerminal()
 		{
-			yat.CallDeferred("CloseTerminal");
+			_yat.CallDeferred("CloseTerminal");
 		}
 
-		private static void QuitTheGame(YAT yat)
+		private void QuitTheGame()
 		{
-			yat.Terminal.Print("Quitting...");
-			yat.GetTree().Quit();
+			_terminal.Print("Quitting...");
+			_yat.GetTree().Quit();
 		}
 	}
 }

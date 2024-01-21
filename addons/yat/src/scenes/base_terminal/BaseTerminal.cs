@@ -12,6 +12,7 @@ namespace YAT.Scenes.BaseTerminal
 		[Signal] public delegate void PositionResetRequestedEventHandler();
 		[Signal] public delegate void SizeResetRequestedEventHandler();
 
+		public bool Locked { get; set; }
 		public Input Input { get; private set; }
 		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
@@ -53,17 +54,20 @@ namespace YAT.Scenes.BaseTerminal
 		{
 			_yat = GetNode<YAT>("/root/YAT");
 			_yat.OptionsChanged += UpdateOptions;
+			_yat.YatReady += () =>
+			{
+				_commandManager.CommandStarted += (command, args) =>
+					EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
+				_commandManager.CommandFinished += (command, args, result) =>
+					EmitSignal(SignalName.TitleChangeRequested, "YAT");
+			};
+
+			_commandManager = _yat.CommandManager;
 
 			SelectedNode = GetNode<SelectedNode>("SelectedNode");
 			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
 			Context = GetNode<TerminalContext>("TerminalContext");
-
-			_commandManager = _yat.CommandManager;
-			_commandManager.CommandStarted += (command, args) =>
-				EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
-			_commandManager.CommandFinished += (command, args, result) =>
-				EmitSignal(SignalName.TitleChangeRequested, "YAT");
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
 			_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
@@ -167,7 +171,7 @@ namespace YAT.Scenes.BaseTerminal
 			Output.CallDeferred("pop_all");
 		}
 
-		public void Print(StringBuilder text, PrintType type = PrintType.Normal) => Print(text.ToString(), type);
+		public void Print<T>(T text, PrintType type = PrintType.Normal) => Print(text.ToString(), type);
 
 		/// <summary>
 		/// Clears the output text of the terminal window.

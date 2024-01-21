@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4oxru3g4p038"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal_manager/TerminalManager.cs" id="1_rojed"]
+
+[node name="TerminalManager" type="Node"]
+script = ExtResource("1_rojed")

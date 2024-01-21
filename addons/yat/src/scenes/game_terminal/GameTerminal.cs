@@ -14,12 +14,15 @@ namespace YAT.Scenes.GameTerminal
 			base._Ready();
 
 			_yat = GetNode<YAT>("/root/YAT");
+			_yat.YatReady += () =>
+			{
+				CloseRequested += _yat.TerminalManager.CloseTerminal;
+			};
 
 			BaseTerminal = GetNode<BaseTerminal.BaseTerminal>("Content/BaseTerminal");
 			BaseTerminal.TitleChangeRequested += title => Title = title;
 			BaseTerminal.PositionResetRequested += ResetPosition;
 			BaseTerminal.SizeResetRequested += () => Size = InitialSize;
-			CloseRequested += _yat.CloseTerminal;
 
 			MoveToCenter();
 		}

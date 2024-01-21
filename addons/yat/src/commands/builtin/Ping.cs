@@ -31,7 +31,7 @@ namespace YAT.Commands
 
 			byte[] buffer = System.Text.Encoding.ASCII.GetBytes(GenerateData(bytes));
 
-			while (!data.CancellationToken.Value.IsCancellationRequested)
+			while (!data.CancellationToken.IsCancellationRequested)
 			{
 				System.Net.NetworkInformation.Ping ping = new();
 				System.Net.NetworkInformation.PingOptions options = new()
