@@ -11,6 +11,6 @@ namespace YAT.Interfaces
 		string[] RawData,
 		Dictionary<string, object> Arguments,
 		Dictionary<string, object> Options,
-		CancellationToken? CancellationToken
+		CancellationToken CancellationToken
 	);
 }

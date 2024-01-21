@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   The terminal locking mechanism has been moved from CommandManager to BaseTerminal.
+-   CancellationToken in CommandData is no longer nullable.
+
+### Fixed
+
+-   Threaded commands could not be cancelled.
 
 ### Removed
 

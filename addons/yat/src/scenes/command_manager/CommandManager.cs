@@ -29,7 +29,7 @@ namespace YAT.Scenes.CommandManager
 		[Signal]
 		public delegate void CommandFinishedEventHandler(string command, string[] args, CommandResult result);
 
-		public CancellationTokenSource Cts { get; set; }
+		public CancellationTokenSource Cts { get; set; } = new();
 
 		private YAT _yat;
 
@@ -70,7 +70,8 @@ namespace YAT.Scenes.CommandManager
 
 			EmitSignal(SignalName.CommandStarted, commandName, args);
 
-			CommandData data = new(_yat, terminal, command, args, convertedArgs, convertedOpts, Cts?.Token);
+			Cts = new();
+			CommandData data = new(_yat, terminal, command, args, convertedArgs, convertedOpts, Cts.Token);
 
 			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
 				_yat.Commands[commandName]
@@ -97,8 +98,6 @@ namespace YAT.Scenes.CommandManager
 
 		private async void ExecuteThreadedCommand(CommandData data)
 		{
-			Cts = new();
-
 			Task task = new(() =>
 			{
 				string commandName = data.RawData[0];

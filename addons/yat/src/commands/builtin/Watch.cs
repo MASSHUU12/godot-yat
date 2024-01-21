@@ -1,4 +1,5 @@
 using System.Threading;
+using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
@@ -28,10 +29,10 @@ namespace YAT.Commands
 				return CommandResult.InvalidArguments;
 			}
 
-			float interval = (float)data.Arguments["interval"];
+			float interval = (float)data.Arguments["interval"] * SECONDS_MULTIPLIER;
 			CommandData newArgs = data with { RawData = data.RawData[2..] };
 
-			while (!data.CancellationToken.Value.IsCancellationRequested)
+			while (!data.CancellationToken.IsCancellationRequested)
 			{
 				if (command.Execute(newArgs) != CommandResult.Success)
 				{
@@ -39,7 +40,7 @@ namespace YAT.Commands
 					return CommandResult.Failure;
 				}
 
-				Thread.Sleep((int)(interval * SECONDS_MULTIPLIER));
+				Thread.Sleep((int)interval);
 			}
 
 			return CommandResult.Success;
