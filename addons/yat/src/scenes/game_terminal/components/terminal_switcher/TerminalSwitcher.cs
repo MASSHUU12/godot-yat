@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using Godot;
+using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Scenes.GameTerminal.Components
 {
 	public partial class TerminalSwitcher : PanelContainer
 	{
+		[Signal] public delegate void CurrentTerminalChangedEventHandler(BaseTerminal.BaseTerminal terminal);
+
 		public const ushort MAX_TERMINAL_INSTANCES = 3;
 		public List<BaseTerminal.BaseTerminal> TerminalInstances = new();
 		public BaseTerminal.BaseTerminal CurrentTerminal;
@@ -34,6 +37,7 @@ namespace YAT.Scenes.GameTerminal.Components
 			if (TerminalInstances.Count >= MAX_TERMINAL_INSTANCES) return;
 
 			var newTerminal = GD.Load<PackedScene>("uid://dfig0yknmx6b7").Instantiate<BaseTerminal.BaseTerminal>();
+			newTerminal.Print("Please note that support for multiple terminals is still experimental and does not work perfectly with threaded commands.", PrintType.Warning);
 
 			TerminalInstances.Add(newTerminal);
 			_instancesContainer.AddChild(newTerminal);
@@ -43,11 +47,16 @@ namespace YAT.Scenes.GameTerminal.Components
 		private void SwitchToTerminal(long index)
 		{
 			CurrentTerminal.Hide();
+			CurrentTerminal.Input.ReleaseFocus();
+			CurrentTerminal.SetProcessInput(false);
 
-			var selectedTerminal = TerminalInstances[(int)index];
+			CurrentTerminal = TerminalInstances[(int)index];
 
-			CurrentTerminal = selectedTerminal;
 			CurrentTerminal.Show();
+			CurrentTerminal.Input.GrabFocus();
+			CurrentTerminal.SetProcessInput(true);
+
+			EmitSignal(SignalName.CurrentTerminalChanged, CurrentTerminal);
 		}
 	}
 }
