@@ -107,7 +107,7 @@ namespace YAT.Scenes.GameTerminal.Components
 
 		private void UpdateTabBarVisibility()
 		{
-			_tabBar.Visible = TerminalInstances.Count > 1;
+			_tabBar.VisibilityLayer = TerminalInstances.Count > 1 ? 1u : 0u;
 		}
 	}
 }
