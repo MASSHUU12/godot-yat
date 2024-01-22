@@ -29,7 +29,9 @@ namespace YAT.Scenes.Monitor
 		{
 			if (component is not IMonitorComponent)
 			{
-				Log.Error(Messages.MissingInterface(component.Name, "IMonitorComponent"));
+				_yat.CurrentTerminal.Output.Error(
+					Messages.MissingInterface(component.Name, "IMonitorComponent")
+				);
 				return;
 			}
 
