@@ -34,9 +34,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = " + "
 
-[node name="TerminalSwitcher" type="PanelContainer" parent="VBoxContainer"]
+[node name="InstancesContainer" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BaseTerminal" parent="VBoxContainer/TerminalSwitcher" instance=ExtResource("1_4hm75")]
+[node name="BaseTerminal" parent="VBoxContainer/InstancesContainer" instance=ExtResource("1_4hm75")]
+unique_name_in_owner = true
 layout_mode = 2
