@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace YAT.Helpers
 {
@@ -17,34 +18,34 @@ namespace YAT.Helpers
 			OSX
 		}
 
+		public enum ExecutionResult
+		{
+			Success,
+			CannotExecute,
+			ErrorExecuting,
+			UnknownPlatform
+		}
+
 		static OS()
 		{
 			CheckOSPlatform();
 			CheckDefaultTerminal();
 		}
 
-		/// <summary>
-		/// Runs a command using the specified program and arguments.
-		/// </summary>
-		/// <param name="command">The command to run.</param>
-		/// <param name="program">
-		/// The program to use for running the command.
-		/// If empty, the default terminal will be used.</param>
-		/// <param name="args">The arguments to pass to the program.</param>
-		public static void RunCommand(string command, string program = "", string args = "")
+		public static StringBuilder RunCommand(string command, out ExecutionResult result, string program = "", string args = "")
 		{
+			StringBuilder output = new();
+			result = ExecutionResult.Success;
+
 			if (Platform == OperatingSystem.Unknown)
 			{
-				Log.Error("Cannot run command, unknown platform.");
-				return;
+				output.AppendLine("Cannot run command, unknown platform.");
+				result = ExecutionResult.UnknownPlatform;
+
+				return output;
 			}
 
-			if (string.IsNullOrEmpty(program))
-			{
-				if (string.IsNullOrEmpty(DefaultTerminal)) return;
-
-				program = DefaultTerminal;
-			}
+			if (string.IsNullOrEmpty(program)) program = DefaultTerminal;
 
 			ProcessStartInfo startInfo = new()
 			{
@@ -65,18 +66,25 @@ namespace YAT.Helpers
 				process.StandardInput.Flush();
 				process.StandardInput.Close();
 
-				string output = process.StandardOutput.ReadToEnd();
-				string error = process.StandardError.ReadToEnd();
+				string outputString = process.StandardOutput.ReadToEnd();
+				string errorString = process.StandardError.ReadToEnd();
 
 				process.WaitForExit();
 
-				if (!string.IsNullOrEmpty(output)) Log.Info(output);
-				if (!string.IsNullOrEmpty(error)) Log.Error(error);
+				if (!string.IsNullOrEmpty(outputString))
+					output.AppendLine(outputString);
+				if (!string.IsNullOrEmpty(errorString))
+					output.AppendLine(errorString);
 			}
 			catch (Exception ex)
 			{
-				Log.Error($"Error executing command: {ex.Message}");
+				output.AppendLine($"Error executing command: {ex.Message}");
+				result = ExecutionResult.ErrorExecuting;
+
+				return output;
 			}
+
+			return output;
 		}
 
 		private static void CheckOSPlatform()
