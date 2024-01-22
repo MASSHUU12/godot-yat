@@ -31,7 +31,7 @@ namespace YAT
 			TerminalManager = GetNode<TerminalManager>("./TerminalManager");
 			TerminalManager.GameTerminal.Ready += () =>
 			{
-				Log.Terminal = TerminalManager.GameTerminal.BaseTerminal;
+				Log.Terminal = TerminalManager.GameTerminal.CurrentTerminal;
 				OptionsManager.Load();
 
 				EmitSignal(SignalName.YatReady);
