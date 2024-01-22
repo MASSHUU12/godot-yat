@@ -128,7 +128,7 @@ namespace YAT.Scenes.CommandManager
 			new Task(() => ExecuteCommand(data), Cts.Token).Start();
 			await ToSignal(this, SignalName.CommandFinished);
 
-			_yat.CurrentTerminal.Output.Success("Command execution finished.");
+			data.Terminal.Output.Success("Command execution finished.");
 		}
 
 		private static Dictionary<string, object> ConcatenatePassedData(Dictionary<string, object> args, Dictionary<string, object> opts)
