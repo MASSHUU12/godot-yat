@@ -7,6 +7,8 @@ namespace YAT.Scenes.GameTerminal.Components
 	public partial class TerminalSwitcher : PanelContainer
 	{
 		[Signal] public delegate void CurrentTerminalChangedEventHandler(BaseTerminal.BaseTerminal terminal);
+		[Signal] public delegate void TerminalAddedEventHandler(BaseTerminal.BaseTerminal terminal);
+		[Signal] public delegate void TerminalSwitcherInitializedEventHandler();
 
 		public const ushort MAX_TERMINAL_INSTANCES = 3;
 		public List<BaseTerminal.BaseTerminal> TerminalInstances = new();
@@ -34,6 +36,8 @@ namespace YAT.Scenes.GameTerminal.Components
 
 			TerminalInstances.Add(_initialTerminal);
 			CurrentTerminal = _initialTerminal;
+
+			EmitSignal(SignalName.TerminalSwitcherInitialized);
 		}
 
 		private void AddTerminal()
@@ -47,6 +51,8 @@ namespace YAT.Scenes.GameTerminal.Components
 			_tabBar.AddTab(newTerminal.Name);
 
 			newTerminal.Print("Please note that support for multiple terminals is still experimental and does not work perfectly with threaded commands.", PrintType.Warning);
+
+			EmitSignal(SignalName.TerminalAdded, newTerminal);
 		}
 
 		private void SwitchToTerminal(long index)
