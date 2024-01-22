@@ -54,7 +54,7 @@ namespace YAT.Scenes.BaseTerminal
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
-			_yat.OptionsChanged += UpdateOptions;
+			_yat.OptionsManager.OptionsChanged += UpdateOptions;
 			_yat.YatReady += () =>
 			{
 				_commandManager.CommandStarted += (command, args) =>
@@ -79,7 +79,7 @@ namespace YAT.Scenes.BaseTerminal
 			Output.MetaClicked += (link) => Godot.OS.ShellOpen((string)link);
 
 			OnCurrentNodeChanged(SelectedNode.Current);
-			UpdateOptions(_yat.Options);
+			UpdateOptions(_yat.OptionsManager.Options);
 		}
 
 		public override void _Input(InputEvent @event)
@@ -158,11 +158,11 @@ namespace YAT.Scenes.BaseTerminal
 		{
 			var color = type switch
 			{
-				PrintType.Error => _yat.Options.ErrorColor,
-				PrintType.Warning => _yat.Options.WarningColor,
-				PrintType.Success => _yat.Options.SuccessColor,
-				PrintType.Normal => _yat.Options.OutputColor,
-				_ => _yat.Options.OutputColor,
+				PrintType.Error => _yat.OptionsManager.Options.ErrorColor,
+				PrintType.Warning => _yat.OptionsManager.Options.WarningColor,
+				PrintType.Success => _yat.OptionsManager.Options.SuccessColor,
+				PrintType.Normal => _yat.OptionsManager.Options.OutputColor,
+				_ => _yat.OptionsManager.Options.OutputColor,
 			};
 
 			// Using CallDeferred to avoid issues when running this method in a separate thread.

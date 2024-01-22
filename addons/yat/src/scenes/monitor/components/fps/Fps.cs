@@ -23,7 +23,7 @@ namespace YAT.Scenes.Monitor
 			var fps = Performance.GetMonitor(Performance.Monitor.TimeFps);
 			var process = Performance.GetMonitor(Performance.Monitor.TimeProcess) * 1000;
 			var physics = Performance.GetMonitor(Performance.Monitor.TimePhysicsProcess) * 1000;
-			var opts = _yat.Options;
+			var opts = _yat.OptionsManager.Options;
 
 			_label.Clear();
 			if (UseColors) _label.PushColor(fps < 30 ? opts.ErrorColor : opts.SuccessColor);

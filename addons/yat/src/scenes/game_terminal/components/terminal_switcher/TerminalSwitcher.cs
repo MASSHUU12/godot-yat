@@ -12,6 +12,7 @@ namespace YAT.Scenes.GameTerminal.Components
 		public List<BaseTerminal.BaseTerminal> TerminalInstances = new();
 		public BaseTerminal.BaseTerminal CurrentTerminal;
 
+		private YAT _yat;
 		private Button _add;
 		private TabBar _tabBar;
 		private PanelContainer _instancesContainer;
@@ -19,6 +20,9 @@ namespace YAT.Scenes.GameTerminal.Components
 
 		public override void _Ready()
 		{
+			_yat = GetNode<YAT>("/root/YAT");
+			_yat.CurrentTerminal = _initialTerminal;
+
 			_add = GetNode<Button>("%Add");
 			_add.Pressed += AddTerminal;
 
@@ -37,11 +41,12 @@ namespace YAT.Scenes.GameTerminal.Components
 			if (TerminalInstances.Count >= MAX_TERMINAL_INSTANCES) return;
 
 			var newTerminal = GD.Load<PackedScene>("uid://dfig0yknmx6b7").Instantiate<BaseTerminal.BaseTerminal>();
-			newTerminal.Print("Please note that support for multiple terminals is still experimental and does not work perfectly with threaded commands.", PrintType.Warning);
 
 			TerminalInstances.Add(newTerminal);
 			_instancesContainer.AddChild(newTerminal);
 			_tabBar.AddTab(newTerminal.Name);
+
+			newTerminal.Print("Please note that support for multiple terminals is still experimental and does not work perfectly with threaded commands.", PrintType.Warning);
 		}
 
 		private void SwitchToTerminal(long index)

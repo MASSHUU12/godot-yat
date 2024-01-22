@@ -4,7 +4,7 @@ namespace YAT.Scenes.SettingsWindow
 {
 	public partial class SettingsWindow : YatWindow.YatWindow
 	{
-		private YAT _yat;
+		private OptionsManager.OptionsManager _manager;
 
 		private Button _save;
 		private Button _load;
@@ -21,34 +21,34 @@ namespace YAT.Scenes.SettingsWindow
 		{
 			base._Ready();
 
-			_yat = GetNode<YAT>("/root/YAT");
+			_manager = GetNode<YAT>("/root/YAT").OptionsManager;
 
 			_save = GetNode<Button>("%Save");
-			_save.Pressed += _yat.OptionsManager.Save;
+			_save.Pressed += _manager.Save;
 
 			_load = GetNode<Button>("%Load");
-			_load.Pressed += _yat.OptionsManager.Load;
+			_load.Pressed += _manager.Load;
 
 			_restoreDefaults = GetNode<Button>("%RestoreDefaults");
-			_restoreDefaults.Pressed += _yat.OptionsManager.RestoreDefaults;
+			_restoreDefaults.Pressed += _manager.RestoreDefaults;
 
 			_prompt = GetNode<LineEdit>("%Prompt");
-			_prompt.Text = _yat.Options.Prompt;
+			_prompt.Text = _manager.Options.Prompt;
 
 			_movable = GetNode<CheckBox>("%Movable");
-			_movable.ButtonPressed = _yat.Options.WindowMovable;
+			_movable.ButtonPressed = _manager.Options.WindowMovable;
 
 			_width = GetNode<SpinBox>("%Width");
-			_width.Value = _yat.Options.DefaultWidth;
+			_width.Value = _manager.Options.DefaultWidth;
 
 			_height = GetNode<SpinBox>("%Height");
-			_height.Value = _yat.Options.DefaultHeight;
+			_height.Value = _manager.Options.DefaultHeight;
 
 			_autoScroll = GetNode<CheckBox>("%AutoScroll");
-			_autoScroll.ButtonPressed = _yat.Options.AutoScroll;
+			_autoScroll.ButtonPressed = _manager.Options.AutoScroll;
 
 			_showPrompt = GetNode<CheckBox>("%ShowPrompt");
-			_showPrompt.ButtonPressed = _yat.Options.ShowPrompt;
+			_showPrompt.ButtonPressed = _manager.Options.ShowPrompt;
 
 			ConnectSignals();
 		}
@@ -59,42 +59,42 @@ namespace YAT.Scenes.SettingsWindow
 
 			_prompt.TextSubmitted += (string text) =>
 			{
-				_yat.Options.Prompt = text;
+				_manager.Options.Prompt = text;
 				UpdateOptions();
 			};
 
 			_movable.Toggled += (bool pressed) =>
 			{
-				_yat.Options.WindowMovable = pressed;
+				_manager.Options.WindowMovable = pressed;
 				UpdateOptions();
 			};
 
 			_width.ValueChanged += (double value) =>
 			{
-				_yat.Options.DefaultWidth = (ushort)value;
+				_manager.Options.DefaultWidth = (ushort)value;
 				UpdateOptions();
 			};
 
 			_height.ValueChanged += (double value) =>
 			{
-				_yat.Options.DefaultHeight = (ushort)value;
+				_manager.Options.DefaultHeight = (ushort)value;
 				UpdateOptions();
 			};
 
 			_autoScroll.Toggled += (bool pressed) =>
 			{
-				_yat.Options.AutoScroll = pressed;
+				_manager.Options.AutoScroll = pressed;
 				UpdateOptions();
 			};
 
 			_showPrompt.Toggled += (bool pressed) =>
 			{
-				_yat.Options.ShowPrompt = pressed;
+				_manager.Options.ShowPrompt = pressed;
 				UpdateOptions();
 			};
 		}
 
-		private void UpdateOptions() => _yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
+		private void UpdateOptions() => _manager.EmitSignal(nameof(_manager.OptionsChanged), _manager.Options);
 	}
 
 }

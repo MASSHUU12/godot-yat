@@ -55,7 +55,7 @@ namespace YAT.Scenes.BaseTerminal
 		{
 			_terminal.HistoryNode = null;
 			_terminal.History.AddLast(command);
-			if (_terminal.History.Count > _yat.Options.HistoryLimit) _terminal.History.RemoveFirst();
+			if (_terminal.History.Count > _yat.OptionsManager.Options.HistoryLimit) _terminal.History.RemoveFirst();
 		}
 
 		/// <summary>
