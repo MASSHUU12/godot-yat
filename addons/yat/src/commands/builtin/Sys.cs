@@ -21,12 +21,17 @@ namespace YAT.Commands
 	{
 		public CommandResult Execute(CommandData data)
 		{
-			var program = (string)data.Arguments["-program"];
+			var program = (string)data.Options["-program"];
 			var command = (string)data.Arguments["command"];
 			var commandName = command.Split(' ')[0];
 			var commandArgs = command[commandName.Length..].Trim() ?? string.Empty;
 
-			OS.RunCommand(commandName, program, commandArgs);
+			var result = OS.RunCommand(commandName, out var status, program, commandArgs);
+
+			if (status == OS.ExecutionResult.Success)
+				data.Terminal.Output.Print(result.ToString());
+			else
+				data.Terminal.Output.Error(result.ToString());
 
 			return CommandResult.Success;
 		}
