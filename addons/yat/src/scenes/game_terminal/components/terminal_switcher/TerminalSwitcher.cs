@@ -46,12 +46,15 @@ namespace YAT.Scenes.GameTerminal.Components
 			if (TerminalInstances.Count >= MAX_TERMINAL_INSTANCES) return;
 
 			var newTerminal = GD.Load<PackedScene>("uid://dfig0yknmx6b7").Instantiate<BaseTerminal.BaseTerminal>();
+			newTerminal.Name = $"Terminal{TerminalInstances.Count}";
 
 			TerminalInstances.Add(newTerminal);
 			_instancesContainer.AddChild(newTerminal);
 			_tabBar.AddTab(newTerminal.Name);
 
 			newTerminal.Print("Please note that support for multiple terminals is still experimental and does not work perfectly with threaded commands.", PrintType.Warning);
+
+			SwitchToTerminal(TerminalInstances.Count - 1);
 
 			EmitSignal(SignalName.TerminalAdded, newTerminal);
 		}
@@ -67,6 +70,8 @@ namespace YAT.Scenes.GameTerminal.Components
 			CurrentTerminal.Show();
 			CurrentTerminal.Input.GrabFocus();
 			CurrentTerminal.SetProcessInput(true);
+
+			_tabBar.CurrentTab = (int)index;
 
 			EmitSignal(SignalName.CurrentTerminalChanged, CurrentTerminal);
 		}
