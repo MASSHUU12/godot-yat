@@ -37,6 +37,7 @@ namespace YAT.Scenes.GameTerminal.Components
 			TerminalInstances.Add(_initialTerminal);
 			CurrentTerminal = _initialTerminal;
 
+			EmitSignal(SignalName.CurrentTerminalChanged, CurrentTerminal);
 			EmitSignal(SignalName.TerminalSwitcherInitialized);
 		}
 
