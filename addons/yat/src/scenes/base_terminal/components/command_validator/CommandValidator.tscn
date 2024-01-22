@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://x1dyt4bknu3x"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/command_validator/CommandValidator.cs" id="1_py04w"]
+
+[node name="CommandValidator" type="Node"]
+script = ExtResource("1_py04w")
