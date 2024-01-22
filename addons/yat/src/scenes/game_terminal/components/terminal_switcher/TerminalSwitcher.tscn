@@ -34,6 +34,7 @@ tab_0/title = "Terminal"
 [node name="Add" type="Button" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 8
 text = " + "
 
 [node name="InstancesContainer" type="PanelContainer" parent="VBoxContainer"]
