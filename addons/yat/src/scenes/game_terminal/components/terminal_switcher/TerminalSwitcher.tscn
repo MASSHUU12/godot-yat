@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwwlprkf31kug"]
+[gd_scene load_steps=5 format=3 uid="uid://bwwlprkf31kug"]
 
 [ext_resource type="PackedScene" uid="uid://dfig0yknmx6b7" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.tscn" id="1_4hm75"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/game_terminal/components/terminal_switcher/TerminalSwitcher.cs" id="1_e2kn4"]
+[ext_resource type="Theme" uid="uid://bh7d0xeft70dh" path="res://addons/yat/src/scenes/game_terminal/components/terminal_switcher/theme/yat_terminal_switcher_theme.tres" id="1_v2cws"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yfm05"]
 
@@ -11,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_v2cws")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_yfm05")
 script = ExtResource("1_e2kn4")
 
