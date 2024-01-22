@@ -39,6 +39,8 @@ namespace YAT.Scenes.GameTerminal.Components
 			TerminalInstances.Add(_initialTerminal);
 			CurrentTerminal = _initialTerminal;
 
+			UpdateTabBarVisibility();
+
 			EmitSignal(SignalName.CurrentTerminalChanged, CurrentTerminal);
 			EmitSignal(SignalName.TerminalSwitcherInitialized);
 		}
@@ -48,7 +50,7 @@ namespace YAT.Scenes.GameTerminal.Components
 			if (TerminalInstances.Count >= MAX_TERMINAL_INSTANCES) return;
 
 			var newTerminal = GD.Load<PackedScene>("uid://dfig0yknmx6b7").Instantiate<BaseTerminal.BaseTerminal>();
-			newTerminal.Name = $"Terminal {TerminalInstances.Count}";
+			newTerminal.Name = $"Terminal {TerminalInstances.Count + 1}";
 
 			TerminalInstances.Add(newTerminal);
 			_instancesContainer.AddChild(newTerminal);
@@ -57,6 +59,8 @@ namespace YAT.Scenes.GameTerminal.Components
 			newTerminal.Print("Please note that support for multiple terminals is still experimental and does not work perfectly with threaded commands.", PrintType.Warning);
 
 			SwitchToTerminal(TerminalInstances.Count - 1);
+
+			UpdateTabBarVisibility();
 
 			EmitSignal(SignalName.TerminalAdded, newTerminal);
 		}
@@ -79,6 +83,8 @@ namespace YAT.Scenes.GameTerminal.Components
 
 			if (CurrentTerminal == terminal) SwitchToTerminal(0);
 
+			UpdateTabBarVisibility();
+
 			EmitSignal(SignalName.TerminalRemoved, terminal);
 		}
 
@@ -97,6 +103,11 @@ namespace YAT.Scenes.GameTerminal.Components
 			_tabBar.CurrentTab = (int)index;
 
 			EmitSignal(SignalName.CurrentTerminalChanged, CurrentTerminal);
+		}
+
+		private void UpdateTabBarVisibility()
+		{
+			_tabBar.Visible = TerminalInstances.Count > 1;
 		}
 	}
 }
