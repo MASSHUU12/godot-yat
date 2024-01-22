@@ -71,7 +71,7 @@ namespace YAT.Scenes.CommandManager
 
 			if (!Commands.ContainsKey(commandName))
 			{
-				_yat.CurrentTerminal.Output.Error(Messages.UnknownCommand(commandName));
+				terminal.Output.Error(Messages.UnknownCommand(commandName));
 				return;
 			}
 
