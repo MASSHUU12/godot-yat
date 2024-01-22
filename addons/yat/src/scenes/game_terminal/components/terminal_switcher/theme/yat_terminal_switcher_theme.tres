@@ -18,5 +18,7 @@ Button/styles/focus = ExtResource("1_jcegf")
 Button/styles/normal = ExtResource("1_jcegf")
 Button/styles/pressed = SubResource("StyleBoxFlat_n76w0")
 TabBar/font_sizes/font_size = 12
+TabBar/styles/tab_focus = ExtResource("1_v54mo")
+TabBar/styles/tab_hovered = ExtResource("1_v54mo")
 TabBar/styles/tab_selected = ExtResource("1_v54mo")
 TabBar/styles/tab_unselected = ExtResource("2_23gb6")
