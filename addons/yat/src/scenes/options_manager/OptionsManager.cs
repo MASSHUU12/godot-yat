@@ -1,12 +1,19 @@
 using Godot;
-using YAT.Helpers;
 
-namespace YAT
+namespace YAT.Scenes.OptionsManager
 {
 	public partial class OptionsManager : Node
 	{
-		private readonly YAT _yat;
+		[Export] public YatOptions Options { get; set; } = new();
+
+		private YAT _yat;
 		private YatOptions _defaultOptions;
+
+		public override void _Ready()
+		{
+			_yat = GetNode<YAT>("/root/YAT");
+			_defaultOptions = Options.Duplicate() as YatOptions;
+		}
 
 		/// <summary>
 		/// <list type="unordered">
@@ -18,12 +25,6 @@ namespace YAT
 		/// </summary>
 		private const string _optionsPath = "user://yat_options.tres";
 
-		public OptionsManager(YAT yat, YatOptions defaultOptions)
-		{
-			_yat = yat;
-			_defaultOptions = defaultOptions.Duplicate() as YatOptions;
-		}
-
 		/// <summary>
 		/// Saves the current options to the specified options path.
 		/// </summary>
@@ -32,10 +33,10 @@ namespace YAT
 			switch (ResourceSaver.Save(_yat.Options, _optionsPath))
 			{
 				case Error.Ok:
-					Log.Print("Options saved successfully.");
+					_yat.CurrentTerminal.Output.Print("Options saved successfully.");
 					break;
 				default:
-					Log.Error("Failed to save options.");
+					_yat.CurrentTerminal.Output.Error("Failed to save options.");
 					break;
 			}
 		}
@@ -47,7 +48,7 @@ namespace YAT
 		{
 			if (!ResourceLoader.Exists(_optionsPath))
 			{
-				Log.Print("Options file does not exist, leaving options unchanged.");
+				_yat.CurrentTerminal.Output.Print("Options file does not exist, leaving options unchanged.");
 				return;
 			}
 
@@ -63,7 +64,7 @@ namespace YAT
 			_yat.Options = _defaultOptions;
 			_yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
 
-			Log.Success("Restored default options.");
+			_yat.CurrentTerminal.Output.Success("Restored default options.");
 		}
 	}
 }

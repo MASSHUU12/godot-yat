@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cffwv5sn53u2c"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/options_manager/OptionsManager.cs" id="1_xc86d"]
+
+[node name="OptionsManager" type="Node"]
+script = ExtResource("1_xc86d")

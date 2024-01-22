@@ -1,9 +1,10 @@
 using Godot;
-using YAT.Attributes;
 using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Scenes.BaseTerminal;
 using YAT.Scenes.CommandManager;
+using YAT.Scenes.OptionsManager;
 using YAT.Scenes.TerminalManager;
 
 namespace YAT
@@ -17,8 +18,8 @@ namespace YAT
 		[Export] public YatOptions Options { get; set; } = new();
 
 		public bool YatEnabled = true;
-
 		public Node Windows { get; private set; }
+		public BaseTerminal CurrentTerminal { get; set; }
 
 		public OptionsManager OptionsManager { get; private set; }
 		public CommandManager CommandManager { get; private set; }
@@ -31,14 +32,18 @@ namespace YAT
 			TerminalManager = GetNode<TerminalManager>("./TerminalManager");
 			TerminalManager.GameTerminal.Ready += () =>
 			{
-				Log.Terminal = TerminalManager.GameTerminal.CurrentTerminal;
-				OptionsManager.Load();
+				TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminalChanged +=
+					(BaseTerminal terminal) =>
+					{
+						CurrentTerminal = terminal;
+						OptionsManager.Load();
+					};
 
 				EmitSignal(SignalName.YatReady);
 			};
 
 			Windows = GetNode<Node>("./Windows");
-			OptionsManager = new(this, Options);
+			OptionsManager = GetNode<OptionsManager>("./OptionsManager");
 			CommandManager = GetNode<CommandManager>("./CommandManager");
 
 			CommandManager.AddCommand(new ICommand[] {
@@ -68,7 +73,7 @@ namespace YAT
 				new Whereami(),
 				new Timescale(),
 				new ToggleAudio(),
-				new QuickCommands()
+				new Commands.QuickCommands()
 			});
 
 			Keybindings.LoadDefaultActions();
