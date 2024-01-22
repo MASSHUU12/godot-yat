@@ -28,6 +28,7 @@ All notable changes to this project will be documented in this file.
 -   Moved logic from Log class to the Output class used in BaseTerminal.
 -   Options manager is now component of YAT.
 -   YatOptions resource is now in the 'resources' folder.
+-   Yat options & OptionsChanged signal have been moved to the OptionsManager class.
 
 ### Fixed
 

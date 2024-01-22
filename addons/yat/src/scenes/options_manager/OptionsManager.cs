@@ -4,6 +4,9 @@ namespace YAT.Scenes.OptionsManager
 {
 	public partial class OptionsManager : Node
 	{
+		[Signal]
+		public delegate void OptionsChangedEventHandler(YatOptions options);
+
 		[Export] public YatOptions Options { get; set; } = new();
 
 		private YAT _yat;
@@ -30,7 +33,7 @@ namespace YAT.Scenes.OptionsManager
 		/// </summary>
 		public void Save()
 		{
-			switch (ResourceSaver.Save(_yat.Options, _optionsPath))
+			switch (ResourceSaver.Save(Options, _optionsPath))
 			{
 				case Error.Ok:
 					_yat.CurrentTerminal.Output.Print("Options saved successfully.");
@@ -52,8 +55,8 @@ namespace YAT.Scenes.OptionsManager
 				return;
 			}
 
-			_yat.Options = ResourceLoader.Load<YatOptions>(_optionsPath);
-			_yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
+			Options = ResourceLoader.Load<YatOptions>(_optionsPath);
+			EmitSignal(SignalName.OptionsChanged, Options);
 		}
 
 		/// <summary>
@@ -61,8 +64,8 @@ namespace YAT.Scenes.OptionsManager
 		/// </summary>
 		public void RestoreDefaults()
 		{
-			_yat.Options = _defaultOptions;
-			_yat.EmitSignal(nameof(_yat.OptionsChanged), _yat.Options);
+			Options = _defaultOptions;
+			EmitSignal(SignalName.OptionsChanged, Options);
 
 			_yat.CurrentTerminal.Output.Success("Restored default options.");
 		}

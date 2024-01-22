@@ -11,11 +11,7 @@ namespace YAT
 {
 	public partial class YAT : Node
 	{
-		[Signal]
-		public delegate void OptionsChangedEventHandler(YatOptions options);
 		[Signal] public delegate void YatReadyEventHandler();
-
-		[Export] public YatOptions Options { get; set; } = new();
 
 		public bool YatEnabled = true;
 		public Node Windows { get; private set; }
@@ -33,11 +29,11 @@ namespace YAT
 			TerminalManager.GameTerminal.Ready += () =>
 			{
 				TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminalChanged +=
-					(BaseTerminal terminal) =>
-					{
-						CurrentTerminal = terminal;
-						OptionsManager.Load();
-					};
+				(BaseTerminal terminal) =>
+				{
+					CurrentTerminal = terminal;
+					OptionsManager.CallDeferred(nameof(OptionsManager.Load));
+				};
 
 				EmitSignal(SignalName.YatReady);
 			};
@@ -81,16 +77,16 @@ namespace YAT
 
 		private void CheckYatEnableSettings()
 		{
-			if (!Options.UseYatEnableFile) return;
+			if (!OptionsManager.Options.UseYatEnableFile) return;
 
-			var path = Options.YatEnableLocation switch
+			var path = OptionsManager.Options.YatEnableLocation switch
 			{
 				YatOptions.YatEnableFileLocation.UserData => "user://",
 				YatOptions.YatEnableFileLocation.CurrentDirectory => "res://",
 				_ => "user://"
 			};
 
-			YatEnabled = FileAccess.FileExists(path + Options.YatEnableFile);
+			YatEnabled = FileAccess.FileExists(path + OptionsManager.Options.YatEnableFile);
 		}
 	}
 }
