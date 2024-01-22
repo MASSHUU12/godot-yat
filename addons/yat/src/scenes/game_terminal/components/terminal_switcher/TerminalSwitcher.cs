@@ -20,6 +20,8 @@ namespace YAT.Scenes.GameTerminal.Components
 			_add.Pressed += AddTerminal;
 
 			_tabBar = GetNode<TabBar>("%TabBar");
+			_tabBar.TabChanged += SwitchToTerminal;
+
 			_instancesContainer = GetNode<PanelContainer>("%InstancesContainer");
 			_initialTerminal = GetNode<BaseTerminal.BaseTerminal>("%BaseTerminal");
 
@@ -36,6 +38,16 @@ namespace YAT.Scenes.GameTerminal.Components
 			TerminalInstances.Add(newTerminal);
 			_instancesContainer.AddChild(newTerminal);
 			_tabBar.AddTab(newTerminal.Name);
+		}
+
+		private void SwitchToTerminal(long index)
+		{
+			CurrentTerminal.Hide();
+
+			var selectedTerminal = TerminalInstances[(int)index];
+
+			CurrentTerminal = selectedTerminal;
+			CurrentTerminal.Show();
 		}
 	}
 }
