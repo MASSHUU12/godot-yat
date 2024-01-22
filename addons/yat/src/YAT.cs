@@ -63,7 +63,7 @@ namespace YAT
 				new Stats(),
 				new Reset(),
 				new Cowsay(),
-				new Options(),
+				// new Options(),
 				new Restart(),
 				new History(),
 				new Whereami(),
