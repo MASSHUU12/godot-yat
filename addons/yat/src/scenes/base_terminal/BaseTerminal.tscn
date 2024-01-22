@@ -1,13 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://dfig0yknmx6b7"]
+[gd_scene load_steps=13 format=3 uid="uid://dfig0yknmx6b7"]
 
 [ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.cs" id="1_gwi3k"]
 [ext_resource type="Theme" uid="uid://csssl8ua88ca4" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_theme.tres" id="1_mdg7i"]
 [ext_resource type="PackedScene" uid="uid://duldfph1vr1yb" path="res://addons/yat/src/scenes/base_terminal/components/autocompletion/Autocompletion.tscn" id="3_6vb77"]
+[ext_resource type="PackedScene" uid="uid://b6tsk66eajwde" path="res://addons/yat/src/scenes/base_terminal/components/output/Output.tscn" id="3_alxhd"]
 [ext_resource type="PackedScene" uid="uid://crxh4uxlaoyrq" path="res://addons/yat/src/scenes/base_terminal/components/input_info/InputInfo.tscn" id="3_evvr3"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/input/Input.cs" id="4_4lcgu"]
 [ext_resource type="PackedScene" uid="uid://c522nry8jbfon" path="res://addons/yat/src/scenes/base_terminal/components/input_info/components/command_info/CommandInfo.tscn" id="4_eo32s"]
 [ext_resource type="PackedScene" uid="uid://dx1optgaua8wt" path="res://addons/yat/src/scenes/base_terminal/components/terminal_context/TerminalContext.tscn" id="5_mu1cs"]
 [ext_resource type="PackedScene" uid="uid://b2ljvgvvny52r" path="res://addons/yat/src/scenes/base_terminal/components/selected_node/SelectedNode.tscn" id="6_prlgb"]
+[ext_resource type="PackedScene" uid="uid://x1dyt4bknu3x" path="res://addons/yat/src/scenes/base_terminal/components/command_validator/CommandValidator.tscn" id="10_isg4j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6fw"]
 bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
@@ -38,23 +40,18 @@ theme = ExtResource("1_mdg7i")
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 
-[node name="Output" type="RichTextLabel" parent="PanelContainer/VBoxContainer"]
+[node name="Output" parent="PanelContainer/VBoxContainer" node_paths=PackedStringArray("Terminal") instance=ExtResource("3_alxhd")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 3
-focus_mode = 2
-bbcode_enabled = true
-text = "YAT - Yet Another Terminal
-MIT 2023 - MASSHUU12"
-shortcut_keys_enabled = false
-selection_enabled = true
+Terminal = NodePath("../../..")
 
 [node name="InputInfo" parent="PanelContainer/VBoxContainer" instance=ExtResource("3_evvr3")]
 layout_mode = 2
 
-[node name="CommandInfo" parent="PanelContainer/VBoxContainer/InputInfo" node_paths=PackedStringArray("InputInfo", "Input") instance=ExtResource("4_eo32s")]
-InputInfo = NodePath("..")
+[node name="CommandInfo" parent="PanelContainer/VBoxContainer/InputInfo" node_paths=PackedStringArray("Input", "InputInfo", "Terminal") instance=ExtResource("4_eo32s")]
 Input = NodePath("../../InputLine/HBoxContainer/Input")
+InputInfo = NodePath("..")
+Terminal = NodePath("../../../..")
 
 [node name="InputLine" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -88,3 +85,5 @@ script = ExtResource("4_4lcgu")
 
 [node name="Autocompletion" parent="Components" node_paths=PackedStringArray("CommandInfo") instance=ExtResource("3_6vb77")]
 CommandInfo = NodePath("../../PanelContainer/VBoxContainer/InputInfo/CommandInfo")
+
+[node name="CommandValidator" parent="Components" instance=ExtResource("10_isg4j")]

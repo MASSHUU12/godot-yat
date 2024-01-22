@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6tsk66eajwde"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/output/Output.cs" id="1_ntaaq"]
+
+[node name="Output" type="RichTextLabel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
+text = "YAT - Yet Another Terminal
+MIT 2023 - MASSHUU12"
+shortcut_keys_enabled = false
+selection_enabled = true
+script = ExtResource("1_ntaaq")

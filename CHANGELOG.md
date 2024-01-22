@@ -9,6 +9,16 @@ All notable changes to this project will be documented in this file.
 -   Generic Print method overload for BaseTerminal.
 -   TerminalManager class.
 -   Reference to the TerminalManager in YAT.
+-   TerminalSwitcher class to the GameTerminal.
+-   Reference to the TerminalSwitcher in GameTerminal class.
+-   Support for multiple terminals.
+-   Output class.
+-   CommandValidator to the BaseTerminal.
+-   Signals on TerminalSwitcher:
+    -   TerminalAdded
+    -   TerminalRemoved
+    -   CurrentTerminalChanged
+    -   TerminalSwitcherInitialized
 
 ### Changed
 
@@ -18,15 +28,24 @@ All notable changes to this project will be documented in this file.
 -   Moved TerminalOpened & TerminalClosed signals from YAT to TerminalManager.
 -   The ability to add commands has been moved from YAT to CommandManager.
 -   AddCommand supports an array of commands.
+-   Renamed BaseTerminal to CurrentTerminal in GameTerminal.
+-   Moved logic from Log class to the Output class used in BaseTerminal.
+-   Options manager is now component of YAT.
+-   YatOptions resource is now in the 'resources' folder.
+-   Yat options & OptionsChanged signal have been moved to the OptionsManager class.
+-   Options are disabled until the entire system is rewritten from scratch.
 
 ### Fixed
 
 -   Threaded commands could not be cancelled.
+-   The 'sys' command treats the '-program' option as an argument.
 
 ### Removed
 
 -   Print method overload for BaseTerminal accepting StringBuilder.
 -   Reference to the BaseTerminal in YAT.
+-   Log class (use BaseTerminal.Output instead).
+-   CommandHelper class.
 
 ## [1.18.0-beta 2024-01-19]
 

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Text;
+using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
 
 namespace YAT.Commands
 {
-	public partial class Extensible
+	public partial class Extensible : Node
 	{
 		public Dictionary<string, IExtension> Extensions { get; } = new();
 
@@ -20,7 +21,8 @@ namespace YAT.Commands
 				is not ExtensionAttribute attribute
 			)
 			{
-				Log.Error(Messages.MissingAttribute("ExtensionAttribute", extension.GetType().Name));
+				var yat = GetNode<YAT>("/root/YAT");
+				yat.CurrentTerminal.Output.Error(Messages.MissingAttribute("ExtensionAttribute", extension.GetType().Name));
 				return;
 			}
 

@@ -1,8 +1,6 @@
 using System.Threading;
-using Godot;
 using YAT.Attributes;
 using YAT.Enums;
-using YAT.Helpers;
 using YAT.Interfaces;
 
 namespace YAT.Commands
@@ -25,7 +23,9 @@ namespace YAT.Commands
 
 			if (command is null)
 			{
-				Log.Error($"Command '{data.Arguments["command"]}' not found, exiting watch.");
+				data.Terminal.Output.Error(
+					$"Command '{data.Arguments["command"]}' not found, exiting watch."
+				);
 				return CommandResult.InvalidArguments;
 			}
 
@@ -36,7 +36,9 @@ namespace YAT.Commands
 			{
 				if (command.Execute(newArgs) != CommandResult.Success)
 				{
-					Log.Error($"Error executing command '{data.RawData[1]}', exiting watch.");
+					data.Terminal.Output.Error(
+						$"Error executing command '{data.RawData[1]}', exiting watch."
+					);
 					return CommandResult.Failure;
 				}
 

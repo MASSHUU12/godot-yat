@@ -32,7 +32,7 @@ namespace YAT.Scenes.Monitor
 				$"RAM: {NumericHelper.SizeToString(physical.AsInt64(), 3)}\n" +
 				$"Free: {(
 					freePercent < 15 && UseColors
-					? $"[color={_yat.Options.ErrorColor}]{NumericHelper.SizeToString(free.AsInt64(), 3)}[/color]"
+					? $"[color={_yat.OptionsManager.Options.ErrorColor}]{NumericHelper.SizeToString(free.AsInt64(), 3)}[/color]"
 					: NumericHelper.SizeToString(free.AsInt64(), 3))}\n" +
 				$"Stack: {NumericHelper.SizeToString(stack.AsInt64(), 1)}\n" +
 				$"VRAM: {NumericHelper.SizeToString((long)vram, 2)}"

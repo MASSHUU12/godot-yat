@@ -1,0 +1,24 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://bh7d0xeft70dh"]
+
+[ext_resource type="StyleBox" uid="uid://vh3j5ydrbq40" path="res://addons/yat/src/scenes/game_terminal/components/terminal_switcher/theme/yat_terminal_switcher_button_normal.tres" id="1_jcegf"]
+[ext_resource type="StyleBox" uid="uid://blle8xkq3vl1t" path="res://addons/yat/src/scenes/game_terminal/components/terminal_switcher/theme/yat_terminal_switcher_tab_selected.tres" id="1_v54mo"]
+[ext_resource type="StyleBox" uid="uid://dsl6r74qyyffw" path="res://addons/yat/src/scenes/game_terminal/components/terminal_switcher/theme/yat_terminal_switcher_tab_unselected.tres" id="2_23gb6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n76w0"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(0.0685255, 0.0819031, 0.101969, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[resource]
+Button/styles/focus = ExtResource("1_jcegf")
+Button/styles/normal = ExtResource("1_jcegf")
+Button/styles/pressed = SubResource("StyleBoxFlat_n76w0")
+TabBar/font_sizes/font_size = 12
+TabBar/styles/tab_focus = ExtResource("1_v54mo")
+TabBar/styles/tab_hovered = ExtResource("1_v54mo")
+TabBar/styles/tab_selected = ExtResource("1_v54mo")
+TabBar/styles/tab_unselected = ExtResource("2_23gb6")

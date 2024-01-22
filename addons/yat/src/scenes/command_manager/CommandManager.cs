@@ -48,7 +48,9 @@ namespace YAT.Scenes.CommandManager
 			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
 				is not CommandAttribute attribute)
 			{
-				Log.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
+				_yat.CurrentTerminal.Output.Error(
+					Messages.MissingAttribute("CommandAttribute", command.GetType().Name)
+				);
 				return;
 			}
 
@@ -69,7 +71,7 @@ namespace YAT.Scenes.CommandManager
 
 			if (!Commands.ContainsKey(commandName))
 			{
-				Log.Error(Messages.UnknownCommand(commandName));
+				terminal.Output.Error(Messages.UnknownCommand(commandName));
 				return;
 			}
 
@@ -79,13 +81,13 @@ namespace YAT.Scenes.CommandManager
 
 			if (command.GetAttribute<NoValidateAttribute>() is null)
 			{
-				if (!CommandHelper.ValidatePassedData<ArgumentAttribute>(
+				if (!terminal.CommandValidator.ValidatePassedData<ArgumentAttribute>(
 					command, args[1..], out convertedArgs
 				)) return;
 
 				if (command.GetAttributes<OptionAttribute>() is not null)
 				{
-					if (!CommandHelper.ValidatePassedData<OptionAttribute>(
+					if (!terminal.CommandValidator.ValidatePassedData<OptionAttribute>(
 						command, args[1..], out convertedOpts
 					)) return;
 				}
@@ -126,7 +128,7 @@ namespace YAT.Scenes.CommandManager
 			new Task(() => ExecuteCommand(data), Cts.Token).Start();
 			await ToSignal(this, SignalName.CommandFinished);
 
-			Log.Success("Command execution finished.");
+			data.Terminal.Output.Success("Command execution finished.");
 		}
 
 		private static Dictionary<string, object> ConcatenatePassedData(Dictionary<string, object> args, Dictionary<string, object> opts)

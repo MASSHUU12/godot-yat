@@ -64,7 +64,9 @@ namespace YAT.Scenes.BaseTerminal
 
 		public bool ParseAndCallMethods(string input)
 		{
-			Log.Warning("Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n");
+			_terminal.Output.Warning(
+				"Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n"
+			);
 
 			string[] tokens = Text.SplitClean(input, ".");
 			Variant result = new();
@@ -120,7 +122,7 @@ namespace YAT.Scenes.BaseTerminal
 		{
 			if (!Current.HasMethod(method))
 			{
-				Log.Error(Messages.UnknownMethod(Current.Name, method));
+				_terminal.Output.Error(Messages.UnknownMethod(Current.Name, method));
 				EmitSignal(SignalName.MethodCalled, method, new(), (ushort)MethodStatus.Failed);
 				return false;
 			}

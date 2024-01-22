@@ -1,15 +1,18 @@
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using YAT.Attributes;
+using YAT.Helpers;
 using YAT.Interfaces;
 
-#nullable enable
-namespace YAT.Helpers
+namespace YAT.Scenes.BaseTerminal.Components
 {
-	public static class CommandHelper
+	public partial class CommandValidator : Node
 	{
+		[Export] public BaseTerminal Terminal { get; set; }
+
 		/// <summary>
 		/// Validates the passed data for a given command and returns a dictionary of arguments.
 		/// </summary>
@@ -18,15 +21,15 @@ namespace YAT.Helpers
 		/// <param name="passedArgs">The arguments passed to the command.</param>
 		/// <param name="args">The dictionary of arguments.</param>
 		/// <returns>True if the passed data is valid, false otherwise.</returns>
-		public static bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object?>? args) where T : Attribute
+		public bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
 		{
 			Debug.Assert(typeof(T) == typeof(ArgumentAttribute) || typeof(T) == typeof(OptionAttribute));
 
-			CommandAttribute? commandAttribute = command.GetAttribute<CommandAttribute>();
+			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
 
 			if (commandAttribute is null)
 			{
-				Log.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
+				Terminal.Output.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
 				args = null;
 				return false;
 			}
@@ -38,7 +41,7 @@ namespace YAT.Helpers
 				args = argsArr.ToDictionary(a => (a as ArgumentAttribute)!.Name, a => (a as ArgumentAttribute)!.Type);
 				if (passedArgs.Length < args.Count)
 				{
-					Log.Error(Messages.MissingArguments(commandAttribute.Name, args.Keys.ToArray()));
+					Terminal.Output.Error(Messages.MissingArguments(commandAttribute.Name, args.Keys.ToArray()));
 					return false;
 				}
 
@@ -48,7 +51,7 @@ namespace YAT.Helpers
 			{
 				args = argsArr.ToDictionary(
 					a => (a as OptionAttribute)?.Name ?? string.Empty,
-					a => (object?)new Tuple<object?, object?>(
+					a => (object)new Tuple<object, object>(
 						(a as OptionAttribute)?.Type, (a as OptionAttribute)?.DefaultValue
 					)
 				);
@@ -61,20 +64,12 @@ namespace YAT.Helpers
 			return true;
 		}
 
-		/// <summary>
-		/// Validates the arguments passed to a command based on the command's attribute
-		/// and the arguments dictionary.
-		/// </summary>
-		/// <param name="name">The command's name.</param>
-		/// <param name="args">The arguments dictionary.</param>
-		/// <param name="passedArgs">The arguments passed to the command.</param>
-		/// <returns>True if the arguments are valid, false otherwise.</returns>
-		private static bool ValidateCommandArguments(string name, Dictionary<string, object?> args, string[] passedArgs)
+		private bool ValidateCommandArguments(string name, Dictionary<string, object> args, string[] passedArgs)
 		{
 			for (int i = 0; i < args.Count; i++)
 			{
 				string argName = args.Keys.ElementAt(i);
-				object? argType = args.Values.ElementAt(i);
+				object argType = args.Values.ElementAt(i);
 
 				if (!ValidateCommandArgument(argName, argType, args, passedArgs[i]))
 					return false;
@@ -83,10 +78,10 @@ namespace YAT.Helpers
 			return true;
 		}
 
-		public static bool ValidateCommandArgument(
+		public bool ValidateCommandArgument(
 			string name,
-			object? type,
-			Dictionary<string, object?> args,
+			object type,
+			Dictionary<string, object> args,
 			string passedArg,
 			bool log = true
 		)
@@ -104,7 +99,7 @@ namespace YAT.Helpers
 						break;
 					}
 
-					object? convertedArg = ConvertStringToType(opt, passedArg);
+					object convertedArg = ConvertStringToType(opt, passedArg);
 
 					if (convertedArg is not null)
 					{
@@ -116,7 +111,7 @@ namespace YAT.Helpers
 
 				if (!found)
 				{
-					if (log) Log.Error(
+					if (log) Terminal.Output.Error(
 						Messages.InvalidArgument(name, name, string.Join(", ", options))
 					);
 					return false;
@@ -124,13 +119,13 @@ namespace YAT.Helpers
 			}
 			else
 			{
-				object? convertedArg = ConvertStringToType(
+				object convertedArg = ConvertStringToType(
 					type?.ToString() ?? name, passedArg
 				);
 
 				if (convertedArg is null)
 				{
-					if (log) Log.Error(
+					if (log) Terminal.Output.Error(
 						Messages.InvalidArgument(name, name, (string)(type ?? name))
 					);
 					return false;
@@ -142,29 +137,22 @@ namespace YAT.Helpers
 			return true;
 		}
 
-		/// <summary>
-		/// Validates the command options based on the specified name, options, and passed options.
-		/// </summary>
-		/// <param name="name">The name of the command.</param>
-		/// <param name="opts">The dictionary of options.</param>
-		/// <param name="passedOpts">The array of passed options.</param>
-		/// <returns>True if the command options are valid, false otherwise.</returns>
-		private static bool ValidateCommandOptions(string name, Dictionary<string, object?> opts, string[] passedOpts)
+		private bool ValidateCommandOptions(string name, Dictionary<string, object> opts, string[] passedOpts)
 		{
 			foreach (var optEntry in opts)
 			{
 				string optName = optEntry.Key;
-				object? optType = ((Tuple<object?, object?>?)optEntry.Value)?.Item1;
+				object optType = ((Tuple<object, object>)optEntry.Value)?.Item1;
 
 				var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName), string.Empty)
 								.Split('=', 2, StringSplitOptions.TrimEntries);
-				string? passedOptName = passedOpt?[0];
-				string? passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
+				string passedOptName = passedOpt?[0];
+				string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
 
 				// If option is not passed then set the option to its default value
 				if (string.IsNullOrEmpty(passedOptName))
 				{
-					opts[optName] = ((Tuple<object?, object?>?)opts[optName])?.Item2;
+					opts[optName] = ((Tuple<object, object>)opts[optName])?.Item2;
 					continue;
 				}
 
@@ -173,7 +161,7 @@ namespace YAT.Helpers
 				{
 					if (!string.IsNullOrEmpty(passedOptValue))
 					{
-						Log.Error(Messages.InvalidArgument(name, optName, optName));
+						Terminal.Output.Error(Messages.InvalidArgument(name, optName, optName));
 						return false;
 					}
 
@@ -184,17 +172,17 @@ namespace YAT.Helpers
 				// If option is passed but it doesn't have a value
 				if (string.IsNullOrEmpty(passedOptValue))
 				{
-					Log.Error(Messages.MissingValue(name, optName));
+					Terminal.Output.Error(Messages.MissingValue(name, optName));
 					return false;
 				}
 
 				bool ProcessOptionValue(string valueType, Action<object> set)
 				{
-					object? converted = ConvertStringToType(valueType, passedOptValue);
+					object converted = ConvertStringToType(valueType, passedOptValue);
 
 					if (converted is null)
 					{
-						Log.Error(Messages.InvalidArgument(name, optName, valueType ?? optName));
+						Terminal.Output.Error(Messages.InvalidArgument(name, optName, valueType ?? optName));
 						return false;
 					}
 
@@ -249,7 +237,7 @@ namespace YAT.Helpers
 							break;
 						}
 
-						object? converted = ConvertStringToType(opt, passedOptValue);
+						object converted = ConvertStringToType(opt, passedOptValue);
 
 						if (converted is not null)
 						{
@@ -261,7 +249,7 @@ namespace YAT.Helpers
 
 					if (!found)
 					{
-						Log.Error(Messages.InvalidArgument(name, optName, string.Join(", ", options)));
+						Terminal.Output.Error(Messages.InvalidArgument(name, optName, string.Join(", ", options)));
 						return false;
 					}
 				}
@@ -298,13 +286,7 @@ namespace YAT.Helpers
 			return true;
 		}
 
-		/// <summary>
-		/// Converts a string value to the specified type.
-		/// </summary>
-		/// <param name="type">The type to convert the value to.</param>
-		/// <param name="value">The string value to convert.</param>
-		/// <returns>The converted value, or null if the conversion fails.</returns>
-		private static object? ConvertStringToType(string type, string value)
+		private static object ConvertStringToType(string type, string value)
 		{
 			var t = type.ToLower();
 
@@ -318,17 +300,7 @@ namespace YAT.Helpers
 			return null;
 		}
 
-		/// <summary>
-		/// Tries to convert a string value to a numeric type T, and returns the converted value if it is within the range specified by the type.
-		/// </summary>
-		/// <typeparam name="T">The numeric type to convert to.</typeparam>
-		/// <param name="type">The string representation of the numeric type.</param>
-		/// <param name="value">The string value to convert.</param>
-		/// <returns>The converted value if it is within the range specified by the type, otherwise null.</returns>
-		/// <remarks>
-		/// This method uses the NumericHelper class to perform the conversion and range checking.
-		/// </remarks>
-		private static object? TryConvertNumeric<T>(string type, string value) where T : notnull, IConvertible, IComparable<T>
+		private static object TryConvertNumeric<T>(string type, string value) where T : notnull, IConvertible, IComparable<T>
 		{
 			if (!NumericHelper.TryConvert<T>(value, out T result)) return null;
 

@@ -3,9 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/yat_window/YatWindow.tscn" id="2_0wq7x"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/game_terminal/GameTerminal.cs" id="2_17k82"]
 [ext_resource type="StyleBox" uid="uid://bps5qi2kfwh86" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_label_theme.tres" id="3_xmkp7"]
-[ext_resource type="PackedScene" uid="uid://dfig0yknmx6b7" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.tscn" id="4_363g1"]
 [ext_resource type="StyleBox" uid="uid://dron3rskgcrdd" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_line_edit_theme.tres" id="4_pb6kd"]
 [ext_resource type="StyleBox" uid="uid://cysgs5mb1c0jj" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_rich_text_label_theme.tres" id="5_iupxt"]
+[ext_resource type="PackedScene" uid="uid://bwwlprkf31kug" path="res://addons/yat/src/scenes/game_terminal/components/terminal_switcher/TerminalSwitcher.tscn" id="6_q6yte"]
 
 [sub_resource type="Theme" id="Theme_1ovvd"]
 HBoxContainer/constants/separation = 0
@@ -32,7 +32,10 @@ size = Vector2i(728, 384)
 script = ExtResource("2_17k82")
 
 [node name="Content" parent="." index="0"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = SubResource("Theme_1ovvd")
 
-[node name="BaseTerminal" parent="Content" index="0" instance=ExtResource("4_363g1")]
+[node name="TerminalSwitcher" parent="Content" index="0" instance=ExtResource("6_q6yte")]
+unique_name_in_owner = true
 layout_mode = 2

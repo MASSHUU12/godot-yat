@@ -1,11 +1,13 @@
 using Godot;
 using YAT.Helpers;
+using YAT.Scenes.GameTerminal.Components;
 
 namespace YAT.Scenes.GameTerminal
 {
 	public partial class GameTerminal : YatWindow.YatWindow
 	{
-		public BaseTerminal.BaseTerminal BaseTerminal { get; private set; }
+		public BaseTerminal.BaseTerminal CurrentTerminal { get; private set; }
+		public TerminalSwitcher TerminalSwitcher { get; private set; }
 
 		private YAT _yat;
 
@@ -19,10 +21,12 @@ namespace YAT.Scenes.GameTerminal
 				CloseRequested += _yat.TerminalManager.CloseTerminal;
 			};
 
-			BaseTerminal = GetNode<BaseTerminal.BaseTerminal>("Content/BaseTerminal");
-			BaseTerminal.TitleChangeRequested += title => Title = title;
-			BaseTerminal.PositionResetRequested += ResetPosition;
-			BaseTerminal.SizeResetRequested += () => Size = InitialSize;
+			TerminalSwitcher = GetNode<TerminalSwitcher>("%TerminalSwitcher");
+
+			CurrentTerminal = TerminalSwitcher.CurrentTerminal;
+			CurrentTerminal.TitleChangeRequested += title => Title = title;
+			CurrentTerminal.PositionResetRequested += ResetPosition;
+			CurrentTerminal.SizeResetRequested += () => Size = InitialSize;
 
 			MoveToCenter();
 		}

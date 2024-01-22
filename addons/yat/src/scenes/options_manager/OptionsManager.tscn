@@ -1,9 +1,10 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dmg0237pdk1x6"]
+[gd_scene load_steps=4 format=3 uid="uid://cffwv5sn53u2c"]
 
-[ext_resource type="Script" path="res://addons/yat/src/options/YatOptions.cs" id="1_8b538"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/options_manager/OptionsManager.cs" id="1_xc86d"]
+[ext_resource type="Script" path="res://addons/yat/src/resources/options/YatOptions.cs" id="2_mhaej"]
 
-[resource]
-script = ExtResource("1_8b538")
+[sub_resource type="Resource" id="Resource_imrck"]
+script = ExtResource("2_mhaej")
 Prompt = ">"
 ShowPrompt = true
 HistoryLimit = 25
@@ -27,3 +28,7 @@ MinHeight = 256
 UseYatEnableFile = false
 YatEnableFile = ".yatenable"
 YatEnableLocation = 0
+
+[node name="OptionsManager" type="Node"]
+script = ExtResource("1_xc86d")
+Options = SubResource("Resource_imrck")

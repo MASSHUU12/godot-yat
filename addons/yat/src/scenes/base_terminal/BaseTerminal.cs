@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Text;
 using Godot;
 using YAT.Helpers;
+using YAT.Scenes.BaseTerminal.Components;
 
 namespace YAT.Scenes.BaseTerminal
 {
@@ -14,8 +14,10 @@ namespace YAT.Scenes.BaseTerminal
 
 		public bool Locked { get; set; }
 		public Input Input { get; private set; }
+		public Output Output { get; private set; }
 		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
+		public CommandValidator CommandValidator { get; private set; }
 
 		public readonly LinkedList<string> History = new();
 		public LinkedListNode<string> HistoryNode = null;
@@ -46,16 +48,17 @@ namespace YAT.Scenes.BaseTerminal
 		private YAT _yat;
 		private Label _promptLabel;
 		private Label _selectedNodeLabel;
-		private RichTextLabel Output;
 		private string _prompt = "> ";
 		private CommandManager.CommandManager _commandManager;
 
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
-			_yat.OptionsChanged += UpdateOptions;
 			_yat.YatReady += () =>
 			{
+				_yat.OptionsManager.OptionsChanged += UpdateOptions;
+				UpdateOptions(_yat.OptionsManager.Options);
+
 				_commandManager.CommandStarted += (command, args) =>
 					EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
 				_commandManager.CommandFinished += (command, args, result) =>
@@ -68,16 +71,16 @@ namespace YAT.Scenes.BaseTerminal
 			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
 			Context = GetNode<TerminalContext>("TerminalContext");
+			CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
 			_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
 			Input = GetNode<Input>("%Input");
 
-			Output = GetNode<RichTextLabel>("%Output");
+			Output = GetNode<Output>("%Output");
 			Output.MetaClicked += (link) => Godot.OS.ShellOpen((string)link);
 
 			OnCurrentNodeChanged(SelectedNode.Current);
-			UpdateOptions(_yat.Options);
 		}
 
 		public override void _Input(InputEvent @event)
@@ -156,11 +159,11 @@ namespace YAT.Scenes.BaseTerminal
 		{
 			var color = type switch
 			{
-				PrintType.Error => _yat.Options.ErrorColor,
-				PrintType.Warning => _yat.Options.WarningColor,
-				PrintType.Success => _yat.Options.SuccessColor,
-				PrintType.Normal => _yat.Options.OutputColor,
-				_ => _yat.Options.OutputColor,
+				PrintType.Error => _yat.OptionsManager.Options.ErrorColor,
+				PrintType.Warning => _yat.OptionsManager.Options.WarningColor,
+				PrintType.Success => _yat.OptionsManager.Options.SuccessColor,
+				PrintType.Normal => _yat.OptionsManager.Options.OutputColor,
+				_ => _yat.OptionsManager.Options.OutputColor,
 			};
 
 			// Using CallDeferred to avoid issues when running this method in a separate thread.

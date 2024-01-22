@@ -7,8 +7,9 @@ namespace YAT.Scenes.BaseTerminal.Components.InputInfo
 {
 	public partial class CommandInfo : Node
 	{
-		[Export] public InputInfo InputInfo { get; set; }
 		[Export] public Input Input { get; set; }
+		[Export] public InputInfo InputInfo { get; set; }
+		[Export] public BaseTerminal Terminal { get; set; }
 
 		private YAT _yat;
 
@@ -44,7 +45,7 @@ namespace YAT.Scenes.BaseTerminal.Components.InputInfo
 				string key = commandArguments[i].Name;
 				var arg = commandArguments[i].Type;
 				bool current = tokens.Length - 1 == i;
-				bool valid = CommandHelper.ValidateCommandArgument(
+				bool valid = Terminal.CommandValidator.ValidateCommandArgument(
 					commandAttribute.Name,
 					arg,
 					new() { { key, arg } },
@@ -54,7 +55,7 @@ namespace YAT.Scenes.BaseTerminal.Components.InputInfo
 
 				string argument = string.Format(
 					" {0}{1}<{2}:{3}>{4}{5}",
-					valid ? string.Empty : $"[color={_yat.Options.ErrorColor.ToHtml()}]",
+					valid ? string.Empty : $"[color={_yat.OptionsManager.Options.ErrorColor.ToHtml()}]",
 					current ? "[b]" : string.Empty,
 					key,
 					(arg is string[]) ? "options" : arg,
