@@ -17,6 +17,7 @@ namespace YAT.Scenes.BaseTerminal
 		public Output Output { get; private set; }
 		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
+		public CommandValidator CommandValidator { get; private set; }
 
 		public readonly LinkedList<string> History = new();
 		public LinkedListNode<string> HistoryNode = null;
@@ -68,6 +69,7 @@ namespace YAT.Scenes.BaseTerminal
 			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
 			Context = GetNode<TerminalContext>("TerminalContext");
+			CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
 			_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
