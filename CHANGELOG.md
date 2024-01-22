@@ -15,8 +15,9 @@ All notable changes to this project will be documented in this file.
 -   Output class.
 -   CommandValidator to the BaseTerminal.
 -   Signals on TerminalSwitcher:
-    -   CurrentTerminalChanged
     -   TerminalAdded
+    -   TerminalRemoved
+    -   CurrentTerminalChanged
     -   TerminalSwitcherInitialized
 
 ### Changed

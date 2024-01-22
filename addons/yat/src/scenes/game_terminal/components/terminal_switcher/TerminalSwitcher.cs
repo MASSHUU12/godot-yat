@@ -6,11 +6,12 @@ namespace YAT.Scenes.GameTerminal.Components
 {
 	public partial class TerminalSwitcher : PanelContainer
 	{
-		[Signal] public delegate void CurrentTerminalChangedEventHandler(BaseTerminal.BaseTerminal terminal);
-		[Signal] public delegate void TerminalAddedEventHandler(BaseTerminal.BaseTerminal terminal);
 		[Signal] public delegate void TerminalSwitcherInitializedEventHandler();
+		[Signal] public delegate void TerminalAddedEventHandler(BaseTerminal.BaseTerminal terminal);
+		[Signal] public delegate void TerminalRemovedEventHandler(BaseTerminal.BaseTerminal terminal);
+		[Signal] public delegate void CurrentTerminalChangedEventHandler(BaseTerminal.BaseTerminal terminal);
 
-		public const ushort MAX_TERMINAL_INSTANCES = 3;
+		public const ushort MAX_TERMINAL_INSTANCES = 5;
 		public List<BaseTerminal.BaseTerminal> TerminalInstances = new();
 		public BaseTerminal.BaseTerminal CurrentTerminal;
 
@@ -30,6 +31,7 @@ namespace YAT.Scenes.GameTerminal.Components
 
 			_tabBar = GetNode<TabBar>("%TabBar");
 			_tabBar.TabChanged += SwitchToTerminal;
+			_tabBar.TabClosePressed += RemoveTerminal;
 
 			_instancesContainer = GetNode<PanelContainer>("%InstancesContainer");
 			_initialTerminal = GetNode<BaseTerminal.BaseTerminal>("%BaseTerminal");
@@ -46,7 +48,7 @@ namespace YAT.Scenes.GameTerminal.Components
 			if (TerminalInstances.Count >= MAX_TERMINAL_INSTANCES) return;
 
 			var newTerminal = GD.Load<PackedScene>("uid://dfig0yknmx6b7").Instantiate<BaseTerminal.BaseTerminal>();
-			newTerminal.Name = $"Terminal{TerminalInstances.Count}";
+			newTerminal.Name = $"Terminal {TerminalInstances.Count}";
 
 			TerminalInstances.Add(newTerminal);
 			_instancesContainer.AddChild(newTerminal);
@@ -57,6 +59,27 @@ namespace YAT.Scenes.GameTerminal.Components
 			SwitchToTerminal(TerminalInstances.Count - 1);
 
 			EmitSignal(SignalName.TerminalAdded, newTerminal);
+		}
+
+		private void RemoveTerminal(long index)
+		{
+			if (TerminalInstances.Count <= 1) return;
+
+			var terminal = TerminalInstances[(int)index];
+
+			if (terminal.Locked)
+			{
+				terminal.Print("This terminal is currently executing a command and cannot be closed.", PrintType.Error);
+				return;
+			}
+
+			_tabBar.RemoveTab((int)index);
+			TerminalInstances.Remove(terminal);
+			terminal.QueueFree();
+
+			if (CurrentTerminal == terminal) SwitchToTerminal(0);
+
+			EmitSignal(SignalName.TerminalRemoved, terminal);
 		}
 
 		private void SwitchToTerminal(long index)
