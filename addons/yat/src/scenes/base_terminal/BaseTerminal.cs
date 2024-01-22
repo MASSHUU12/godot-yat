@@ -54,9 +54,11 @@ namespace YAT.Scenes.BaseTerminal
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("/root/YAT");
-			_yat.OptionsManager.OptionsChanged += UpdateOptions;
 			_yat.YatReady += () =>
 			{
+				_yat.OptionsManager.OptionsChanged += UpdateOptions;
+				UpdateOptions(_yat.OptionsManager.Options);
+
 				_commandManager.CommandStarted += (command, args) =>
 					EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
 				_commandManager.CommandFinished += (command, args, result) =>
@@ -79,7 +81,6 @@ namespace YAT.Scenes.BaseTerminal
 			Output.MetaClicked += (link) => Godot.OS.ShellOpen((string)link);
 
 			OnCurrentNodeChanged(SelectedNode.Current);
-			UpdateOptions(_yat.OptionsManager.Options);
 		}
 
 		public override void _Input(InputEvent @event)

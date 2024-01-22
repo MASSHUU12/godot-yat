@@ -23,25 +23,35 @@ namespace YAT
 
 		public override void _Ready()
 		{
-			CheckYatEnableSettings();
+			// TODO: Clean up this mess.
+			OptionsManager = GetNode<OptionsManager>("./OptionsManager");
+			OptionsManager.OptionsChanged += (YatOptions options) =>
+			{
+				if (options.UseYatEnableFile) CheckYatEnableSettings();
+			};
 
 			TerminalManager = GetNode<TerminalManager>("./TerminalManager");
 			TerminalManager.GameTerminal.Ready += () =>
 			{
+				TerminalManager.GameTerminal.TerminalSwitcher.TerminalSwitcherInitialized += () =>
+				{
+					CurrentTerminal = TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminal;
+					OptionsManager.CallDeferred(nameof(OptionsManager.Load));
+					CallDeferred(nameof(CheckYatEnableSettings));
+
+				};
 				TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminalChanged +=
 				(BaseTerminal terminal) =>
 				{
 					CurrentTerminal = terminal;
-					OptionsManager.CallDeferred(nameof(OptionsManager.Load));
 				};
 
 				EmitSignal(SignalName.YatReady);
 			};
 
 			Windows = GetNode<Node>("./Windows");
-			OptionsManager = GetNode<OptionsManager>("./OptionsManager");
-			CommandManager = GetNode<CommandManager>("./CommandManager");
 
+			CommandManager = GetNode<CommandManager>("./CommandManager");
 			CommandManager.AddCommand(new ICommand[] {
 				new Ls(),
 				new Ip(),

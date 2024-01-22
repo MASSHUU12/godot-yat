@@ -13,8 +13,11 @@ All notable changes to this project will be documented in this file.
 -   Reference to the TerminalSwitcher in GameTerminal class.
 -   Support for multiple terminals.
 -   Output class.
--   CurrentTerminalChanged signal on TerminalSwitcher class.
 -   CommandValidator to the BaseTerminal.
+-   Signals on TerminalSwitcher:
+    -   CurrentTerminalChanged
+    -   TerminalAdded
+    -   TerminalSwitcherInitialized
 
 ### Changed
 
@@ -29,6 +32,7 @@ All notable changes to this project will be documented in this file.
 -   Options manager is now component of YAT.
 -   YatOptions resource is now in the 'resources' folder.
 -   Yat options & OptionsChanged signal have been moved to the OptionsManager class.
+-   Options are disabled until the entire system is rewritten from scratch.
 
 ### Fixed
 
