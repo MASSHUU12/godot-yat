@@ -44,7 +44,7 @@ namespace YAT.Scenes.BaseTerminal.Components.InputInfo
 				string key = commandArguments[i].Name;
 				var arg = commandArguments[i].Type;
 				bool current = tokens.Length - 1 == i;
-				bool valid = CommandHelper.ValidateCommandArgument(
+				bool valid = _yat.CurrentTerminal.CommandValidator.ValidateCommandArgument(
 					commandAttribute.Name,
 					arg,
 					new() { { key, arg } },
