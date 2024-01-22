@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Text;
 using Godot;
 using YAT.Helpers;
+using YAT.Scenes.BaseTerminal.Components;
 
 namespace YAT.Scenes.BaseTerminal
 {
@@ -14,6 +14,7 @@ namespace YAT.Scenes.BaseTerminal
 
 		public bool Locked { get; set; }
 		public Input Input { get; private set; }
+		public Output Output { get; private set; }
 		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
 
@@ -46,7 +47,6 @@ namespace YAT.Scenes.BaseTerminal
 		private YAT _yat;
 		private Label _promptLabel;
 		private Label _selectedNodeLabel;
-		private RichTextLabel Output;
 		private string _prompt = "> ";
 		private CommandManager.CommandManager _commandManager;
 
@@ -73,7 +73,7 @@ namespace YAT.Scenes.BaseTerminal
 			_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
 			Input = GetNode<Input>("%Input");
 
-			Output = GetNode<RichTextLabel>("%Output");
+			Output = GetNode<Output>("%Output");
 			Output.MetaClicked += (link) => Godot.OS.ShellOpen((string)link);
 
 			OnCurrentNodeChanged(SelectedNode.Current);
