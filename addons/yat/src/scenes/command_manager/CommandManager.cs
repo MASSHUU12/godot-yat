@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -30,7 +31,7 @@ namespace YAT.Scenes.CommandManager
 		public delegate void CommandFinishedEventHandler(string command, string[] args, CommandResult result);
 
 		public CancellationTokenSource Cts { get; set; } = new();
-		public Dictionary<string, ICommand> Commands { get; private set; } = new();
+		public Dictionary<string, Type> Commands { get; private set; } = new();
 
 		private YAT _yat;
 
@@ -40,25 +41,35 @@ namespace YAT.Scenes.CommandManager
 		}
 
 		/// <summary>
-		/// Adds a CLICommand to the list of available commands.
+		/// Adds a command to the command manager.
 		/// </summary>
-		/// <param name="command">The CLICommand to add.</param>
-		public void AddCommand(ICommand command)
+		/// <param name="commandType">The type of the command to add.</param>
+		public void AddCommand(Type commandType)
 		{
-			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
-				is not CommandAttribute attribute)
+			var commandInstance = Activator.CreateInstance(commandType);
+
+			if (commandInstance is not ICommand command)
 			{
 				_yat.CurrentTerminal.Output.Error(
-					Messages.MissingAttribute("CommandAttribute", command.GetType().Name)
+					Messages.UnknownCommand(commandInstance.ToString())
 				);
 				return;
 			}
 
-			Commands[attribute.Name] = command;
-			foreach (string alias in attribute.Aliases) Commands[alias] = command;
+			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
+				is not CommandAttribute attribute)
+			{
+				_yat.CurrentTerminal.Output.Error(
+					Messages.MissingAttribute("CommandAttribute", commandType.Name)
+				);
+				return;
+			}
+
+			Commands[attribute.Name] = commandType;
+			foreach (string alias in attribute.Aliases) Commands[alias] = commandType;
 		}
 
-		public void AddCommand(params ICommand[] commands)
+		public void AddCommand(params Type[] commands)
 		{
 			foreach (var command in commands) AddCommand(command);
 		}
@@ -69,13 +80,13 @@ namespace YAT.Scenes.CommandManager
 
 			string commandName = args[0];
 
-			if (!Commands.ContainsKey(commandName))
+			if (!Commands.TryGetValue(commandName, out Type value))
 			{
 				terminal.Output.Error(Messages.UnknownCommand(commandName));
 				return;
 			}
 
-			ICommand command = Commands[commandName];
+			ICommand command = Activator.CreateInstance(value) as ICommand;
 			Dictionary<string, object> convertedArgs = null;
 			Dictionary<string, object> convertedOpts = null;
 
@@ -98,9 +109,7 @@ namespace YAT.Scenes.CommandManager
 			Cts = new();
 			CommandData data = new(_yat, terminal, command, args, convertedArgs, convertedOpts, Cts.Token);
 
-			if (AttributeHelper.GetAttribute<ThreadedAttribute>(
-				Commands[commandName]
-			) is not null)
+			if (command.GetAttribute<ThreadedAttribute>() is not null)
 			{
 				ExecuteThreadedCommand(data);
 				return;
@@ -112,10 +121,9 @@ namespace YAT.Scenes.CommandManager
 		private void ExecuteCommand(CommandData data)
 		{
 			string commandName = data.RawData[0];
-			var command = Commands[commandName];
 
 			data.Terminal.Locked = true;
-			var result = command.Execute(data);
+			var result = data.Command.Execute(data);
 			data.Terminal.Locked = false;
 
 			CallDeferredThreadGroup(

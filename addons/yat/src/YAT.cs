@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using YAT.Commands;
 using YAT.Helpers;
@@ -52,34 +53,34 @@ namespace YAT
 			Windows = GetNode<Node>("./Windows");
 
 			CommandManager = GetNode<CommandManager>("./CommandManager");
-			CommandManager.AddCommand(new ICommand[] {
-				new Ls(),
-				new Ip(),
-				new Cn(),
-				new Cs(),
-				new Cls(),
-				new Man(),
-				new Set(),
-				new Cat(),
-				new Sys(),
-				new Quit(),
-				new Echo(),
-				new List(),
-				new View(),
-				new Ping(),
-				new Wenv(),
-				new Pause(),
-				new Watch(),
-				new Stats(),
-				new Reset(),
-				new Cowsay(),
-				// new Options(),
-				new Restart(),
-				new History(),
-				new Whereami(),
-				new Timescale(),
-				new ToggleAudio(),
-				new Commands.QuickCommands()
+			CommandManager.AddCommand(new Type[] {
+				typeof(Ls),
+				typeof(Ip),
+				typeof(Cn),
+				typeof(Cs),
+				typeof(Cls),
+				typeof(Man),
+				typeof(Set),
+				typeof(Cat),
+				typeof(Sys),
+				typeof(Quit),
+				typeof(Echo),
+				typeof(List),
+				typeof(View),
+				typeof(Ping),
+				typeof(Wenv),
+				typeof(Pause),
+				typeof(Watch),
+				typeof(Stats),
+				typeof(Reset),
+				typeof(Cowsay),
+				// typeof(Options),
+				typeof(Restart),
+				typeof(History),
+				typeof(Whereami),
+				typeof(Timescale),
+				typeof(ToggleAudio),
+				typeof(Commands.QuickCommands)
 			});
 
 			Keybindings.LoadDefaultActions();

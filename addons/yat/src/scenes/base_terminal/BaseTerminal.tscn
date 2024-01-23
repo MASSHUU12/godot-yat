@@ -86,4 +86,5 @@ script = ExtResource("4_4lcgu")
 [node name="Autocompletion" parent="Components" node_paths=PackedStringArray("CommandInfo") instance=ExtResource("3_6vb77")]
 CommandInfo = NodePath("../../PanelContainer/VBoxContainer/InputInfo/CommandInfo")
 
-[node name="CommandValidator" parent="Components" instance=ExtResource("10_isg4j")]
+[node name="CommandValidator" parent="Components" node_paths=PackedStringArray("Terminal") instance=ExtResource("10_isg4j")]
+Terminal = NodePath("../..")

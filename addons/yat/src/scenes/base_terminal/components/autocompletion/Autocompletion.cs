@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
@@ -93,8 +94,8 @@ namespace YAT.Scenes.BaseTerminal
 		private LinkedList<string> GenerateCommandSuggestions(string token)
 		{
 			var listSuggestions = _yat.CommandManager.Commands
-				?.Where(x => x.Value.GetAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
-				?.Select(x => x.Value.GetAttribute<CommandAttribute>()?.Name ?? string.Empty)
+				?.Where(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
+				?.Select(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name ?? string.Empty)
 				?.Where(name => !string.IsNullOrEmpty(name))
 				?.Distinct()
 				?.ToList();

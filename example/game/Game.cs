@@ -1,3 +1,4 @@
+using System.Windows.Input;
 using Godot;
 using YAT.Commands;
 using YAT.Helpers;
@@ -37,9 +38,12 @@ public partial class Game : Node3D
 	private void RegisterCommand()
 	{
 		var cube = GetNode<MeshInstance3D>("Scene/Cube");
-		var set = GetNode<YAT.YAT>("/root/YAT").CommandManager.Commands["set"] as Set;
+		var set = GetNode<YAT.YAT>("/root/YAT").CommandManager.Commands["set"] as ICommand;
 
-		SetCube.Cube = cube;
-		set.Register(new SetCube());
+		if (set is Extensible extensible)
+		{
+			SetCube.Cube = cube;
+			extensible.Register(new SetCube());
+		}
 	}
 }

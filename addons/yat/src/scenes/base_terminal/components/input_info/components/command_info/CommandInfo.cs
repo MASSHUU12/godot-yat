@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using Godot;
 using YAT.Attributes;
@@ -32,23 +34,23 @@ namespace YAT.Scenes.BaseTerminal.Components.InputInfo
 		private string GenerateCommandInfo(string[] tokens)
 		{
 			var command = _yat.CommandManager.Commands[tokens[0]];
-			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>()!;
-			var commandArguments = command.GetAttributes<ArgumentAttribute>();
+			CommandAttribute commandAttribute = command.GetCustomAttribute<CommandAttribute>();
+			var commandArguments = command.GetCustomAttributes<ArgumentAttribute>();
 
 			StringBuilder commandInfo = new();
 			commandInfo.Append(commandAttribute.Name);
 
 			if (commandArguments is null) return commandInfo.ToString();
 
-			for (int i = 0; i < commandArguments.Length; i++)
+			uint i = 0;
+			uint count = (uint)commandArguments.Count();
+			foreach (var arg in commandArguments)
 			{
-				string key = commandArguments[i].Name;
-				var arg = commandArguments[i].Type;
 				bool current = tokens.Length - 1 == i;
 				bool valid = Terminal.CommandValidator.ValidateCommandArgument(
 					commandAttribute.Name,
-					arg,
-					new() { { key, arg } },
+					arg.Type,
+					new() { { arg.Name, arg.Type } },
 					(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,
 					false
 				);
@@ -57,15 +59,17 @@ namespace YAT.Scenes.BaseTerminal.Components.InputInfo
 					" {0}{1}<{2}:{3}>{4}{5}",
 					valid ? string.Empty : $"[color={_yat.OptionsManager.Options.ErrorColor.ToHtml()}]",
 					current ? "[b]" : string.Empty,
-					key,
-					(arg is string[]) ? "options" : arg,
+					arg.Name,
+					(arg.Type is string[]) ? "options" : arg.Type,
 					current ? "[/b]" : string.Empty,
 					valid ? string.Empty : "[/color]"
 				);
 
 				commandInfo.Append(argument);
 
-				if (i < commandArguments.Length - 1) commandInfo.Append(' ');
+				if (i < count - 1) commandInfo.Append(' ');
+
+				i++;
 			}
 
 			return commandInfo.ToString();

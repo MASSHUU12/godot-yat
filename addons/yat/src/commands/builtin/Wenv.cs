@@ -11,9 +11,9 @@ namespace YAT.Commands
 	[Argument("action", "[remove, restore]", "Removes or restores the world environment.")]
 	public sealed class Wenv : ICommand
 	{
-		private Environment _world3DEnvironment;
 		private YAT _yat;
 		private BaseTerminal _terminal;
+		private static Environment _world3DEnvironment;
 
 		public CommandResult Execute(CommandData data)
 		{

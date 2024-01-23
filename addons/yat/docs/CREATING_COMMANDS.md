@@ -17,6 +17,11 @@ The description and manual have BBCode support.
 The execution of the command begins in the `Execute` method.
 The `Execute` method accepts `CommandData`, which contains probably all the things your command could ever need, these are things like: reference to YAT and BaseTerminal, raw arguments & options, converted arguments & options, cancellation token and more.
 
+> [!NOTE]
+> Each time a command is called, a new instance of it is created.
+>
+> If you want to maintain state between instances, for example, use static variables.
+
 As an example, let's look at Cls command:
 
 ```csharp

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using YAT.Attributes;
 using YAT.Enums;
@@ -19,15 +20,15 @@ namespace YAT.Commands
 
 		public CommandResult Execute(CommandData data)
 		{
-			ICommand command = data.Yat.CommandManager.Commands.TryGetValue((string)data.Arguments["command"], out var c) ? c : null;
-
-			if (command is null)
+			if (!data.Yat.CommandManager.Commands.TryGetValue((string)data.Arguments["command"], out var type))
 			{
 				data.Terminal.Output.Error(
 					$"Command '{data.Arguments["command"]}' not found, exiting watch."
 				);
 				return CommandResult.InvalidArguments;
 			}
+
+			ICommand command = (ICommand)Activator.CreateInstance(type);
 
 			float interval = (float)data.Arguments["interval"] * SECONDS_MULTIPLIER;
 			CommandData newArgs = data with { RawData = data.RawData[2..] };

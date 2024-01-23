@@ -34,11 +34,13 @@ All notable changes to this project will be documented in this file.
 -   YatOptions resource is now in the 'resources' folder.
 -   Yat options & OptionsChanged signal have been moved to the OptionsManager class.
 -   Options are disabled until the entire system is rewritten from scratch.
+-   YAT no longer stores instances of commands, only their type, and creates objects dynamically when needed.
 
 ### Fixed
 
 -   Threaded commands could not be cancelled.
 -   The 'sys' command treats the '-program' option as an argument.
+-   The 'stats' command treats options as an arguments.
 
 ### Removed
 
