@@ -1,3 +1,4 @@
+using System;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
@@ -14,15 +15,14 @@ namespace YAT.Commands
 		public CommandResult Execute(CommandData data)
 		{
 			var commandName = data.RawData[1];
-			ICommand command = (ICommand)(data.Yat.CommandManager.Commands.TryGetValue(
-				commandName, out var c) ? c : null
-			);
 
-			if (command is null)
+			if (!data.Yat.CommandManager.Commands.TryGetValue(commandName, out Type value))
 			{
 				data.Terminal.Output.Error(Messages.UnknownCommand(commandName));
 				return CommandResult.InvalidCommand;
 			}
+
+			ICommand command = (ICommand)Activator.CreateInstance(value);
 
 			// Check if the command manual is already in the cache.
 			if (cache.Get(commandName) is string manual)
