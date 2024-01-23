@@ -23,7 +23,11 @@ namespace YAT.Scenes.BaseTerminal.Components
 		/// <returns>True if the passed data is valid, false otherwise.</returns>
 		public bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
 		{
-			Debug.Assert(typeof(T) == typeof(ArgumentAttribute) || typeof(T) == typeof(OptionAttribute));
+			Type type = typeof(T);
+			Type argType = typeof(ArgumentAttribute);
+			Type optType = typeof(OptionAttribute);
+
+			Debug.Assert(type == argType || type == optType);
 
 			CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
 
@@ -34,11 +38,15 @@ namespace YAT.Scenes.BaseTerminal.Components
 				return false;
 			}
 
-			T[] argsArr = command.GetType().GetCustomAttributes(typeof(T), false) as T[] ?? Array.Empty<T>();
+			T[] argsArr = command.GetType().GetCustomAttributes(type, false) as T[] ?? Array.Empty<T>();
 
-			if (typeof(T) == typeof(ArgumentAttribute))
+			if (type == argType)
 			{
-				args = argsArr.ToDictionary(a => (a as ArgumentAttribute)!.Name, a => (a as ArgumentAttribute)!.Type);
+				args = argsArr.ToDictionary(
+					a => (a as ArgumentAttribute).Name,
+					a => (a as ArgumentAttribute).Type
+				);
+
 				if (passedArgs.Length < args.Count)
 				{
 					Terminal.Output.Error(Messages.MissingArguments(commandAttribute.Name, args.Keys.ToArray()));
@@ -47,7 +55,7 @@ namespace YAT.Scenes.BaseTerminal.Components
 
 				return ValidateCommandArguments(commandAttribute.Name, args, passedArgs);
 			}
-			else if (typeof(T) == typeof(OptionAttribute))
+			else if (type == optType)
 			{
 				args = argsArr.ToDictionary(
 					a => (a as OptionAttribute)?.Name ?? string.Empty,
