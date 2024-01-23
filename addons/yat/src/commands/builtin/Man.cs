@@ -14,8 +14,11 @@ namespace YAT.Commands
 		public CommandResult Execute(CommandData data)
 		{
 			var commandName = data.RawData[1];
+			ICommand command = (ICommand)(data.Yat.CommandManager.Commands.TryGetValue(
+				commandName, out var c) ? c : null
+			);
 
-			if (!data.Yat.CommandManager.Commands.TryGetValue(commandName, out var command))
+			if (command is null)
 			{
 				data.Terminal.Output.Error(Messages.UnknownCommand(commandName));
 				return CommandResult.InvalidCommand;

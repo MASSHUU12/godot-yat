@@ -19,7 +19,9 @@ namespace YAT.Commands
 
 		public CommandResult Execute(CommandData data)
 		{
-			ICommand command = data.Yat.CommandManager.Commands.TryGetValue((string)data.Arguments["command"], out var c) ? c : null;
+			ICommand command = (ICommand)(data.Yat.CommandManager.Commands.TryGetValue(
+				(string)data.Arguments["command"], out var c) ? c : null
+			);
 
 			if (command is null)
 			{

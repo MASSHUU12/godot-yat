@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using YAT.Attributes;
 using YAT.Enums;
@@ -18,7 +19,7 @@ namespace YAT.Commands
 
 			foreach (var command in data.Yat.CommandManager.Commands)
 			{
-				if (Attribute.GetCustomAttribute(command.Value.GetType(), typeof(CommandAttribute)) is not CommandAttribute attribute) continue;
+				if (command.Value.GetCustomAttribute<CommandAttribute>() is not CommandAttribute attribute) continue;
 
 				// Skip aliases
 				if (attribute.Aliases.Contains(command.Key)) continue;
