@@ -9,7 +9,7 @@ namespace YAT.Commands
 {
 	public partial class Extensible : Node
 	{
-		public Dictionary<string, IExtension> Extensions { get; } = new();
+		public static Dictionary<string, IExtension> Extensions { get; private set; } = new();
 
 		/// <summary>
 		/// Registers an extension.
@@ -22,7 +22,9 @@ namespace YAT.Commands
 			)
 			{
 				var yat = GetNode<YAT>("/root/YAT");
-				yat.CurrentTerminal.Output.Error(Messages.MissingAttribute("ExtensionAttribute", extension.GetType().Name));
+				yat.CurrentTerminal.Output.Error(
+					Messages.MissingAttribute("ExtensionAttribute", extension.GetType().Name)
+				);
 				return;
 			}
 
