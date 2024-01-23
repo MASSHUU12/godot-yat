@@ -109,7 +109,7 @@ namespace YAT.Scenes.CommandManager
 			Cts = new();
 			CommandData data = new(_yat, terminal, command, args, convertedArgs, convertedOpts, Cts.Token);
 
-			if (AttributeHelper.GetAttribute<ThreadedAttribute>(value) is not null)
+			if (command.GetAttribute<ThreadedAttribute>() is not null)
 			{
 				ExecuteThreadedCommand(data);
 				return;
