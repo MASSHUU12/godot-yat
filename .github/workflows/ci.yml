@@ -1,5 +1,5 @@
-name: ci-pr
-run-name: ${{ github.head_ref || github.ref_name }}-ci-pr
+name: ci
+run-name: ${{ github.head_ref || github.ref_name }}-ci
 
 on:
     push:
@@ -21,7 +21,7 @@ on:
     workflow_dispatch:
 
 concurrency:
-    group: ci-pr${{ github.event.number }}
+    group: ci${{ github.event.number }}
     cancel-in-progress: true
 
 jobs:
@@ -77,12 +77,10 @@ jobs:
             - name: "Run Unit Tests"
               if: ${{ !cancelled() }}
               timeout-minutes: 4
-              env:
-                  GODOT_BIN: ${{ env.GODOT_BIN }}
-              shell: bash
-              run: |
-                  chmod +x ./addons/gdUnit4/runtest.sh
-                  xvfb-run --auto-servernum ./addons/gdUnit4/runtest.sh --add "res://test" --audio-driver Dummy --display-driver x11 --rendering-driver opengl3 --screen 0 --continue
+              uses: ././github/actions/unit-test
+              with:
+                  godot-bin: ${{ env.GODOT_BIN }}
+                  test-includes: "res://tests"
 
             - name: "Publish Test Report"
               if: ${{ always() }}
