@@ -11,16 +11,13 @@ inputs:
         type: string
         required: true
     godot-mono:
-        description: "Whether to download the Mono version of Godot"
         required: false
         type: boolean
         default: false
     godot-bin-name:
-        description: "The name of the Godot binary"
         type: string
         required: true
     godot-cache-path:
-        description: "The path to the Godot cache"
         type: string
         required: true
 
