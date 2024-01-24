@@ -63,14 +63,14 @@ namespace YAT.Helpers
 			if (bytes < byteConversion) return $"{bytes} B";
 
 			double kilobytes = bytes / byteConversion;
-			if (kilobytes < byteConversion) return $"{kilobytes.ToString($"F{precision}")} KB";
+			if (kilobytes < byteConversion) return $"{kilobytes.ToString($"F{precision}")} KiB";
 
 			double megabytes = kilobytes / byteConversion;
-			if (megabytes < byteConversion) return $"{megabytes.ToString($"F{precision}")} MB";
+			if (megabytes < byteConversion) return $"{megabytes.ToString($"F{precision}")} MiB";
 
 			double gigabytes = megabytes / byteConversion;
 
-			return $"{gigabytes.ToString($"F{precision}")} GB";
+			return $"{gigabytes.ToString($"F{precision}")} GiB";
 		}
 
 	}
