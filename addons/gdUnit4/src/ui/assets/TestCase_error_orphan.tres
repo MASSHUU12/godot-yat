@@ -1,12 +1,10 @@
-[gd_resource type="AnimatedTexture" load_steps=3 format=2]
+[gd_resource type="AnimatedTexture" load_steps=3 format=3 uid="uid://c0ec1gi6wh4fp"]
 
-[ext_resource path="res://addons/gdUnit4/src/ui/assets/orphan/TestCaseError1.svg" type="Texture2D" id=1]
-[ext_resource path="res://addons/gdUnit4/src/ui/assets/orphan/TestCaseError2.svg" type="Texture2D" id=2]
+[ext_resource type="Texture2D" uid="uid://bdl7p3rf6wpfw" path="res://addons/gdUnit4/src/ui/assets/orphan/TestCaseError1.svg" id="1"]
+[ext_resource type="Texture2D" uid="uid://fqf674gwq375" path="res://addons/gdUnit4/src/ui/assets/orphan/TestCaseError2.svg" id="2"]
 
 [resource]
-flags = 4
 frames = 2
-fps = 1.1
-frame_0/texture = ExtResource( 1 )
-frame_1/texture = ExtResource( 2 )
-frame_1/delay_sec = 0.0
+frame_0/texture = ExtResource("1")
+frame_1/texture = ExtResource("2")
+frame_1/duration = 1.0

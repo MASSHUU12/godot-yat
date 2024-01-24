@@ -12,12 +12,6 @@ on:
             - "**plugin.cfg"
             - "**.yml"
             - "**.md"
-    # pull_request:
-    #     branches:
-    #         - main
-    #     paths-ignore:
-    #         - "**.yml"
-    #         - "**.md"
     workflow_dispatch:
 
 concurrency:
@@ -34,7 +28,7 @@ jobs:
 
         name: "CI Unit Test 🐧 v${{ matrix.godot-version }}"
         runs-on: ${{ matrix.os }}
-        timeout-minutes: 10
+        timeout-minutes: 3
 
         steps:
             - name: "Checkout Repository"
@@ -43,27 +37,34 @@ jobs:
                   lfs: true
                   submodules: "recursive"
 
-            - name: "🐧Download and Install Godot ${{ matrix.godot-version }}"
-              continue-on-error: false
+            - name: "Install Godot Mono ${{ matrix.godot-version }}"
+              uses: ././github/actions/godot-install
+              with:
+                  godot-version: ${{ matrix.godot-version }}
+                  godot-status-version: "stable"
+                  godot-mono: true
+                  godot-bin-name: "linux.x86_64"
+                  godot-cache-path: "~/godot-linux"
+
+            - name: "Update Ubuntu"
+              if: ${{ !cancelled() }}
               shell: bash
               run: |
-                  GODOT_HOME=$HOME/bin
-                  GODOT_BIN=$GODOT_HOME/godot
-                  mkdir -p $GODOT_HOME
-                  chmod 770 $GODOT_HOME
-                  GODOT_CONF_PATH=$HOME/.config/godot
-                  if [ ! -d $GODOT_CONF_PATH ]; then
-                    mkdir -p $GODOT_CONF_PATH
-                    chmod 770 $GODOT_CONF_PATH
-                  fi
+                  sudo apt-get update
+                  sudo apt-get -y install systemd-coredump
+                  sudo apt update
+                  sudo apt -y install systemd-coredump
 
-                  GODOT_PACKAGE=Godot_v${{ matrix.godot-version }}-stable_linux.x86_64
-                  wget https://github.com/godotengine/godot/releases/download/${{ matrix.godot-version }}-stable/$GODOT_PACKAGE.zip -P ${{ runner.temp }}
-                  unzip ${{ runner.temp }}/$GODOT_PACKAGE.zip -d $GODOT_HOME
-                  mv $GODOT_HOME/$GODOT_PACKAGE $GODOT_BIN
-                  chmod u+x $GODOT_BIN
-                  echo "GODOT_HOME=$GODOT_HOME" >> "$GITHUB_ENV"
-                  echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+            - name: "Setup .NET"
+              uses: actions/setup-dotnet@v3
+              with:
+                  dotnet-version: 7.0.x
+
+            - name: "Compile C#"
+              if: ${{ !cancelled() }}
+              run: |
+                  dotnet restore
+                  dotnet build
 
             # We need to update the project before running tests, Godot has actually issues with loading the plugin
             - name: "Update Project"
@@ -76,40 +77,40 @@ jobs:
 
             - name: "Run Unit Tests"
               if: ${{ !cancelled() }}
-              timeout-minutes: 4
+              timeout-minutes: 2
               uses: ././github/actions/unit-test
               with:
                   godot-bin: ${{ env.GODOT_BIN }}
                   test-includes: "res://tests"
 
-            - name: "Publish Test Report"
-              if: ${{ always() }}
-              uses: dorny/test-reporter@v1.6.0
-              with:
-                  name: "test_report_${{ matrix.godot-version }}"
-                  path: "reports/**/results.xml"
-                  reporter: java-junit
-                  fail-on-error: "false"
+    #         - name: "Publish Test Report"
+    #           if: ${{ always() }}
+    #           uses: dorny/test-reporter@v1.6.0
+    #           with:
+    #               name: "test_report_${{ matrix.godot-version }}"
+    #               path: "reports/**/results.xml"
+    #               reporter: java-junit
+    #               fail-on-error: "false"
 
-            - name: "Upload Unit Test Reports"
-              if: ${{ always() }}
-              uses: actions/upload-artifact@v3
-              with:
-                  name: "test_report_${{ matrix.godot-version }}"
-                  path: |
-                      reports/**
-                      /var/lib/systemd/coredump/**
-                      /var/log/syslog
+    #         - name: "Upload Unit Test Reports"
+    #           if: ${{ always() }}
+    #           uses: actions/upload-artifact@v3
+    #           with:
+    #               name: "test_report_${{ matrix.godot-version }}"
+    #               path: |
+    #                   reports/**
+    #                   /var/lib/systemd/coredump/**
+    #                   /var/log/syslog
 
-    finalize:
-        if: ${{ !cancelled() }}
-        runs-on: ubuntu-latest
-        name: Final Results
-        needs: [unit-test]
-        steps:
-            - run: exit 1
-              if: >-
-                  ${{
-                      contains(needs.*.result, 'failure')
-                    || contains(needs.*.result, 'cancelled')
-                  }}
+    # finalize:
+    #     if: ${{ !cancelled() }}
+    #     runs-on: ubuntu-latest
+    #     name: Final Results
+    #     needs: [unit-test]
+    #     steps:
+    #         - run: exit 1
+    #           if: >-
+    #               ${{
+    #                   contains(needs.*.result, 'failure')
+    #                 || contains(needs.*.result, 'cancelled')
+    #               }}
