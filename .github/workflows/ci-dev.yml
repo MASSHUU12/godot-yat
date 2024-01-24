@@ -3,7 +3,7 @@ name: ci-dev
 on:
     push:
         branches:
-            - master
+            - main
         paths-ignore:
             - "**.yml"
             - "**.jpg"
