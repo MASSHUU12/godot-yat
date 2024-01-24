@@ -2,12 +2,22 @@ name: ci-pr
 run-name: ${{ github.head_ref || github.ref_name }}-ci-pr
 
 on:
-    pull_request:
+    push:
         branches:
             - main
         paths-ignore:
+            - "**.jpg"
+            - "**.png"
+            - "**.svg"
+            - "**plugin.cfg"
             - "**.yml"
             - "**.md"
+    # pull_request:
+    #     branches:
+    #         - main
+    #     paths-ignore:
+    #         - "**.yml"
+    #         - "**.md"
     workflow_dispatch:
 
 concurrency:
