@@ -42,10 +42,11 @@ jobs:
         timeout-minutes: 5
 
         steps:
-            - name: "Checkout GdUnit Repository"
+            - name: "Checkout Repository"
               uses: actions/checkout@v3
               with:
                   lfs: true
+                  submodules: "recursive"
 
             - name: "Install Godot Mono ${{ inputs.godot-version }}"
               uses: ./.github/actions/godot-install
@@ -79,17 +80,18 @@ jobs:
             - name: "Update Project"
               id: update_project
               if: ${{ !cancelled() }}
-              timeout-minutes: 2
+              timeout-minutes: 1
+              continue-on-error: true
               shell: bash
               run: |
                   xvfb-run --auto-servernum ~/godot-linux/godot -e --path . -s res://addons/gdUnit4/bin/ProjectScanner.gd --headless --audio-driver Dummy 2> /dev/null
 
             - name: "Run Unit Tests"
               if: ${{ !cancelled() }}
-              timeout-minutes: 5
+              timeout-minutes: 3
               uses: ./.github/actions/unit-test
               with:
-                  godot-bin: "~/godot-linux/godot"
+                  godot-bin: ${{ env.GODOT_BIN }}
                   test-includes: "res://test/"
 
             # - name: "Coredump Check"
