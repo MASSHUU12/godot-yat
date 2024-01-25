@@ -6,7 +6,7 @@ using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace YAT.Systems
+namespace YAT.Scenes
 {
 	public partial class RegisteredCommands : Node
 	{

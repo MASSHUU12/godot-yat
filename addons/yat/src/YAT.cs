@@ -1,10 +1,9 @@
 using Godot;
 using YAT.Helpers;
-using YAT.Systems;
 using YAT.Scenes.BaseTerminal;
 using YAT.Scenes.OptionsManager;
 using YAT.Scenes.TerminalManager;
-using YAT.Commands;
+using YAT.Scenes;
 
 namespace YAT
 {
