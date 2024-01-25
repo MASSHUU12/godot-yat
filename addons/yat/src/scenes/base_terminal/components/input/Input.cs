@@ -6,7 +6,6 @@ namespace YAT.Scenes.BaseTerminal
 	{
 		private YAT _yat;
 		private BaseTerminal _terminal;
-		private CommandManager _commandManager;
 
 		public override void _Ready()
 		{
@@ -18,7 +17,6 @@ namespace YAT.Scenes.BaseTerminal
 			};
 
 			_terminal = GetNode<BaseTerminal>("../../../../../");
-			_commandManager = _terminal.CommandManager;
 
 			TextSubmitted += OnTextSubmitted;
 		}
@@ -47,7 +45,7 @@ namespace YAT.Scenes.BaseTerminal
 
 			AddToTheHistory(command);
 
-			_commandManager.Run(input, _terminal);
+			_terminal.CommandManager.Run(input, _terminal);
 			Clear();
 		}
 
