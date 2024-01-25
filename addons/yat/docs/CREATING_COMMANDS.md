@@ -72,11 +72,11 @@ In the passed `CommandData` you can find the `CancellationToken` which indicates
 
 ## Adding commands
 
-To add a command to the YAT all you have to do is call `AddCommand` method on `CommandManager` instance:
+To add a command to the YAT all you have to do is call `AddCommand` method on `RegisteredCommands` instance:
 
 ```csharp
 var yat = GetNode<YAT>("/root/YAT");
-yat.CommandManager.AddCommand(new Cls());
+yat.Commands.AddCommand(typeof(Cls));
 ```
 
 ## Making commands extendable

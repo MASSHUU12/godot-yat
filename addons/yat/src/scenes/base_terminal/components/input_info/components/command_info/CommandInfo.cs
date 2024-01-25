@@ -33,7 +33,7 @@ namespace YAT.Scenes.BaseTerminal.Components.InputInfo
 
 		private string GenerateCommandInfo(string[] tokens)
 		{
-			var command = _yat.CommandManager.Commands[tokens[0]];
+			var command = RegisteredCommands.Registered[tokens[0]];
 			CommandAttribute commandAttribute = command.GetCustomAttribute<CommandAttribute>();
 			var commandArguments = command.GetCustomAttributes<ArgumentAttribute>();
 
@@ -77,7 +77,7 @@ namespace YAT.Scenes.BaseTerminal.Components.InputInfo
 
 		private bool AreTokensValid(string[] tokens)
 		{
-			if (tokens.Length == 0 || !_yat.CommandManager.Commands.ContainsKey(tokens[0]))
+			if (tokens.Length == 0 || !RegisteredCommands.Registered.ContainsKey(tokens[0]))
 			{
 				InputInfo.Visible = false;
 				return false;

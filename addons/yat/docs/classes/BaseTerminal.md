@@ -19,6 +19,7 @@ This class is used to display the basic terminal, call commands and display thei
 | TerminalContext        | Context          | -       |
 | SelectedNode           | SelectedNode     | -       |
 | CommandValidator       | CommandValidator | -       |
+| CommandManager         | CommandManager   | -       |
 | LinkedList<string>     | History          | new     |
 | LinkedListNode<string> | HistoryNode      | null    |
 

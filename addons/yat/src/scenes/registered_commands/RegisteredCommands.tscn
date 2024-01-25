@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://r45e18qb3ekv"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/registered_commands/RegisteredCommands.cs" id="1_c1klr"]
+
+[node name="RegisteredCommands" type="Node"]
+script = ExtResource("1_c1klr")

@@ -11,14 +11,14 @@ This class gives access to and manages all the most important aspects of the plu
 
 ### Properties
 
-| Type            | Name            | Default |
-| --------------- | --------------- | ------- |
-| bool            | YatEnabled      | true    |
-| Node            | Windows         | -       |
-| BaseTerminal    | CurrentTerminal | -       |
-| OptionsManager  | OptionsManager  | -       |
-| CommandManager  | CommandManager  | -       |
-| TerminalManager | TerminalManager | -       |
+| Type               | Name            | Default |
+| ------------------ | --------------- | ------- |
+| bool               | YatEnabled      | true    |
+| Node               | Windows         | -       |
+| BaseTerminal       | CurrentTerminal | -       |
+| OptionsManager     | OptionsManager  | -       |
+| RegisteredCommands | Commands        | -       |
+| TerminalManager    | TerminalManager | -       |
 
 ### Methods
 

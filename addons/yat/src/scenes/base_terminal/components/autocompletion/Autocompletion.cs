@@ -91,9 +91,9 @@ namespace YAT.Scenes.BaseTerminal
 			CommandInfo.UpdateCommandInfo(_input.Text);
 		}
 
-		private LinkedList<string> GenerateCommandSuggestions(string token)
+		private static LinkedList<string> GenerateCommandSuggestions(string token)
 		{
-			var listSuggestions = _yat.CommandManager.Commands
+			var listSuggestions = RegisteredCommands.Registered
 				?.Where(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
 				?.Select(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name ?? string.Empty)
 				?.Where(name => !string.IsNullOrEmpty(name))

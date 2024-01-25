@@ -5,6 +5,7 @@ using System.Text;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Scenes;
 
 namespace YAT.Commands
 {
@@ -17,7 +18,7 @@ namespace YAT.Commands
 
 			sb.AppendLine("Available commands:");
 
-			foreach (var command in data.Yat.CommandManager.Commands)
+			foreach (var command in RegisteredCommands.Registered)
 			{
 				if (command.Value.GetCustomAttribute<CommandAttribute>() is not CommandAttribute attribute) continue;
 

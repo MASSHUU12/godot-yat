@@ -3,6 +3,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Scenes;
 
 namespace YAT.Commands
 {
@@ -16,7 +17,7 @@ namespace YAT.Commands
 		{
 			var commandName = data.RawData[1];
 
-			if (!data.Yat.CommandManager.Commands.TryGetValue(commandName, out Type value))
+			if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type value))
 			{
 				data.Terminal.Output.Error(Messages.UnknownCommand(commandName));
 				return CommandResult.InvalidCommand;
