@@ -9,7 +9,7 @@ using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace YAT.Scenes
+namespace YAT.Scenes.BaseTerminal.Components
 {
 	public partial class CommandManager : Node
 	{
@@ -39,7 +39,7 @@ namespace YAT.Scenes
 			_yat = GetNode<YAT>("/root/YAT");
 		}
 
-		public void Run(string[] args, BaseTerminal.BaseTerminal terminal)
+		public void Run(string[] args, BaseTerminal terminal)
 		{
 			if (args.Length == 0) return;
 

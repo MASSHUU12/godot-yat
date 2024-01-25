@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dx1optgaua8wt" path="res://addons/yat/src/scenes/base_terminal/components/terminal_context/TerminalContext.tscn" id="5_mu1cs"]
 [ext_resource type="PackedScene" uid="uid://b2ljvgvvny52r" path="res://addons/yat/src/scenes/base_terminal/components/selected_node/SelectedNode.tscn" id="6_prlgb"]
 [ext_resource type="PackedScene" uid="uid://x1dyt4bknu3x" path="res://addons/yat/src/scenes/base_terminal/components/command_validator/CommandValidator.tscn" id="10_isg4j"]
-[ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/scenes/command_manager/CommandManager.tscn" id="11_623me"]
+[ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/scenes/base_terminal/components/command_manager/CommandManager.tscn" id="11_623me"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6fw"]
 bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
