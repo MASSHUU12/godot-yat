@@ -18,7 +18,7 @@ namespace YAT.Scenes.BaseTerminal
 		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
 		public CommandValidator CommandValidator { get; private set; }
-		public CommandManager.CommandManager CommandManager { get; private set; }
+		public CommandManager CommandManager { get; private set; }
 
 		public readonly LinkedList<string> History = new();
 		public LinkedListNode<string> HistoryNode = null;
@@ -60,7 +60,7 @@ namespace YAT.Scenes.BaseTerminal
 				UpdateOptions(_yat.OptionsManager.Options);
 			};
 
-			CommandManager = GetNode<CommandManager.CommandManager>("Components/CommandManager");
+			CommandManager = GetNode<CommandManager>("Components/CommandManager");
 			CommandManager.CommandStarted += (command, args) =>
 				EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
 			CommandManager.CommandFinished += (command, args, result) =>
