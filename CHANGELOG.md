@@ -11,6 +11,19 @@ All notable changes to this project will be documented in this file.
     -   BaseTerminal
     -   Input
     -   Output
+    -   RegisteredCommands
+-   RegisteredCommands class.
+-   Reference to the RegisteredCommands class in YAT.
+
+### Changed
+
+-   Moved adding builtin commands to the RegisteredCommands class.
+-   Moved CommandManager to YAT.Scenes namespace.
+-   Updated folder structure.
+
+### Fixed
+
+-   When there are several simultaneously running threaded commands, only the last one can be terminated.
 
 ## [1.19.0-beta 2024-01-23]
 
