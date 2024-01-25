@@ -11,16 +11,16 @@ This class gives access to registered commands, adding new ones, and is in charg
 
 ### Properties
 
-| Type                     | Name       | Default |
-| ------------------------ | ---------- | ------- |
-| Dictionary<string, Type> | Registered | new     |
+| Type                            | Name       | Default |
+| ------------------------------- | ---------- | ------- |
+| static Dictionary<string, Type> | Registered | new     |
 
 ### Methods
 
-| Type | Definition                          |
-| ---- | ----------------------------------- |
-| void | AddCommand (Type commandType)       |
-| void | AddCommand (params Type[] commands) |
+| Type | Definition                                 |
+| ---- | ------------------------------------------ |
+| void | static AddCommand (Type commandType)       |
+| void | static AddCommand (params Type[] commands) |
 
 ### Signals
 

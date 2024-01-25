@@ -10,7 +10,7 @@ namespace YAT.Scenes
 {
 	public partial class RegisteredCommands : Node
 	{
-		public Dictionary<string, Type> Registered { get; private set; } = new();
+		public static Dictionary<string, Type> Registered { get; private set; } = new();
 
 		private YAT _yat;
 
@@ -33,7 +33,7 @@ namespace YAT.Scenes
 		/// Adds a command to the command manager.
 		/// </summary>
 		/// <param name="commandType">The type of the command to add.</param>
-		public AddingResult AddCommand(Type commandType)
+		public static AddingResult AddCommand(Type commandType)
 		{
 			var commandInstance = Activator.CreateInstance(commandType);
 
@@ -58,7 +58,7 @@ namespace YAT.Scenes
 			return AddingResult.Success;
 		}
 
-		public AddingResult[] AddCommand(params Type[] commands)
+		public static AddingResult[] AddCommand(params Type[] commands)
 		{
 			AddingResult[] results = new AddingResult[commands.Length];
 

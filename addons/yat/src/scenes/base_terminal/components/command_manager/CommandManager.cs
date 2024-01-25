@@ -45,7 +45,7 @@ namespace YAT.Scenes.BaseTerminal.Components
 
 			string commandName = args[0];
 
-			if (!_yat.Commands.Registered.TryGetValue(commandName, out Type value))
+			if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type value))
 			{
 				terminal.Output.Error(Messages.UnknownCommand(commandName));
 				return;

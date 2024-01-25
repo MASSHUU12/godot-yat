@@ -3,6 +3,7 @@ using System.Threading;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Scenes;
 
 namespace YAT.Commands
 {
@@ -20,7 +21,7 @@ namespace YAT.Commands
 
 		public CommandResult Execute(CommandData data)
 		{
-			if (!data.Yat.Commands.Registered.TryGetValue((string)data.Arguments["command"], out var type))
+			if (!RegisteredCommands.Registered.TryGetValue((string)data.Arguments["command"], out var type))
 			{
 				data.Terminal.Output.Error(
 					$"Command '{data.Arguments["command"]}' not found, exiting watch."
