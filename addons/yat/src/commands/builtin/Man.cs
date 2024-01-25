@@ -16,7 +16,7 @@ namespace YAT.Commands
 		{
 			var commandName = data.RawData[1];
 
-			if (!data.Yat.CommandManager.Commands.TryGetValue(commandName, out Type value))
+			if (!data.Yat.Commands.Registered.TryGetValue(commandName, out Type value))
 			{
 				data.Terminal.Output.Error(Messages.UnknownCommand(commandName));
 				return CommandResult.InvalidCommand;

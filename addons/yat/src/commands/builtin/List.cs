@@ -17,7 +17,7 @@ namespace YAT.Commands
 
 			sb.AppendLine("Available commands:");
 
-			foreach (var command in data.Yat.CommandManager.Commands)
+			foreach (var command in data.Yat.Commands.Registered)
 			{
 				if (command.Value.GetCustomAttribute<CommandAttribute>() is not CommandAttribute attribute) continue;
 

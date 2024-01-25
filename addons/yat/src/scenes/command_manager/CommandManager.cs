@@ -31,7 +31,6 @@ namespace YAT.Scenes.CommandManager
 		public delegate void CommandFinishedEventHandler(string command, string[] args, CommandResult result);
 
 		public CancellationTokenSource Cts { get; set; } = new();
-		public Dictionary<string, Type> Commands { get; private set; } = new();
 
 		private YAT _yat;
 
@@ -40,47 +39,13 @@ namespace YAT.Scenes.CommandManager
 			_yat = GetNode<YAT>("..");
 		}
 
-		/// <summary>
-		/// Adds a command to the command manager.
-		/// </summary>
-		/// <param name="commandType">The type of the command to add.</param>
-		public void AddCommand(Type commandType)
-		{
-			var commandInstance = Activator.CreateInstance(commandType);
-
-			if (commandInstance is not ICommand command)
-			{
-				_yat.CurrentTerminal.Output.Error(
-					Messages.UnknownCommand(commandInstance.ToString())
-				);
-				return;
-			}
-
-			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
-				is not CommandAttribute attribute)
-			{
-				_yat.CurrentTerminal.Output.Error(
-					Messages.MissingAttribute("CommandAttribute", commandType.Name)
-				);
-				return;
-			}
-
-			Commands[attribute.Name] = commandType;
-			foreach (string alias in attribute.Aliases) Commands[alias] = commandType;
-		}
-
-		public void AddCommand(params Type[] commands)
-		{
-			foreach (var command in commands) AddCommand(command);
-		}
-
 		public void Run(string[] args, BaseTerminal.BaseTerminal terminal)
 		{
 			if (args.Length == 0) return;
 
 			string commandName = args[0];
 
-			if (!Commands.TryGetValue(commandName, out Type value))
+			if (!_yat.Commands.Registered.TryGetValue(commandName, out Type value))
 			{
 				terminal.Output.Error(Messages.UnknownCommand(commandName));
 				return;

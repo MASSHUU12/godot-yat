@@ -20,7 +20,7 @@ namespace YAT.Commands
 
 		public CommandResult Execute(CommandData data)
 		{
-			if (!data.Yat.CommandManager.Commands.TryGetValue((string)data.Arguments["command"], out var type))
+			if (!data.Yat.Commands.Registered.TryGetValue((string)data.Arguments["command"], out var type))
 			{
 				data.Terminal.Output.Error(
 					$"Command '{data.Arguments["command"]}' not found, exiting watch."

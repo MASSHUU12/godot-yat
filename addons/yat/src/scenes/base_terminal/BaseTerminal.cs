@@ -18,6 +18,7 @@ namespace YAT.Scenes.BaseTerminal
 		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
 		public CommandValidator CommandValidator { get; private set; }
+		public CommandManager.CommandManager CommandManager { get; private set; }
 
 		public readonly LinkedList<string> History = new();
 		public LinkedListNode<string> HistoryNode = null;
@@ -49,7 +50,6 @@ namespace YAT.Scenes.BaseTerminal
 		private Label _promptLabel;
 		private Label _selectedNodeLabel;
 		private string _prompt = "> ";
-		private CommandManager.CommandManager _commandManager;
 
 		public override void _Ready()
 		{
@@ -58,14 +58,13 @@ namespace YAT.Scenes.BaseTerminal
 			{
 				_yat.OptionsManager.OptionsChanged += UpdateOptions;
 				UpdateOptions(_yat.OptionsManager.Options);
-
-				_commandManager.CommandStarted += (command, args) =>
-					EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
-				_commandManager.CommandFinished += (command, args, result) =>
-					EmitSignal(SignalName.TitleChangeRequested, "YAT");
 			};
 
-			_commandManager = _yat.CommandManager;
+			CommandManager = GetNode<CommandManager.CommandManager>("Components/CommandManager");
+			CommandManager.CommandStarted += (command, args) =>
+				EmitSignal(SignalName.TitleChangeRequested, "YAT - " + command);
+			CommandManager.CommandFinished += (command, args, result) =>
+				EmitSignal(SignalName.TitleChangeRequested, "YAT");
 
 			SelectedNode = GetNode<SelectedNode>("SelectedNode");
 			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
@@ -121,13 +120,13 @@ namespace YAT.Scenes.BaseTerminal
 				}
 
 				if (@event.IsActionPressed(Keybindings.TerminalInterrupt) &&
-					_commandManager.Cts is not null)
+					CommandManager.Cts is not null)
 				{
 					Print("Command cancellation requested.", PrintType.Warning);
 
-					_commandManager.Cts.Cancel();
-					_commandManager.Cts.Dispose();
-					_commandManager.Cts = null;
+					CommandManager.Cts.Cancel();
+					CommandManager.Cts.Dispose();
+					CommandManager.Cts = null;
 				}
 
 				if (@event.IsActionPressed(Keybindings.ContextMenu))

@@ -38,7 +38,7 @@ public partial class Game : Node3D
 	private void RegisterCommand()
 	{
 		var cube = GetNode<MeshInstance3D>("Scene/Cube");
-		var set = GetNode<YAT.YAT>("/root/YAT").CommandManager.Commands["set"] as ICommand;
+		var set = GetNode<YAT.YAT>("/root/YAT").Commands.Registered["set"] as ICommand;
 
 		if (set is Extensible extensible)
 		{
