@@ -1,18 +1,18 @@
 [gd_scene load_steps=5 format=3 uid="uid://dhbvghhlqawa4"]
 
 [ext_resource type="Script" path="res://addons/yat/src/YAT.cs" id="1_683p6"]
-[ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/scenes/command_manager/CommandManager.tscn" id="3_11rsn"]
 [ext_resource type="PackedScene" uid="uid://c4oxru3g4p038" path="res://addons/yat/src/scenes/terminal_manager/TerminalManager.tscn" id="4_tgqer"]
+[ext_resource type="PackedScene" uid="uid://r45e18qb3ekv" path="res://addons/yat/src/systems/commands/RegisteredCommands.tscn" id="5_j53i0"]
 [ext_resource type="PackedScene" uid="uid://cffwv5sn53u2c" path="res://addons/yat/src/scenes/options_manager/OptionsManager.tscn" id="5_wtdem"]
 
 [node name="YAT" type="Node"]
 process_mode = 3
 script = ExtResource("1_683p6")
 
-[node name="CommandManager" parent="." instance=ExtResource("3_11rsn")]
-
 [node name="TerminalManager" parent="." instance=ExtResource("4_tgqer")]
 
 [node name="OptionsManager" parent="." instance=ExtResource("5_wtdem")]
+
+[node name="RegisteredCommands" parent="." instance=ExtResource("5_j53i0")]
 
 [node name="Windows" type="Node" parent="."]
