@@ -9,10 +9,10 @@
 process_mode = 3
 script = ExtResource("1_683p6")
 
+[node name="RegisteredCommands" parent="." instance=ExtResource("5_j53i0")]
+
 [node name="TerminalManager" parent="." instance=ExtResource("4_tgqer")]
 
 [node name="OptionsManager" parent="." instance=ExtResource("5_wtdem")]
-
-[node name="RegisteredCommands" parent="." instance=ExtResource("5_j53i0")]
 
 [node name="Windows" type="Node" parent="."]
