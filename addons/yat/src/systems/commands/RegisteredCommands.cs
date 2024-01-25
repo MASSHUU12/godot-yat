@@ -1,9 +1,10 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 using YAT.Attributes;
+using YAT.Commands;
 using YAT.Helpers;
+using YAT.Interfaces;
 
 namespace YAT.Systems
 {
@@ -16,6 +17,36 @@ namespace YAT.Systems
 		public override void _Ready()
 		{
 			_yat = GetNode<YAT>("..");
+
+			AddCommand(new[] {
+				typeof(Ls),
+				typeof(Ip),
+				typeof(Cn),
+				typeof(Cs),
+				typeof(Cls),
+				typeof(Man),
+				typeof(Set),
+				typeof(Cat),
+				typeof(Sys),
+				typeof(Quit),
+				typeof(Echo),
+				typeof(List),
+				typeof(View),
+				typeof(Ping),
+				typeof(Wenv),
+				typeof(Pause),
+				typeof(Watch),
+				typeof(Stats),
+				typeof(Reset),
+				typeof(Cowsay),
+				// typeof(Options),
+				typeof(Restart),
+				typeof(History),
+				typeof(Whereami),
+				typeof(Timescale),
+				typeof(ToggleAudio),
+				typeof(QuickCommands)
+			});
 		}
 
 		/// <summary>
