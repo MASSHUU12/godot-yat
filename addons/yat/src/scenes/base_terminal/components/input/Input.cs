@@ -6,7 +6,7 @@ namespace YAT.Scenes.BaseTerminal
 	{
 		private YAT _yat;
 		private BaseTerminal _terminal;
-		private CommandManager.CommandManager _commandManager;
+		private CommandManager _commandManager;
 
 		public override void _Ready()
 		{
@@ -18,7 +18,7 @@ namespace YAT.Scenes.BaseTerminal
 			};
 
 			_terminal = GetNode<BaseTerminal>("../../../../../");
-			_commandManager = _yat.GetNode<CommandManager.CommandManager>("CommandManager");
+			_commandManager = _terminal.CommandManager;
 
 			TextSubmitted += OnTextSubmitted;
 		}
