@@ -28,4 +28,8 @@ This class gives access to registered commands, adding new ones, and is in charg
 
 ### Enumerations
 
-#### -
+enum **AddingResult**
+
+-   **Success**
+-   **UnknownCommand**
+-   **MissingAttribute**

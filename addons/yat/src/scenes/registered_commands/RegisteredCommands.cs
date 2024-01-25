@@ -18,7 +18,50 @@ namespace YAT.Scenes
 		{
 			_yat = GetNode<YAT>("..");
 
-			AddCommand(new[] {
+			RegisterBuiltinCOmmands();
+		}
+
+		public enum AddingResult
+		{
+			Success,
+			UnknownCommand,
+			MissingAttribute
+		}
+
+		/// <summary>
+		/// Adds a command to the command manager.
+		/// </summary>
+		/// <param name="commandType">The type of the command to add.</param>
+		public AddingResult AddCommand(Type commandType)
+		{
+			var commandInstance = Activator.CreateInstance(commandType);
+
+			if (commandInstance is not ICommand command)
+				return AddingResult.UnknownCommand;
+
+			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
+				is not CommandAttribute attribute)
+				return AddingResult.MissingAttribute;
+
+			Registered[attribute.Name] = commandType;
+			foreach (string alias in attribute.Aliases) Registered[alias] = commandType;
+
+			return AddingResult.Success;
+		}
+
+		public AddingResult[] AddCommand(params Type[] commands)
+		{
+			AddingResult[] results = new AddingResult[commands.Length];
+
+			for (int i = 0; i < commands.Length; i++)
+				results[i] = AddCommand(commands[i]);
+
+			return results;
+		}
+
+		private void RegisterBuiltinCOmmands()
+		{
+			AddingResult[] results = AddCommand(new[] {
 				typeof(Ls),
 				typeof(Ip),
 				typeof(Cn),
@@ -47,40 +90,25 @@ namespace YAT.Scenes
 				typeof(ToggleAudio),
 				typeof(QuickCommands)
 			});
-		}
 
-		/// <summary>
-		/// Adds a command to the command manager.
-		/// </summary>
-		/// <param name="commandType">The type of the command to add.</param>
-		public void AddCommand(Type commandType)
-		{
-			var commandInstance = Activator.CreateInstance(commandType);
-
-			if (commandInstance is not ICommand command)
+			for (int i = 0; i < results.Length; i++)
 			{
-				_yat.CurrentTerminal.Output.Error(
-					Messages.UnknownCommand(commandInstance.ToString())
-				);
-				return;
+				switch (results[i])
+				{
+					case AddingResult.UnknownCommand:
+						_yat.CurrentTerminal.Output.Error(
+							Messages.UnknownCommand(results[i].ToString())
+						);
+						break;
+					case AddingResult.MissingAttribute:
+						_yat.CurrentTerminal.Output.Error(
+							Messages.MissingAttribute("CommandAttribute", results[i].ToString())
+						);
+						break;
+					default:
+						break;
+				}
 			}
-
-			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
-				is not CommandAttribute attribute)
-			{
-				_yat.CurrentTerminal.Output.Error(
-					Messages.MissingAttribute("CommandAttribute", commandType.Name)
-				);
-				return;
-			}
-
-			Registered[attribute.Name] = commandType;
-			foreach (string alias in attribute.Aliases) Registered[alias] = commandType;
-		}
-
-		public void AddCommand(params Type[] commands)
-		{
-			foreach (var command in commands) AddCommand(command);
 		}
 	}
 }
