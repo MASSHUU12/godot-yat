@@ -25,7 +25,8 @@ namespace YAT.Scenes
 		{
 			Success,
 			UnknownCommand,
-			MissingAttribute
+			MissingAttribute,
+			ExistentCommand
 		}
 
 		/// <summary>
@@ -43,8 +44,16 @@ namespace YAT.Scenes
 				is not CommandAttribute attribute)
 				return AddingResult.MissingAttribute;
 
+			if (Registered.ContainsKey(attribute.Name))
+				return AddingResult.ExistentCommand;
+
 			Registered[attribute.Name] = commandType;
-			foreach (string alias in attribute.Aliases) Registered[alias] = commandType;
+			foreach (string alias in attribute.Aliases)
+			{
+				if (Registered.ContainsKey(alias)) return AddingResult.ExistentCommand;
+
+				Registered[alias] = commandType;
+			}
 
 			return AddingResult.Success;
 		}
@@ -104,6 +113,9 @@ namespace YAT.Scenes
 						_yat.CurrentTerminal.Output.Error(
 							Messages.MissingAttribute("CommandAttribute", results[i].ToString())
 						);
+						break;
+					case AddingResult.ExistentCommand:
+						_yat.CurrentTerminal.Output.Error($"Command {results[i]} already exists.");
 						break;
 					default:
 						break;
