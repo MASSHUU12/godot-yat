@@ -109,11 +109,13 @@ namespace YAT.Scenes
 		/// <summary>
 		/// Retrieves the quick commands from file and adds them to the list of quick commands.
 		/// </summary>
-		public void GetQuickCommands()
+		public bool GetQuickCommands()
 		{
 			var qc = StorageHelper.LoadResource<Resources.QuickCommands>(QUICK_COMMANDS_PATH);
 
-			if (qc != null) QuickCommands = qc;
+			if (qc is not null) QuickCommands = qc;
+
+			return qc is not null;
 		}
 
 		private void RegisterBuiltinCOmmands()
