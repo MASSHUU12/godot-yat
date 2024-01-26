@@ -1,0 +1,13 @@
+[gd_scene load_steps=5 format=3 uid="uid://pig28ykj8ss3"]
+
+[ext_resource type="PackedScene" uid="uid://jdyvooorqjp2" path="res://addons/yat/src/scenes/yat_window/context_menu/context_submenu/ContextSubmenu.tscn" id="1_bnw12"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/game_terminal/components/quick_commands_context/QuickCommandsContext.cs" id="2_6o8dw"]
+[ext_resource type="Script" path="res://addons/yat/src/resources/quick_commands/QuickCommands.cs" id="3_nexgn"]
+
+[sub_resource type="Resource" id="Resource_14y2t"]
+script = ExtResource("3_nexgn")
+Commands = {}
+
+[node name="QuickCommandsContext" instance=ExtResource("1_bnw12")]
+script = ExtResource("2_6o8dw")
+QuickCommands = SubResource("Resource_14y2t")

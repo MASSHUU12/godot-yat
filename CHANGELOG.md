@@ -14,16 +14,25 @@ All notable changes to this project will be documented in this file.
     -   RegisteredCommands
 -   RegisteredCommands class.
 -   Reference to the RegisteredCommands class in YAT.
+-   ContextMenu to YatWindow.
 
 ### Changed
 
 -   Moved adding builtin commands to the RegisteredCommands class.
 -   Moved CommandManager to YAT.Scenes namespace.
 -   Updated folder structure.
+-   Moved QuickCommands resource to the resources folder.
+-   Moved QuickCommandsContext to the GameTerminal's components.
+-   Moved ContextMenu & ContextSubmenu under YatWindow's folder.
+-   RegisteredCommands class now manages QuickCommands.
 
 ### Fixed
 
 -   When there are several simultaneously running threaded commands, only the last one can be terminated.
+
+### Removed
+
+-   TerminalContext.
 
 ## [1.19.0-beta 2024-01-23]
 

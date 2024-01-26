@@ -10,9 +10,15 @@ namespace YAT.Scenes
 {
 	public partial class RegisteredCommands : Node
 	{
+		[Signal] public delegate void QuickCommandsChangedEventHandler();
+
+		[Export] public Resources.QuickCommands QuickCommands { get; set; } = new();
+
 		public static Dictionary<string, Type> Registered { get; private set; } = new();
 
 		private YAT _yat;
+		private const ushort MAX_QUICK_COMMANDS = 10;
+		private const string QUICK_COMMANDS_PATH = "user://yat_qc.tres";
 
 		public override void _Ready()
 		{
@@ -66,6 +72,50 @@ namespace YAT.Scenes
 				results[i] = AddCommand(commands[i]);
 
 			return results;
+		}
+
+		public bool AddQuickCommand(string name, string command)
+		{
+			if (QuickCommands.Commands.ContainsKey(name) ||
+				QuickCommands.Commands.Count >= MAX_QUICK_COMMANDS
+			) return false;
+
+			QuickCommands.Commands.Add(name, command);
+
+			var status = StorageHelper.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
+
+			GetQuickCommands();
+
+			EmitSignal(SignalName.QuickCommandsChanged);
+
+			return status;
+		}
+
+		public bool RemoveQuickCommand(string name)
+		{
+			if (!QuickCommands.Commands.ContainsKey(name)) return false;
+
+			QuickCommands.Commands.Remove(name);
+
+			var status = StorageHelper.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
+
+			GetQuickCommands();
+
+			EmitSignal(SignalName.QuickCommandsChanged);
+
+			return status;
+		}
+
+		/// <summary>
+		/// Retrieves the quick commands from file and adds them to the list of quick commands.
+		/// </summary>
+		public bool GetQuickCommands()
+		{
+			var qc = StorageHelper.LoadResource<Resources.QuickCommands>(QUICK_COMMANDS_PATH);
+
+			if (qc is not null) QuickCommands = qc;
+
+			return qc is not null;
 		}
 
 		private void RegisterBuiltinCOmmands()

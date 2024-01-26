@@ -1,11 +1,11 @@
 using Godot;
-using YAT.Helpers;
 
-namespace YAT.Scenes.ContextMenu
+namespace YAT.Scenes.YatWindow
 {
 	public partial class ContextMenu : PopupMenu
 	{
-		private const ushort _wallMargin = 16;
+		[Export] public ushort WallMargin { get; set; } = 16;
+
 		private Viewport _viewport = null;
 		private Rect2 _viewportRect = new();
 
@@ -17,27 +17,29 @@ namespace YAT.Scenes.ContextMenu
 			Hide();
 		}
 
-		public override void _Input(InputEvent @event)
-		{
-			if (@event.IsActionPressed(Keybindings.ContextMenu)) ShowNextToMouse();
-		}
-
 		/// <summary>
 		/// Shows the context menu next to the mouse cursor.
 		/// </summary>
 		public void ShowNextToMouse()
 		{
 			var mousePos = _viewport.GetMousePosition();
-			var limitX = _viewportRect.Size.X - Size.X - _wallMargin;
-			var limitY = _viewportRect.Size.Y - Size.Y - _wallMargin;
+			var (limitX, limitY) = CalculateLimits(_viewportRect);
 
 			Show();
 
 			Position = new()
 			{
-				X = (int)Mathf.Clamp(mousePos.X, _wallMargin, limitX),
-				Y = (int)Mathf.Clamp(mousePos.Y, _wallMargin, limitY)
+				X = (int)Mathf.Clamp(mousePos.X, WallMargin, limitX),
+				Y = (int)Mathf.Clamp(mousePos.Y, WallMargin, limitY)
 			};
+		}
+
+		public (float, float) CalculateLimits(Rect2 rect)
+		{
+			var limitX = rect.Size.X - Size.X - WallMargin;
+			var limitY = rect.Size.Y - Size.Y - WallMargin;
+
+			return ((int)limitX, (int)limitY);
 		}
 	}
 }

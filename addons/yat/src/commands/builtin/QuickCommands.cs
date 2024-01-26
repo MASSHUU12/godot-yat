@@ -14,6 +14,7 @@ namespace YAT.Commands
 	public sealed class QuickCommands : ICommand
 	{
 		private BaseTerminal _terminal;
+		private YAT _yat;
 
 		public CommandResult Execute(CommandData data)
 		{
@@ -21,6 +22,7 @@ namespace YAT.Commands
 			string name = data.Options.TryGetValue("-name", out object nameObj) ? (string)nameObj : null;
 			string command = data.Options.TryGetValue("-command", out object commandObj) ? (string)commandObj : null;
 
+			_yat = data.Yat;
 			_terminal = data.Terminal;
 
 			if (action != "list" && string.IsNullOrEmpty(name))
@@ -36,7 +38,7 @@ namespace YAT.Commands
 				case "remove":
 					return RemoveQuickCommand(name);
 				default:
-					foreach (var qc in _terminal.Context.QuickCommands.QuickCommands.Commands)
+					foreach (var qc in _yat.Commands.QuickCommands.Commands)
 					{
 						_terminal.Print($"[b]{qc.Key}[/b] - {Text.EscapeBBCode(qc.Value)}");
 					}
@@ -54,7 +56,7 @@ namespace YAT.Commands
 				return CommandResult.Failure;
 			}
 
-			bool status = _terminal.Context.QuickCommands.AddQuickCommand(name, command);
+			bool status = _yat.Commands.AddQuickCommand(name, command);
 			string message;
 
 			if (status) message = $"Added quick command '{name}'.";
@@ -67,7 +69,7 @@ namespace YAT.Commands
 
 		private CommandResult RemoveQuickCommand(string name)
 		{
-			bool status = _terminal.Context.QuickCommands.RemoveQuickCommand(name);
+			bool status = _yat.Commands.RemoveQuickCommand(name);
 			string message;
 
 			if (status) message = $"Removed quick command '{name}'.";

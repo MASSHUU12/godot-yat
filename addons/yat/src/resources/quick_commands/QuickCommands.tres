@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dw46ro2jvb3ip"]
+
+[ext_resource type="Script" path="res://addons/yat/src/resources/quick_commands/QuickCommands.cs" id="1_4um1j"]
+
+[resource]
+script = ExtResource("1_4um1j")
+Commands = {}

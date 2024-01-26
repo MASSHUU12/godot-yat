@@ -28,6 +28,8 @@ namespace YAT.Scenes.GameTerminal
 			CurrentTerminal.PositionResetRequested += ResetPosition;
 			CurrentTerminal.SizeResetRequested += () => Size = InitialSize;
 
+			ContextMenu.AddSubmenuItem("QuickCommands", "QuickCommandsContext");
+
 			MoveToCenter();
 		}
 
