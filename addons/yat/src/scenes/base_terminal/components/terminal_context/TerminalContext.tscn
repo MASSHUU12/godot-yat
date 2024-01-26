@@ -10,7 +10,6 @@ script = ExtResource("4_4oasj")
 Commands = {}
 
 [node name="TerminalContext" instance=ExtResource("1_nttre")]
-visible = false
 script = ExtResource("2_d4prk")
 
 [node name="QuickCommandsContext" parent="." index="3" instance=ExtResource("3_kfcti")]
