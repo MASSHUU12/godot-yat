@@ -11,7 +11,7 @@ namespace YAT.Scenes.YatWindow
 		[Export] public EWindowPosition DefaultWindowPosition = EWindowPosition.Center;
 		[Export] public bool AllowToGoOffscreen = true; // TODO: Implement this
 
-		public ContextMenu.ContextMenu ContextMenu { get; private set; }
+		public ContextMenu ContextMenu { get; private set; }
 		public Vector2I InitialSize { get; private set; }
 
 		private YAT _yat;
@@ -32,12 +32,12 @@ namespace YAT.Scenes.YatWindow
 			_viewport = _yat.GetTree().Root.GetViewport();
 			_viewport.SizeChanged += OnViewportSizeChanged;
 
-			ContextMenu = GetNode<ContextMenu.ContextMenu>("ContextMenu");
+			ContextMenu = GetNode<ContextMenu>("ContextMenu");
 			InitialSize = Size;
 
 			WindowInput += (InputEvent @event) =>
 			{
-				if (@event.IsActionPressed(Keybindings.ContextMenu))
+				if (@event.IsActionPressed(Keybindings.ContextMenu) && ContextMenu.ItemCount > 0)
 				{
 					ContextMenu.ShowNextToMouse();
 				}

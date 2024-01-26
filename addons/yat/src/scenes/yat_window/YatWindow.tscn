@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://b0caaqjmiluf7" path="res://addons/yat/src/scenes/yat_window/theme/yat_yatwindow_theme.tres" id="1_cty0e"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/yat_window/YatWindow.cs" id="2_1mdws"]
-[ext_resource type="PackedScene" uid="uid://cqk7b35vstfc8" path="res://addons/yat/src/scenes/context_menu/ContextMenu.tscn" id="3_kxett"]
+[ext_resource type="PackedScene" uid="uid://cqk7b35vstfc8" path="res://addons/yat/src/scenes/yat_window/context_menu/ContextMenu.tscn" id="3_u6so0"]
 
 [node name="YatWindow" type="Window"]
 disable_3d = true
@@ -22,5 +22,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ContextMenu" parent="." instance=ExtResource("3_kxett")]
+[node name="ContextMenu" parent="." instance=ExtResource("3_u6so0")]
 visible = false
