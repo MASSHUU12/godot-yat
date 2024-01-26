@@ -1,7 +1,7 @@
 using Godot;
 using YAT.Helpers;
 
-namespace YAT.Scenes.ContextMenu
+namespace YAT.Scenes.YatWindow
 {
 	public partial class ContextMenu : PopupMenu
 	{

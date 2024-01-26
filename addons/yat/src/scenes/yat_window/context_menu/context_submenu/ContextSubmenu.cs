@@ -1,6 +1,6 @@
 using Godot;
 
-namespace YAT.Scenes.ContextMenu
+namespace YAT.Scenes.YatWindow
 {
 	public partial class ContextSubmenu : PopupMenu
 	{

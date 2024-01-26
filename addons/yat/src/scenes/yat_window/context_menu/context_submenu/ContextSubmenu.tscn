@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://jdyvooorqjp2"]
+
+[ext_resource type="PackedScene" uid="uid://cqk7b35vstfc8" path="res://addons/yat/src/scenes/yat_window/context_menu/ContextMenu.tscn" id="1_dg3mc"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/yat_window/context_menu/context_submenu/ContextSubmenu.cs" id="2_6k21l"]
+
+[node name="ContextSubmenu" instance=ExtResource("1_dg3mc")]
+title = ""
+item_count = 0
+script = ExtResource("2_6k21l")
