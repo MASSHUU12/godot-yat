@@ -15,7 +15,6 @@ namespace YAT.Scenes.BaseTerminal
 		public bool Locked { get; set; }
 		public Input Input { get; private set; }
 		public Output Output { get; private set; }
-		public TerminalContext Context { get; private set; }
 		public SelectedNode SelectedNode { get; private set; }
 		public CommandValidator CommandValidator { get; private set; }
 		public CommandManager CommandManager { get; private set; }
@@ -69,7 +68,6 @@ namespace YAT.Scenes.BaseTerminal
 			SelectedNode = GetNode<SelectedNode>("SelectedNode");
 			SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
-			Context = GetNode<TerminalContext>("TerminalContext");
 			CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
 
 			_promptLabel = GetNode<Label>("%PromptLabel");
@@ -127,11 +125,6 @@ namespace YAT.Scenes.BaseTerminal
 					CommandManager.Cts.Cancel();
 					CommandManager.Cts.Dispose();
 					CommandManager.Cts = null;
-				}
-
-				if (@event.IsActionPressed(Keybindings.ContextMenu))
-				{
-					Context.ShowNextToMouse();
 				}
 			}
 		}
