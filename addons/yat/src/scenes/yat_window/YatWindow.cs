@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Helpers;
 
 namespace YAT.Scenes.YatWindow
 {
@@ -10,7 +11,8 @@ namespace YAT.Scenes.YatWindow
 		[Export] public EWindowPosition DefaultWindowPosition = EWindowPosition.Center;
 		[Export] public bool AllowToGoOffscreen = true; // TODO: Implement this
 
-		public Vector2I InitialSize { get; set; }
+		public ContextMenu.ContextMenu ContextMenu { get; private set; }
+		public Vector2I InitialSize { get; private set; }
 
 		private YAT _yat;
 		private Viewport _viewport;
@@ -30,7 +32,17 @@ namespace YAT.Scenes.YatWindow
 			_viewport = _yat.GetTree().Root.GetViewport();
 			_viewport.SizeChanged += OnViewportSizeChanged;
 
+			ContextMenu = GetNode<ContextMenu.ContextMenu>("ContextMenu");
 			InitialSize = Size;
+
+			WindowInput += (InputEvent @event) =>
+			{
+				if (@event.IsActionPressed(Keybindings.ContextMenu))
+				{
+					ContextMenu.ShowNextToMouse();
+				}
+				else ContextMenu.Hide();
+			};
 
 			Move(DefaultWindowPosition, (uint)ViewportEdgeOffset);
 			OnViewportSizeChanged();
@@ -76,10 +88,7 @@ namespace YAT.Scenes.YatWindow
 
 		protected void MoveTopLeft(uint offset)
 		{
-			Position = new(
-				(int)(0 + offset),
-				(int)(0 + offset)
-			);
+			Position = new((int)offset, (int)offset);
 		}
 
 		protected void MoveTopRight(uint offset)
@@ -90,7 +99,7 @@ namespace YAT.Scenes.YatWindow
 
 			Position = new(
 				(int)(bottomLeft.X - rect.Size.X - offset),
-				(int)(0 + offset)
+				(int)offset
 			);
 		}
 
@@ -113,7 +122,7 @@ namespace YAT.Scenes.YatWindow
 			var rect = GetVisibleRect();
 
 			Position = new(
-				(int)(0 + offset),
+				(int)offset,
 				(int)(bottomLeft.Y - rect.Size.Y - offset)
 			);
 		}
