@@ -2,43 +2,42 @@ using Godot;
 using YAT.Helpers;
 using YAT.Scenes.GameTerminal.Components;
 
-namespace YAT.Scenes.GameTerminal
+namespace YAT.Scenes.GameTerminal;
+
+public partial class GameTerminal : YatWindow.YatWindow
 {
-	public partial class GameTerminal : YatWindow.YatWindow
+	public BaseTerminal.BaseTerminal CurrentTerminal { get; private set; }
+	public TerminalSwitcher TerminalSwitcher { get; private set; }
+
+	private YAT _yat;
+
+	public override void _Ready()
 	{
-		public BaseTerminal.BaseTerminal CurrentTerminal { get; private set; }
-		public TerminalSwitcher TerminalSwitcher { get; private set; }
+		base._Ready();
 
-		private YAT _yat;
-
-		public override void _Ready()
+		_yat = GetNode<YAT>("/root/YAT");
+		_yat.YatReady += () =>
 		{
-			base._Ready();
+			CloseRequested += _yat.TerminalManager.CloseTerminal;
+		};
 
-			_yat = GetNode<YAT>("/root/YAT");
-			_yat.YatReady += () =>
-			{
-				CloseRequested += _yat.TerminalManager.CloseTerminal;
-			};
+		TerminalSwitcher = GetNode<TerminalSwitcher>("%TerminalSwitcher");
 
-			TerminalSwitcher = GetNode<TerminalSwitcher>("%TerminalSwitcher");
+		CurrentTerminal = TerminalSwitcher.CurrentTerminal;
+		CurrentTerminal.TitleChangeRequested += title => Title = title;
+		CurrentTerminal.PositionResetRequested += ResetPosition;
+		CurrentTerminal.SizeResetRequested += () => Size = InitialSize;
 
-			CurrentTerminal = TerminalSwitcher.CurrentTerminal;
-			CurrentTerminal.TitleChangeRequested += title => Title = title;
-			CurrentTerminal.PositionResetRequested += ResetPosition;
-			CurrentTerminal.SizeResetRequested += () => Size = InitialSize;
+		ContextMenu.AddSubmenuItem("QuickCommands", "QuickCommandsContext");
 
-			ContextMenu.AddSubmenuItem("QuickCommands", "QuickCommandsContext");
+		MoveToCenter();
+	}
 
-			MoveToCenter();
-		}
-
-		public override void _Input(InputEvent @event)
+	public override void _Input(InputEvent @event)
+	{
+		if (@event.IsActionPressed(Keybindings.TerminalToggle))
 		{
-			if (@event.IsActionPressed(Keybindings.TerminalToggle))
-			{
-				CallDeferred("emit_signal", SignalName.CloseRequested);
-			}
+			CallDeferred("emit_signal", SignalName.CloseRequested);
 		}
 	}
 }

@@ -2,49 +2,48 @@ using Godot;
 using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace YAT.Scenes.Monitor
+namespace YAT.Scenes.Monitor;
+
+public partial class LookingAt : PanelContainer, IMonitorComponent
 {
-	public partial class LookingAt : PanelContainer, IMonitorComponent
+	public bool UseColors { get; set; }
+
+	private YAT _yat;
+	private Label _label;
+	private const uint RAY_LENGTH = 1000;
+
+	public override void _Ready()
 	{
-		public bool UseColors { get; set; }
+		_yat = GetNode<YAT>("/root/YAT");
+		_label = GetNode<Label>("Label");
+	}
 
-		private YAT _yat;
-		private Label _label;
-		private const uint RAY_LENGTH = 1000;
+	public void Update()
+	{
+		var prefix = "Looking at: ";
+		var result = World.RayCast(_yat.GetViewport(), RAY_LENGTH);
 
-		public override void _Ready()
+		if (result is null)
 		{
-			_yat = GetNode<YAT>("/root/YAT");
-			_label = GetNode<Label>("Label");
+			_label.Text = prefix + "No camera";
+			return;
 		}
 
-		public void Update()
+		if (result.Count == 0)
 		{
-			var prefix = "Looking at: ";
-			var result = World.RayCast(_yat.GetViewport(), RAY_LENGTH);
-
-			if (result is null)
-			{
-				_label.Text = prefix + "No camera";
-				return;
-			}
-
-			if (result.Count == 0)
-			{
-				_label.Text = prefix + "Nothing";
-				return;
-			}
-
-			Vector2 position = result["position"].As<Vector2>();
-			Node node = result["collider"].As<Node>();
-
-			if (node is null)
-			{
-				_label.Text = prefix + "Nothing";
-				return;
-			}
-
-			_label.Text = prefix + node.Name + " at " + position;
+			_label.Text = prefix + "Nothing";
+			return;
 		}
+
+		Vector2 position = result["position"].As<Vector2>();
+		Node node = result["collider"].As<Node>();
+
+		if (node is null)
+		{
+			_label.Text = prefix + "Nothing";
+			return;
+		}
+
+		_label.Text = prefix + node.Name + " at " + position;
 	}
 }

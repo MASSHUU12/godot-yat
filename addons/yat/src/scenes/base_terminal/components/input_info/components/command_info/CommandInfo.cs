@@ -5,84 +5,83 @@ using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
 
-namespace YAT.Scenes.BaseTerminal.Components.InputInfo
+namespace YAT.Scenes.BaseTerminal.Components.InputInfo;
+
+public partial class CommandInfo : Node
 {
-	public partial class CommandInfo : Node
+	[Export] public Input Input { get; set; }
+	[Export] public InputInfo InputInfo { get; set; }
+	[Export] public BaseTerminal Terminal { get; set; }
+
+	private YAT _yat;
+
+	public override void _Ready()
 	{
-		[Export] public Input Input { get; set; }
-		[Export] public InputInfo InputInfo { get; set; }
-		[Export] public BaseTerminal Terminal { get; set; }
+		_yat = GetNode<YAT>("/root/YAT");
 
-		private YAT _yat;
+		Input.TextChanged += UpdateCommandInfo;
+	}
 
-		public override void _Ready()
+	public void UpdateCommandInfo(string text)
+	{
+		var tokens = Text.SanitizeText(text);
+
+		if (!AreTokensValid(tokens)) return;
+
+		InputInfo.DisplayCommandInfo(GenerateCommandInfo(tokens));
+	}
+
+	private string GenerateCommandInfo(string[] tokens)
+	{
+		var command = RegisteredCommands.Registered[tokens[0]];
+		CommandAttribute commandAttribute = command.GetCustomAttribute<CommandAttribute>();
+		var commandArguments = command.GetCustomAttributes<ArgumentAttribute>();
+
+		StringBuilder commandInfo = new();
+		commandInfo.Append(commandAttribute.Name);
+
+		if (commandArguments is null) return commandInfo.ToString();
+
+		uint i = 0;
+		uint count = (uint)commandArguments.Count();
+		foreach (var arg in commandArguments)
 		{
-			_yat = GetNode<YAT>("/root/YAT");
+			bool current = tokens.Length - 1 == i;
+			bool valid = Terminal.CommandValidator.ValidateCommandArgument(
+				commandAttribute.Name,
+				arg.Type,
+				new() { { arg.Name, arg.Type } },
+				(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,
+				false
+			);
 
-			Input.TextChanged += UpdateCommandInfo;
+			string argument = string.Format(
+				" {0}{1}<{2}:{3}>{4}{5}",
+				valid ? string.Empty : $"[color={_yat.OptionsManager.Options.ErrorColor.ToHtml()}]",
+				current ? "[b]" : string.Empty,
+				arg.Name,
+				(arg.Type is string[]) ? "options" : arg.Type,
+				current ? "[/b]" : string.Empty,
+				valid ? string.Empty : "[/color]"
+			);
+
+			commandInfo.Append(argument);
+
+			if (i < count - 1) commandInfo.Append(' ');
+
+			i++;
 		}
 
-		public void UpdateCommandInfo(string text)
+		return commandInfo.ToString();
+	}
+
+	private bool AreTokensValid(string[] tokens)
+	{
+		if (tokens.Length == 0 || !RegisteredCommands.Registered.ContainsKey(tokens[0]))
 		{
-			var tokens = Text.SanitizeText(text);
-
-			if (!AreTokensValid(tokens)) return;
-
-			InputInfo.DisplayCommandInfo(GenerateCommandInfo(tokens));
+			InputInfo.Visible = false;
+			return false;
 		}
-
-		private string GenerateCommandInfo(string[] tokens)
-		{
-			var command = RegisteredCommands.Registered[tokens[0]];
-			CommandAttribute commandAttribute = command.GetCustomAttribute<CommandAttribute>();
-			var commandArguments = command.GetCustomAttributes<ArgumentAttribute>();
-
-			StringBuilder commandInfo = new();
-			commandInfo.Append(commandAttribute.Name);
-
-			if (commandArguments is null) return commandInfo.ToString();
-
-			uint i = 0;
-			uint count = (uint)commandArguments.Count();
-			foreach (var arg in commandArguments)
-			{
-				bool current = tokens.Length - 1 == i;
-				bool valid = Terminal.CommandValidator.ValidateCommandArgument(
-					commandAttribute.Name,
-					arg.Type,
-					new() { { arg.Name, arg.Type } },
-					(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,
-					false
-				);
-
-				string argument = string.Format(
-					" {0}{1}<{2}:{3}>{4}{5}",
-					valid ? string.Empty : $"[color={_yat.OptionsManager.Options.ErrorColor.ToHtml()}]",
-					current ? "[b]" : string.Empty,
-					arg.Name,
-					(arg.Type is string[]) ? "options" : arg.Type,
-					current ? "[/b]" : string.Empty,
-					valid ? string.Empty : "[/color]"
-				);
-
-				commandInfo.Append(argument);
-
-				if (i < count - 1) commandInfo.Append(' ');
-
-				i++;
-			}
-
-			return commandInfo.ToString();
-		}
-
-		private bool AreTokensValid(string[] tokens)
-		{
-			if (tokens.Length == 0 || !RegisteredCommands.Registered.ContainsKey(tokens[0]))
-			{
-				InputInfo.Visible = false;
-				return false;
-			}
-			return true;
-		}
+		return true;
 	}
 }

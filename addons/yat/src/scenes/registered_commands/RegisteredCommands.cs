@@ -6,121 +6,121 @@ using YAT.Commands;
 using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace YAT.Scenes
+namespace YAT.Scenes;
+
+public partial class RegisteredCommands : Node
 {
-	public partial class RegisteredCommands : Node
+	[Signal] public delegate void QuickCommandsChangedEventHandler();
+
+	[Export] public Resources.QuickCommands QuickCommands { get; set; } = new();
+
+	public static Dictionary<string, Type> Registered { get; private set; } = new();
+
+	private YAT _yat;
+	private const ushort MAX_QUICK_COMMANDS = 10;
+	private const string QUICK_COMMANDS_PATH = "user://yat_qc.tres";
+
+	public override void _Ready()
 	{
-		[Signal] public delegate void QuickCommandsChangedEventHandler();
+		_yat = GetNode<YAT>("..");
 
-		[Export] public Resources.QuickCommands QuickCommands { get; set; } = new();
+		RegisterBuiltinCOmmands();
+	}
 
-		public static Dictionary<string, Type> Registered { get; private set; } = new();
+	public enum AddingResult
+	{
+		Success,
+		UnknownCommand,
+		MissingAttribute,
+		ExistentCommand
+	}
 
-		private YAT _yat;
-		private const ushort MAX_QUICK_COMMANDS = 10;
-		private const string QUICK_COMMANDS_PATH = "user://yat_qc.tres";
+	/// <summary>
+	/// Adds a command to the command manager.
+	/// </summary>
+	/// <param name="commandType">The type of the command to add.</param>
+	public static AddingResult AddCommand(Type commandType)
+	{
+		var commandInstance = Activator.CreateInstance(commandType);
 
-		public override void _Ready()
+		if (commandInstance is not ICommand command)
+			return AddingResult.UnknownCommand;
+
+		if (AttributeHelper.GetAttribute<CommandAttribute>(command)
+			is not CommandAttribute attribute)
+			return AddingResult.MissingAttribute;
+
+		if (Registered.ContainsKey(attribute.Name))
+			return AddingResult.ExistentCommand;
+
+		Registered[attribute.Name] = commandType;
+		foreach (string alias in attribute.Aliases)
 		{
-			_yat = GetNode<YAT>("..");
+			if (Registered.ContainsKey(alias)) return AddingResult.ExistentCommand;
 
-			RegisterBuiltinCOmmands();
+			Registered[alias] = commandType;
 		}
 
-		public enum AddingResult
-		{
-			Success,
-			UnknownCommand,
-			MissingAttribute,
-			ExistentCommand
-		}
+		return AddingResult.Success;
+	}
 
-		/// <summary>
-		/// Adds a command to the command manager.
-		/// </summary>
-		/// <param name="commandType">The type of the command to add.</param>
-		public static AddingResult AddCommand(Type commandType)
-		{
-			var commandInstance = Activator.CreateInstance(commandType);
+	public static AddingResult[] AddCommand(params Type[] commands)
+	{
+		AddingResult[] results = new AddingResult[commands.Length];
 
-			if (commandInstance is not ICommand command)
-				return AddingResult.UnknownCommand;
+		for (int i = 0; i < commands.Length; i++)
+			results[i] = AddCommand(commands[i]);
 
-			if (AttributeHelper.GetAttribute<CommandAttribute>(command)
-				is not CommandAttribute attribute)
-				return AddingResult.MissingAttribute;
+		return results;
+	}
 
-			if (Registered.ContainsKey(attribute.Name))
-				return AddingResult.ExistentCommand;
+	public bool AddQuickCommand(string name, string command)
+	{
+		if (QuickCommands.Commands.ContainsKey(name) ||
+			QuickCommands.Commands.Count >= MAX_QUICK_COMMANDS
+		) return false;
 
-			Registered[attribute.Name] = commandType;
-			foreach (string alias in attribute.Aliases)
-			{
-				if (Registered.ContainsKey(alias)) return AddingResult.ExistentCommand;
+		QuickCommands.Commands.Add(name, command);
 
-				Registered[alias] = commandType;
-			}
+		var status = StorageHelper.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
 
-			return AddingResult.Success;
-		}
+		GetQuickCommands();
 
-		public static AddingResult[] AddCommand(params Type[] commands)
-		{
-			AddingResult[] results = new AddingResult[commands.Length];
+		EmitSignal(SignalName.QuickCommandsChanged);
 
-			for (int i = 0; i < commands.Length; i++)
-				results[i] = AddCommand(commands[i]);
+		return status;
+	}
 
-			return results;
-		}
+	public bool RemoveQuickCommand(string name)
+	{
+		if (!QuickCommands.Commands.ContainsKey(name)) return false;
 
-		public bool AddQuickCommand(string name, string command)
-		{
-			if (QuickCommands.Commands.ContainsKey(name) ||
-				QuickCommands.Commands.Count >= MAX_QUICK_COMMANDS
-			) return false;
+		QuickCommands.Commands.Remove(name);
 
-			QuickCommands.Commands.Add(name, command);
+		var status = StorageHelper.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
 
-			var status = StorageHelper.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
+		GetQuickCommands();
 
-			GetQuickCommands();
+		EmitSignal(SignalName.QuickCommandsChanged);
 
-			EmitSignal(SignalName.QuickCommandsChanged);
+		return status;
+	}
 
-			return status;
-		}
+	/// <summary>
+	/// Retrieves the quick commands from file and adds them to the list of quick commands.
+	/// </summary>
+	public bool GetQuickCommands()
+	{
+		var qc = StorageHelper.LoadResource<Resources.QuickCommands>(QUICK_COMMANDS_PATH);
 
-		public bool RemoveQuickCommand(string name)
-		{
-			if (!QuickCommands.Commands.ContainsKey(name)) return false;
+		if (qc is not null) QuickCommands = qc;
 
-			QuickCommands.Commands.Remove(name);
+		return qc is not null;
+	}
 
-			var status = StorageHelper.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
-
-			GetQuickCommands();
-
-			EmitSignal(SignalName.QuickCommandsChanged);
-
-			return status;
-		}
-
-		/// <summary>
-		/// Retrieves the quick commands from file and adds them to the list of quick commands.
-		/// </summary>
-		public bool GetQuickCommands()
-		{
-			var qc = StorageHelper.LoadResource<Resources.QuickCommands>(QUICK_COMMANDS_PATH);
-
-			if (qc is not null) QuickCommands = qc;
-
-			return qc is not null;
-		}
-
-		private void RegisterBuiltinCOmmands()
-		{
-			AddingResult[] results = AddCommand(new[] {
+	private void RegisterBuiltinCOmmands()
+	{
+		AddingResult[] results = AddCommand(new[] {
 				typeof(Ls),
 				typeof(Ip),
 				typeof(Cn),
@@ -150,26 +150,25 @@ namespace YAT.Scenes
 				typeof(QuickCommands)
 			});
 
-			for (int i = 0; i < results.Length; i++)
+		for (int i = 0; i < results.Length; i++)
+		{
+			switch (results[i])
 			{
-				switch (results[i])
-				{
-					case AddingResult.UnknownCommand:
-						_yat.CurrentTerminal.Output.Error(
-							Messages.UnknownCommand(results[i].ToString())
-						);
-						break;
-					case AddingResult.MissingAttribute:
-						_yat.CurrentTerminal.Output.Error(
-							Messages.MissingAttribute("CommandAttribute", results[i].ToString())
-						);
-						break;
-					case AddingResult.ExistentCommand:
-						_yat.CurrentTerminal.Output.Error($"Command {results[i]} already exists.");
-						break;
-					default:
-						break;
-				}
+				case AddingResult.UnknownCommand:
+					_yat.CurrentTerminal.Output.Error(
+						Messages.UnknownCommand(results[i].ToString())
+					);
+					break;
+				case AddingResult.MissingAttribute:
+					_yat.CurrentTerminal.Output.Error(
+						Messages.MissingAttribute("CommandAttribute", results[i].ToString())
+					);
+					break;
+				case AddingResult.ExistentCommand:
+					_yat.CurrentTerminal.Output.Error($"Command {results[i]} already exists.");
+					break;
+				default:
+					break;
 			}
 		}
 	}

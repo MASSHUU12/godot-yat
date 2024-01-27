@@ -1,25 +1,24 @@
 using Godot;
 using YAT.Interfaces;
 
-namespace YAT.Scenes.Monitor
+namespace YAT.Scenes.Monitor;
+
+public partial class EngineInfo : PanelContainer, IMonitorComponent
 {
-	public partial class EngineInfo : PanelContainer, IMonitorComponent
+	public bool UseColors { get; set; }
+
+	private Label _label;
+	private readonly string _engineVersion = Engine.GetVersionInfo()["string"].AsString();
+	private readonly bool _isDebug = OS.IsDebugBuild();
+	private string _engineInfo;
+
+	public override void _Ready()
 	{
-		public bool UseColors { get; set; }
+		_engineInfo = $"Godot {_engineVersion} ({(_isDebug ? "Debug" : "Release")} template)";
 
-		private Label _label;
-		private readonly string _engineVersion = Engine.GetVersionInfo()["string"].AsString();
-		private readonly bool _isDebug = OS.IsDebugBuild();
-		private string _engineInfo;
-
-		public override void _Ready()
-		{
-			_engineInfo = $"Godot {_engineVersion} ({(_isDebug ? "Debug" : "Release")} template)";
-
-			_label = GetNode<Label>("Label");
-			_label.Text = _engineInfo;
-		}
-
-		public void Update() { }
+		_label = GetNode<Label>("Label");
+		_label.Text = _engineInfo;
 	}
+
+	public void Update() { }
 }
