@@ -5,17 +5,25 @@ namespace YAT.Scenes.YatWindow
 {
 	public partial class YatWindow : Window
 	{
+		[Signal] public delegate void WindowMovedEventHandler(Vector2 position);
+
 		[Export(PropertyHint.Range, "0, 128, 1")]
-		public int ViewportEdgeOffset = 48;
+		public ushort ViewportEdgeOffset { get; set; }
 
 		[Export] public EWindowPosition DefaultWindowPosition = EWindowPosition.Center;
-		[Export] public bool AllowToGoOffscreen = true; // TODO: Implement this
+		[Export] public bool AllowToGoOffScreen = true;
 
 		public ContextMenu ContextMenu { get; private set; }
 		public Vector2I InitialSize { get; private set; }
 
+		public bool IsWindowMoving { get; private set; } = false;
+
 		private YAT _yat;
 		private Viewport _viewport;
+
+		private Vector2 _previousPosition;
+		private float _windowMoveTimer = 0f;
+		private const float WINDOW_MOVE_REFRESH_RATE = 0.0128f;
 
 		public enum EWindowPosition
 		{
@@ -35,22 +43,60 @@ namespace YAT.Scenes.YatWindow
 			ContextMenu = GetNode<ContextMenu>("ContextMenu");
 			InitialSize = Size;
 
-			WindowInput += (InputEvent @event) =>
-			{
-				if (@event.IsActionPressed(Keybindings.ContextMenu) && ContextMenu.ItemCount > 0)
-				{
-					ContextMenu.ShowNextToMouse();
-				}
-				else ContextMenu.Hide();
-			};
+			WindowInput += OnWindowInput;
+			WindowMoved += OnWindowMoved;
 
-			Move(DefaultWindowPosition, (uint)ViewportEdgeOffset);
+			Move(DefaultWindowPosition, ViewportEdgeOffset);
 			OnViewportSizeChanged();
 		}
 
 		public void ResetPosition()
 		{
-			Move(DefaultWindowPosition, (uint)ViewportEdgeOffset);
+			Move(DefaultWindowPosition, ViewportEdgeOffset);
+		}
+
+		public override void _Process(double delta)
+		{
+			_windowMoveTimer += (float)delta;
+
+			if (_windowMoveTimer >= WINDOW_MOVE_REFRESH_RATE && _previousPosition != Position)
+			{
+				IsWindowMoving = true;
+				_windowMoveTimer = 0f;
+				_previousPosition = Position;
+				EmitSignal(SignalName.WindowMoved, Position);
+			}
+			else IsWindowMoving = false;
+		}
+
+		private void OnWindowInput(InputEvent @event)
+		{
+			if (@event.IsActionPressed(Keybindings.ContextMenu) && ContextMenu.ItemCount > 0)
+			{
+				ContextMenu.ShowNextToMouse();
+			}
+			else ContextMenu.Hide();
+		}
+
+		private void OnWindowMoved(Vector2 position)
+		{
+			if (!AllowToGoOffScreen)
+			{
+				var (limitX, limitY) = CalculateLimits(_viewport.GetVisibleRect());
+
+				Position = new(
+					(int)Mathf.Clamp(Position.X, ViewportEdgeOffset, limitX),
+					(int)Mathf.Clamp(Position.Y, ViewportEdgeOffset, limitY)
+				);
+			}
+		}
+
+		private (float, float) CalculateLimits(Rect2 rect)
+		{
+			var limitX = rect.Size.X - Size.X - ViewportEdgeOffset;
+			var limitY = rect.Size.Y - Size.Y - ViewportEdgeOffset;
+
+			return ((int)limitX, (int)limitY);
 		}
 
 		private void OnViewportSizeChanged()

@@ -24,3 +24,4 @@ grow_vertical = 2
 
 [node name="ContextMenu" parent="." instance=ExtResource("3_u6so0")]
 visible = false
+WallMargin = null

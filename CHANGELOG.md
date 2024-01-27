@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   WindowMoved signal & IsWindowMoving property to YatWindow.
+-   Implemented functionality for AllowToGoOffScreen property in YatWindow.
+-   Documentation for YatWindow class.
+
+### Changed
+
+-   By default, terminal window can not go off the screen.
+
+### Fixed
+
+-   Reset command does not reset terminal position to the center.
+
 ## [1.20.0-beta 2024-01-26]
 
 ### Added
