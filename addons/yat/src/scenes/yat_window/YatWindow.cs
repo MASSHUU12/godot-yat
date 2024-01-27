@@ -8,7 +8,7 @@ namespace YAT.Scenes.YatWindow
 		[Signal] public delegate void WindowMovedEventHandler(Vector2 position);
 
 		[Export(PropertyHint.Range, "0, 128, 1")]
-		public int ViewportEdgeOffset = 48;
+		public ushort ViewportEdgeOffset { get; set; }
 
 		[Export] public EWindowPosition DefaultWindowPosition = EWindowPosition.Center;
 		[Export] public bool AllowToGoOffScreen = true;
@@ -23,7 +23,7 @@ namespace YAT.Scenes.YatWindow
 
 		private Vector2 _previousPosition;
 		private float _windowMoveTimer = 0f;
-		private const float WINDOW_MOVE_REFRESH_RATE = 0.128f;
+		private const float WINDOW_MOVE_REFRESH_RATE = 0.0128f;
 
 		public enum EWindowPosition
 		{
@@ -80,7 +80,23 @@ namespace YAT.Scenes.YatWindow
 
 		private void OnWindowMoved(Vector2 position)
 		{
-			GD.Print($"Window moved to {position}");
+			if (!AllowToGoOffScreen)
+			{
+				var (limitX, limitY) = CalculateLimits(_viewport.GetVisibleRect());
+
+				Position = new(
+					(int)Mathf.Clamp(Position.X, ViewportEdgeOffset, limitX),
+					(int)Mathf.Clamp(Position.Y, ViewportEdgeOffset, limitY)
+				);
+			}
+		}
+
+		private (float, float) CalculateLimits(Rect2 rect)
+		{
+			var limitX = rect.Size.X - Size.X - ViewportEdgeOffset;
+			var limitY = rect.Size.Y - Size.Y - ViewportEdgeOffset;
+
+			return ((int)limitX, (int)limitY);
 		}
 
 		private void OnViewportSizeChanged()
