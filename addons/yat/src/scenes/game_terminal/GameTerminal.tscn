@@ -31,6 +31,8 @@ RichTextLabel/styles/normal = ExtResource("5_iupxt")
 title = "YAT"
 size = Vector2i(728, 384)
 script = ExtResource("2_17k82")
+ViewportEdgeOffset = 48
+AllowToGoOffScreen = false
 
 [node name="Content" parent="." index="0"]
 size_flags_horizontal = 3
