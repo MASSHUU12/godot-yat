@@ -46,13 +46,13 @@ namespace YAT.Scenes.YatWindow
 			WindowInput += OnWindowInput;
 			WindowMoved += OnWindowMoved;
 
-			Move(DefaultWindowPosition, (uint)ViewportEdgeOffset);
+			Move(DefaultWindowPosition, ViewportEdgeOffset);
 			OnViewportSizeChanged();
 		}
 
 		public void ResetPosition()
 		{
-			Move(DefaultWindowPosition, (uint)ViewportEdgeOffset);
+			Move(DefaultWindowPosition, ViewportEdgeOffset);
 		}
 
 		public override void _Process(double delta)
