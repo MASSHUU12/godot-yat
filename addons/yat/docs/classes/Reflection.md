@@ -20,7 +20,9 @@ This class is used to perform reflection actions on objects, e.g., checking whet
 | static EventInfo[] | GetEvents (this object obj, BindingFlags bindingFlags = BindingFlags.Default) |
 | static T           | GetAttribute<T> (this object obj)                                             |
 | static T[]         | GetAttributes<T> (this object obj)                                            |
-| static bool        | HasAttribute<T>(this object obj)                                              |
+| static bool        | HasAttribute<T> (this object obj)                                             |
+| static bool        | HasInterface<T> (this object obj) where T : notnull                           |
+| static bool        | HasInterface (Type type, StringName interfaceName)                            |
 
 ### Signals
 
