@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace YAT.Helpers;
+namespace YAT.Classes;
 
 /// <summary>
 /// Represents a Least Recently Used (LRU) cache that stores key-value pairs up to a specified capacity.
