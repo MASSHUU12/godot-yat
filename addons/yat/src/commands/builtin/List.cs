@@ -7,32 +7,31 @@ using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 
-namespace YAT.Commands
+namespace YAT.Commands;
+
+[Command("list", "List all available commands", "[b]Usage[/b]: list", "lc")]
+public partial class List : ICommand
 {
-	[Command("list", "List all available commands", "[b]Usage[/b]: list", "lc")]
-	public partial class List : ICommand
+	public CommandResult Execute(CommandData data)
 	{
-		public CommandResult Execute(CommandData data)
+		var sb = new StringBuilder();
+
+		sb.AppendLine("Available commands:");
+
+		foreach (var command in RegisteredCommands.Registered)
 		{
-			var sb = new StringBuilder();
+			if (command.Value.GetCustomAttribute<CommandAttribute>() is not CommandAttribute attribute) continue;
 
-			sb.AppendLine("Available commands:");
+			// Skip aliases
+			if (attribute.Aliases.Contains(command.Key)) continue;
 
-			foreach (var command in RegisteredCommands.Registered)
-			{
-				if (command.Value.GetCustomAttribute<CommandAttribute>() is not CommandAttribute attribute) continue;
-
-				// Skip aliases
-				if (attribute.Aliases.Contains(command.Key)) continue;
-
-				sb.Append($"[b]{command.Key}[/b] - ");
-				sb.Append(attribute.Description);
-				sb.AppendLine();
-			}
-
-			data.Terminal.Print(sb.ToString());
-
-			return CommandResult.Success;
+			sb.Append($"[b]{command.Key}[/b] - ");
+			sb.Append(attribute.Description);
+			sb.AppendLine();
 		}
+
+		data.Terminal.Print(sb.ToString());
+
+		return CommandResult.Success;
 	}
 }

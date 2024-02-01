@@ -3,37 +3,36 @@ using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
 
-namespace YAT.Commands
+namespace YAT.Commands;
+
+[Command("quit", "By default quits the game.", "[b]Usage[/b]: quit", "exit")]
+[Option("-t", null, "Closes the terminal.", false)]
+public sealed class Quit : ICommand
 {
-	[Command("quit", "By default quits the game.", "[b]Usage[/b]: quit", "exit")]
-	[Option("-t", null, "Closes the terminal.", false)]
-	public partial class Quit : ICommand
+	private YAT _yat;
+	private BaseTerminal _terminal;
+
+	public CommandResult Execute(CommandData data)
 	{
-		private YAT _yat;
-		private BaseTerminal _terminal;
+		var t = (bool)data.Options["-t"];
 
-		public CommandResult Execute(CommandData data)
-		{
-			var t = (bool)data.Options["-t"];
+		_yat = data.Yat;
+		_terminal = data.Terminal;
 
-			_yat = data.Yat;
-			_terminal = data.Terminal;
+		if (t) CloseTerminal();
+		else QuitTheGame();
 
-			if (t) CloseTerminal();
-			else QuitTheGame();
+		return CommandResult.Success;
+	}
 
-			return CommandResult.Success;
-		}
+	private void CloseTerminal()
+	{
+		_yat.CallDeferred("CloseTerminal");
+	}
 
-		private void CloseTerminal()
-		{
-			_yat.CallDeferred("CloseTerminal");
-		}
-
-		private void QuitTheGame()
-		{
-			_terminal.Print("Quitting...");
-			_yat.GetTree().Quit();
-		}
+	private void QuitTheGame()
+	{
+		_terminal.Print("Quitting...");
+		_yat.GetTree().Quit();
 	}
 }

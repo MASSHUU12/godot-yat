@@ -5,53 +5,52 @@ using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace YAT.Commands
+namespace YAT.Commands;
+
+public partial class Extensible : Node
 {
-	public partial class Extensible : Node
+	public static Dictionary<string, IExtension> Extensions { get; private set; } = new();
+
+	/// <summary>
+	/// Registers an extension.
+	/// </summary>
+	/// <param name="extension">The extension to register.</param>
+	public void Register(IExtension extension)
 	{
-		public static Dictionary<string, IExtension> Extensions { get; private set; } = new();
-
-		/// <summary>
-		/// Registers an extension.
-		/// </summary>
-		/// <param name="extension">The extension to register.</param>
-		public void Register(IExtension extension)
+		if (AttributeHelper.GetAttribute<ExtensionAttribute>(extension)
+			is not ExtensionAttribute attribute
+		)
 		{
-			if (AttributeHelper.GetAttribute<ExtensionAttribute>(extension)
-				is not ExtensionAttribute attribute
-			)
-			{
-				var yat = GetNode<YAT>("/root/YAT");
-				yat.CurrentTerminal.Output.Error(
-					Messages.MissingAttribute("ExtensionAttribute", extension.GetType().Name)
-				);
-				return;
-			}
-
-			Extensions[attribute.Name] = extension;
-			foreach (string alias in attribute.Aliases)
-			{
-				Extensions[alias] = extension;
-			}
+			var yat = GetNode<YAT>("/root/YAT");
+			yat.CurrentTerminal.Output.Error(
+				Messages.MissingAttribute("ExtensionAttribute", extension.GetType().Name)
+			);
+			return;
 		}
 
-		/// <summary>
-		/// Generates a manual for all extensions.
-		/// </summary>
-		/// <param name="args">Optional arguments.</param>
-		/// <returns>A string containing the generated manual.</returns>
-		public virtual string GenerateExtensionsManual(params string[] args)
+		Extensions[attribute.Name] = extension;
+		foreach (string alias in attribute.Aliases)
 		{
-			StringBuilder sb = new();
-
-			sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
-
-			foreach (var extension in Extensions)
-			{
-				sb.Append(extension.Value.GenerateExtensionManual());
-			}
-
-			return sb.ToString();
+			Extensions[alias] = extension;
 		}
+	}
+
+	/// <summary>
+	/// Generates a manual for all extensions.
+	/// </summary>
+	/// <param name="args">Optional arguments.</param>
+	/// <returns>A string containing the generated manual.</returns>
+	public virtual string GenerateExtensionsManual(params string[] args)
+	{
+		StringBuilder sb = new();
+
+		sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
+
+		foreach (var extension in Extensions)
+		{
+			sb.Append(extension.Value.GenerateExtensionManual());
+		}
+
+		return sb.ToString();
 	}
 }

@@ -2,27 +2,26 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 
-namespace YAT.Commands
+namespace YAT.Commands;
+
+[Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
+[Option("-l", null, "Prints the full path to the scene file.", false)]
+[Option("-s", null, "Prints info about currently selected node.", false)]
+public sealed class Whereami : ICommand
 {
-	[Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
-	[Option("-l", null, "Prints the full path to the scene file.", false)]
-	[Option("-s", null, "Prints info about currently selected node.", false)]
-	public partial class Whereami : ICommand
+	public CommandResult Execute(CommandData data)
 	{
-		public CommandResult Execute(CommandData data)
-		{
-			var scene = data.Yat.GetTree().CurrentScene;
-			var longForm = (bool)data.Options["-l"];
-			var s = (bool)data.Options["-s"];
+		var scene = data.Yat.GetTree().CurrentScene;
+		var longForm = (bool)data.Options["-l"];
+		var s = (bool)data.Options["-s"];
 
-			scene = s ? data.Terminal.SelectedNode.Current : scene;
+		scene = s ? data.Terminal.SelectedNode.Current : scene;
 
-			data.Terminal.Print(
-				scene.GetPath() +
-				(longForm ? " (" + scene.SceneFilePath + ")" : string.Empty)
-			);
+		data.Terminal.Print(
+			scene.GetPath() +
+			(longForm ? " (" + scene.SceneFilePath + ")" : string.Empty)
+		);
 
-			return CommandResult.Success;
-		}
+		return CommandResult.Success;
 	}
 }
