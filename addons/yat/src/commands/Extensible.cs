@@ -14,14 +14,11 @@ public partial class Extensible : Node
 {
 	protected static Dictionary<StringName, Dictionary<StringName, Type>> Extensions { get; set; } = new();
 
-	/// <summary>
-	/// Registers an extension type to be used by the application.
-	/// </summary>
-	/// <param name="extension">The type of the extension to register.</param>
-	/// <returns><c>true</c> if the extension was successfully registered, <c>false</c> otherwise.</returns>
 	public static bool RegisterExtension(StringName commandName, Type extension)
 	{
-		if (string.IsNullOrEmpty(commandName) || extension is null) return false;
+		if (string.IsNullOrEmpty(commandName) ||
+			!Reflection.HasInterface(extension, nameof(IExtension))
+		) return false;
 
 		var instance = Activator.CreateInstance(extension) as IExtension;
 
@@ -31,9 +28,11 @@ public partial class Extensible : Node
 
 		// Check if dictionary have entry for the command
 		// if entry exists, check if the entry contains the extension
-		if (!Extensions.TryGetValue(commandName, out Dictionary<StringName, Type> value))
+		if (!Extensions.TryGetValue(commandName, out Dictionary<StringName, Type> extensions))
 			Extensions.Add(commandName, new Dictionary<StringName, Type>());
-		else if (value.ContainsKey(commandName)) return false;
+		else if (extensions.ContainsKey(commandName)) return false;
+
+		if (Extensions[commandName].ContainsKey(attribute.Name)) return false;
 
 		Extensions[commandName].Add(attribute.Name, extension);
 
@@ -48,7 +47,9 @@ public partial class Extensible : Node
 
 	public static bool UnregisterExtension(StringName commandName, Type extension)
 	{
-		if (string.IsNullOrEmpty(commandName) || extension is null) return false;
+		if (string.IsNullOrEmpty(commandName) ||
+			!Reflection.HasInterface(extension, nameof(IExtension))
+		) return false;
 
 		if (Reflection.GetAttribute<ExtensionAttribute>(extension)
 			is not ExtensionAttribute attribute
@@ -73,9 +74,10 @@ public partial class Extensible : Node
 
 	public virtual CommandResult ExecuteExtension(Type extension, CommandData args)
 	{
-		var extensionInstance = Activator.CreateInstance(extension) as IExtension;
+		if (!Reflection.HasInterface(extension, nameof(IExtension)))
+			return CommandResult.InvalidCommand;
 
-		return extensionInstance.Execute(args);
+		return (Activator.CreateInstance(extension) as IExtension).Execute(args);
 	}
 
 	public virtual StringBuilder GenerateExtensionsManual()
