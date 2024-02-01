@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Resources;
 
 namespace YAT.Scenes.OptionsManager;
 

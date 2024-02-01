@@ -1,6 +1,7 @@
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Types;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands;

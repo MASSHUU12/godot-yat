@@ -1,6 +1,6 @@
 using Godot;
 
-namespace YAT
+namespace YAT.Resources
 {
 	public partial class YatOptions : Resource
 	{

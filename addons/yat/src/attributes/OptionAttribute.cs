@@ -30,7 +30,7 @@ public sealed class OptionAttribute : Attribute
 	/// <returns>An object representing the parsed data.</returns>
 	private static object ParseDataType(string dataType)
 	{
-		var data = dataType.Trim();
+		var data = dataType?.Trim();
 
 		if (string.IsNullOrEmpty(data)) return null;
 

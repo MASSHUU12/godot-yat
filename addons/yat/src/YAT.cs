@@ -4,6 +4,7 @@ using YAT.Scenes.BaseTerminal;
 using YAT.Scenes.OptionsManager;
 using YAT.Scenes.TerminalManager;
 using YAT.Scenes;
+using YAT.Resources;
 
 namespace YAT;
 

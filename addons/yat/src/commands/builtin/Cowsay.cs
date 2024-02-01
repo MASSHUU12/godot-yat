@@ -5,6 +5,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
+using YAT.Types;
 
 namespace YAT.Commands;
 

@@ -8,6 +8,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Types;
 
 namespace YAT.Scenes.BaseTerminal.Components;
 

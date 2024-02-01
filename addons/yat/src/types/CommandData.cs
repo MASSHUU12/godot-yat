@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Threading;
+using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
 
-namespace YAT.Interfaces
+namespace YAT.Types
 {
 	public sealed record CommandData(
 		YAT Yat,

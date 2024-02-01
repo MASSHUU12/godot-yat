@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using YAT.Helpers;
+using YAT.Resources;
 using YAT.Scenes.BaseTerminal.Components;
 
 namespace YAT.Scenes.BaseTerminal;

@@ -4,6 +4,7 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
+using YAT.Types;
 using static Godot.RenderingServer;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
