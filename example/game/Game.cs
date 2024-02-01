@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Commands;
 using YAT.Helpers;
 
 public partial class Game : Node3D
@@ -38,6 +39,6 @@ public partial class Game : Node3D
 		var cube = GetNode<MeshInstance3D>("Scene/Cube");
 
 		SetCube.Cube = cube;
-		YAT.Commands.Set.RegisterExtension(typeof(SetCube));
+		Extensible.RegisterExtension("set", typeof(SetCube));
 	}
 }
