@@ -1,56 +1,93 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Godot;
 using YAT.Attributes;
+using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Types;
 
 namespace YAT.Commands;
 
 public partial class Extensible : Node
 {
-	public static Dictionary<string, IExtension> Extensions { get; private set; } = new();
+	protected static Dictionary<string, Type> Extensions { get; set; } = new();
 
 	/// <summary>
-	/// Registers an extension.
+	/// Registers an extension type to be used by the application.
 	/// </summary>
-	/// <param name="extension">The extension to register.</param>
-	public void Register(IExtension extension)
+	/// <param name="extension">The type of the extension to register.</param>
+	/// <returns><c>true</c> if the extension was successfully registered, <c>false</c> otherwise.</returns>
+	public static bool RegisterExtension(Type extension)
 	{
-		if (Reflection.GetAttribute<ExtensionAttribute>(extension)
+		var extensionInstance = Activator.CreateInstance(extension);
+
+		if (extensionInstance is not IExtension) return false;
+
+		if (Reflection.GetAttribute<ExtensionAttribute>(extensionInstance)
 			is not ExtensionAttribute attribute
-		)
-		{
-			var yat = GetNode<YAT>("/root/YAT");
-			yat.CurrentTerminal.Output.Error(
-				Messages.MissingAttribute("ExtensionAttribute", extension.GetType().Name)
-			);
-			return;
-		}
+		) return false;
+
+		if (Extensions.ContainsKey(attribute.Name)) return false;
 
 		Extensions[attribute.Name] = extension;
 		foreach (string alias in attribute.Aliases)
 		{
+			if (Extensions.ContainsKey(alias)) return false;
+
 			Extensions[alias] = extension;
 		}
+
+		return true;
 	}
 
-	/// <summary>
-	/// Generates a manual for all extensions.
-	/// </summary>
-	/// <param name="args">Optional arguments.</param>
-	/// <returns>A string containing the generated manual.</returns>
-	public virtual string GenerateExtensionsManual(params string[] args)
+	public static bool UnregisterExtension(Type extension)
+	{
+		if (extension is null || extension is not IExtension) return false;
+
+		if (Reflection.GetAttribute<ExtensionAttribute>(extension)
+			is not ExtensionAttribute attribute
+		) return false;
+
+		if (!Extensions.ContainsKey(attribute.Name)) return false;
+
+		Extensions.Remove(attribute.Name);
+		foreach (string alias in attribute.Aliases)
+		{
+			if (!Extensions.ContainsKey(alias)) return false;
+
+			Extensions.Remove(alias);
+		}
+
+		return true;
+	}
+
+	public virtual CommandResult ExecuteExtension(Type extension, CommandData args)
+	{
+		var extensionInstance = Activator.CreateInstance(extension) as IExtension;
+
+		return extensionInstance.Execute(args);
+	}
+
+	public virtual StringBuilder GenerateExtensionsManual()
 	{
 		StringBuilder sb = new();
 
 		sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
 
-		foreach (var extension in Extensions)
+		if (Extensions.Count == 0)
 		{
-			sb.Append(extension.Value.GenerateExtensionManual());
+			sb.AppendLine("[p align=center]No extensions are currently loaded.[/p]");
+			return sb;
 		}
 
-		return sb.ToString();
+		foreach (var extension in Extensions)
+		{
+			var extensionInstance = Activator.CreateInstance(extension.Value) as IExtension;
+			sb.Append(extensionInstance.GenerateExtensionManual());
+		}
+
+		return sb;
 	}
 }
