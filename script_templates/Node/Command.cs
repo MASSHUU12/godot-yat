@@ -4,16 +4,17 @@ using _BINDINGS_NAMESPACE_;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Types;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
 {
 	[Command("_CLASS_", "Lorem ipsum dolor sit amet.", "[b]Usage[/b]: _CLASS_")]
-	public partial class _CLASS_ : ICommand
+	public sealed class _CLASS_ : ICommand
 	{
-		public CommandResult Execute(CommandArguments args)
+		public CommandResult Execute(CommandData data)
 		{
-			args.Terminal.Print("_CLASS_ is not yet implemented!", PrintType.Warning);
+			data.Terminal.Print("_CLASS_ is not yet implemented!", PrintType.Warning);
 
 			return CommandResult.Failure;
 		}

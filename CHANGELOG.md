@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 -   By default, terminal window can not go off the screen.
 -   Moved YatOptions to the YAT.Resources namespace.
 -   Moved CommandData record to the YAT.Types namespace.
+-   Updated script templates.
 
 ### Fixed
 
