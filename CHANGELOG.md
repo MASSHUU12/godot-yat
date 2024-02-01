@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 -   Moved YatOptions to the YAT.Resources namespace.
 -   Moved CommandData record to the YAT.Types namespace.
 -   Updated script templates.
+-   Combined AttributeHelper with Reflection class.
 
 ### Fixed
 

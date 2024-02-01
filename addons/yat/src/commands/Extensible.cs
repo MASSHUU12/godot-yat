@@ -17,7 +17,7 @@ public partial class Extensible : Node
 	/// <param name="extension">The extension to register.</param>
 	public void Register(IExtension extension)
 	{
-		if (AttributeHelper.GetAttribute<ExtensionAttribute>(extension)
+		if (Reflection.GetAttribute<ExtensionAttribute>(extension)
 			is not ExtensionAttribute attribute
 		)
 		{

@@ -19,8 +19,8 @@ public partial interface ICommand
 
 	public virtual string GenerateCommandManual()
 	{
-		CommandAttribute command = AttributeHelper.GetAttribute<CommandAttribute>(this);
-		bool isThreaded = AttributeHelper.HasAttribute<ThreadedAttribute>(this);
+		CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this);
+		bool isThreaded = Reflection.HasAttribute<ThreadedAttribute>(this);
 
 		if (string.IsNullOrEmpty(command?.Manual)) return "This command does not have a manual.";
 
@@ -45,7 +45,7 @@ public partial interface ICommand
 
 	public virtual string GenerateArgumentsManual()
 	{
-		var attributes = AttributeHelper.GetAttributes<ArgumentAttribute>(this);
+		var attributes = Reflection.GetAttributes<ArgumentAttribute>(this);
 
 		if (attributes is null) return "\nThis command does not have any arguments.";
 
@@ -71,7 +71,7 @@ public partial interface ICommand
 
 	public virtual string GenerateOptionsManual()
 	{
-		var attributes = AttributeHelper.GetAttributes<OptionAttribute>(this);
+		var attributes = Reflection.GetAttributes<OptionAttribute>(this);
 
 		if (attributes is null) return "\nThis command does not have any options.";
 

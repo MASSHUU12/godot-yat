@@ -46,7 +46,7 @@ public partial class RegisteredCommands : Node
 		if (commandInstance is not ICommand command)
 			return AddingResult.UnknownCommand;
 
-		if (AttributeHelper.GetAttribute<CommandAttribute>(command)
+		if (Reflection.GetAttribute<CommandAttribute>(command)
 			is not CommandAttribute attribute)
 			return AddingResult.MissingAttribute;
 
