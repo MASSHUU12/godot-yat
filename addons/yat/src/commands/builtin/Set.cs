@@ -14,7 +14,9 @@ public partial class Set : Extensible, ICommand
 {
 	public CommandResult Execute(CommandData data)
 	{
-		if (Extensions.TryGetValue((string)data.Arguments["variable"], out Type extension))
+		var extensions = GetCommandExtensions("set");
+
+		if (extensions.TryGetValue((string)data.Arguments["variable"], out Type extension))
 			return ExecuteExtension(extension, data with { RawData = data.RawData[1..] });
 
 		data.Terminal.Print("Variable not found.", PrintType.Error);
