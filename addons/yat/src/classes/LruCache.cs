@@ -3,27 +3,20 @@ using System.Collections.Generic;
 
 namespace YAT.Classes;
 
-/// <summary>
-/// Represents a Least Recently Used (LRU) cache that stores key-value pairs up to a specified capacity.
-/// When the cache is full, the least recently used item is removed to make room for new items.
-/// </summary>
-/// <typeparam name="TKey">The type of the keys in the cache.</typeparam>
-/// <typeparam name="TValue">The type of the values in the cache.</typeparam>
 public class LRUCache<TKey, TValue> where TKey : notnull where TValue : notnull
 {
-	private readonly int capacity;
+	private readonly ushort capacity;
 	private readonly Dictionary<TKey, LinkedListNode<LRUItem<TKey, TValue>>> cache;
 	private readonly LinkedList<LRUItem<TKey, TValue>> lruList;
 
-	public LRUCache(int capacity)
+	public LRUCache(ushort capacity)
 	{
-		if (capacity <= 0) throw new ArgumentOutOfRangeException(
-			nameof(capacity), "Capacity must be greater than zero."
-		);
+		if (capacity == 0)
+			throw new ArgumentException("Capacity must be greater than 0.", nameof(capacity));
 
 		this.capacity = capacity;
-		cache = new Dictionary<TKey, LinkedListNode<LRUItem<TKey, TValue>>>(capacity);
-		lruList = new LinkedList<LRUItem<TKey, TValue>>();
+		cache = new(capacity);
+		lruList = new();
 	}
 
 	/// <summary>
@@ -52,7 +45,7 @@ public class LRUCache<TKey, TValue> where TKey : notnull where TValue : notnull
 	/// <param name="value">The value of the item to add.</param>
 	public void Add(TKey key, TValue value)
 	{
-		if (cache.Count >= capacity)
+		if (cache.Count >= capacity && lruList.Last is not null)
 		{
 			// Remove the least recently used item
 			var lastNode = lruList.Last;
@@ -67,11 +60,6 @@ public class LRUCache<TKey, TValue> where TKey : notnull where TValue : notnull
 	public int Size => cache.Count;
 }
 
-/// <summary>
-/// Represents an item in a Least Recently Used (LRU) cache.
-/// </summary>
-/// <typeparam name="TKey">The type of the key.</typeparam>
-/// <typeparam name="TValue">The type of the value.</typeparam>
 public class LRUItem<TKey, TValue> where TKey : notnull where TValue : notnull
 {
 	public TKey Key { get; }
