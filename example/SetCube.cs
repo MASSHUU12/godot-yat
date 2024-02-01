@@ -6,7 +6,7 @@ using YAT.Types;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 [Extension("cubecolor", "Sets the cube's color.", "[b]Usage[/b]: setcube [i]color[/i]")]
-public partial class SetCube : IExtension
+public sealed class SetCube : IExtension
 {
 	public static MeshInstance3D Cube { get; set; }
 
