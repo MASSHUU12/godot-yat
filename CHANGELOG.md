@@ -18,14 +18,12 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
--   By default, terminal window can not go off the screen.
 -   Moved YatOptions to the YAT.Resources namespace.
 -   Moved CommandData record to the YAT.Types namespace.
 -   Updated script templates.
 -   Combined AttributeHelper with Reflection class.
--   GameTerminal is able to go out the screen by default.
 -   Reworked Extensible class.
--   Moved Extensible & LruCache class to the Classes folder.
+-   Moved Extensible & LruCache class to the Classes folder and namespace.
 
 ### Fixed
 
