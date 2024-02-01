@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 -   Combined AttributeHelper with Reflection class.
 -   GameTerminal is able to go out the screen by default.
 -   Reworked Extensible class.
+-   Moved Extensible & LruCache class to the Classes folder.
 
 ### Fixed
 
