@@ -8,7 +8,9 @@ All notable changes to this project will be documented in this file.
 
 -   WindowMoved signal & IsWindowMoving property to YatWindow.
 -   Implemented functionality for AllowToGoOffScreen property in YatWindow.
--   Documentation for YatWindow class.
+-   Documentation for:
+    -   YatWindow
+    -   Reflection
 -   Script Templates & C# Project Configuration sections to USAGE.md file.
 
 ### Changed
@@ -17,6 +19,7 @@ All notable changes to this project will be documented in this file.
 -   Moved YatOptions to the YAT.Resources namespace.
 -   Moved CommandData record to the YAT.Types namespace.
 -   Updated script templates.
+-   Combined AttributeHelper with Reflection class.
 
 ### Fixed
 

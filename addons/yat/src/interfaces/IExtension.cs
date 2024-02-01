@@ -14,7 +14,7 @@ public partial interface IExtension
 	public virtual string GenerateExtensionManual(params string[] args)
 	{
 		StringBuilder sb = new();
-		ExtensionAttribute attribute = AttributeHelper.GetAttribute<ExtensionAttribute>(this);
+		ExtensionAttribute attribute = Reflection.GetAttribute<ExtensionAttribute>(this);
 
 		if (string.IsNullOrEmpty(attribute?.Manual))
 		{
