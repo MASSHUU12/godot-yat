@@ -2,22 +2,22 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Types;
 
-namespace YAT.Commands
+namespace YAT.Commands;
+
+[Command(
+	"toggleaudio",
+	"Toggles audio on or off.",
+	"[b]Usage[/b]: toggleaudio"
+)]
+public sealed class ToggleAudio : ICommand
 {
-	[Command(
-		"toggleaudio",
-		"Toggles audio on or off.",
-		"[b]Usage[/b]: toggleaudio"
-	)]
-	public sealed class ToggleAudio : ICommand
+	public CommandResult Execute(CommandData data)
 	{
-		public CommandResult Execute(CommandData data)
-		{
-			for (var i = 0; i < AudioServer.BusCount; i++)
-				AudioServer.SetBusMute(i, !AudioServer.IsBusMute(i));
+		for (var i = 0; i < AudioServer.BusCount; i++)
+			AudioServer.SetBusMute(i, !AudioServer.IsBusMute(i));
 
-			return CommandResult.Success;
-		}
+		return CommandResult.Success;
 	}
 }

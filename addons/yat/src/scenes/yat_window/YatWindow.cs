@@ -1,181 +1,180 @@
 using Godot;
 using YAT.Helpers;
 
-namespace YAT.Scenes.YatWindow
+namespace YAT.Scenes.YatWindow;
+
+public partial class YatWindow : Window
 {
-	public partial class YatWindow : Window
+	[Signal] public delegate void WindowMovedEventHandler(Vector2 position);
+
+	[Export(PropertyHint.Range, "0, 128, 1")]
+	public ushort ViewportEdgeOffset { get; set; }
+
+	[Export] public EWindowPosition DefaultWindowPosition = EWindowPosition.Center;
+	[Export] public bool AllowToGoOffScreen = true;
+
+	public ContextMenu ContextMenu { get; private set; }
+	public Vector2I InitialSize { get; private set; }
+
+	public bool IsWindowMoving { get; private set; } = false;
+
+	private YAT _yat;
+	private Viewport _viewport;
+
+	private Vector2 _previousPosition;
+	private float _windowMoveTimer = 0f;
+	private const float WINDOW_MOVE_REFRESH_RATE = 0.0128f;
+
+	public enum EWindowPosition
 	{
-		[Signal] public delegate void WindowMovedEventHandler(Vector2 position);
+		TopLeft,
+		TopRight,
+		BottomLeft,
+		BottomRight,
+		Center
+	}
 
-		[Export(PropertyHint.Range, "0, 128, 1")]
-		public ushort ViewportEdgeOffset { get; set; }
+	public override void _Ready()
+	{
+		_yat = GetNode<YAT>("/root/YAT");
+		_viewport = _yat.GetTree().Root.GetViewport();
+		_viewport.SizeChanged += OnViewportSizeChanged;
 
-		[Export] public EWindowPosition DefaultWindowPosition = EWindowPosition.Center;
-		[Export] public bool AllowToGoOffScreen = true;
+		ContextMenu = GetNode<ContextMenu>("ContextMenu");
+		InitialSize = Size;
 
-		public ContextMenu ContextMenu { get; private set; }
-		public Vector2I InitialSize { get; private set; }
+		WindowInput += OnWindowInput;
+		WindowMoved += OnWindowMoved;
 
-		public bool IsWindowMoving { get; private set; } = false;
+		Move(DefaultWindowPosition, ViewportEdgeOffset);
+		OnViewportSizeChanged();
+	}
 
-		private YAT _yat;
-		private Viewport _viewport;
+	public void ResetPosition()
+	{
+		Move(DefaultWindowPosition, ViewportEdgeOffset);
+	}
 
-		private Vector2 _previousPosition;
-		private float _windowMoveTimer = 0f;
-		private const float WINDOW_MOVE_REFRESH_RATE = 0.0128f;
+	public override void _Process(double delta)
+	{
+		_windowMoveTimer += (float)delta;
 
-		public enum EWindowPosition
+		if (_windowMoveTimer >= WINDOW_MOVE_REFRESH_RATE && _previousPosition != Position)
 		{
-			TopLeft,
-			TopRight,
-			BottomLeft,
-			BottomRight,
-			Center
+			IsWindowMoving = true;
+			_windowMoveTimer = 0f;
+			_previousPosition = Position;
+			EmitSignal(SignalName.WindowMoved, Position);
 		}
+		else IsWindowMoving = false;
+	}
 
-		public override void _Ready()
+	private void OnWindowInput(InputEvent @event)
+	{
+		if (@event.IsActionPressed(Keybindings.ContextMenu) && ContextMenu.ItemCount > 0)
 		{
-			_yat = GetNode<YAT>("/root/YAT");
-			_viewport = _yat.GetTree().Root.GetViewport();
-			_viewport.SizeChanged += OnViewportSizeChanged;
-
-			ContextMenu = GetNode<ContextMenu>("ContextMenu");
-			InitialSize = Size;
-
-			WindowInput += OnWindowInput;
-			WindowMoved += OnWindowMoved;
-
-			Move(DefaultWindowPosition, ViewportEdgeOffset);
-			OnViewportSizeChanged();
+			ContextMenu.ShowNextToMouse();
 		}
+		else ContextMenu.Hide();
+	}
 
-		public void ResetPosition()
+	private void OnWindowMoved(Vector2 position)
+	{
+		if (!AllowToGoOffScreen)
 		{
-			Move(DefaultWindowPosition, ViewportEdgeOffset);
-		}
-
-		public override void _Process(double delta)
-		{
-			_windowMoveTimer += (float)delta;
-
-			if (_windowMoveTimer >= WINDOW_MOVE_REFRESH_RATE && _previousPosition != Position)
-			{
-				IsWindowMoving = true;
-				_windowMoveTimer = 0f;
-				_previousPosition = Position;
-				EmitSignal(SignalName.WindowMoved, Position);
-			}
-			else IsWindowMoving = false;
-		}
-
-		private void OnWindowInput(InputEvent @event)
-		{
-			if (@event.IsActionPressed(Keybindings.ContextMenu) && ContextMenu.ItemCount > 0)
-			{
-				ContextMenu.ShowNextToMouse();
-			}
-			else ContextMenu.Hide();
-		}
-
-		private void OnWindowMoved(Vector2 position)
-		{
-			if (!AllowToGoOffScreen)
-			{
-				var (limitX, limitY) = CalculateLimits(_viewport.GetVisibleRect());
-
-				Position = new(
-					(int)Mathf.Clamp(Position.X, ViewportEdgeOffset, limitX),
-					(int)Mathf.Clamp(Position.Y, ViewportEdgeOffset, limitY)
-				);
-			}
-		}
-
-		private (float, float) CalculateLimits(Rect2 rect)
-		{
-			var limitX = rect.Size.X - Size.X - ViewportEdgeOffset;
-			var limitY = rect.Size.Y - Size.Y - ViewportEdgeOffset;
-
-			return ((int)limitX, (int)limitY);
-		}
-
-		private void OnViewportSizeChanged()
-		{
-			var viewportSize = (Vector2I)_viewport.GetVisibleRect().Size;
-
-			MaxSize = MaxSize with
-			{
-				X = viewportSize.X - ViewportEdgeOffset,
-				Y = viewportSize.Y - ViewportEdgeOffset
-			};
-		}
-
-		public void Move(EWindowPosition position, uint offset = 0)
-		{
-			switch (position)
-			{
-				case EWindowPosition.TopLeft:
-					MoveTopLeft(offset);
-					break;
-				case EWindowPosition.TopRight:
-					MoveTopRight(offset);
-					break;
-				case EWindowPosition.BottomRight:
-					MoveBottomRight(offset);
-					break;
-				case EWindowPosition.BottomLeft:
-					MoveBottomLeft(offset);
-					break;
-				case EWindowPosition.Center:
-					MoveToTheCenter();
-					break;
-			}
-		}
-
-		protected void MoveTopLeft(uint offset)
-		{
-			Position = new((int)offset, (int)offset);
-		}
-
-		protected void MoveTopRight(uint offset)
-		{
-			var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
-			var bottomLeft = viewportRect.Position + viewportRect.Size;
-			var rect = GetVisibleRect();
+			var (limitX, limitY) = CalculateLimits(_viewport.GetVisibleRect());
 
 			Position = new(
-				(int)(bottomLeft.X - rect.Size.X - offset),
-				(int)offset
+				(int)Mathf.Clamp(Position.X, ViewportEdgeOffset, limitX),
+				(int)Mathf.Clamp(Position.Y, ViewportEdgeOffset, limitY)
 			);
 		}
+	}
 
-		protected void MoveBottomRight(uint offset)
+	private (float, float) CalculateLimits(Rect2 rect)
+	{
+		var limitX = rect.Size.X - Size.X - ViewportEdgeOffset;
+		var limitY = rect.Size.Y - Size.Y - ViewportEdgeOffset;
+
+		return ((int)limitX, (int)limitY);
+	}
+
+	private void OnViewportSizeChanged()
+	{
+		var viewportSize = (Vector2I)_viewport.GetVisibleRect().Size;
+
+		MaxSize = MaxSize with
 		{
-			var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
-			var topRight = viewportRect.Position + viewportRect.Size;
-			var rect = GetVisibleRect();
+			X = viewportSize.X - ViewportEdgeOffset,
+			Y = viewportSize.Y - ViewportEdgeOffset
+		};
+	}
 
-			Position = new(
-				(int)(topRight.X - rect.Size.X - offset),
-				(int)(topRight.Y - rect.Size.Y - offset)
-			);
-		}
-
-		protected void MoveBottomLeft(uint offset)
+	public void Move(EWindowPosition position, uint offset = 0)
+	{
+		switch (position)
 		{
-			var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
-			var bottomLeft = viewportRect.Position + viewportRect.Size;
-			var rect = GetVisibleRect();
-
-			Position = new(
-				(int)offset,
-				(int)(bottomLeft.Y - rect.Size.Y - offset)
-			);
+			case EWindowPosition.TopLeft:
+				MoveTopLeft(offset);
+				break;
+			case EWindowPosition.TopRight:
+				MoveTopRight(offset);
+				break;
+			case EWindowPosition.BottomRight:
+				MoveBottomRight(offset);
+				break;
+			case EWindowPosition.BottomLeft:
+				MoveBottomLeft(offset);
+				break;
+			case EWindowPosition.Center:
+				MoveToTheCenter();
+				break;
 		}
+	}
 
-		protected void MoveToTheCenter()
-		{
-			MoveToCenter();
-		}
+	protected void MoveTopLeft(uint offset)
+	{
+		Position = new((int)offset, (int)offset);
+	}
+
+	protected void MoveTopRight(uint offset)
+	{
+		var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
+		var bottomLeft = viewportRect.Position + viewportRect.Size;
+		var rect = GetVisibleRect();
+
+		Position = new(
+			(int)(bottomLeft.X - rect.Size.X - offset),
+			(int)offset
+		);
+	}
+
+	protected void MoveBottomRight(uint offset)
+	{
+		var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
+		var topRight = viewportRect.Position + viewportRect.Size;
+		var rect = GetVisibleRect();
+
+		Position = new(
+			(int)(topRight.X - rect.Size.X - offset),
+			(int)(topRight.Y - rect.Size.Y - offset)
+		);
+	}
+
+	protected void MoveBottomLeft(uint offset)
+	{
+		var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
+		var bottomLeft = viewportRect.Position + viewportRect.Size;
+		var rect = GetVisibleRect();
+
+		Position = new(
+			(int)offset,
+			(int)(bottomLeft.Y - rect.Size.Y - offset)
+		);
+	}
+
+	protected void MoveToTheCenter()
+	{
+		MoveToCenter();
 	}
 }

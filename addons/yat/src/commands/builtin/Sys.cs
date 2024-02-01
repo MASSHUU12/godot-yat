@@ -2,38 +2,38 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Types;
 
-namespace YAT.Commands
+namespace YAT.Commands;
+
+[Command(
+	"sys",
+	"Runs a system command.",
+	"[b]sys[/b] [i]command[/i]"
+)]
+[Argument(
+	"command",
+	"string",
+	"The command to run (if contains more than one word, you need to wrap it in the parentheses)."
+)]
+[Option("-program", "string", "The program to run the command with (default to systems specific terminal).", "")]
+[Threaded]
+public sealed class Sys : ICommand
 {
-	[Command(
-		"sys",
-		"Runs a system command.",
-		"[b]sys[/b] [i]command[/i]"
-	)]
-	[Argument(
-		"command",
-		"string",
-		"The command to run (if contains more than one word, you need to wrap it in the parentheses)."
-	)]
-	[Option("-program", "string", "The program to run the command with (default to systems specific terminal).", "")]
-	[Threaded]
-	public sealed class Sys : ICommand
+	public CommandResult Execute(CommandData data)
 	{
-		public CommandResult Execute(CommandData data)
-		{
-			var program = (string)data.Options["-program"];
-			var command = (string)data.Arguments["command"];
-			var commandName = command.Split(' ')[0];
-			var commandArgs = command[commandName.Length..].Trim() ?? string.Empty;
+		var program = (string)data.Options["-program"];
+		var command = (string)data.Arguments["command"];
+		var commandName = command.Split(' ')[0];
+		var commandArgs = command[commandName.Length..].Trim() ?? string.Empty;
 
-			var result = OS.RunCommand(commandName, out var status, program, commandArgs);
+		var result = OS.RunCommand(commandName, out var status, program, commandArgs);
 
-			if (status == OS.ExecutionResult.Success)
-				data.Terminal.Output.Print(result.ToString());
-			else
-				data.Terminal.Output.Error(result.ToString());
+		if (status == OS.ExecutionResult.Success)
+			data.Terminal.Output.Print(result.ToString());
+		else
+			data.Terminal.Output.Error(result.ToString());
 
-			return CommandResult.Success;
-		}
+		return CommandResult.Success;
 	}
 }

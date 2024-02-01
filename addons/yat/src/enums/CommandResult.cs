@@ -1,14 +1,13 @@
-namespace YAT.Enums
+namespace YAT.Enums;
+
+/// <summary>
+/// Represents the result of executing a command.
+/// </summary>
+public enum CommandResult
 {
-	/// <summary>
-	/// Represents the result of executing a command.
-	/// </summary>
-	public enum CommandResult
-	{
-		Success,
-		Failure,
-		InvalidArguments,
-		InvalidCommand,
-		NotImplemented,
-	}
+	Success,
+	Failure,
+	InvalidArguments,
+	InvalidCommand,
+	NotImplemented,
 }

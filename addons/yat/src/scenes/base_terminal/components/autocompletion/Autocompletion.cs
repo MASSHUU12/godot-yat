@@ -6,101 +6,100 @@ using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Scenes.BaseTerminal.Components.InputInfo;
 
-namespace YAT.Scenes.BaseTerminal
+namespace YAT.Scenes.BaseTerminal;
+
+public partial class Autocompletion : Node
 {
-	public partial class Autocompletion : Node
+	[Export] public CommandInfo CommandInfo { get; set; }
+
+	private YAT _yat;
+	private Input _input;
+
+	private string cachedInput = string.Empty;
+	private LinkedList<string> suggestions = new();
+	private LinkedListNode<string> currentSuggestion;
+
+	public override void _Ready()
 	{
-		[Export] public CommandInfo CommandInfo { get; set; }
+		_yat = GetNode<YAT>("/root/YAT");
 
-		private YAT _yat;
-		private Input _input;
+		_input = CommandInfo.Input;
+	}
 
-		private string cachedInput = string.Empty;
-		private LinkedList<string> suggestions = new();
-		private LinkedListNode<string> currentSuggestion;
+	public override void _Input(InputEvent @event)
+	{
+		if (!_input.HasFocus()) return;
 
-		public override void _Ready()
+		if (@event.IsActionPressed(Keybindings.TerminalAutocompletionPrevious))
 		{
-			_yat = GetNode<YAT>("/root/YAT");
+			Autocomplete(false);
+			_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
+		}
+		else if (@event.IsActionPressed(Keybindings.TerminalAutocompletionNext))
+		{
+			Autocomplete();
+			_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
+		}
+	}
 
-			_input = CommandInfo.Input;
+	private void Autocomplete(bool next = true)
+	{
+		if (suggestions.Count > 0 && (_input.Text == cachedInput || suggestions.Contains(_input.Text)))
+		{
+			if (next) UseNextSuggestion();
+			else UsePreviousSuggestion();
+			return;
 		}
 
-		public override void _Input(InputEvent @event)
+		cachedInput = _input.Text;
+		suggestions = new();
+		currentSuggestion = null;
+
+		var tokens = Text.SanitizeText(_input.Text);
+
+		if (tokens.Length == 1)
 		{
-			if (!_input.HasFocus()) return;
+			suggestions = GenerateCommandSuggestions(tokens[0]);
 
-			if (@event.IsActionPressed(Keybindings.TerminalAutocompletionPrevious))
-			{
-				Autocomplete(false);
-				_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
-			}
-			else if (@event.IsActionPressed(Keybindings.TerminalAutocompletionNext))
-			{
-				Autocomplete();
-				_input.CallDeferred("grab_focus"); // Prevent toggling the input focus
-			}
+			if (suggestions.Count > 0) UseNextSuggestion();
+
+			return;
 		}
+	}
 
-		private void Autocomplete(bool next = true)
-		{
-			if (suggestions.Count > 0 && (_input.Text == cachedInput || suggestions.Contains(_input.Text)))
-			{
-				if (next) UseNextSuggestion();
-				else UsePreviousSuggestion();
-				return;
-			}
+	private void UseNextSuggestion()
+	{
+		if (suggestions.Count == 0) return;
 
-			cachedInput = _input.Text;
-			suggestions = new();
-			currentSuggestion = null;
+		currentSuggestion = currentSuggestion?.Next ?? suggestions.First;
+		_input.Text = currentSuggestion.Value;
 
-			var tokens = Text.SanitizeText(_input.Text);
+		_input.MoveCaretToEnd();
 
-			if (tokens.Length == 1)
-			{
-				suggestions = GenerateCommandSuggestions(tokens[0]);
+		CommandInfo.UpdateCommandInfo(_input.Text);
+	}
 
-				if (suggestions.Count > 0) UseNextSuggestion();
+	private void UsePreviousSuggestion()
+	{
+		if (suggestions.Count == 0) return;
 
-				return;
-			}
-		}
+		currentSuggestion = currentSuggestion?.Previous ?? suggestions.Last;
+		_input.Text = currentSuggestion.Value;
 
-		private void UseNextSuggestion()
-		{
-			if (suggestions.Count == 0) return;
+		_input.MoveCaretToEnd();
 
-			currentSuggestion = currentSuggestion?.Next ?? suggestions.First;
-			_input.Text = currentSuggestion.Value;
+		CommandInfo.UpdateCommandInfo(_input.Text);
+	}
 
-			_input.MoveCaretToEnd();
+	private static LinkedList<string> GenerateCommandSuggestions(string token)
+	{
+		var listSuggestions = RegisteredCommands.Registered
+			?.Where(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
+			?.Select(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name ?? string.Empty)
+			?.Where(name => !string.IsNullOrEmpty(name))
+			?.Distinct()
+			?.ToList();
 
-			CommandInfo.UpdateCommandInfo(_input.Text);
-		}
-
-		private void UsePreviousSuggestion()
-		{
-			if (suggestions.Count == 0) return;
-
-			currentSuggestion = currentSuggestion?.Previous ?? suggestions.Last;
-			_input.Text = currentSuggestion.Value;
-
-			_input.MoveCaretToEnd();
-
-			CommandInfo.UpdateCommandInfo(_input.Text);
-		}
-
-		private static LinkedList<string> GenerateCommandSuggestions(string token)
-		{
-			var listSuggestions = RegisteredCommands.Registered
-				?.Where(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
-				?.Select(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name ?? string.Empty)
-				?.Where(name => !string.IsNullOrEmpty(name))
-				?.Distinct()
-				?.ToList();
-
-			return listSuggestions is null ? new() : new(listSuggestions);
-		}
+		return listSuggestions is null ? new() : new(listSuggestions);
 	}
 }
