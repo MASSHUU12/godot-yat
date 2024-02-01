@@ -47,9 +47,27 @@ You can find all the used actions below.
 
 ## Options
 
-### YAT enable file
+### YAT Enable File
 
 You can make YAT accessible only when a specific file (default .yatenable)
 is present in either the `user://` or `res://` directory (default user://).
 
 This makes it easy to restrict terminal access to players without removing the extension.
+
+## Script Templates
+
+YAT includes script templates that can be used as a base for creating new classes. They are available from Godot in the `Create Script` window.
+
+If these templates cause problems when compiling your project, you can remove them, or look at the [C# Project Configuration](#c-project-configuration) section to fix the problem.
+
+## C# Project Configuration
+
+YAT does not impose ways to configure your C# project however, templates for scripts written in C# can cause problems with project compilation.
+
+YAT includes several such templates, so if you want to use them, you need to add the following to your `.csproj` file:
+
+```xml
+<ItemGroup>
+  <Compile Remove="script_templates/**/*.cs" />
+</ItemGroup>
+```
