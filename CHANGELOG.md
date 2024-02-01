@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Reset command does not reset terminal position to the center.
+-   Pressing the termination key of a threaded command when no command is running makes an attempt to terminate the command.
 
 ## [1.20.0-beta 2024-01-26]
 

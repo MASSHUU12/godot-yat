@@ -118,8 +118,7 @@ public partial class BaseTerminal : Control
 				Input.CallDeferred(nameof(Input.MoveCaretToEnd));
 			}
 
-			if (@event.IsActionPressed(Keybindings.TerminalInterrupt) &&
-				CommandManager.Cts is not null)
+			if (@event.IsActionPressed(Keybindings.TerminalInterrupt) && Locked)
 			{
 				Print("Command cancellation requested.", PrintType.Warning);
 
