@@ -10,4 +10,5 @@ public enum CommandResult
 	InvalidArguments,
 	InvalidCommand,
 	NotImplemented,
+	UnknownCommand
 }
