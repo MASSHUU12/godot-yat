@@ -1,9 +1,8 @@
-namespace YAT.Interfaces
-{
-	public interface IMonitorComponent
-	{
-		public bool UseColors { get; set; }
+namespace YAT.Interfaces;
 
-		public void Update();
-	}
+public interface IMonitorComponent
+{
+	public bool UseColors { get; set; }
+
+	public void Update();
 }
