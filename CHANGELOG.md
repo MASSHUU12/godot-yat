@@ -11,7 +11,10 @@ All notable changes to this project will be documented in this file.
 -   Documentation for:
     -   YatWindow
     -   Reflection
+    -   Extensible
 -   Script Templates & C# Project Configuration sections to USAGE.md file.
+-   UnknownCommand result to CommandResult enum.
+-   HasInterface method to Reflection class.
 
 ### Changed
 
@@ -20,6 +23,8 @@ All notable changes to this project will be documented in this file.
 -   Moved CommandData record to the YAT.Types namespace.
 -   Updated script templates.
 -   Combined AttributeHelper with Reflection class.
+-   GameTerminal is able to go out the screen by default.
+-   Reworked Extensible class.
 
 ### Fixed
 
