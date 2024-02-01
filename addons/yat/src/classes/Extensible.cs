@@ -8,7 +8,7 @@ using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
 
-namespace YAT.Commands;
+namespace YAT.Classes;
 
 public partial class Extensible : Node
 {

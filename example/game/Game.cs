@@ -1,5 +1,5 @@
 using Godot;
-using YAT.Commands;
+using YAT.Classes;
 using YAT.Helpers;
 
 public partial class Game : Node3D

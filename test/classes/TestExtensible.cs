@@ -2,7 +2,7 @@ namespace GdUnit4
 {
 	using System;
 	using YAT.Attributes;
-	using YAT.Commands;
+	using YAT.Classes;
 	using YAT.Enums;
 	using YAT.Interfaces;
 	using YAT.Types;
