@@ -11,7 +11,7 @@ public partial interface IExtension
 {
 	public CommandResult Execute(CommandData args);
 
-	public virtual string GenerateExtensionManual(params string[] args)
+	public virtual string GenerateExtensionManual()
 	{
 		StringBuilder sb = new();
 		ExtensionAttribute attribute = Reflection.GetAttribute<ExtensionAttribute>(this);
