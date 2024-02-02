@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   Tooltip for selected node.
+
 ## [1.21.0-beta 2024-02-01]
 
 ### Added
