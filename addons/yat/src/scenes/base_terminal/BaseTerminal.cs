@@ -139,7 +139,10 @@ public partial class BaseTerminal : Control
 
 	private void OnCurrentNodeChanged(Node node)
 	{
-		_selectedNodeLabel.Text = Text.ShortenPath(node?.GetPath() ?? string.Empty, 20);
+		var path = node?.GetPath() ?? string.Empty;
+
+		_selectedNodeLabel.TooltipText = path;
+		_selectedNodeLabel.Text = Text.ShortenPath(path, 20);
 	}
 
 	/// <summary>
