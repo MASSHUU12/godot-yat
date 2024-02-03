@@ -47,8 +47,13 @@ public partial class SelectedNode : Node
 			return false;
 		}
 
-		var newSelectedNode = Current.GetNodeOrNull(node);
-		newSelectedNode ??= GetNodeOrNull(node);
+		Node newSelectedNode;
+		if (IsInstanceValid(Current))
+		{
+			newSelectedNode = Current.GetNodeOrNull(node);
+			newSelectedNode ??= GetNodeOrNull(node);
+		}
+		else newSelectedNode = GetNodeOrNull(node);
 
 		if (!IsInstanceValid(newSelectedNode))
 		{

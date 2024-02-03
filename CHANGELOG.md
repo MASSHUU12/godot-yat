@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 -   Tooltip for selected node.
 
+### Fixed
+
+-   Changing node when currently selected node is invalid throws ObjectDisposedException.
+
 ## [1.21.0-beta 2024-02-01]
 
 ### Added
