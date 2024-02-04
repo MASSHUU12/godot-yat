@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   Tooltip for selected node.
+-   Parser class.
 
 ### Fixed
 

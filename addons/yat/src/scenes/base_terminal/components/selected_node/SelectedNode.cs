@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Classes;
 using YAT.Helpers;
 
 namespace YAT.Scenes.BaseTerminal;
@@ -67,54 +68,43 @@ public partial class SelectedNode : Node
 		return true;
 	}
 
-	public bool ParseAndCallMethods(string input)
+	public bool CallMethods(string input)
 	{
 		_terminal.Output.Warning(
 			"Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n"
 		);
 
-		string[] tokens = Text.SplitClean(input, ".");
+		string[] methods = Text.SplitClean(input, ".");
 		Variant result = new();
 
-		if (tokens.Length == 0) return false;
+		if (methods.Length == 0) return false;
 
 		// TODO: Method chaining
 
-		foreach (string token in tokens)
+		foreach (string method in methods)
 		{
-			var parts = token.Split("(", 2,
-				System.StringSplitOptions.RemoveEmptyEntries |
-				System.StringSplitOptions.TrimEntries
-			);
-			string name = parts[0];
-			string args = parts.Length > 1 ? parts[1][..^1] : null;
-			args = args == string.Empty ? null : args;
+			var tokens = Parser.ParseMethod(method);
 
-			if (args is null
-				? !CallMethod(name, out result)
-				: !CallMethod(name, out result, args)
+			if (tokens.Item2.Length == 0
+				? !CallMethod(tokens.Item1, out result)
+				: !CallMethod(tokens.Item1, out result, tokens.Item2)
 			) return false;
 		}
 
 		return true;
 	}
 
-	/// <summary>
-	/// Calls a method on the current node and prints the result to the terminal.
-	/// </summary>
-	/// <param name="method">The name of the method to call.</param>
-	/// <param name="result">The result of the method call.</param>
-	/// <param name="args">The arguments to pass to the method.</param>
-	/// <returns>True if the method was called successfully, false otherwise.</returns>
-	public bool CallMethod(string method, out Variant result, params Variant[] args)
+	public bool CallMethod(StringName method, out Variant result, params Variant[] args)
 	{
 		result = new();
 
-		if (!ValidateMethod(method)) return false;
+		if (!ValidateMethod(method))
+		{
+			EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Failed);
+			return false;
+		}
 
-		result = args.Length == 0
-			? Current.Call(method)
-			: Current.Call(method, args);
+		result = args.Length == 0 ? Current.Call(method) : Current.Call(method, args);
 
 		_terminal.Print(result.ToString());
 
@@ -123,15 +113,11 @@ public partial class SelectedNode : Node
 		return true;
 	}
 
-	private bool ValidateMethod(string method)
+	private bool ValidateMethod(StringName method)
 	{
-		if (!Current.HasMethod(method))
-		{
-			_terminal.Output.Error(Messages.UnknownMethod(Current.Name, method));
-			EmitSignal(SignalName.MethodCalled, method, new(), (ushort)MethodStatus.Failed);
-			return false;
-		}
+		if (Current.HasMethod(method)) return true;
 
-		return true;
+		_terminal.Output.Error(Messages.UnknownMethod(Current.Name, method));
+		return false;
 	}
 }
