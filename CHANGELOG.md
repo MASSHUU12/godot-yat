@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Changing node when currently selected node is invalid throws ObjectDisposedException.
+-   Shallow search of cn command throws NullReferenceException.
 
 ## [1.21.0-beta 2024-02-01]
 

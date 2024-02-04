@@ -60,16 +60,13 @@ public sealed class Cn : ICommand
 	private NodePath GetNodeFromSearch(string path)
 	{
 		Node result = path.StartsWith(TREE_SHALLOW_SEARCH_PREFIX)
-			? World.SearchNode(_terminal.SelectedNode.Current.GetParent(), path[2..])
+			? World.SearchNode(_terminal.SelectedNode.Current, path[2..])
 			: World.SearchNode(_yat.GetTree().Root, path[1..]);
 
-		if (result is null)
-		{
-			_terminal.Print("No node found.", PrintType.Error);
-			return null;
-		}
+		if (result is not null) return result.GetPath();
 
-		return result.GetPath();
+		_terminal.Print("No node found.", PrintType.Error);
+		return null;
 	}
 
 	private NodePath GetRayCastedNodePath(string path)

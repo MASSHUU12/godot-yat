@@ -23,6 +23,8 @@ public static class World
 
 	public static Node SearchNode(Node root, string name, bool recursive = true)
 	{
+		if (!GodotObject.IsInstanceValid(root)) return null;
+
 		return root.FindChild(name, recursive, false);
 	}
 }
