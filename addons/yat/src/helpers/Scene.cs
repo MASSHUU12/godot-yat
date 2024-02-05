@@ -1,18 +1,15 @@
+using System.Collections.Generic;
 using System.Text;
 using Godot;
+using Godot.Collections;
 using YAT.Scenes.BaseTerminal;
+using YAT.Types;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Helpers;
 
 public static class Scene
 {
-	/// <summary>
-	/// Prints the children of a given node to the specified terminal.
-	/// </summary>
-	/// <param name="terminal">The terminal to print the children to.</param>
-	/// <param name="path">The path of the node whose children should be printed.</param>
-	/// <returns><c>true</c> if the children were printed successfully; otherwise, <c>false</c>.</returns>
 	public static bool PrintChildren(BaseTerminal terminal, string path)
 	{
 		Node node = GetFromPathOrDefault(path, terminal.SelectedNode.Current, out path);
@@ -65,5 +62,63 @@ public static class Scene
 		if (GodotObject.IsInstanceValid(node)) return node;
 
 		return null;
+	}
+
+	public static IEnumerator<Dictionary> GetNodeMethods(Node node)
+	{
+		if (!GodotObject.IsInstanceValid(node)) return null;
+
+		return node.GetMethodList().GetEnumerator();
+	}
+
+	public static bool TryFindNodeMethodInfo(Node node, string methodName, out NodeMethodInfo info)
+	{
+		info = default;
+
+		if (!GodotObject.IsInstanceValid(node)) return false;
+
+		var method = GetNodeMethods(node);
+
+		if (method is null) return false;
+
+		while (method.MoveNext())
+		{
+			if (!method.Current.TryGetValue("name", out var value) || (string)value != methodName) continue;
+
+			info = GetNodeMethodInfo(method.Current);
+
+			return true;
+		}
+
+		return true;
+	}
+
+	public static NodeMethodInfo GetNodeMethodInfo(Dictionary method)
+	{
+		var name = method.TryGetValue("name", out var value)
+			? value.AsStringName()
+			: (StringName)string.Empty;
+		var arguments = method.TryGetValue("args", out var args)
+			? args.AsGodotArray<Godot.Collections.Dictionary<string, Variant>>()
+			: new Array<Godot.Collections.Dictionary<string, Variant>>();
+		var defaultArguments = method.TryGetValue("default_args", out Variant defaultArgs)
+			? defaultArgs
+			: new Array<Variant>();
+		var flags = method.TryGetValue("flags", out var f)
+			? (MethodFlags)(int)f
+			: MethodFlags.Default;
+		var id = method.TryGetValue("id", out var i) ? (int)i : 0;
+		var @return = method.TryGetValue("return", out var r)
+			? r.AsGodotDictionary<string, Variant>()
+			: new Godot.Collections.Dictionary<string, Variant>();
+
+		return new(
+			name,
+			arguments,
+			defaultArguments.AsGodotArray<Variant>(),
+			flags,
+			id,
+			@return
+		);
 	}
 }

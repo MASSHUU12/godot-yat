@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file.
 -   Documentation for:
     - Parser
     - Storage
+-   NodeMethodInfo struct.
+-   Methods to Scene class:
+    - GetNodeMethods
+    - TryFindNodeMethodInfo
+    - GetNodeMethodInfo
 
 ### Changed
 
