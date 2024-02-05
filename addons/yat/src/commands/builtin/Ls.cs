@@ -39,33 +39,27 @@ public sealed class Ls : ICommand
 	private CommandResult PrintNodeMethods(string path)
 	{
 		Node node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
+		var methods = Scene.GetNodeMethods(node);
 
-		if (node is null)
+		if (methods is null)
 		{
 			_terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
 			return CommandResult.Failure;
 		}
 
-		var methods = node.GetMethodList().GetEnumerator();
+		methods = node.GetMethodList().GetEnumerator();
 
 		StringBuilder sb = new();
 
 		while (methods.MoveNext())
 		{
-			string name = methods.Current.TryGetValue("name", out var value)
-				? (string)value
-				: string.Empty;
+			var info = Scene.GetNodeMethodInfo(methods.Current);
+			string[] arguments = info.Args.Select(
+				arg => $"[u]{arg["name"]}[/u]: {((Variant.Type)(int)arg["type"]).ToString()}"
+			).ToArray();
+			int returns = info.Return["type"].AsInt16();
 
-			string[] arguments = methods.Current.TryGetValue("args", out value)
-				? value.AsGodotArray<Godot.Collections.Dictionary<string, Variant>>()
-					.Select(arg => $"[u]{arg["name"]}[/u]: {((Variant.Type)(int)arg["type"]).ToString()}").ToArray()
-				: Array.Empty<string>();
-
-			int returns = methods.Current.TryGetValue("return", out value)
-				? value.AsGodotDictionary<string, int>()["type"]
-				: 0;
-
-			sb.Append($"[b]{name}[/b]");
+			sb.Append($"[b]{info.Name}[/b]");
 			sb.Append($"({string.Join(", ", arguments)}) -> ");
 			sb.Append(((Variant.Type)returns).ToString());
 			sb.AppendLine();
