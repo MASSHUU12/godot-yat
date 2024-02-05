@@ -13,12 +13,12 @@ public static class Parser
 		return Text.ConcatenateSentence(tokens);
 	}
 
-	public static Tuple<string, string[]> ParseMethod(string method)
+	public static (string, string[]) ParseMethod(string method)
 	{
 		string[] tokens = Text.SanitizeText(method);
 		List<string> args = new();
 
-		if (tokens.Length == 0) return new(string.Empty, Array.Empty<string>());
+		if (tokens.Length == 0) return (string.Empty, Array.Empty<string>());
 
 		var parts = (tokens.Length <= 1 ? tokens[^1] : tokens[0]).Split('(', 2,
 			StringSplitOptions.RemoveEmptyEntries |
@@ -29,6 +29,6 @@ public static class Parser
 
 		if (tokens.Length >= 1) for (int i = 1; i < tokens.Length; i++) args.Add(tokens[i][..^1]);
 
-		return new(parts[0], args.ToArray());
+		return (parts[0], args.ToArray());
 	}
 }
