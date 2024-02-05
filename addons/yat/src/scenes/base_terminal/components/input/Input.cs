@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Classes;
 
 namespace YAT.Scenes.BaseTerminal;
 
@@ -21,31 +22,27 @@ public partial class Input : LineEdit
 		TextSubmitted += OnTextSubmitted;
 	}
 
-	/// <summary>
-	/// Handles the submission of a command by sanitizing the input,
-	/// executing the command, and clearing the input buffer.
-	/// </summary>
-	/// <param name="command">The command to be submitted.</param>
-	private void OnTextSubmitted(string command)
+	private void OnTextSubmitted(string input)
 	{
+		if (_terminal.Locked || string.IsNullOrEmpty(input)) return;
+
 		// If the input string starts with a specified character,
 		// treat it as a method call on the selected node
-		if (command.StartsWith('$'))
+		if (input.StartsWith('$'))
 		{
-			_terminal.SelectedNode.ParseAndCallMethods(command[1..]);
-			AddToTheHistory(command);
+			_terminal.SelectedNode.CallMethods(input[1..]);
+			AddToTheHistory(input);
 			Clear();
 			return;
 		}
 
-		var input = Helpers.Text.SanitizeText(command);
-		input = Helpers.Text.ConcatenateSentence(input);
+		var command = Parser.ParseCommand(input);
 
-		if (input.Length == 0 || _terminal.Locked) return;
+		if (command.Length == 0) return;
 
-		AddToTheHistory(command);
+		AddToTheHistory(input);
 
-		_terminal.CommandManager.Run(input, _terminal);
+		_terminal.CommandManager.Run(command, _terminal);
 		Clear();
 	}
 

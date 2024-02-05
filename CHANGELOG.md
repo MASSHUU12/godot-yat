@@ -7,11 +7,14 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   Tooltip for selected node.
+-   Parser class.
+-   Documentation file for Parser class.
 
 ### Fixed
 
 -   Changing node when currently selected node is invalid throws ObjectDisposedException.
 -   Shallow search of cn command throws NullReferenceException.
+-   It is possible to call methods when the terminal is locked.
 
 ## [1.21.0-beta 2024-02-01]
 
