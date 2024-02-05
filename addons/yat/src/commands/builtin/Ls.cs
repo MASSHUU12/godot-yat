@@ -135,7 +135,7 @@ public sealed class Ls : ICommand
 									info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").Length
 			);
 			maxFileSizeLength = Math.Max(maxFileSizeLength, (info is FileInfo file)
-								? NumericHelper.SizeToString(file.Length).Length
+								? Numeric.SizeToString(file.Length).Length
 								: 0
 			);
 		}
@@ -145,7 +145,7 @@ public sealed class Ls : ICommand
 		// Append the details of each FileSystemInfo object to the StringBuilder.
 		foreach (FileSystemInfo info in infos)
 		{
-			var fileSizeString = NumericHelper.SizeToString(
+			var fileSizeString = Numeric.SizeToString(
 								info is FileInfo
 								? ((FileInfo)info).Length
 								: 0

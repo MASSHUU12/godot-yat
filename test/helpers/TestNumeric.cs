@@ -15,7 +15,7 @@ namespace GdUnit4
 		[TestCase(-1, 0, 10, false)]
 		public void TestIsWithinRangeInt(int value, int min, int max, bool expected)
 		{
-			AssertThat(NumericHelper.IsWithinRange(value, min, max)).IsEqual(expected);
+			AssertThat(Numeric.IsWithinRange(value, min, max)).IsEqual(expected);
 		}
 
 		[TestCase(0.3, 0.1, 0.5, true)]
@@ -25,7 +25,7 @@ namespace GdUnit4
 		[TestCase(0, 0.1, 0.5, false)]
 		public void TestIsWithinRangeDouble(double value, double min, double max, bool expected)
 		{
-			AssertThat(NumericHelper.IsWithinRange(value, min, max)).IsEqual(expected);
+			AssertThat(Numeric.IsWithinRange(value, min, max)).IsEqual(expected);
 		}
 		#endregion
 
@@ -42,7 +42,7 @@ namespace GdUnit4
 		[TestCase("5five5", -1, false)]
 		public void TestTryConvertInt(string value, int expectedResult, bool expected)
 		{
-			AssertThat(NumericHelper.TryConvert(value, out int i)).IsEqual(expected);
+			AssertThat(Numeric.TryConvert(value, out int i)).IsEqual(expected);
 
 			if (expected) AssertThat(i).IsEqual(expectedResult);
 		}
@@ -61,7 +61,7 @@ namespace GdUnit4
 		[TestCase("-5.0d", -1, false)]
 		public void TestTryConvertDouble(string value, double expectedResult, bool expected)
 		{
-			AssertThat(NumericHelper.TryConvert(value, out double d)).IsEqual(expected);
+			AssertThat(Numeric.TryConvert(value, out double d)).IsEqual(expected);
 
 			if (expected) AssertThat(d).IsEqual(expectedResult);
 		}
@@ -79,7 +79,7 @@ namespace GdUnit4
 		[TestCase(2137420969, 6, "1.990628 GiB")]
 		public void TestSizeToString(long fileSize, int precision, string expected)
 		{
-			AssertThat(NumericHelper.SizeToString(fileSize, precision)).IsEqual(expected);
+			AssertThat(Numeric.SizeToString(fileSize, precision)).IsEqual(expected);
 		}
 		#endregion
 	}

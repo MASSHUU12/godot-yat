@@ -288,8 +288,8 @@ public partial class CommandValidator : Node
 
 		if (range.Length != 2) return false;
 
-		if (!NumericHelper.TryConvert<T>(range[0], out min)) return false;
-		if (!NumericHelper.TryConvert<T>(range[1], out max)) return false;
+		if (!Numeric.TryConvert<T>(range[0], out min)) return false;
+		if (!Numeric.TryConvert<T>(range[1], out max)) return false;
 
 		return true;
 	}
@@ -310,10 +310,10 @@ public partial class CommandValidator : Node
 
 	private static object TryConvertNumeric<T>(string type, string value) where T : notnull, IConvertible, IComparable<T>
 	{
-		if (!NumericHelper.TryConvert<T>(value, out T result)) return null;
+		if (!Numeric.TryConvert<T>(value, out T result)) return null;
 
 		if (GetRange(type, out T min, out T max))
-			return NumericHelper.IsWithinRange(result, min, max) ? result : null;
+			return Numeric.IsWithinRange(result, min, max) ? result : null;
 		return result;
 	}
 }

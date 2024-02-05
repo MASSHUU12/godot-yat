@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace YAT.Helpers;
 
-public static class NumericHelper
+public static class Numeric
 {
 	/// <summary>
 	/// Determines whether a value is within the specified range (inclusive).
@@ -19,34 +19,36 @@ public static class NumericHelper
 	}
 
 	/// <summary>
-	/// Tries to convert the specified string representation of a number to its type T equivalent.
+	/// Tries to convert a string to the specified type.
 	/// </summary>
-	/// <typeparam name="T">The type of the output.</typeparam>
+	/// <typeparam name="T">The type to convert the string to.</typeparam>
 	/// <param name="input">The string to convert.</param>
-	/// <param name="output">When this method returns,
-	/// contains the converted value if the conversion succeeded,
-	/// or the default value of T if the conversion failed.</param>
-	/// <returns>true if the conversion succeeded; otherwise, false.</returns>
-	public static bool TryConvert<T>(this string input, out T output, T fallback = default!) where T : IConvertible, IComparable<T>
+	/// <param name="output">When this method returns, contains the converted value if the conversion succeeded, or the fallback value if the conversion failed.</param>
+	/// <param name="fallback">The fallback value to use if the conversion fails. The default value of the type T is used if no fallback value is specified.</param>
+	/// <returns><c>true</c> if the conversion succeeded; otherwise, <c>false</c>.</returns>
+	public static bool TryConvert<T>(this string input, out T output, T fallback = default)
+		where T : notnull, IConvertible, IComparable<T>
 	{
 		output = fallback;
 
+		if (string.IsNullOrEmpty(input)) return false;
+
 		var converter = TypeDescriptor.GetConverter(typeof(T));
 
-		if (converter == null || !converter.CanConvertFrom(typeof(string)))
-		{
-			return false;
-		}
+		if (converter is null || !converter.CanConvertFrom(typeof(string))) return false;
 
 		try
 		{
-			output = (T)converter.ConvertFrom(input)!;
-			return true;
+			output = (T)converter.ConvertFrom(input);
+			return output is not null;
 		}
-		catch (Exception)
-		{
-			return false;
-		}
+		catch (Exception ex) when (ex
+			is InvalidCastException
+			or NotSupportedException
+			or FormatException
+			or ArgumentException
+		)
+		{ return false; }
 	}
 
 	/// <summary>
@@ -72,5 +74,4 @@ public static class NumericHelper
 
 		return $"{gigabytes.ToString($"F{precision}")} GiB";
 	}
-
 }

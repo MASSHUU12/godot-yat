@@ -10,6 +10,11 @@ All notable changes to this project will be documented in this file.
 -   Parser class.
 -   Documentation file for Parser class.
 
+### Changed
+
+-   Renamed NumericHelper to Numeric.
+-   Improved exception handling in TryConvert method in Numeric class.
+
 ### Fixed
 
 -   Changing node when currently selected node is invalid throws ObjectDisposedException.

@@ -86,7 +86,7 @@ public sealed class Cn : ICommand
 
 	private static float GetRayLength(string path)
 	{
-		return NumericHelper.TryConvert(path[1..], out float rayLength)
+		return Numeric.TryConvert(path[1..], out float rayLength)
 			? rayLength
 			: DEFAULT_RAY_LENGTH;
 	}
