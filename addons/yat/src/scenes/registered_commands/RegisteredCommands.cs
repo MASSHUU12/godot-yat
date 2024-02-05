@@ -82,7 +82,7 @@ public partial class RegisteredCommands : Node
 
 		QuickCommands.Commands.Add(name, command);
 
-		var status = StorageHelper.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
+		var status = Storage.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
 
 		GetQuickCommands();
 
@@ -97,7 +97,7 @@ public partial class RegisteredCommands : Node
 
 		QuickCommands.Commands.Remove(name);
 
-		var status = StorageHelper.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
+		var status = Storage.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
 
 		GetQuickCommands();
 
@@ -111,7 +111,7 @@ public partial class RegisteredCommands : Node
 	/// </summary>
 	public bool GetQuickCommands()
 	{
-		var qc = StorageHelper.LoadResource<Resources.QuickCommands>(QUICK_COMMANDS_PATH);
+		var qc = Storage.LoadResource<Resources.QuickCommands>(QUICK_COMMANDS_PATH);
 
 		if (qc is not null) QuickCommands = qc;
 

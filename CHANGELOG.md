@@ -8,11 +8,13 @@ All notable changes to this project will be documented in this file.
 
 -   Tooltip for selected node.
 -   Parser class.
--   Documentation file for Parser class.
+-   Documentation for:
+    - Parser
+    - Storage
 
 ### Changed
 
--   Renamed NumericHelper to Numeric.
+-   Renamed NumericHelper to Numeric & StorageHelper to Storage.
 -   Improved exception handling in TryConvert method in Numeric class.
 
 ### Fixed
