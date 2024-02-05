@@ -24,6 +24,8 @@ public partial class Input : LineEdit
 
 	private void OnTextSubmitted(string input)
 	{
+		if (_terminal.Locked || string.IsNullOrEmpty(input)) return;
+
 		// If the input string starts with a specified character,
 		// treat it as a method call on the selected node
 		if (input.StartsWith('$'))
@@ -36,7 +38,7 @@ public partial class Input : LineEdit
 
 		var command = Parser.ParseCommand(input);
 
-		if (command.Length == 0 || _terminal.Locked) return;
+		if (command.Length == 0) return;
 
 		AddToTheHistory(input);
 
