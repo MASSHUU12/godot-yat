@@ -11,6 +11,16 @@ All notable changes to this project will be documented in this file.
 -   Documentation for:
     - Parser
     - Storage
+    - Scene
+-   NodeMethodInfo struct.
+-   Methods to Scene class:
+    - GetNodeMethods
+    - TryFindNodeMethodInfo
+    - GetNodeMethodInfo
+    - ValidateMethod
+    - CallMethod
+-   DisposedNode & InvalidMethod messages.
+-   MethodValidationResult enum.
 
 ### Changed
 
@@ -22,6 +32,7 @@ All notable changes to this project will be documented in this file.
 -   Changing node when currently selected node is invalid throws ObjectDisposedException.
 -   Shallow search of cn command throws NullReferenceException.
 -   It is possible to call methods when the terminal is locked.
+-   Calling methods on disposed nodes throws ObjectDisposedException.
 
 ## [1.21.0-beta 2024-02-01]
 
