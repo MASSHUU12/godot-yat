@@ -115,7 +115,7 @@ public partial class SelectedNode : Node
 
 	private bool ValidateMethod(StringName method)
 	{
-		if (Current.HasMethod(method)) return true;
+		if (IsInstanceValid(Current) && Current.HasMethod(method)) return true;
 
 		_terminal.Output.Error(Messages.UnknownMethod(Current.Name, method));
 		return false;
