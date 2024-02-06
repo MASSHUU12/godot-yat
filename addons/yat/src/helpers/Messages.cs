@@ -14,4 +14,5 @@ public static class Messages
 	public static string InvalidArgument(string command, string argument, string expected) => $"{command} expected {argument} to be an {expected}.";
 
 	public static string NodeHasNoChildren(string path) => $"{path} has no children.";
+	public static string DisposedNode => "The node has been disposed.";
 }
