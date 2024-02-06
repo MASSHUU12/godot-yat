@@ -1,5 +1,6 @@
 using Godot;
 using YAT.Classes;
+using YAT.Enums;
 using YAT.Helpers;
 
 namespace YAT.Scenes.BaseTerminal;
@@ -70,60 +71,75 @@ public partial class SelectedNode : Node
 
 	public bool CallMethods(string input)
 	{
-		_terminal.Output.Warning(
-			"Please keep in mind that this feature is still in development.\nMany things may not work as expected.\n"
-		);
-
 		string[] methods = Text.SplitClean(input, ".");
-		Variant result = new();
 
 		if (methods.Length == 0) return false;
 
-		// TODO: Method chaining
-
-		foreach (string method in methods)
+		if (methods.Length == 1)
 		{
-			var tokens = Parser.ParseMethod(method);
+			var (name, args) = Parser.ParseMethod(methods[0]);
 
-			if (tokens.Item2.Length == 0
-				? !CallMethod(tokens.Item1, out result)
-				: !CallMethod(tokens.Item1, out result, tokens.Item2)
-			) return false;
+			if (args.Length == 0
+				? !CallMethod(Current, name, out var result)
+				: !CallMethod(Current, name, out result, args)) return false;
+
+			_terminal.Print(result.ToString());
 		}
+		else if (!MethodChaining(methods)) return false;
 
 		return true;
 	}
 
-	public bool CallMethod(StringName method, out Variant result, params Variant[] args)
+	private bool CallMethod(Node node, string method, out Variant result, params Variant[] args)
 	{
 		result = new();
+		var validationResult = node.ValidateMethod(method);
 
-		if (!ValidateMethod(method))
+		switch (validationResult)
 		{
-			EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Failed);
-			return false;
+			case MethodValidationResult.InvalidInstance:
+				_terminal.Output.Error(Messages.DisposedNode);
+				EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Failed);
+				return false;
+			case MethodValidationResult.InvalidMethod:
+				_terminal.Output.Error(Messages.InvalidMethod(method));
+				EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Failed);
+				return false;
 		}
 
-		result = args.Length == 0 ? Current.Call(method) : Current.Call(method, args);
-
-		_terminal.Print(result.ToString());
+		result = args.Length == 0
+			? node.CallMethod(method)
+			: node.CallMethod(method, args);
 
 		EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Success);
 
 		return true;
 	}
 
-	private bool ValidateMethod(StringName method)
+	private bool MethodChaining(string[] methods)
 	{
-		if (!IsInstanceValid(Current))
+		Variant result = new();
+
+		foreach (string method in methods)
 		{
-			_terminal.Output.Error(Messages.DisposedNode);
-			return false;
+			var (name, args) = Parser.ParseMethod(method);
+
+			if (result.As<Node>() is { })
+			{
+				if (args.Length == 0
+					? !CallMethod((Node)result, name, out result)
+					: !CallMethod((Node)result, name, out result, args)) return false;
+			}
+			else
+			{
+				if (args.Length == 0
+					? !CallMethod(Current, name, out result)
+					: !CallMethod(Current, name, out result, args)) return false;
+			}
+
+			_terminal.Print(result.ToString());
 		}
 
-		if (Current.HasMethod(method)) return true;
-
-		_terminal.Output.Error(Messages.UnknownMethod(Current.Name, method));
-		return false;
+		return true;
 	}
 }
