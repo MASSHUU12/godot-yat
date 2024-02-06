@@ -121,4 +121,17 @@ public static class Scene
 			@return
 		);
 	}
+
+	public static bool ValidateMethod(this Node node, StringName method)
+	{
+		if (!GodotObject.IsInstanceValid(node)) return false;
+		if (node.HasMethod(method)) return true;
+
+		return false;
+	}
+
+	public static Variant CallMethod(this Node node, StringName method, params Variant[] args)
+	{
+		return args.Length == 0 ? node.Call(method) : node.Call(method, args);
+	}
 }
