@@ -25,7 +25,8 @@ public static class Parser
 			StringSplitOptions.TrimEntries
 		);
 
-		if (parts.Length > 1) args.Add(parts[1][..^1]);
+		if (parts.Length > 1 && !string.IsNullOrEmpty(parts[1][..^1]))
+			args.Add(parts[1][..^1]);
 
 		if (tokens.Length >= 1) for (int i = 1; i < tokens.Length; i++) args.Add(tokens[i][..^1]);
 
