@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using Godot;
 using Godot.Collections;
+using YAT.Enums;
 using YAT.Scenes.BaseTerminal;
 using YAT.Types;
 using static YAT.Scenes.BaseTerminal.BaseTerminal;
@@ -122,12 +123,12 @@ public static class Scene
 		);
 	}
 
-	public static bool ValidateMethod(this Node node, StringName method)
+	public static MethodValidationResult ValidateMethod(this Node node, StringName method)
 	{
-		if (!GodotObject.IsInstanceValid(node)) return false;
-		if (node.HasMethod(method)) return true;
+		if (!GodotObject.IsInstanceValid(node)) return MethodValidationResult.InvalidInstance;
+		if (node.HasMethod(method)) return MethodValidationResult.Success;
 
-		return false;
+		return MethodValidationResult.InvalidMethod;
 	}
 
 	public static Variant CallMethod(this Node node, StringName method, params Variant[] args)
