@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://d4fqgp0bjijcv"]
 
-[ext_resource type="Script" path="res://example/main_menu/MainMenu.gd" id="1_qgsi7"]
+[ext_resource type="Script" path="res://example/scenes/main_menu/MainMenu.gd" id="1_qgsi7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jxdgx"]
 content_margin_bottom = 24.0

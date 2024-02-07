@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 
 -   Renamed NumericHelper to Numeric & StorageHelper to Storage.
 -   Improved exception handling in TryConvert method in Numeric class.
+-   Refreshed example scenes.
 
 ### Fixed
 
