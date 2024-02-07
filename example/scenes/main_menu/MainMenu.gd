@@ -7,7 +7,7 @@ func _ready() -> void:
 
 
 func _on_start_pressed() -> void:
-	get_tree().change_scene_to_file("res://example/game/Game.tscn")
+	get_tree().change_scene_to_file("res://example/scenes/game/Game.tscn")
 
 
 func _on_quit_pressed() -> void:
