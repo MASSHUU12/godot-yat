@@ -3,14 +3,13 @@
 [ext_resource type="Script" path="res://example/scenes/player/Player.cs" id="1_xujnc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rune4"]
-radius = 0.25
-height = 1.75
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_xujnc")
+MovementSpeed = 5.0
 
 [node name="Head" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
