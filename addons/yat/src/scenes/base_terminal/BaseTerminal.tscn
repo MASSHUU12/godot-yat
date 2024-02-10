@@ -10,7 +10,7 @@
 [ext_resource type="Theme" uid="uid://dqsefo8kmb7dj" path="res://addons/yat/src/resources/yat_tooltip_theme.tres" id="6_ovorl"]
 [ext_resource type="PackedScene" uid="uid://b2ljvgvvny52r" path="res://addons/yat/src/scenes/base_terminal/components/selected_node/SelectedNode.tscn" id="6_prlgb"]
 [ext_resource type="PackedScene" uid="uid://x1dyt4bknu3x" path="res://addons/yat/src/scenes/base_terminal/components/command_validator/CommandValidator.tscn" id="10_isg4j"]
-[ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/scenes/base_terminal/components/command_manager/CommandManager.tscn" id="11_623me"]
+[ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/classes/managers/command_manager/CommandManager.tscn" id="11_623me"]
 [ext_resource type="PackedScene" uid="uid://bqc3b0c5v8gme" path="res://addons/yat/src/classes/managers/method_manager/MethodManager.tscn" id="12_tdvy4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6fw"]

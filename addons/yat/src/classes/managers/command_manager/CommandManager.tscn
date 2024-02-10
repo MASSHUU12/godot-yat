@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://3gcpwd2vlow"]
+
+[ext_resource type="Script" path="res://addons/yat/src/classes/managers/command_manager/CommandManager.cs" id="1_a1dj7"]
+
+[node name="CommandManager" type="Node"]
+script = ExtResource("1_a1dj7")
