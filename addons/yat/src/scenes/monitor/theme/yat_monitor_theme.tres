@@ -3,8 +3,12 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_drw32"]
 
 [resource]
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 4
 Label/font_sizes/font_size = 14
 PanelContainer/styles/panel = SubResource("StyleBoxEmpty_drw32")
+RichTextLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+RichTextLabel/constants/outline_size = 4
 RichTextLabel/font_sizes/bold_font_size = 14
 RichTextLabel/font_sizes/bold_italics_font_size = 14
 RichTextLabel/font_sizes/italics_font_size = 14

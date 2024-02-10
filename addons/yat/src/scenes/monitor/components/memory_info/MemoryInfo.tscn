@@ -7,6 +7,7 @@ script = ExtResource("1_o5hka")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 2
+theme_override_colors/default_color = Color(0.552941, 0.647059, 0.952941, 1)
 bbcode_enabled = true
 text = "Memory: 0 GB
 Free: 0 GB
