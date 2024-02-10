@@ -12,6 +12,7 @@ using static YAT.Scenes.BaseTerminal.BaseTerminal;
 namespace YAT.Commands;
 
 [Command("stats", "Manages the game monitor.", "[b]Usage:[/b] stats", "st")]
+[Option("-all", null, "Shows all the information in the game monitor.", false)]
 [Option("-fps", null, "Shows the FPS in the game monitor.", false)]
 [Option("-os", null, "Shows the OS information in the game monitor.", false)]
 [Option("-cpu", null, "Shows the CPU information in the game monitor.", false)]
@@ -39,6 +40,7 @@ public sealed class Stats : ICommand
 
 	private CommandResult Open(Dictionary<string, object> opts)
 	{
+		bool all = (bool)opts["-all"];
 		bool fps = (bool)opts["-fps"];
 		bool os = (bool)opts["-os"];
 		bool cpu = (bool)opts["-cpu"];
@@ -56,22 +58,18 @@ public sealed class Stats : ICommand
 			_monitorInstance = null;
 		}
 
-		if (fps) components.Add(GD.Load<PackedScene>("uid://coabiqpqlqj55").Instantiate<Fps>());
-		if (mem) components.Add(GD.Load<PackedScene>("uid://cy3kq15d8pc2k").Instantiate<MemoryInfo>());
-		if (os) components.Add(GD.Load<PackedScene>("uid://dpg2hilncaxuv").Instantiate<Os>());
-		if (cpu) components.Add(GD.Load<PackedScene>("uid://bvjj8sj77c6wi").Instantiate<CpuInfo>());
-		if (engine) components.Add(GD.Load<PackedScene>("uid://cjd2m6hgh0hmq").Instantiate<EngineInfo>());
-		if (objects) components.Add(GD.Load<PackedScene>("uid://co0tw21o78ucy").Instantiate<SceneObjects>());
-		if (lookingAt) components.Add(GD.Load<PackedScene>("uid://b4na0nuvbhst6").Instantiate<LookingAt>());
+		if (all || fps) components.Add(GD.Load<PackedScene>("uid://coabiqpqlqj55").Instantiate<Fps>());
+		if (all || mem) components.Add(GD.Load<PackedScene>("uid://cy3kq15d8pc2k").Instantiate<MemoryInfo>());
+		if (all || os) components.Add(GD.Load<PackedScene>("uid://dpg2hilncaxuv").Instantiate<Os>());
+		if (all || cpu) components.Add(GD.Load<PackedScene>("uid://bvjj8sj77c6wi").Instantiate<CpuInfo>());
+		if (all || engine) components.Add(GD.Load<PackedScene>("uid://cjd2m6hgh0hmq").Instantiate<EngineInfo>());
+		if (all || objects) components.Add(GD.Load<PackedScene>("uid://co0tw21o78ucy").Instantiate<SceneObjects>());
+		if (all || lookingAt) components.Add(GD.Load<PackedScene>("uid://b4na0nuvbhst6").Instantiate<LookingAt>());
 
 		_monitorInstance = _monitor.Instantiate<Monitor>();
-
 		_yat.Windows.AddChild(_monitorInstance);
 
-		foreach (Node component in components)
-		{
-			_monitorInstance.AddComponent(component);
-		}
+		foreach (Node component in components) _monitorInstance.AddComponent(component);
 
 		return CommandResult.Success;
 	}
