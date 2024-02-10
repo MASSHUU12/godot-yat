@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Godot;
+using YAT.Classes.Managers;
+using YAT.Enums;
 using YAT.Helpers;
 using YAT.Resources;
 using YAT.Scenes.BaseTerminal.Components;
@@ -17,34 +19,12 @@ public partial class BaseTerminal : Control
 	public Input Input { get; private set; }
 	public Output Output { get; private set; }
 	public SelectedNode SelectedNode { get; private set; }
-	public CommandValidator CommandValidator { get; private set; }
+	public MethodManager MethodManager { get; private set; }
 	public CommandManager CommandManager { get; private set; }
+	public CommandValidator CommandValidator { get; private set; }
 
 	public readonly LinkedList<string> History = new();
 	public LinkedListNode<string> HistoryNode = null;
-
-	/// <summary>
-	/// The type of message to print in the YatTerminal.
-	/// </summary>
-	public enum PrintType
-	{
-		/// <summary>
-		/// Represents the normal state of the YatTerminal component.
-		/// </summary>
-		Normal,
-		/// <summary>
-		/// Displays a error message in the terminal.
-		/// </summary>
-		Error,
-		/// <summary>
-		/// Displays a warning message in the terminal.
-		/// </summary>
-		Warning,
-		/// <summary>
-		/// Displays a success message in the terminal.
-		/// </summary>
-		Success
-	}
 
 	private YAT _yat;
 	private Label _promptLabel;
@@ -120,7 +100,7 @@ public partial class BaseTerminal : Control
 
 			if (@event.IsActionPressed(Keybindings.TerminalInterrupt) && Locked)
 			{
-				Print("Command cancellation requested.", PrintType.Warning);
+				Print("Command cancellation requested.", EPrintType.Warning);
 
 				CommandManager.Cts.Cancel();
 				CommandManager.Cts.Dispose();
@@ -150,14 +130,14 @@ public partial class BaseTerminal : Control
 	/// </summary>
 	/// <param name="text">The text to print.</param>
 	/// <param name="type">The type of print to use (e.g. error, warning, success, normal).</param>
-	public void Print(string text, PrintType type = PrintType.Normal)
+	public void Print(string text, EPrintType type = EPrintType.Normal)
 	{
 		var color = type switch
 		{
-			PrintType.Error => _yat.OptionsManager.Options.ErrorColor,
-			PrintType.Warning => _yat.OptionsManager.Options.WarningColor,
-			PrintType.Success => _yat.OptionsManager.Options.SuccessColor,
-			PrintType.Normal => _yat.OptionsManager.Options.OutputColor,
+			EPrintType.Error => _yat.OptionsManager.Options.ErrorColor,
+			EPrintType.Warning => _yat.OptionsManager.Options.WarningColor,
+			EPrintType.Success => _yat.OptionsManager.Options.SuccessColor,
+			EPrintType.Normal => _yat.OptionsManager.Options.OutputColor,
 			_ => _yat.OptionsManager.Options.OutputColor,
 		};
 
@@ -169,7 +149,7 @@ public partial class BaseTerminal : Control
 		Output.CallDeferred("pop_all");
 	}
 
-	public void Print<T>(T text, PrintType type = PrintType.Normal) => Print(text.ToString(), type);
+	public void Print<T>(T text, EPrintType type = EPrintType.Normal) => Print(text.ToString(), type);
 
 	/// <summary>
 	/// Clears the output text of the terminal window.

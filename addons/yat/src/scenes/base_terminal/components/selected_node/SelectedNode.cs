@@ -1,7 +1,5 @@
 using Godot;
-using YAT.Classes;
 using YAT.Enums;
-using YAT.Helpers;
 
 namespace YAT.Scenes.BaseTerminal;
 
@@ -10,23 +8,9 @@ public partial class SelectedNode : Node
 	[Signal]
 	public delegate void CurrentNodeChangedEventHandler(Node node);
 	[Signal]
-	public delegate void CurrentNodeChangeFailedEventHandler(RejectionReason reason);
-	[Signal]
-	public delegate void MethodCalledEventHandler(string method, Variant returnValue, MethodStatus status);
+	public delegate void CurrentNodeChangeFailedEventHandler(ERejectionReason reason);
 
 	public Node Current { get; private set; }
-
-	public enum RejectionReason
-	{
-		InvalidNode,
-		InvalidNodePath
-	}
-
-	public enum MethodStatus
-	{
-		Success,
-		Failed
-	}
 
 	private BaseTerminal _terminal;
 
@@ -45,7 +29,9 @@ public partial class SelectedNode : Node
 	{
 		if (node is null || node.IsEmpty)
 		{
-			EmitSignal(SignalName.CurrentNodeChangeFailed, (ushort)RejectionReason.InvalidNodePath);
+			EmitSignal(SignalName.CurrentNodeChangeFailed,
+				(ushort)ERejectionReason.InvalidNodePath
+			);
 			return false;
 		}
 
@@ -59,86 +45,14 @@ public partial class SelectedNode : Node
 
 		if (!IsInstanceValid(newSelectedNode))
 		{
-			EmitSignal(SignalName.CurrentNodeChangeFailed, (ushort)RejectionReason.InvalidNode);
+			EmitSignal(SignalName.CurrentNodeChangeFailed,
+				(ushort)ERejectionReason.InvalidNode
+			);
 			return false;
 		}
 
 		Current = newSelectedNode;
 		EmitSignal(SignalName.CurrentNodeChanged, Current);
-
-		return true;
-	}
-
-	public bool CallMethods(string input)
-	{
-		string[] methods = Text.SplitClean(input, ".");
-
-		if (methods.Length == 0) return false;
-
-		if (methods.Length == 1)
-		{
-			var (name, args) = Parser.ParseMethod(methods[0]);
-
-			if (args.Length == 0
-				? !CallMethod(Current, name, out var result)
-				: !CallMethod(Current, name, out result, args)) return false;
-
-			_terminal.Print(result.ToString());
-		}
-		else if (!MethodChaining(methods)) return false;
-
-		return true;
-	}
-
-	private bool CallMethod(Node node, string method, out Variant result, params Variant[] args)
-	{
-		result = new();
-		var validationResult = node.ValidateMethod(method);
-
-		switch (validationResult)
-		{
-			case MethodValidationResult.InvalidInstance:
-				_terminal.Output.Error(Messages.DisposedNode);
-				EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Failed);
-				return false;
-			case MethodValidationResult.InvalidMethod:
-				_terminal.Output.Error(Messages.InvalidMethod(method));
-				EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Failed);
-				return false;
-		}
-
-		result = args.Length == 0
-			? node.CallMethod(method)
-			: node.CallMethod(method, args);
-
-		EmitSignal(SignalName.MethodCalled, method, result, (ushort)MethodStatus.Success);
-
-		return true;
-	}
-
-	private bool MethodChaining(string[] methods)
-	{
-		Variant result = new();
-
-		foreach (string method in methods)
-		{
-			var (name, args) = Parser.ParseMethod(method);
-
-			if (result.As<Node>() is { })
-			{
-				if (args.Length == 0
-					? !CallMethod((Node)result, name, out result)
-					: !CallMethod((Node)result, name, out result, args)) return false;
-			}
-			else
-			{
-				if (args.Length == 0
-					? !CallMethod(Current, name, out result)
-					: !CallMethod(Current, name, out result, args)) return false;
-			}
-
-			_terminal.Print(result.ToString());
-		}
 
 		return true;
 	}
