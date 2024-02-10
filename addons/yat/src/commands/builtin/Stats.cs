@@ -7,7 +7,6 @@ using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
 using YAT.Scenes.Monitor;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands;
 
@@ -78,7 +77,7 @@ public sealed class Stats : ICommand
 	{
 		if (!GodotObject.IsInstanceValid(_monitorInstance))
 		{
-			_terminal.Print("The game monitor is not open.", PrintType.Error);
+			_terminal.Print("The game monitor is not open.", EPrintType.Error);
 			return CommandResult.Failure;
 		}
 

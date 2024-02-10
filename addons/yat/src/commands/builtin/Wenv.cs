@@ -4,7 +4,6 @@ using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands;
 
@@ -35,13 +34,13 @@ public sealed class Wenv : ICommand
 
 		if (world3D is null)
 		{
-			_terminal.Print("No world to restore environment to.", PrintType.Error);
+			_terminal.Print("No world to restore environment to.", EPrintType.Error);
 			return;
 		}
 
 		if (_world3DEnvironment is null)
 		{
-			_terminal.Print("No environment to restore.", PrintType.Error);
+			_terminal.Print("No environment to restore.", EPrintType.Error);
 			return;
 		}
 
@@ -56,13 +55,13 @@ public sealed class Wenv : ICommand
 
 		if (world3D is null)
 		{
-			_terminal.Print("No world to remove environment from.", PrintType.Error);
+			_terminal.Print("No world to remove environment from.", EPrintType.Error);
 			return;
 		}
 
 		if (env is null)
 		{
-			_terminal.Print("No environment to remove.", PrintType.Error);
+			_terminal.Print("No environment to remove.", EPrintType.Error);
 			return;
 		}
 

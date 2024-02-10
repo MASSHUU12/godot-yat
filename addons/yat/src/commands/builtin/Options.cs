@@ -4,7 +4,6 @@ using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes.YatWindow;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands;
 
@@ -27,7 +26,7 @@ public sealed class Options : ICommand
 			return CommandResult.Success;
 		}
 
-		data.Terminal.Print("Options will be improved in the future.", PrintType.Warning);
+		data.Terminal.Print("Options will be improved in the future.", EPrintType.Warning);
 
 		_optionsWindowInstance = instanceValid ? _optionsWindowInstance : _optionsWindow.Instantiate<YatWindow>();
 		data.Yat.Windows.AddChild(_optionsWindowInstance);

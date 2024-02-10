@@ -5,7 +5,6 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands
 {
@@ -14,7 +13,7 @@ namespace YAT.Commands
 	{
 		public CommandResult Execute(CommandData data)
 		{
-			data.Terminal.Print("_CLASS_ is not yet implemented!", PrintType.Warning);
+			data.Terminal.Print("_CLASS_ is not yet implemented!", EPrintType.Warning);
 
 			return CommandResult.Failure;
 		}

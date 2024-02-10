@@ -6,7 +6,6 @@ using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
 using YAT.Types;
 using static Godot.RenderingServer;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands;
 
@@ -51,13 +50,13 @@ public sealed class View : ICommand
 
 		if (!int.TryParse(mode, out var iMode))
 		{
-			data.Terminal.Print($"Invalid mode: {mode}.", PrintType.Error);
+			data.Terminal.Print($"Invalid mode: {mode}.", EPrintType.Error);
 			return CommandResult.InvalidArguments;
 		}
 
 		if (!IsValidMode((ushort)iMode))
 		{
-			data.Terminal.Print($"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}.", PrintType.Error);
+			data.Terminal.Print($"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}.", EPrintType.Error);
 			return CommandResult.InvalidArguments;
 		}
 

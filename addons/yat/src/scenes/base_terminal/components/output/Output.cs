@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using Godot;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
+using YAT.Enums;
 
 namespace YAT.Scenes.BaseTerminal.Components;
 
@@ -34,7 +34,7 @@ public partial class Output : RichTextLabel
 	public void Error(string message, LogOutput output = LogOutput.Terminal)
 	{
 		if ((output & LogOutput.Terminal) == LogOutput.Terminal)
-			Terminal.Print(message, PrintType.Error);
+			Terminal.Print(message, EPrintType.Error);
 
 		if ((output & LogOutput.Editor) == LogOutput.Editor)
 			GD.PushError(message);
@@ -46,7 +46,7 @@ public partial class Output : RichTextLabel
 	public void Warning(string message, LogOutput output = LogOutput.Terminal)
 	{
 		if ((output & LogOutput.Terminal) == LogOutput.Terminal)
-			Terminal.Print(message, PrintType.Warning);
+			Terminal.Print(message, EPrintType.Warning);
 
 		if ((output & LogOutput.Editor) == LogOutput.Editor)
 			GD.PushWarning(message);
@@ -58,7 +58,7 @@ public partial class Output : RichTextLabel
 	public void Info(string message, LogOutput output = LogOutput.Terminal)
 	{
 		if ((output & LogOutput.Terminal) == LogOutput.Terminal)
-			Terminal.Print(message, PrintType.Normal);
+			Terminal.Print(message, EPrintType.Normal);
 
 		if ((output & LogOutput.Editor) == LogOutput.Editor)
 			GD.Print(message);
@@ -70,7 +70,7 @@ public partial class Output : RichTextLabel
 	public void Success(string message, LogOutput output = LogOutput.Terminal)
 	{
 		if ((output & LogOutput.Terminal) == LogOutput.Terminal)
-			Terminal.Print(message, PrintType.Success);
+			Terminal.Print(message, EPrintType.Success);
 
 		if ((output & LogOutput.Editor) == LogOutput.Editor)
 			GD.Print(message);
