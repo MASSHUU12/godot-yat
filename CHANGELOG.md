@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   MethodManager class.
+
+### Changed
+
+-   Moved method management logic from SelectedNode to MethodManager class.
+-   Moved RejectionReason, MethodStatus & PrintType enums to separate files.
+-   Moved CommandManager to managers folder.
+
 ## [1.22.0-beta 2024-02-10]
 
 ### Added

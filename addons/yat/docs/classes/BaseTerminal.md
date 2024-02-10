@@ -7,8 +7,6 @@
 
 **Inherits**: Control
 
-This class is used to display the basic terminal, call commands and display their result.
-
 ### Properties
 
 | Type                   | Name             | Default |
@@ -43,9 +41,4 @@ This class is used to display the basic terminal, call commands and display thei
 
 ### Enumerations
 
-enum **PrintType**
-
--   **Normal**
--   **Error**
--   **Warning**
--   **Success**
+**-**
