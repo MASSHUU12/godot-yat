@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
     - CallMethod
 -   DisposedNode & InvalidMethod messages.
 -   MethodValidationResult enum.
+-   '-all' option to stats command.
 
 ### Changed
 
@@ -28,6 +29,7 @@ All notable changes to this project will be documented in this file.
 -   Improved exception handling in TryConvert method in Numeric class.
 -   Refreshed example scenes.
 -   Testing on Godot SDK 4.3.0-dev.3.
+-   Slightly improved monitor theme.
 
 ### Fixed
 
