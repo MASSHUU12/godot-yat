@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Godot;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
+using YAT.Enums;
 
 namespace YAT.Scenes.GameTerminal.Components;
 
@@ -56,7 +56,7 @@ public partial class TerminalSwitcher : PanelContainer
 		_instancesContainer.AddChild(newTerminal);
 		_tabBar.AddTab(newTerminal.Name);
 
-		newTerminal.Print("Please note that support for multiple terminals is still experimental and does not work perfectly with threaded commands.", PrintType.Warning);
+		newTerminal.Print("Please note that support for multiple terminals is still experimental and does not work perfectly with threaded commands.", EPrintType.Warning);
 
 		SwitchToTerminal(TerminalInstances.Count - 1);
 
@@ -73,7 +73,7 @@ public partial class TerminalSwitcher : PanelContainer
 
 		if (terminal.Locked)
 		{
-			terminal.Print("This terminal is currently executing a command and cannot be closed.", PrintType.Error);
+			terminal.Print("This terminal is currently executing a command and cannot be closed.", EPrintType.Error);
 			return;
 		}
 

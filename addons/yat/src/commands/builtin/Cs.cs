@@ -3,7 +3,6 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands;
 
@@ -33,7 +32,7 @@ public partial class Cs : Node, ICommand
 		{
 			EmitSignal(SignalName.SceneChangeFailed, scene, (short)FailureReason.SceneDoesNotExist);
 
-			data.Terminal.Print($"Scene '{scene}' does not exist.", PrintType.Error);
+			data.Terminal.Print($"Scene '{scene}' does not exist.", EPrintType.Error);
 
 			return CommandResult.Failure;
 		}
@@ -50,14 +49,14 @@ public partial class Cs : Node, ICommand
 				: FailureReason.SceneCantInstantiate
 			));
 
-			data.Terminal.Print($"Failed to change scene to '{scene}'.", PrintType.Error);
+			data.Terminal.Print($"Failed to change scene to '{scene}'.", EPrintType.Error);
 
 			return CommandResult.Failure;
 		}
 
 		EmitSignal(SignalName.SceneChanged, scene);
 
-		data.Terminal.Print($"Changed scene to '{scene}'.", PrintType.Success);
+		data.Terminal.Print($"Changed scene to '{scene}'.", EPrintType.Success);
 
 		return CommandResult.Success;
 	}

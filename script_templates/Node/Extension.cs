@@ -5,14 +5,13 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 [Extension("_CLASS_", "Lorem ipsum dolor sit amet.", "[b]Usage[/b]: _CLASS_")]
 public partial class _CLASS_ : IExtension
 {
 	public CommandResult Execute(CommandData data)
 	{
-		data.Terminal.Print("_CLASS_ is not yet implemented!", PrintType.Error);
+		data.Terminal.Print("_CLASS_ is not yet implemented!", EPrintType.Error);
 
 		return CommandResult.Failure;
 	}

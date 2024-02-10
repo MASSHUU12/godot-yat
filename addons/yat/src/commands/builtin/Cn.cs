@@ -5,7 +5,6 @@ using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands;
 
@@ -50,7 +49,7 @@ public sealed class Cn : ICommand
 
 		if (!result)
 		{
-			data.Terminal.Print($"Invalid node path: {path}", PrintType.Error);
+			data.Terminal.Print($"Invalid node path: {path}", EPrintType.Error);
 			return CommandResult.Failure;
 		}
 
@@ -65,7 +64,7 @@ public sealed class Cn : ICommand
 
 		if (result is not null) return result.GetPath();
 
-		_terminal.Print("No node found.", PrintType.Error);
+		_terminal.Print("No node found.", EPrintType.Error);
 		return null;
 	}
 
@@ -75,7 +74,7 @@ public sealed class Cn : ICommand
 
 		if (result is null)
 		{
-			_terminal.Print("No collider found.", PrintType.Error);
+			_terminal.Print("No collider found.", EPrintType.Error);
 			return null;
 		}
 

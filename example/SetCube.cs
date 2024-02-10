@@ -3,7 +3,6 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 [Extension("cubecolor", "Sets the cube's color.", "[b]Usage[/b]: setcube [i]color[/i]")]
 public sealed class SetCube : IExtension
@@ -14,7 +13,7 @@ public sealed class SetCube : IExtension
 	{
 		if (data.RawData.Length < 2)
 		{
-			data.Terminal.Print("Invalid arguments.", PrintType.Error);
+			data.Terminal.Print("Invalid arguments.", EPrintType.Error);
 			return CommandResult.InvalidArguments;
 		}
 
@@ -28,7 +27,7 @@ public sealed class SetCube : IExtension
 		}
 		catch (System.Exception)
 		{
-			data.Terminal.Print("Invalid color.", PrintType.Error);
+			data.Terminal.Print("Invalid color.", EPrintType.Error);
 			return CommandResult.Failure;
 		}
 

@@ -8,9 +8,11 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Scenes;
+using YAT.Scenes.BaseTerminal;
 using YAT.Types;
 
-namespace YAT.Scenes.BaseTerminal.Components;
+namespace YAT.Classes.Managers;
 
 public partial class CommandManager : Node
 {

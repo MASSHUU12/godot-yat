@@ -9,7 +9,6 @@ using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes.BaseTerminal;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands;
 
@@ -43,7 +42,7 @@ public sealed class Ls : ICommand
 
 		if (methods is null)
 		{
-			_terminal.Print($"Node '{path}' does not exist.", PrintType.Error);
+			_terminal.Print($"Node '{path}' does not exist.", EPrintType.Error);
 			return CommandResult.Failure;
 		}
 
@@ -74,7 +73,7 @@ public sealed class Ls : ICommand
 	{
 		if (!Directory.Exists(path))
 		{
-			_terminal.Print($"Directory '{path}' does not exist.", PrintType.Error);
+			_terminal.Print($"Directory '{path}' does not exist.", EPrintType.Error);
 			return CommandResult.Failure;
 		}
 
@@ -94,17 +93,17 @@ public sealed class Ls : ICommand
 		}
 		catch (UnauthorizedAccessException)
 		{
-			_terminal.Print($"Access to '{path}' is denied.", PrintType.Error);
+			_terminal.Print($"Access to '{path}' is denied.", EPrintType.Error);
 			return CommandResult.Failure;
 		}
 		catch (PathTooLongException)
 		{
-			_terminal.Print($"Path '{path}' is too long.", PrintType.Error);
+			_terminal.Print($"Path '{path}' is too long.", EPrintType.Error);
 			return CommandResult.Failure;
 		}
 		catch (Exception ex)
 		{
-			_terminal.Print($"Error accessing directory '{path}': {ex.Message}", PrintType.Error);
+			_terminal.Print($"Error accessing directory '{path}': {ex.Message}", EPrintType.Error);
 			return CommandResult.Failure;
 		}
 

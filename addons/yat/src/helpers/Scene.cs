@@ -5,7 +5,6 @@ using Godot.Collections;
 using YAT.Enums;
 using YAT.Scenes.BaseTerminal;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Helpers;
 
@@ -25,7 +24,7 @@ public static class Scene
 
 		if (children.Count == 0)
 		{
-			terminal.Print($"Node '{path}' has no children.", PrintType.Warning);
+			terminal.Print($"Node '{path}' has no children.", EPrintType.Warning);
 			terminal.Output.Warning(Messages.NodeHasNoChildren(path));
 			return true;
 		}

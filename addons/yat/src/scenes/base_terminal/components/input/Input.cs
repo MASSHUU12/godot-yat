@@ -1,12 +1,15 @@
 using Godot;
 using YAT.Classes;
+using YAT.Classes.Managers;
 
 namespace YAT.Scenes.BaseTerminal;
 
 public partial class Input : LineEdit
 {
+	[Export] public BaseTerminal Terminal { get; set; }
+	[Export] public MethodManager MethodManager { get; set; }
+
 	private YAT _yat;
-	private BaseTerminal _terminal;
 
 	public override void _Ready()
 	{
@@ -17,20 +20,18 @@ public partial class Input : LineEdit
 			_yat.TerminalManager.TerminalOpened += () => { GrabFocus(); Clear(); };
 		};
 
-		_terminal = GetNode<BaseTerminal>("../../../../../");
-
 		TextSubmitted += OnTextSubmitted;
 	}
 
 	private void OnTextSubmitted(string input)
 	{
-		if (_terminal.Locked || string.IsNullOrEmpty(input)) return;
+		if (Terminal.Locked || string.IsNullOrEmpty(input)) return;
 
 		// If the input string starts with a specified character,
 		// treat it as a method call on the selected node
 		if (input.StartsWith('$'))
 		{
-			_terminal.SelectedNode.CallMethods(input[1..]);
+			MethodManager.CallMethods(input[1..]);
 			AddToTheHistory(input);
 			Clear();
 			return;
@@ -42,15 +43,15 @@ public partial class Input : LineEdit
 
 		AddToTheHistory(input);
 
-		_terminal.CommandManager.Run(command, _terminal);
+		Terminal.CommandManager.Run(command, Terminal);
 		Clear();
 	}
 
 	private void AddToTheHistory(string command)
 	{
-		_terminal.HistoryNode = null;
-		_terminal.History.AddLast(command);
-		if (_terminal.History.Count > _yat.OptionsManager.Options.HistoryLimit) _terminal.History.RemoveFirst();
+		Terminal.HistoryNode = null;
+		Terminal.History.AddLast(command);
+		if (Terminal.History.Count > _yat.OptionsManager.Options.HistoryLimit) Terminal.History.RemoveFirst();
 	}
 
 	/// <summary>

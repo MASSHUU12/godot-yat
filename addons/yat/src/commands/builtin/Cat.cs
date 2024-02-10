@@ -3,7 +3,6 @@ using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
-using static YAT.Scenes.BaseTerminal.BaseTerminal;
 
 namespace YAT.Commands;
 
@@ -19,7 +18,7 @@ public sealed class Cat : ICommand
 
 		if (!FileAccess.FileExists(fileName))
 		{
-			data.Terminal.Print($"File '{fileName}' does not exist.", PrintType.Error);
+			data.Terminal.Print($"File '{fileName}' does not exist.", EPrintType.Error);
 			return CommandResult.InvalidArguments;
 		}
 
@@ -33,7 +32,7 @@ public sealed class Cat : ICommand
 			{
 				data.Terminal.Print(
 					$"Line limit of {lineLimit} reached.",
-					PrintType.Warning
+					EPrintType.Warning
 				);
 				break;
 			}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dfig0yknmx6b7"]
+[gd_scene load_steps=15 format=3 uid="uid://dfig0yknmx6b7"]
 
 [ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.cs" id="1_gwi3k"]
 [ext_resource type="Theme" uid="uid://csssl8ua88ca4" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_theme.tres" id="1_mdg7i"]
@@ -10,7 +10,8 @@
 [ext_resource type="Theme" uid="uid://dqsefo8kmb7dj" path="res://addons/yat/src/resources/yat_tooltip_theme.tres" id="6_ovorl"]
 [ext_resource type="PackedScene" uid="uid://b2ljvgvvny52r" path="res://addons/yat/src/scenes/base_terminal/components/selected_node/SelectedNode.tscn" id="6_prlgb"]
 [ext_resource type="PackedScene" uid="uid://x1dyt4bknu3x" path="res://addons/yat/src/scenes/base_terminal/components/command_validator/CommandValidator.tscn" id="10_isg4j"]
-[ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/scenes/base_terminal/components/command_manager/CommandManager.tscn" id="11_623me"]
+[ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/classes/managers/command_manager/CommandManager.tscn" id="11_623me"]
+[ext_resource type="PackedScene" uid="uid://bqc3b0c5v8gme" path="res://addons/yat/src/classes/managers/method_manager/MethodManager.tscn" id="12_tdvy4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6fw"]
 bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
@@ -73,12 +74,14 @@ unique_name_in_owner = true
 layout_mode = 2
 text = ">"
 
-[node name="Input" type="LineEdit" parent="PanelContainer/VBoxContainer/InputLine/HBoxContainer"]
+[node name="Input" type="LineEdit" parent="PanelContainer/VBoxContainer/InputLine/HBoxContainer" node_paths=PackedStringArray("Terminal", "MethodManager")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 caret_blink = true
 script = ExtResource("4_4lcgu")
+Terminal = NodePath("../../../../..")
+MethodManager = NodePath("../../../../../Components/MethodManager")
 
 [node name="SelectedNode" parent="." instance=ExtResource("6_prlgb")]
 
@@ -91,3 +94,7 @@ CommandInfo = NodePath("../../PanelContainer/VBoxContainer/InputInfo/CommandInfo
 Terminal = NodePath("../..")
 
 [node name="CommandManager" parent="Components" instance=ExtResource("11_623me")]
+
+[node name="MethodManager" parent="Components" node_paths=PackedStringArray("Terminal", "SelectedNode") instance=ExtResource("12_tdvy4")]
+Terminal = NodePath("../..")
+SelectedNode = NodePath("../../SelectedNode")
