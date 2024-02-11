@@ -1,0 +1,24 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://c550tfu5s4jf3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ei582"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_scx1t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2paqf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cjo88"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2arwb"]
+
+[resource]
+CheckBox/font_sizes/font_size = 12
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_ei582")
+ColorPickerButton/styles/focus = SubResource("StyleBoxEmpty_scx1t")
+Label/font_sizes/font_size = 12
+LineEdit/colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.501961)
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_2paqf")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_cjo88")
+PanelContainer/styles/panel = SubResource("StyleBoxEmpty_2arwb")
