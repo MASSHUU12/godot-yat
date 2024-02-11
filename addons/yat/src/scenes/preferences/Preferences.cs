@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Reflection;
 using Godot;
 using YAT.Resources;
@@ -10,9 +9,13 @@ public partial class Preferences : YatWindow.YatWindow
 {
 	[Export] YatPreferences YatPreferences { get; set; } = new();
 
+	private TabContainer _tabContainer;
+
 	public override void _Ready()
 	{
 		base._Ready();
+
+		_tabContainer = GetNode<TabContainer>("%TabContainer");
 
 		CreatePreferences();
 	}
@@ -34,6 +37,8 @@ public partial class Preferences : YatWindow.YatWindow
 			{
 				currentGroup = exportGroup;
 				currentSubgroup = null;
+
+				CreateTab(exportGroup.Name);
 			}
 
 			if (exportSubgroup is not null) currentSubgroup = exportSubgroup;
@@ -42,6 +47,14 @@ public partial class Preferences : YatWindow.YatWindow
 
 			GD.Print(currentGroup?.Name, " | ", currentSubgroup?.Name);
 		}
+	}
+
+	private void CreateTab(StringName name)
+	{
+		var tab = new PanelContainer();
+
+		_tabContainer.AddChild(tab);
+		_tabContainer.SetTabTitle(_tabContainer.GetTabCount() - 1, name);
 	}
 
 	private static T GetAttribute<T>(Godot.Collections.Dictionary propertyInfo) where T : Attribute
