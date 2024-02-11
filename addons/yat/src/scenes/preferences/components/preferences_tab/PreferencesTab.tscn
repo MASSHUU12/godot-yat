@@ -1,17 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bxdeasqh565nr"]
 
-[sub_resource type="CSharpScript" id="CSharpScript_rcxnh"]
-script/source = "using Godot;
-
-namespace YAT.Scenes;
-
-public partial class PreferencesTab : PanelContainer
-{
-	public override void _Ready()
-	{
-	}
-}
-"
+[ext_resource type="Script" path="res://addons/yat/src/scenes/preferences/components/preferences_tab/PreferencesTab.cs" id="1_d73le"]
 
 [node name="PreferencesTab" type="PanelContainer"]
 anchors_preset = 15
@@ -21,7 +10,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = SubResource("CSharpScript_rcxnh")
+script = ExtResource("1_d73le")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
