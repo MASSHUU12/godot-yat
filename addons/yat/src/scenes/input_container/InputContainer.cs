@@ -5,10 +5,10 @@ namespace YAT.Scenes;
 
 public partial class InputContainer : PanelContainer
 {
-	[Export] StringName Text { get; set; } = string.Empty;
-	[Export] EInputType InputType { get; set; } = EInputType.String;
-	[Export] float MinValue { get; set; } = 0;
-	[Export] float MaxValue { get; set; } = 1;
+	[Export] public StringName Text { get; set; } = string.Empty;
+	[Export] public EInputType InputType { get; set; } = EInputType.String;
+	[Export] public float MinValue { get; set; } = 0;
+	[Export] public float MaxValue { get; set; } = 1;
 
 	private Label _label;
 	private SpinBox _spinBox;
@@ -51,5 +51,27 @@ public partial class InputContainer : PanelContainer
 			EInputType.Color => _colorPickerButton.Color,
 			_ => new()
 		};
+	}
+
+	public void SetValue(Variant value)
+	{
+		switch (InputType)
+		{
+			case EInputType.Float:
+				_spinBox.Value = (float)value;
+				break;
+			case EInputType.Int:
+				_spinBox.Value = (int)value;
+				break;
+			case EInputType.Bool:
+				_checkBox.ButtonPressed = (bool)value;
+				break;
+			case EInputType.String:
+				_lineEdit.Text = (string)value;
+				break;
+			case EInputType.Color:
+				_colorPickerButton.Color = (Color)value;
+				break;
+		}
 	}
 }
