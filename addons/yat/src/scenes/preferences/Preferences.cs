@@ -50,7 +50,7 @@ public partial class Preferences : YatWindow.YatWindow
 			if (currentGroup is null && currentSubgroup is null) continue;
 
 			// TODO: Subgroups
-			// TODO: Prevent getting next category as a preference
+			// TODO: Prevent getting next category as a preference in the current
 
 			if (!_groups.ContainsKey(currentGroup.Name)) continue;
 
