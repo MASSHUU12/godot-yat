@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://j0lu73b8j8ld"]
+
+[ext_resource type="Script" path="res://addons/yat/src/resources/preferences/YatPreferences.cs" id="1_a2q8k"]
+
+[resource]
+script = ExtResource("1_a2q8k")
