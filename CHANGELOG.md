@@ -7,11 +7,17 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   MethodManager class.
+-   YatPreferences resource.
+-   EInputType enum.
+-   Scenes:
+    -   Preferences
+    -   PreferencesTab
+    -   InputContainer
 
 ### Changed
 
 -   Moved method management logic from SelectedNode to MethodManager class.
--   Moved RejectionReason, MethodStatus & PrintType enums to separate files.
+-   Moved RejectionReason, MethodStatus, PrintType & YatEnableLocation enums to separate files.
 -   Moved CommandManager to managers folder.
 
 ## [1.22.0-beta 2024-02-10]
