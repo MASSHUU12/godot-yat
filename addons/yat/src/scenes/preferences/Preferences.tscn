@@ -1,7 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://ca2i4r24ny7y3"]
+[gd_scene load_steps=5 format=3 uid="uid://ca2i4r24ny7y3"]
 
 [ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/yat_window/YatWindow.tscn" id="1_f8myu"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/preferences/Preferences.cs" id="2_1u1aj"]
+[ext_resource type="Script" path="res://addons/yat/src/resources/preferences/YatPreferences.cs" id="3_qpfd3"]
+
+[sub_resource type="Resource" id="Resource_y2gvw"]
+script = ExtResource("3_qpfd3")
+Prompt = ">"
+ShowPrompt = true
+AutoFocus = true
+AutoScroll = true
+DefaultWidth = 720
+DefaultHeight = 320
+BackgroundColor = Color(0.113725, 0.133333, 0.160784, 1)
+InputColor = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
+OutputColor = Color(0.87451, 0.87451, 0.87451, 0.501961)
+ErrorColor = Color(1, 0.470588, 0.419608, 1)
+WarningColor = Color(1, 0.866667, 0.396078, 1)
+SuccessColor = Color(0.647059, 1, 0.541176, 1)
+UseYatEnableFile = false
+YatEnableFile = ".yatenable"
+YatEnableLocation = 0
 
 [node name="Preferences" instance=ExtResource("1_f8myu")]
 script = ExtResource("2_1u1aj")
+YatPreferences = SubResource("Resource_y2gvw")
+
+[node name="ContextMenu" parent="." index="1"]
+WallMargin = 16
