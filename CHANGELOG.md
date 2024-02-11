@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
     -   Preferences
     -   PreferencesTab
     -   InputContainer
+-   GetRangeFromHint method to Scene class.
 
 ### Changed
 

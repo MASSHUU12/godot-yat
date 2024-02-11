@@ -134,4 +134,18 @@ public static class Scene
 	{
 		return args.Length == 0 ? node.Call(method) : node.Call(method, args);
 	}
+
+	public static (float, float, float) GetRangeFromHint(string hint)
+	{
+		var range = hint.Split(',');
+
+		if (range.Length <= 1) return (0, 0, 0);
+		if (range.Length == 2) return (range[0].ToFloat(), range[1].ToFloat(), 0);
+
+		var min = range[0].ToFloat();
+		var max = range[1].ToFloat();
+		var step = range[2].ToFloat();
+
+		return (min, max, step);
+	}
 }
