@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Godot;
 using YAT.Enums;
+using YAT.Helpers;
 using YAT.Resources;
 
 namespace YAT.Scenes;
@@ -48,7 +49,6 @@ public partial class Preferences : YatWindow.YatWindow
 
 			if (currentGroup is null && currentSubgroup is null) continue;
 
-			// TODO: Ranges
 			// TODO: Subgroups
 			// TODO: Prevent getting next category as a preference
 
@@ -68,6 +68,12 @@ public partial class Preferences : YatWindow.YatWindow
 			? parsedType
 			: EInputType.String
 		);
+		var hint = info.TryGetValue("hint", out var h)
+			? (PropertyHint)(short)h
+			: PropertyHint.None;
+		var (min, max, _) = hint == PropertyHint.Range
+			? Scene.GetRangeFromHint(info["hint_string"].AsString())
+			: (0, float.MaxValue, 0);
 
 		if (string.IsNullOrEmpty(name) || _groups.ContainsKey(name)) return;
 
@@ -76,8 +82,8 @@ public partial class Preferences : YatWindow.YatWindow
 		inputContainer.Name = name;
 		inputContainer.Text = name;
 		inputContainer.InputType = inputType;
-		inputContainer.MinValue = 0;
-		inputContainer.MaxValue = uint.MaxValue;
+		inputContainer.MinValue = min;
+		inputContainer.MaxValue = max;
 
 		_groups[groupName].Container.AddChild(inputContainer);
 
