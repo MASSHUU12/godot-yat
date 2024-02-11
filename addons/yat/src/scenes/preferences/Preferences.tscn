@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://addons/yat/src/scenes/preferences/Preferences.cs" id="2_1u1aj"]
 [ext_resource type="Script" path="res://addons/yat/src/resources/preferences/YatPreferences.cs" id="3_qpfd3"]
 
-[sub_resource type="Resource" id="Resource_3adgb"]
+[sub_resource type="Resource" id="Resource_e6slw"]
 script = ExtResource("3_qpfd3")
 Prompt = ">"
 ShowPrompt = true
@@ -25,7 +25,7 @@ YatEnableLocation = 0
 [node name="Preferences" instance=ExtResource("1_f8myu")]
 title = "Preferences"
 script = ExtResource("2_1u1aj")
-YatPreferences = SubResource("Resource_3adgb")
+YatPreferences = SubResource("Resource_e6slw")
 ViewportEdgeOffset = 0
 DefaultWindowPosition = 4
 AllowToGoOffScreen = true

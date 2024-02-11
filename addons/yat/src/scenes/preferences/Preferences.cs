@@ -35,14 +35,6 @@ public partial class Preferences : YatWindow.YatWindow
 		{
 			var exportGroup = GetAttribute<ExportGroupAttribute>(propertyInfo);
 			var exportSubgroup = GetAttribute<ExportSubgroupAttribute>(propertyInfo);
-			var propertyType = ((Variant.Type)(int)propertyInfo["type"]).ToString();
-			StringName name = propertyInfo.TryGetValue("name", out var n)
-				? (StringName)n
-				: string.Empty;
-			var inputType = (EInputType)(Enum.TryParse(typeof(EInputType), propertyType, out var parsedType)
-				? parsedType
-				: EInputType.String
-			);
 
 			if (exportGroup is not null)
 			{
@@ -56,30 +48,40 @@ public partial class Preferences : YatWindow.YatWindow
 
 			if (currentGroup is null && currentSubgroup is null) continue;
 
-			// TODO: https://docs.godotengine.org/en/stable/classes/class_%40globalscope.html#enum-globalscope-propertyhint
-			// var propertyHint = (PropertyHint)(int)propertyInfo["hint"];
+			// TODO: Ranges
+			// TODO: Subgroups
+			// TODO: Prevent getting next category as a preference
 
-			if (string.IsNullOrEmpty(name) || !_groups.ContainsKey(currentGroup.Name) || _groups.ContainsKey(name))
-				continue;
+			if (!_groups.ContainsKey(currentGroup.Name)) continue;
 
-			GD.Print(name, " | ", currentGroup.Name, " | ", inputType);
-
-			CreateInputContainer(name, currentGroup.Name, inputType, 0, 1);
+			CreateInputContainer(currentGroup.Name, propertyInfo);
 		}
 	}
 
-	private void CreateInputContainer(StringName name, StringName groupName, EInputType type, float minValue, float MaxValue)
+	private void CreateInputContainer(StringName groupName, Godot.Collections.Dictionary info)
 	{
+		var propertyType = ((Variant.Type)(int)info["type"]).ToString();
+		StringName name = info.TryGetValue("name", out var n)
+			? (StringName)n
+			: string.Empty;
+		var inputType = (EInputType)(Enum.TryParse(typeof(EInputType), propertyType, out var parsedType)
+			? parsedType
+			: EInputType.String
+		);
+
+		if (string.IsNullOrEmpty(name) || _groups.ContainsKey(name)) return;
+
 		var inputContainer = GD.Load<PackedScene>("uid://dgq3jncmxdomf").Instantiate<InputContainer>();
 
 		inputContainer.Name = name;
 		inputContainer.Text = name;
-		inputContainer.InputType = type;
-		inputContainer.MinValue = minValue;
-		inputContainer.MaxValue = MaxValue;
-		// TODO: inputContainer.SetValue(YatPreferences.Get(name));
+		inputContainer.InputType = inputType;
+		inputContainer.MinValue = 0;
+		inputContainer.MaxValue = uint.MaxValue;
 
 		_groups[groupName].Container.AddChild(inputContainer);
+
+		inputContainer.SetValue(YatPreferences.Get(name));
 	}
 
 	private void CreateTab(StringName name)
