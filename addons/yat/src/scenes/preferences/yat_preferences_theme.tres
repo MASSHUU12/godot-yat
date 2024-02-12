@@ -1,6 +1,9 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://ugpwajpfdu4"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://ugpwajpfdu4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l6xp6"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bgvqd"]
+
 [resource]
 TabContainer/styles/panel = SubResource("StyleBoxEmpty_l6xp6")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_bgvqd")
