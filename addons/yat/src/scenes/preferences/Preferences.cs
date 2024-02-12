@@ -11,6 +11,7 @@ namespace YAT.Scenes;
 public partial class Preferences : YatWindow.YatWindow
 {
 	private YAT _yat;
+	private Button _load, _save;
 	private TabContainer _tabContainer;
 
 	private readonly Dictionary<StringName, PreferencesTab> _groups = new();
@@ -23,7 +24,23 @@ public partial class Preferences : YatWindow.YatWindow
 		_yat = GetNode<YAT>("/root/YAT");
 		_tabContainer = GetNode<TabContainer>("%TabContainer");
 
+		_load = GetNode<Button>("%Load");
+		_load.Pressed += LoadPreferences;
+
+		_save = GetNode<Button>("%Save");
+		_save.Pressed += SavePreferences;
+
 		CreatePreferences();
+	}
+
+	private void SavePreferences()
+	{
+		_yat.PreferencesManager.Save();
+	}
+
+	private void LoadPreferences()
+	{
+		_yat.PreferencesManager.Load();
 	}
 
 	private void CreatePreferences()

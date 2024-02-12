@@ -1,33 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://ca2i4r24ny7y3"]
+[gd_scene load_steps=4 format=3 uid="uid://ca2i4r24ny7y3"]
 
 [ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/yat_window/YatWindow.tscn" id="1_f8myu"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/preferences/Preferences.cs" id="2_1u1aj"]
-[ext_resource type="Script" path="res://addons/yat/src/resources/preferences/YatPreferences.cs" id="3_qpfd3"]
 [ext_resource type="Theme" uid="uid://ugpwajpfdu4" path="res://addons/yat/src/scenes/preferences/yat_preferences_theme.tres" id="4_ti2tk"]
-
-[sub_resource type="Resource" id="Resource_j37rf"]
-script = ExtResource("3_qpfd3")
-Prompt = ">"
-ShowPrompt = true
-HistoryLimit = 15
-AutoFocus = true
-AutoScroll = true
-DefaultWidth = 720
-DefaultHeight = 320
-BackgroundColor = Color(0.113725, 0.133333, 0.160784, 1)
-InputColor = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
-OutputColor = Color(0.87451, 0.87451, 0.87451, 0.501961)
-ErrorColor = Color(1, 0.470588, 0.419608, 1)
-WarningColor = Color(1, 0.866667, 0.396078, 1)
-SuccessColor = Color(0.647059, 1, 0.541176, 1)
-UseYatEnableFile = false
-YatEnableFile = ".yatenable"
-YatEnableLocation = 0
 
 [node name="Preferences" instance=ExtResource("1_f8myu")]
 title = "Preferences"
 script = ExtResource("2_1u1aj")
-YatPreferences = SubResource("Resource_j37rf")
 ViewportEdgeOffset = 0
 DefaultWindowPosition = 4
 AllowToGoOffScreen = true
@@ -35,9 +14,26 @@ AllowToGoOffScreen = true
 [node name="Content" parent="." index="0"]
 theme = ExtResource("4_ti2tk")
 
-[node name="TabContainer" type="TabContainer" parent="Content" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Content" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Load" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Load"
+
+[node name="Save" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save"
+
+[node name="TabContainer" type="TabContainer" parent="Content/VBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="ContextMenu" parent="." index="1"]
 WallMargin = 16
