@@ -51,7 +51,7 @@ public partial class Input : LineEdit
 	{
 		Terminal.HistoryNode = null;
 		Terminal.History.AddLast(command);
-		if (Terminal.History.Count > _yat.OptionsManager.Options.HistoryLimit) Terminal.History.RemoveFirst();
+		if (Terminal.History.Count > _yat.PreferencesManager.Preferences.HistoryLimit) Terminal.History.RemoveFirst();
 	}
 
 	/// <summary>
