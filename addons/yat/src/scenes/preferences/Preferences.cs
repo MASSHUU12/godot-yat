@@ -22,6 +22,7 @@ public partial class Preferences : YatWindow.YatWindow
 		base._Ready();
 
 		_yat = GetNode<YAT>("/root/YAT");
+		_yat.PreferencesManager.PreferencesUpdated += UpdateDisplayedPreferences;
 		_tabContainer = GetNode<TabContainer>("%TabContainer");
 
 		_load = GetNode<Button>("%Load");
@@ -35,12 +36,47 @@ public partial class Preferences : YatWindow.YatWindow
 
 	private void SavePreferences()
 	{
+		UpdatePreferences();
 		_yat.PreferencesManager.Save();
 	}
 
 	private void LoadPreferences()
 	{
 		_yat.PreferencesManager.Load();
+	}
+
+	private void UpdatePreferences()
+	{
+		CallOnEveryPreference((InputContainer container) =>
+		{
+			_yat.PreferencesManager.Preferences.Set(container.Text, container.GetValue());
+
+			return true;
+		});
+	}
+
+	private void UpdateDisplayedPreferences(YatPreferences preferences)
+	{
+		CallOnEveryPreference((InputContainer container) =>
+		{
+			container.SetValue(preferences.Get(container.Text));
+
+			return true;
+		});
+	}
+
+	private void CallOnEveryPreference(Func<InputContainer, bool> func)
+	{
+		foreach (var key in _groups.Keys)
+		{
+			PreferencesTab group = _groups[key];
+			var children = group.Container.GetChildren();
+
+			foreach (var child in children)
+			{
+				if (child is InputContainer container) func(container);
+			}
+		}
 	}
 
 	private void CreatePreferences()
