@@ -14,7 +14,6 @@
 | quit          | N/A    | Quits the game.                                                                  |
 | echo          | N/A    | Displays the given text.                                                         |
 | restart       | reboot | Restarts the level.                                                              |
-| options       | N/A    | Creates the options window.                                                      |
 | pause         | N/A    | Toggles the game pause state.                                                    |
 | whereami      | wai    | Prints the current scene name and path.                                          |
 | list          | lc     | List all available commands.                                                     |
@@ -36,3 +35,4 @@
 | sys           | N/A    | Runs a system command.                                                           |
 | timescale     | N/A    | Sets the timescale.                                                              |
 | toggleaudio   | N/A    | Toggles audio on or off.                                                         |
+| preferences   | prefs  | Creates the preferences window.                                                  |
