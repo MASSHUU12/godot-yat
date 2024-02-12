@@ -13,7 +13,6 @@ public partial class PreferencesManager : Node
 
 	public override void _Ready()
 	{
-		GD.Print(Load() ? "Preferences loaded." : "Preferences not loaded.");
 	}
 
 	public bool Save()
@@ -25,8 +24,11 @@ public partial class PreferencesManager : Node
 	{
 		if (!ResourceLoader.Exists(PREFERENCES_PATH)) return false;
 
-		Preferences = ResourceLoader.Load<YatPreferences>(PREFERENCES_PATH);
-		EmitSignal(nameof(PreferencesUpdated), Preferences);
+		Preferences = ResourceLoader.Load<YatPreferences>(
+			PREFERENCES_PATH,
+			cacheMode: ResourceLoader.CacheMode.Replace
+		);
+		EmitSignal(SignalName.PreferencesUpdated, Preferences);
 
 		return true;
 	}
