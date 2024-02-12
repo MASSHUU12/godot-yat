@@ -11,7 +11,7 @@ namespace YAT.Scenes;
 public partial class Preferences : YatWindow.YatWindow
 {
 	private YAT _yat;
-	private Button _load, _save;
+	private Button _load, _save, _update;
 	private TabContainer _tabContainer;
 
 	private readonly Dictionary<StringName, PreferencesTab> _groups = new();
@@ -31,6 +31,11 @@ public partial class Preferences : YatWindow.YatWindow
 		_save = GetNode<Button>("%Save");
 		_save.Pressed += SavePreferences;
 
+		_update = GetNode<Button>("%Update");
+		_update.Pressed += () => UpdatePreferences();
+
+		CloseRequested += QueueFree;
+
 		CreatePreferences();
 	}
 
@@ -49,10 +54,16 @@ public partial class Preferences : YatWindow.YatWindow
 	{
 		CallOnEveryPreference((InputContainer container) =>
 		{
-			_yat.PreferencesManager.Preferences.Set(container.Text, container.GetValue());
+			var manager = _yat.PreferencesManager;
+			manager.Preferences.Set(container.Text, container.GetValue());
 
 			return true;
 		});
+
+		_yat.PreferencesManager.EmitSignal(
+			nameof(_yat.PreferencesManager.PreferencesUpdated),
+			_yat.PreferencesManager.Preferences
+		);
 	}
 
 	private void UpdateDisplayedPreferences(YatPreferences preferences)
