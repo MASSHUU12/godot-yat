@@ -16,7 +16,7 @@ Of course, creating such a complex and ambitious project is extremely difficult 
 ## Prerequisites
 
 -   [.NET SDK 7](https://dotnet.microsoft.com/en-us/download)
--   [.NET enabled Godot ^4.0](https://godotengine.org/download/windows/)
+-   [.NET enabled Godot 4.2^](https://godotengine.org/download)
 
 ## Features
 
@@ -24,11 +24,11 @@ Of course, creating such a complex and ambitious project is extremely difficult 
 -   Autocompletion
 -   Script templates
 -   Performance monitor
+-   Plugin customization
 -   Over 25 built-in commands
--   Small size footprint (< 175 KB)
+-   Small size footprint (< 200 KB)
 -   Access to the node tree (experimental)
 -   Ability to restrict access to the plugin
--   Plugin customization (limited at this point)
 -   Automatic input validation (arguments, options)
 -   Custom commands (regular & threaded), extensions and windows
 

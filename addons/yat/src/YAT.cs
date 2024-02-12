@@ -1,10 +1,9 @@
 using Godot;
 using YAT.Helpers;
 using YAT.Scenes.BaseTerminal;
-using YAT.Scenes.OptionsManager;
 using YAT.Scenes.TerminalManager;
 using YAT.Scenes;
-using YAT.Resources;
+using YAT.Classes.Managers;
 
 namespace YAT;
 
@@ -17,20 +16,14 @@ public partial class YAT : Node
 	public BaseTerminal CurrentTerminal { get; set; }
 
 	public RegisteredCommands Commands { get; private set; }
-	public OptionsManager OptionsManager { get; private set; }
+	public PreferencesManager PreferencesManager { get; private set; }
 	public TerminalManager TerminalManager { get; private set; }
 
 	public override void _Ready()
 	{
 		Windows = GetNode<Node>("./Windows");
 		Commands = GetNode<RegisteredCommands>("./RegisteredCommands");
-
-		// TODO: Clean up this mess.
-		OptionsManager = GetNode<OptionsManager>("./OptionsManager");
-		OptionsManager.OptionsChanged += (YatOptions options) =>
-		{
-			if (options.UseYatEnableFile) CheckYatEnableSettings();
-		};
+		PreferencesManager = GetNode<PreferencesManager>("%PreferencesManager");
 
 		TerminalManager = GetNode<TerminalManager>("./TerminalManager");
 		TerminalManager.GameTerminal.Ready += () =>
@@ -38,8 +31,7 @@ public partial class YAT : Node
 			TerminalManager.GameTerminal.TerminalSwitcher.TerminalSwitcherInitialized += () =>
 			{
 				CurrentTerminal = TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminal;
-				OptionsManager.CallDeferred(nameof(OptionsManager.Load));
-				CallDeferred(nameof(CheckYatEnableSettings));
+				// CallDeferred(nameof(CheckYatEnableSettings));
 
 			};
 			TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminalChanged +=
@@ -56,15 +48,15 @@ public partial class YAT : Node
 
 	private void CheckYatEnableSettings()
 	{
-		if (!OptionsManager.Options.UseYatEnableFile) return;
+		if (!PreferencesManager.Preferences.UseYatEnableFile) return;
 
-		var path = OptionsManager.Options.YatEnableLocation switch
+		var path = PreferencesManager.Preferences.YatEnableLocation switch
 		{
-			YatOptions.YatEnableFileLocation.UserData => "user://",
-			YatOptions.YatEnableFileLocation.CurrentDirectory => "res://",
+			Enums.EYatEnableLocation.UserData => "user://",
+			Enums.EYatEnableLocation.CurrentDirectory => "res://",
 			_ => "user://"
 		};
 
-		YatEnabled = FileAccess.FileExists(path + OptionsManager.Options.YatEnableFile);
+		YatEnabled = FileAccess.FileExists(path + PreferencesManager.Preferences.YatEnableFile);
 	}
 }

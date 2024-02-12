@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://ca2i4r24ny7y3"]
+
+[ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/yat_window/YatWindow.tscn" id="1_f8myu"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/preferences/Preferences.cs" id="2_1u1aj"]
+[ext_resource type="Theme" uid="uid://ugpwajpfdu4" path="res://addons/yat/src/scenes/preferences/yat_preferences_theme.tres" id="4_ti2tk"]
+
+[node name="Preferences" instance=ExtResource("1_f8myu")]
+title = "Preferences"
+script = ExtResource("2_1u1aj")
+ViewportEdgeOffset = 0
+DefaultWindowPosition = 4
+AllowToGoOffScreen = true
+
+[node name="Content" parent="." index="0"]
+theme = ExtResource("4_ti2tk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Load" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Load preferences from file"
+text = "Load"
+
+[node name="Save" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Save preferences to file"
+text = "Save"
+
+[node name="Update" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="2"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Update preferences without writing to a file"
+text = "Update"
+
+[node name="RestoreDefaults" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="3"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Restore default settings"
+text = "Restore Defaults"
+
+[node name="TabContainer" type="TabContainer" parent="Content/VBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ContextMenu" parent="." index="1"]
+WallMargin = 16

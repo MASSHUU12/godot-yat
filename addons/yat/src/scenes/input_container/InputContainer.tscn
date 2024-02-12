@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgq3jncmxdomf"]
+
+[ext_resource type="Theme" uid="uid://c550tfu5s4jf3" path="res://addons/yat/src/scenes/input_container/yat_input_container_theme.tres" id="1_cib6j"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/input_container/InputContainer.cs" id="1_i2hav"]
+
+[node name="InputContainer" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_cib6j")
+script = ExtResource("1_i2hav")
+Text = &"Lorem ipsum dolor sit amet"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Name"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Color"
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Lorem ipsum dolor sit amet"
+
+[node name="TakeHalfTheSize" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

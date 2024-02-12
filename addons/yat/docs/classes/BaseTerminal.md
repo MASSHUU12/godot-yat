@@ -14,10 +14,10 @@
 | bool                   | Locked           | -       |
 | Input                  | Input            | -       |
 | Output                 | Output           | -       |
-| TerminalContext        | Context          | -       |
 | SelectedNode           | SelectedNode     | -       |
-| CommandValidator       | CommandValidator | -       |
+| MethodManager          | MethodManager    | -       |
 | CommandManager         | CommandManager   | -       |
+| CommandValidator       | CommandValidator | -       |
 | LinkedList<string>     | History          | new     |
 | LinkedListNode<string> | HistoryNode      | null    |
 

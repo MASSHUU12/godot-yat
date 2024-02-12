@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8xfvdai1l0vo"]
+
+[ext_resource type="Script" path="res://addons/yat/src/classes/managers/preferences_manager/PreferencesManager.cs" id="1_dp104"]
+
+[node name="PreferencesManager" type="Node"]
+script = ExtResource("1_dp104")
