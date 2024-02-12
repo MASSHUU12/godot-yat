@@ -10,8 +10,7 @@ namespace YAT.Scenes;
 
 public partial class Preferences : YatWindow.YatWindow
 {
-	[Export] YatPreferences YatPreferences { get; set; } = new();
-
+	private YAT _yat;
 	private TabContainer _tabContainer;
 
 	private readonly Dictionary<StringName, PreferencesTab> _groups = new();
@@ -21,6 +20,7 @@ public partial class Preferences : YatWindow.YatWindow
 	{
 		base._Ready();
 
+		_yat = GetNode<YAT>("/root/YAT");
 		_tabContainer = GetNode<TabContainer>("%TabContainer");
 
 		CreatePreferences();
@@ -28,7 +28,7 @@ public partial class Preferences : YatWindow.YatWindow
 
 	private void CreatePreferences()
 	{
-		var properties = YatPreferences.GetPropertyList();
+		var properties = _yat.PreferencesManager.Preferences.GetPropertyList();
 
 		ExportGroupAttribute currentGroup = null;
 		ExportSubgroupAttribute currentSubgroup = null;
@@ -101,7 +101,7 @@ public partial class Preferences : YatWindow.YatWindow
 
 		_groups[groupName].Container.AddChild(inputContainer);
 
-		inputContainer.SetValue(YatPreferences.Get(name));
+		inputContainer.SetValue(_yat.PreferencesManager.Preferences.Get(name));
 	}
 
 	private void CreateTab(StringName name)
