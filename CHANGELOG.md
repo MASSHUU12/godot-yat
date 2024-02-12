@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 -   Scenes:
     -   Preferences
     -   PreferencesTab
+    -   PreferencesSection
     -   InputContainer
 -   GetRangeFromHint method to Scene class.
 

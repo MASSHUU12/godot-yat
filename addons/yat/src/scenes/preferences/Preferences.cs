@@ -15,6 +15,7 @@ public partial class Preferences : YatWindow.YatWindow
 	private TabContainer _tabContainer;
 
 	private readonly Dictionary<StringName, PreferencesTab> _groups = new();
+	private readonly Dictionary<StringName, PreferencesSection> _sections = new();
 
 	public override void _Ready()
 	{
@@ -45,14 +46,29 @@ public partial class Preferences : YatWindow.YatWindow
 				CreateTab(currentGroup.Name);
 			}
 
-			if (exportSubgroup is not null) currentSubgroup = exportSubgroup;
+			if (exportSubgroup is not null)
+			{
+				currentSubgroup = exportSubgroup;
+
+				CreateSection(currentSubgroup.Name, currentGroup.Name);
+			}
 
 			if (currentGroup is null && currentSubgroup is null) continue;
 
-			// TODO: Subgroups
-
 			CreateInputContainer(currentGroup.Name, propertyInfo);
 		}
+	}
+
+	private void CreateSection(StringName name, StringName groupName)
+	{
+		var section = GD.Load<PackedScene>("uid://o78tqt867i13").Instantiate<PreferencesSection>();
+
+		section.Name = name;
+
+		_sections[name] = section;
+		_groups[groupName].Container.AddChild(section);
+
+		section.Title.Text = name;
 	}
 
 	private void CreateInputContainer(StringName groupName, Godot.Collections.Dictionary info)
