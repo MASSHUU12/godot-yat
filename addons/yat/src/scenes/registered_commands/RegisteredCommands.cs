@@ -141,13 +141,13 @@ public partial class RegisteredCommands : Node
 				typeof(Stats),
 				typeof(Reset),
 				typeof(Cowsay),
-				// typeof(Options),
 				typeof(Restart),
 				typeof(History),
 				typeof(Whereami),
 				typeof(Timescale),
 				typeof(ToggleAudio),
-				typeof(QuickCommands)
+				typeof(QuickCommands),
+				typeof(Commands.Preferences),
 			});
 
 		for (int i = 0; i < results.Length; i++)
