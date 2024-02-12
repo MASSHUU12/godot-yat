@@ -35,7 +35,14 @@ public partial class Preferences : YatWindow.YatWindow
 		_update.Pressed += () => UpdatePreferences();
 
 		_restoreDefaults = GetNode<Button>("%RestoreDefaults");
-		_restoreDefaults.Pressed += _yat.PreferencesManager.RestoreDefaults;
+		_restoreDefaults.Pressed += () =>
+		{
+			_yat.PreferencesManager.RestoreDefaults();
+			_yat.CurrentTerminal.Print(
+				"Preferences restored to default values.",
+				EPrintType.Success
+			);
+		};
 
 		CloseRequested += QueueFree;
 
@@ -45,12 +52,30 @@ public partial class Preferences : YatWindow.YatWindow
 	private void SavePreferences()
 	{
 		UpdatePreferences();
-		_yat.PreferencesManager.Save();
+		var status = _yat.PreferencesManager.Save();
+
+		_yat.CurrentTerminal.Print(
+			status
+				? "Preferences saved successfully."
+				: "Failed to save preferences.",
+			status
+				? EPrintType.Success
+				: EPrintType.Error
+		);
 	}
 
 	private void LoadPreferences()
 	{
-		_yat.PreferencesManager.Load();
+		var status = _yat.PreferencesManager.Load();
+
+		_yat.CurrentTerminal.Print(
+			status
+				? "Preferences loaded successfully."
+				: "Failed to load preferences.",
+			status
+				? EPrintType.Success
+				: EPrintType.Error
+		);
 	}
 
 	private void UpdatePreferences()
@@ -63,6 +88,7 @@ public partial class Preferences : YatWindow.YatWindow
 			return true;
 		});
 
+		_yat.CurrentTerminal.Print("Preferences updated successfully.", EPrintType.Success);
 		_yat.PreferencesManager.EmitSignal(
 			nameof(_yat.PreferencesManager.PreferencesUpdated),
 			_yat.PreferencesManager.Preferences
