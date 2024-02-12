@@ -57,7 +57,7 @@ public partial class CommandInfo : Node
 
 			string argument = string.Format(
 				" {0}{1}<{2}:{3}>{4}{5}",
-				valid ? string.Empty : $"[color={_yat.OptionsManager.Options.ErrorColor.ToHtml()}]",
+				valid ? string.Empty : $"[color={_yat.PreferencesManager.Preferences.ErrorColor.ToHtml()}]",
 				current ? "[b]" : string.Empty,
 				arg.Name,
 				(arg.Type is string[]) ? "options" : arg.Type,

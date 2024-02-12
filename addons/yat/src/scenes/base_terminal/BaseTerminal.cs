@@ -36,8 +36,8 @@ public partial class BaseTerminal : Control
 		_yat = GetNode<YAT>("/root/YAT");
 		_yat.YatReady += () =>
 		{
-			_yat.OptionsManager.OptionsChanged += UpdateOptions;
-			UpdateOptions(_yat.OptionsManager.Options);
+			_yat.PreferencesManager.PreferencesUpdated += UpdateOptions;
+			UpdateOptions(_yat.PreferencesManager.Preferences);
 		};
 
 		CommandManager = GetNode<CommandManager>("Components/CommandManager");
@@ -109,12 +109,13 @@ public partial class BaseTerminal : Control
 		}
 	}
 
-	private void UpdateOptions(YatOptions options)
+	private void UpdateOptions(YatPreferences prefs)
 	{
 		OnCurrentNodeChanged(SelectedNode.Current);
-		_promptLabel.Visible = options.ShowPrompt;
-		Size = new((int)options.DefaultWidth, (int)options.DefaultHeight);
-		Output.ScrollFollowing = options.AutoScroll;
+		_promptLabel.Visible = prefs.ShowPrompt;
+		_promptLabel.Text = prefs.Prompt;
+		Size = new(prefs.DefaultWidth, prefs.DefaultHeight);
+		Output.ScrollFollowing = prefs.AutoScroll;
 	}
 
 	private void OnCurrentNodeChanged(Node node)
@@ -134,11 +135,11 @@ public partial class BaseTerminal : Control
 	{
 		var color = type switch
 		{
-			EPrintType.Error => _yat.OptionsManager.Options.ErrorColor,
-			EPrintType.Warning => _yat.OptionsManager.Options.WarningColor,
-			EPrintType.Success => _yat.OptionsManager.Options.SuccessColor,
-			EPrintType.Normal => _yat.OptionsManager.Options.OutputColor,
-			_ => _yat.OptionsManager.Options.OutputColor,
+			EPrintType.Error => _yat.PreferencesManager.Preferences.ErrorColor,
+			EPrintType.Warning => _yat.PreferencesManager.Preferences.WarningColor,
+			EPrintType.Success => _yat.PreferencesManager.Preferences.SuccessColor,
+			EPrintType.Normal => _yat.PreferencesManager.Preferences.OutputColor,
+			_ => _yat.PreferencesManager.Preferences.OutputColor,
 		};
 
 		// Using CallDeferred to avoid issues when running this method in a separate thread.

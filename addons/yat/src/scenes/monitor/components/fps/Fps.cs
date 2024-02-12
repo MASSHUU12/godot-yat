@@ -23,20 +23,20 @@ public partial class Fps : PanelContainer, IMonitorComponent
 		var fps = Performance.GetMonitor(Performance.Monitor.TimeFps);
 		var process = Performance.GetMonitor(Performance.Monitor.TimeProcess) * 1000;
 		var physics = Performance.GetMonitor(Performance.Monitor.TimePhysicsProcess) * 1000;
-		var opts = _yat.OptionsManager.Options;
+		var prefs = _yat.PreferencesManager.Preferences;
 
 		_label.Clear();
-		if (UseColors) _label.PushColor(fps < 30 ? opts.ErrorColor : opts.SuccessColor);
+		if (UseColors) _label.PushColor(fps < 30 ? prefs.ErrorColor : prefs.SuccessColor);
 		_label.AppendText($"{fps} FPS");
 		if (UseColors) _label.Pop();
 
 		_times.Clear();
 		_times.AppendText("Process: ");
-		if (UseColors && fps < 30) _times.PushColor(opts.ErrorColor);
+		if (UseColors && fps < 30) _times.PushColor(prefs.ErrorColor);
 		_times.AppendText($"{process:0.00} ms\n");
 		if (UseColors && fps < 30) _times.Pop();
 		_times.AppendText("Physics: ");
-		if (UseColors && fps < 30) _times.PushColor(opts.ErrorColor);
+		if (UseColors && fps < 30) _times.PushColor(prefs.ErrorColor);
 		_times.AppendText($"{physics:0.000} ms");
 		if (UseColors && fps < 30) _times.Pop();
 

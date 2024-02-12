@@ -32,7 +32,7 @@ public partial class MemoryInfo : PanelContainer, IMonitorComponent
 			$"RAM: {Numeric.SizeToString(physical.AsInt64(), 3)}\n" +
 			$"Free: {(
 				freePercent < 15 && UseColors
-				? $"[color={_yat.OptionsManager.Options.ErrorColor}]{Numeric.SizeToString(free.AsInt64(), 3)}[/color]"
+				? $"[color={_yat.PreferencesManager.Preferences.ErrorColor}]{Numeric.SizeToString(free.AsInt64(), 3)}[/color]"
 				: Numeric.SizeToString(free.AsInt64(), 3))}\n" +
 			$"Stack: {Numeric.SizeToString(stack.AsInt64(), 1)}\n" +
 			$"VRAM: {Numeric.SizeToString((long)vram, 2)}"
