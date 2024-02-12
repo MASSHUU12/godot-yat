@@ -5,6 +5,7 @@ using YAT.Scenes.OptionsManager;
 using YAT.Scenes.TerminalManager;
 using YAT.Scenes;
 using YAT.Resources;
+using YAT.Classes.Managers;
 
 namespace YAT;
 
@@ -18,19 +19,14 @@ public partial class YAT : Node
 
 	public RegisteredCommands Commands { get; private set; }
 	public OptionsManager OptionsManager { get; private set; }
+	public PreferencesManager PreferencesManager { get; private set; }
 	public TerminalManager TerminalManager { get; private set; }
 
 	public override void _Ready()
 	{
 		Windows = GetNode<Node>("./Windows");
 		Commands = GetNode<RegisteredCommands>("./RegisteredCommands");
-
-		// TODO: Clean up this mess.
-		OptionsManager = GetNode<OptionsManager>("./OptionsManager");
-		OptionsManager.OptionsChanged += (YatOptions options) =>
-		{
-			if (options.UseYatEnableFile) CheckYatEnableSettings();
-		};
+		PreferencesManager = GetNode<PreferencesManager>("%PreferencesManager");
 
 		TerminalManager = GetNode<TerminalManager>("./TerminalManager");
 		TerminalManager.GameTerminal.Ready += () =>
@@ -38,8 +34,7 @@ public partial class YAT : Node
 			TerminalManager.GameTerminal.TerminalSwitcher.TerminalSwitcherInitialized += () =>
 			{
 				CurrentTerminal = TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminal;
-				OptionsManager.CallDeferred(nameof(OptionsManager.Load));
-				CallDeferred(nameof(CheckYatEnableSettings));
+				// CallDeferred(nameof(CheckYatEnableSettings));
 
 			};
 			TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminalChanged +=
