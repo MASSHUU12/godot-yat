@@ -10,13 +10,13 @@ public partial class YatPreferences : Resource
 	[Export] public bool ShowPrompt { get; set; } = true;
 	[Export(PropertyHint.Range, "1,255,1")]
 	public uint HistoryLimit { get; set; } = 15;
-	[Export] public bool AutoFocus { get; set; } = true;
+	// [Export] public bool AutoFocus { get; set; } = true;
 	[Export] public bool AutoScroll { get; set; } = true;
 	// [Export] public bool AutoComplete { get; set; } = true;
 	// [Export] public bool AutoCompleteOnTab { get; set; } = true;
 	// [Export] public bool AutoCompleteOnEnter { get; set; } = true;
-	[Export] public uint DefaultWidth { get; set; } = 720;
-	[Export] public uint DefaultHeight { get; set; } = 320;
+	[Export] public int DefaultWidth { get; set; } = 728;
+	[Export] public int DefaultHeight { get; set; } = 384;
 
 	[ExportGroup("Colors")]
 	[Export] public Color BackgroundColor { get; set; } = new("1d2229"); // #192229

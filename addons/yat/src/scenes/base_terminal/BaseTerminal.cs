@@ -114,7 +114,6 @@ public partial class BaseTerminal : Control
 		OnCurrentNodeChanged(SelectedNode.Current);
 		_promptLabel.Visible = prefs.ShowPrompt;
 		_promptLabel.Text = prefs.Prompt;
-		Size = new(prefs.DefaultWidth, prefs.DefaultHeight);
 		Output.ScrollFollowing = prefs.AutoScroll;
 	}
 

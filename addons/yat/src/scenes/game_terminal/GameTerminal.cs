@@ -1,5 +1,6 @@
 using Godot;
 using YAT.Helpers;
+using YAT.Resources;
 using YAT.Scenes.GameTerminal.Components;
 
 namespace YAT.Scenes.GameTerminal;
@@ -20,6 +21,7 @@ public partial class GameTerminal : YatWindow.YatWindow
 		{
 			CloseRequested += _yat.TerminalManager.CloseTerminal;
 		};
+		_yat.PreferencesManager.PreferencesUpdated += UpdateOptions;
 
 		TerminalSwitcher = GetNode<TerminalSwitcher>("%TerminalSwitcher");
 
@@ -39,5 +41,10 @@ public partial class GameTerminal : YatWindow.YatWindow
 		{
 			CallDeferred("emit_signal", SignalName.CloseRequested);
 		}
+	}
+
+	private void UpdateOptions(YatPreferences prefs)
+	{
+		Size = new(prefs.DefaultWidth, prefs.DefaultHeight);
 	}
 }
