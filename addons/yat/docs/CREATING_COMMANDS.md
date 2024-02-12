@@ -83,16 +83,19 @@ yat.Commands.AddCommand(typeof(Cls));
 
 It is possible to extend existing commands under several conditions:
 
-1. an existing command must inherit from the class `Extensible`.
-2. The command must call the `Execute` method on a specific extension. Example below.
+1. An existing command must inherit from the class `Extensible`.
+2. The command must call the `ExecuteExtension` with a specific extension as an argument. Example below.
 
 ```csharp
-var variable = args[1];
-
-if (Extensions.ContainsKey(variable))
+public CommandResult Execute(CommandData data)
 {
-   var extension = Extensions[variable];
-   return extension.Execute(yat, this, args[1..]);
+   var extensions = GetCommandExtensions("command_name");
+
+   if (extensions.TryGetValue((string)data.Arguments["variable"], out Type extension))
+      return ExecuteExtension(extension, data with { RawData = data.RawData[1..] });
+
+   data.Terminal.Print("Variable not found.", EPrintType.Error);
+   return CommandResult.Failure;
 }
 ```
 
@@ -108,6 +111,12 @@ To be able to extend a command, you first need to create an extension,
 which is a class that implements the `IExtension` interface,
 and contains the `Extension` attribute, the rest works just like a regular command.
 
+Remember to register every extension inside a command:
+
+```cs
+Extensible.RegisterExtension("target_command", typeof(YourExtension));
+```
+
 You can find an example of such a class in [example](./example) folder.
 
 ### Overridable methods
@@ -115,14 +124,3 @@ You can find an example of such a class in [example](./example) folder.
 #### GenerateExtensionManual
 
 This method generates extension documentation based on the metadata added via the `Extension` attribute.
-
-## Signals
-
-| Name            | Arguments             | Description                                          |
-| --------------- | --------------------- | ---------------------------------------------------- |
-| OptionsChanged  | YatOptions            | Sent when YAT options have changed                   |
-| YatReady        | N/A                   | Sent when YAT is ready                               |
-| CommandStarted  | command, args         | Signal emitted when a command execution has started. |
-| CommandFinished | command, args, result | Signal emitted when a command has been executed      |
-| TerminalOpened  | N/A                   | Emitted when terminal is opened.                     |
-| TerminalClosed  | N/A                   | Emitted when terminal is closed.                     |

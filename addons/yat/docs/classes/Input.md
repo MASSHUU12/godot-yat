@@ -11,9 +11,10 @@ The `Input` is a text field used in the terminal. When the entered data is submi
 
 ### Properties
 
-| Type | Name | Default |
-| ---- | ---- | ------- |
-| -    | -    | -       |
+| Type                 | Name          | Default |
+| -------------------- | ------------- | ------- |
+| Export BaseTerminal  | Terminal      | -       |
+| Export MethodManager | MethodManager | -       |
 
 ### Methods
 
@@ -23,8 +24,8 @@ The `Input` is a text field used in the terminal. When the entered data is submi
 
 ### Signals
 
-#### -
+**-**
 
 ### Enumerations
 
-#### -
+**-**

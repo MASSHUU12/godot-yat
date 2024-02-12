@@ -13,14 +13,27 @@ All notable changes to this project will be documented in this file.
     -   Preferences
     -   PreferencesTab
     -   PreferencesSection
+    -   PreferencesManager
     -   InputContainer
 -   GetRangeFromHint method to Scene class.
+-   PreferencesManager hold all the preferences & is a child of YAT.
+-   Preferences command.
 
 ### Changed
 
 -   Moved method management logic from SelectedNode to MethodManager class.
 -   Moved RejectionReason, MethodStatus, PrintType & YatEnableLocation enums to separate files.
 -   Moved CommandManager to managers folder.
+-   Updated documentation:
+    -   CREATING_COMMANDS.md
+    -   YAT.md
+    -   Input.md
+    -   BaseTerminal.md
+
+### Removed
+
+-   Options, OptionsManager & SettingsWindow scene.
+-   YatOptions resource.
 
 ## [1.22.0-beta 2024-02-10]
 
