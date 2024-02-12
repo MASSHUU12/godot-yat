@@ -30,6 +30,10 @@ All notable changes to this project will be documented in this file.
     -   Input.md
     -   BaseTerminal.md
 
+### Fixed
+
+-   CurrentTerminal was initialized with a null value instead of the initial terminal.
+
 ### Removed
 
 -   Options, OptionsManager & SettingsWindow scene.

@@ -24,7 +24,6 @@ public partial class TerminalSwitcher : PanelContainer
 	public override void _Ready()
 	{
 		_yat = GetNode<YAT>("/root/YAT");
-		_yat.CurrentTerminal = _initialTerminal;
 
 		_add = GetNode<Button>("%Add");
 		_add.Pressed += AddTerminal;
@@ -35,6 +34,8 @@ public partial class TerminalSwitcher : PanelContainer
 
 		_instancesContainer = GetNode<PanelContainer>("%InstancesContainer");
 		_initialTerminal = GetNode<BaseTerminal.BaseTerminal>("%BaseTerminal");
+
+		_yat.CurrentTerminal = _initialTerminal;
 
 		TerminalInstances.Add(_initialTerminal);
 		CurrentTerminal = _initialTerminal;
