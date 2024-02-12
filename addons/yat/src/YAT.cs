@@ -1,10 +1,8 @@
 using Godot;
 using YAT.Helpers;
 using YAT.Scenes.BaseTerminal;
-using YAT.Scenes.OptionsManager;
 using YAT.Scenes.TerminalManager;
 using YAT.Scenes;
-using YAT.Resources;
 using YAT.Classes.Managers;
 
 namespace YAT;
@@ -18,7 +16,6 @@ public partial class YAT : Node
 	public BaseTerminal CurrentTerminal { get; set; }
 
 	public RegisteredCommands Commands { get; private set; }
-	public OptionsManager OptionsManager { get; private set; }
 	public PreferencesManager PreferencesManager { get; private set; }
 	public TerminalManager TerminalManager { get; private set; }
 
@@ -51,15 +48,15 @@ public partial class YAT : Node
 
 	private void CheckYatEnableSettings()
 	{
-		if (!OptionsManager.Options.UseYatEnableFile) return;
+		if (!PreferencesManager.Preferences.UseYatEnableFile) return;
 
-		var path = OptionsManager.Options.YatEnableLocation switch
+		var path = PreferencesManager.Preferences.YatEnableLocation switch
 		{
-			YatOptions.YatEnableFileLocation.UserData => "user://",
-			YatOptions.YatEnableFileLocation.CurrentDirectory => "res://",
+			Enums.EYatEnableLocation.UserData => "user://",
+			Enums.EYatEnableLocation.CurrentDirectory => "res://",
 			_ => "user://"
 		};
 
-		YatEnabled = FileAccess.FileExists(path + OptionsManager.Options.YatEnableFile);
+		YatEnabled = FileAccess.FileExists(path + PreferencesManager.Preferences.YatEnableFile);
 	}
 }
