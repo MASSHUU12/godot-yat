@@ -50,9 +50,6 @@ public partial class Preferences : YatWindow.YatWindow
 			if (currentGroup is null && currentSubgroup is null) continue;
 
 			// TODO: Subgroups
-			// TODO: Prevent getting next category as a preference in the current
-
-			if (!_groups.ContainsKey(currentGroup.Name)) continue;
 
 			CreateInputContainer(currentGroup.Name, propertyInfo);
 		}
@@ -75,7 +72,8 @@ public partial class Preferences : YatWindow.YatWindow
 			? Scene.GetRangeFromHint(info["hint_string"].AsString())
 			: (0, float.MaxValue, 0);
 
-		if (string.IsNullOrEmpty(name) || _groups.ContainsKey(name)) return;
+		if (string.IsNullOrEmpty(name) || _groups.ContainsKey(name) || propertyType == "Nil")
+			return;
 
 		var inputContainer = GD.Load<PackedScene>("uid://dgq3jncmxdomf").Instantiate<InputContainer>();
 
