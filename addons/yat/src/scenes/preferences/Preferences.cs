@@ -11,7 +11,7 @@ namespace YAT.Scenes;
 public partial class Preferences : YatWindow.YatWindow
 {
 	private YAT _yat;
-	private Button _load, _save, _update;
+	private Button _load, _save, _update, _restoreDefaults;
 	private TabContainer _tabContainer;
 
 	private readonly Dictionary<StringName, PreferencesTab> _groups = new();
@@ -33,6 +33,9 @@ public partial class Preferences : YatWindow.YatWindow
 
 		_update = GetNode<Button>("%Update");
 		_update.Pressed += () => UpdatePreferences();
+
+		_restoreDefaults = GetNode<Button>("%RestoreDefaults");
+		_restoreDefaults.Pressed += _yat.PreferencesManager.RestoreDefaults;
 
 		CloseRequested += QueueFree;
 

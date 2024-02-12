@@ -10,9 +10,19 @@ public partial class PreferencesManager : Node
 	[Export] public YatPreferences Preferences { get; set; } = new();
 
 	private const string PREFERENCES_PATH = "user://yat_preferences.tres";
+	private YatPreferences _defaultPreferences;
 
 	public override void _Ready()
 	{
+		_defaultPreferences = Preferences.Duplicate() as YatPreferences;
+
+		Load();
+	}
+
+	public void RestoreDefaults()
+	{
+		Preferences = _defaultPreferences.Duplicate() as YatPreferences;
+		EmitSignal(SignalName.PreferencesUpdated, Preferences);
 	}
 
 	public bool Save()

@@ -23,17 +23,26 @@ layout_mode = 2
 [node name="Load" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="0"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Load preferences from file"
 text = "Load"
 
 [node name="Save" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Save preferences to file"
 text = "Save"
 
 [node name="Update" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="2"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Update preferences without writing to a file"
 text = "Update"
+
+[node name="RestoreDefaults" type="Button" parent="Content/VBoxContainer/HBoxContainer" index="3"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Restore default settings"
+text = "Restore Defaults"
 
 [node name="TabContainer" type="TabContainer" parent="Content/VBoxContainer" index="1"]
 unique_name_in_owner = true
