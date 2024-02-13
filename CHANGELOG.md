@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
     -   YAT.md
     -   Input.md
     -   BaseTerminal.md
+-   Restored YatEnable functionality.
 
 ### Fixed
 
