@@ -1,9 +1,8 @@
 using Godot;
 using YAT.Helpers;
 using YAT.Resources;
-using YAT.Scenes.GameTerminal.Components;
 
-namespace YAT.Scenes.GameTerminal;
+namespace YAT.Scenes;
 
 public partial class GameTerminal : YatWindow
 {

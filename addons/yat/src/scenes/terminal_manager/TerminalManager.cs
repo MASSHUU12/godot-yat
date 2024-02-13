@@ -8,7 +8,7 @@ public partial class TerminalManager : Node
 	[Signal] public delegate void TerminalOpenedEventHandler();
 	[Signal] public delegate void TerminalClosedEventHandler();
 
-	public GameTerminal.GameTerminal GameTerminal;
+	public GameTerminal GameTerminal;
 
 	private YAT _yat;
 
@@ -16,7 +16,7 @@ public partial class TerminalManager : Node
 	{
 		_yat = GetNode<YAT>("/root/YAT");
 
-		GameTerminal = GD.Load<PackedScene>("uid://dsyqv187j7w76").Instantiate<GameTerminal.GameTerminal>();
+		GameTerminal = GD.Load<PackedScene>("uid://dsyqv187j7w76").Instantiate<GameTerminal>();
 	}
 
 	public override void _UnhandledInput(InputEvent @event)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using YAT.Enums;
 
-namespace YAT.Scenes.GameTerminal.Components;
+namespace YAT.Scenes;
 
 public partial class TerminalSwitcher : PanelContainer
 {
