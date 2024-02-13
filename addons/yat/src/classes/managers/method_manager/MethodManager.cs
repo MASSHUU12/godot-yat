@@ -1,7 +1,7 @@
 using Godot;
 using YAT.Enums;
 using YAT.Helpers;
-using YAT.Scenes.BaseTerminal;
+using YAT.Scenes;
 
 namespace YAT.Classes.Managers;
 

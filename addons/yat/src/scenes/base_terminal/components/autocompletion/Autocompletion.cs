@@ -4,9 +4,8 @@ using System.Reflection;
 using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
-using YAT.Scenes.BaseTerminal.Components.InputInfo;
 
-namespace YAT.Scenes.BaseTerminal;
+namespace YAT.Scenes;
 
 public partial class Autocompletion : Node
 {

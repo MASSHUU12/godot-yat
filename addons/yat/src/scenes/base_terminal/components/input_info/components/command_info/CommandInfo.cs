@@ -5,7 +5,7 @@ using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
 
-namespace YAT.Scenes.BaseTerminal.Components.InputInfo;
+namespace YAT.Scenes;
 
 public partial class CommandInfo : Node
 {

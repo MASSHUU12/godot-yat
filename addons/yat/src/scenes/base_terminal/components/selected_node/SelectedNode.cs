@@ -1,7 +1,7 @@
 using Godot;
 using YAT.Enums;
 
-namespace YAT.Scenes.BaseTerminal;
+namespace YAT.Scenes;
 
 public partial class SelectedNode : Node
 {

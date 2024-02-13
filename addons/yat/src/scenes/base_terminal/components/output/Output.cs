@@ -4,7 +4,7 @@ using System.Text;
 using Godot;
 using YAT.Enums;
 
-namespace YAT.Scenes.BaseTerminal.Components;
+namespace YAT.Scenes;
 
 public partial class Output : RichTextLabel
 {

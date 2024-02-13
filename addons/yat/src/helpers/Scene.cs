@@ -3,7 +3,7 @@ using System.Text;
 using Godot;
 using Godot.Collections;
 using YAT.Enums;
-using YAT.Scenes.BaseTerminal;
+using YAT.Scenes;
 using YAT.Types;
 
 namespace YAT.Helpers;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using YAT.Interfaces;
-using YAT.Scenes.BaseTerminal;
+using YAT.Scenes;
 
 namespace YAT.Types
 {
