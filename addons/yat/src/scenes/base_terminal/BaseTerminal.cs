@@ -4,9 +4,8 @@ using YAT.Classes.Managers;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Resources;
-using YAT.Scenes.BaseTerminal.Components;
 
-namespace YAT.Scenes.BaseTerminal;
+namespace YAT.Scenes;
 
 public partial class BaseTerminal : Control
 {

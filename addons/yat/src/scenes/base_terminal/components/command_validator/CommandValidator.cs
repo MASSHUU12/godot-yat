@@ -7,7 +7,7 @@ using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace YAT.Scenes.BaseTerminal.Components;
+namespace YAT.Scenes;
 
 public partial class CommandValidator : Node
 {

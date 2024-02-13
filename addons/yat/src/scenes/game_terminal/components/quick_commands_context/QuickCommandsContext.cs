@@ -1,8 +1,6 @@
 using YAT.Helpers;
-using YAT.Scenes.GameTerminal.Components;
-using YAT.Scenes.YatWindow;
 
-namespace YAT.Scenes.BaseTerminal;
+namespace YAT.Scenes;
 
 public partial class QuickCommandsContext : ContextSubmenu
 {

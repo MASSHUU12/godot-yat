@@ -1,15 +1,15 @@
 using Godot;
 
-namespace YAT.Scenes.EditorTerminal;
+namespace YAT.Scenes;
 
 [Tool]
 public partial class EditorTerminal : Control
 {
-	public BaseTerminal.BaseTerminal BaseTerminal { get; private set; }
+	public BaseTerminal BaseTerminal { get; private set; }
 
 	public override void _Ready()
 	{
-		BaseTerminal = GetNode<BaseTerminal.BaseTerminal>("Content/BaseTerminal");
+		BaseTerminal = GetNode<BaseTerminal>("Content/BaseTerminal");
 	}
 
 	// public override void _Input(InputEvent @event)

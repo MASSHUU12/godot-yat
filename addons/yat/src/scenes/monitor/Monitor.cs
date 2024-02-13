@@ -2,9 +2,9 @@ using Godot;
 using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace YAT.Scenes.Monitor;
+namespace YAT.Scenes;
 
-public partial class Monitor : YatWindow.YatWindow
+public partial class Monitor : YatWindow
 {
 	private YAT _yat;
 	private Timer _timer;

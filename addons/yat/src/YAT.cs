@@ -1,7 +1,5 @@
 using Godot;
 using YAT.Helpers;
-using YAT.Scenes.BaseTerminal;
-using YAT.Scenes.TerminalManager;
 using YAT.Scenes;
 using YAT.Classes.Managers;
 
@@ -21,7 +19,6 @@ public partial class YAT : Node
 
 	public override void _Ready()
 	{
-
 		Windows = GetNode<Node>("./Windows");
 		Commands = GetNode<RegisteredCommands>("./RegisteredCommands");
 		PreferencesManager = GetNode<PreferencesManager>("%PreferencesManager");

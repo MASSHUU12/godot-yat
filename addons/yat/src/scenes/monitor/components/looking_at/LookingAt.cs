@@ -2,7 +2,7 @@ using Godot;
 using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace YAT.Scenes.Monitor;
+namespace YAT.Scenes;
 
 public partial class LookingAt : PanelContainer, IMonitorComponent
 {

@@ -31,6 +31,14 @@ All notable changes to this project will be documented in this file.
     -   Input.md
     -   BaseTerminal.md
 -   Restored YatEnable functionality.
+-   Changed namespaces to YAT.Scenes:
+    -   TerminalManager
+    -   EditorTerminal
+    -   Monitor (& components)
+    -   YatWindow (& components)
+    -   GameTerminal (& components)
+    -   BaseTerminal (& components)
+-   Moved commands to commands folder.
 
 ### Fixed
 

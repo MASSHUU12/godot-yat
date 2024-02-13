@@ -2,7 +2,7 @@ using Godot;
 using YAT.Classes;
 using YAT.Classes.Managers;
 
-namespace YAT.Scenes.BaseTerminal;
+namespace YAT.Scenes;
 
 public partial class Input : LineEdit
 {

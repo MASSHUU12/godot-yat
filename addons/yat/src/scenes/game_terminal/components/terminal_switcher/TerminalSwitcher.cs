@@ -2,24 +2,24 @@ using System.Collections.Generic;
 using Godot;
 using YAT.Enums;
 
-namespace YAT.Scenes.GameTerminal.Components;
+namespace YAT.Scenes;
 
 public partial class TerminalSwitcher : PanelContainer
 {
 	[Signal] public delegate void TerminalSwitcherInitializedEventHandler();
-	[Signal] public delegate void TerminalAddedEventHandler(BaseTerminal.BaseTerminal terminal);
-	[Signal] public delegate void TerminalRemovedEventHandler(BaseTerminal.BaseTerminal terminal);
-	[Signal] public delegate void CurrentTerminalChangedEventHandler(BaseTerminal.BaseTerminal terminal);
+	[Signal] public delegate void TerminalAddedEventHandler(BaseTerminal terminal);
+	[Signal] public delegate void TerminalRemovedEventHandler(BaseTerminal terminal);
+	[Signal] public delegate void CurrentTerminalChangedEventHandler(BaseTerminal terminal);
 
 	public const ushort MAX_TERMINAL_INSTANCES = 5;
-	public List<BaseTerminal.BaseTerminal> TerminalInstances = new();
-	public BaseTerminal.BaseTerminal CurrentTerminal;
+	public List<BaseTerminal> TerminalInstances = new();
+	public BaseTerminal CurrentTerminal;
 
 	private YAT _yat;
 	private Button _add;
 	private TabBar _tabBar;
 	private PanelContainer _instancesContainer;
-	private BaseTerminal.BaseTerminal _initialTerminal;
+	private BaseTerminal _initialTerminal;
 
 	public override void _Ready()
 	{
@@ -33,7 +33,7 @@ public partial class TerminalSwitcher : PanelContainer
 		_tabBar.TabClosePressed += RemoveTerminal;
 
 		_instancesContainer = GetNode<PanelContainer>("%InstancesContainer");
-		_initialTerminal = GetNode<BaseTerminal.BaseTerminal>("%BaseTerminal");
+		_initialTerminal = GetNode<BaseTerminal>("%BaseTerminal");
 
 		_yat.CurrentTerminal = _initialTerminal;
 
@@ -50,7 +50,7 @@ public partial class TerminalSwitcher : PanelContainer
 	{
 		if (TerminalInstances.Count >= MAX_TERMINAL_INSTANCES) return;
 
-		var newTerminal = GD.Load<PackedScene>("uid://dfig0yknmx6b7").Instantiate<BaseTerminal.BaseTerminal>();
+		var newTerminal = GD.Load<PackedScene>("uid://dfig0yknmx6b7").Instantiate<BaseTerminal>();
 		newTerminal.Name = $"Terminal {TerminalInstances.Count + 1}";
 
 		TerminalInstances.Add(newTerminal);

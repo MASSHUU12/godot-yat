@@ -1,13 +1,12 @@
 using Godot;
 using YAT.Helpers;
 using YAT.Resources;
-using YAT.Scenes.GameTerminal.Components;
 
-namespace YAT.Scenes.GameTerminal;
+namespace YAT.Scenes;
 
-public partial class GameTerminal : YatWindow.YatWindow
+public partial class GameTerminal : YatWindow
 {
-	public BaseTerminal.BaseTerminal CurrentTerminal { get; private set; }
+	public BaseTerminal CurrentTerminal { get; private set; }
 	public TerminalSwitcher TerminalSwitcher { get; private set; }
 
 	private YAT _yat;

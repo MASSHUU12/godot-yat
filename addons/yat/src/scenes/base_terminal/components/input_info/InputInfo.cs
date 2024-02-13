@@ -1,6 +1,6 @@
 using Godot;
 
-namespace YAT.Scenes.BaseTerminal.Components.InputInfo;
+namespace YAT.Scenes;
 
 public partial class InputInfo : PanelContainer
 {
