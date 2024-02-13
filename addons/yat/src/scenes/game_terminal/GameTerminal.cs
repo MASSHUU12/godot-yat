@@ -17,10 +17,6 @@ public partial class GameTerminal : YatWindow.YatWindow
 		base._Ready();
 
 		_yat = GetNode<YAT>("/root/YAT");
-		_yat.YatReady += () =>
-		{
-			CloseRequested += _yat.TerminalManager.CloseTerminal;
-		};
 		_yat.PreferencesManager.PreferencesUpdated += UpdateOptions;
 
 		TerminalSwitcher = GetNode<TerminalSwitcher>("%TerminalSwitcher");
@@ -30,6 +26,7 @@ public partial class GameTerminal : YatWindow.YatWindow
 		CurrentTerminal.PositionResetRequested += ResetPosition;
 		CurrentTerminal.SizeResetRequested += () => Size = InitialSize;
 
+		CloseRequested += _yat.TerminalManager.CloseTerminal;
 		ContextMenu.AddSubmenuItem("QuickCommands", "QuickCommandsContext");
 
 		MoveToCenter();
@@ -38,9 +35,7 @@ public partial class GameTerminal : YatWindow.YatWindow
 	public override void _Input(InputEvent @event)
 	{
 		if (@event.IsActionPressed(Keybindings.TerminalToggle))
-		{
 			CallDeferred("emit_signal", SignalName.CloseRequested);
-		}
 	}
 
 	private void UpdateOptions(YatPreferences prefs)
