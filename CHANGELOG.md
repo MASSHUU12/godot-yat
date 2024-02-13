@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 -   GetRangeFromHint method to Scene class.
 -   PreferencesManager hold all the preferences & is a child of YAT.
 -   Preferences command.
+-   Documentation file: YAT_ENABLE.md.
 
 ### Changed
 
@@ -29,6 +30,7 @@ All notable changes to this project will be documented in this file.
     -   YAT.md
     -   Input.md
     -   BaseTerminal.md
+-   Restored YatEnable functionality.
 
 ### Fixed
 

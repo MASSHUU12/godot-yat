@@ -45,15 +45,6 @@ You can find all the used actions below.
 -   yat_example_player_move_forward: `W`
 -   yat_example_player_move_backward: `S`
 
-## Options
-
-### YAT Enable File
-
-You can make YAT accessible only when a specific file (default .yatenable)
-is present in either the `user://` or `res://` directory (default user://).
-
-This makes it easy to restrict terminal access to players without removing the extension.
-
 ## Script Templates
 
 YAT includes script templates that can be used as a base for creating new classes. They are available from Godot in the `Create Script` window.

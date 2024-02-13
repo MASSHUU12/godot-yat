@@ -16,11 +16,12 @@ public partial class YAT : Node
 	public BaseTerminal CurrentTerminal { get; set; }
 
 	public RegisteredCommands Commands { get; private set; }
-	public PreferencesManager PreferencesManager { get; private set; }
 	public TerminalManager TerminalManager { get; private set; }
+	public PreferencesManager PreferencesManager { get; private set; }
 
 	public override void _Ready()
 	{
+
 		Windows = GetNode<Node>("./Windows");
 		Commands = GetNode<RegisteredCommands>("./RegisteredCommands");
 		PreferencesManager = GetNode<PreferencesManager>("%PreferencesManager");
@@ -28,12 +29,6 @@ public partial class YAT : Node
 		TerminalManager = GetNode<TerminalManager>("./TerminalManager");
 		TerminalManager.GameTerminal.Ready += () =>
 		{
-			TerminalManager.GameTerminal.TerminalSwitcher.TerminalSwitcherInitialized += () =>
-			{
-				CurrentTerminal = TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminal;
-				// CallDeferred(nameof(CheckYatEnableSettings));
-
-			};
 			TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminalChanged +=
 			(BaseTerminal terminal) =>
 			{
@@ -44,6 +39,8 @@ public partial class YAT : Node
 		};
 
 		Keybindings.LoadDefaultActions();
+
+		CheckYatEnableSettings();
 	}
 
 	private void CheckYatEnableSettings()
