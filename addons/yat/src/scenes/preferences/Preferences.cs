@@ -8,7 +8,7 @@ using YAT.Resources;
 
 namespace YAT.Scenes;
 
-public partial class Preferences : YatWindow.YatWindow
+public partial class Preferences : YatWindow
 {
 	private YAT _yat;
 	private Button _load, _save, _update, _restoreDefaults;

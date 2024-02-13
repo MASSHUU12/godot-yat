@@ -1,7 +1,7 @@
 using Godot;
 using YAT.Helpers;
 
-namespace YAT.Scenes.YatWindow;
+namespace YAT.Scenes;
 
 public partial class YatWindow : Window
 {

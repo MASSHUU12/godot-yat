@@ -4,7 +4,7 @@ using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
-public partial class Monitor : YatWindow.YatWindow
+public partial class Monitor : YatWindow
 {
 	private YAT _yat;
 	private Timer _timer;

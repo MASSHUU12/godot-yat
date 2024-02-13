@@ -5,7 +5,7 @@ using YAT.Scenes.GameTerminal.Components;
 
 namespace YAT.Scenes.GameTerminal;
 
-public partial class GameTerminal : YatWindow.YatWindow
+public partial class GameTerminal : YatWindow
 {
 	public BaseTerminal.BaseTerminal CurrentTerminal { get; private set; }
 	public TerminalSwitcher TerminalSwitcher { get; private set; }
