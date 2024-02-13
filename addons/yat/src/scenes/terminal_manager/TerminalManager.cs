@@ -1,7 +1,7 @@
 using Godot;
 using YAT.Helpers;
 
-namespace YAT.Scenes.TerminalManager;
+namespace YAT.Scenes;
 
 public partial class TerminalManager : Node
 {

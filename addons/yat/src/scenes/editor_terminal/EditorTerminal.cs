@@ -1,6 +1,6 @@
 using Godot;
 
-namespace YAT.Scenes.EditorTerminal;
+namespace YAT.Scenes;
 
 [Tool]
 public partial class EditorTerminal : Control
