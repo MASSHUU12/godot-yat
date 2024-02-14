@@ -17,31 +17,31 @@ public partial interface ICommand
 	/// <returns>The result of the command execution.</returns>
 	public CommandResult Execute(CommandData data);
 
-	public virtual CommandResult Success(string message = null) =>
+	public static CommandResult Success(string message = null) =>
 		new(ECommandResult.Success, message);
 
-	public virtual CommandResult Failure(string message = null) =>
+	public static CommandResult Failure(string message = null) =>
 		new(ECommandResult.Failure, message);
 
-	public virtual CommandResult InvalidArguments(string message = null) =>
+	public static CommandResult InvalidArguments(string message = null) =>
 		new(ECommandResult.InvalidArguments, message);
 
-	public virtual CommandResult InvalidCommand(string message = null) =>
+	public static CommandResult InvalidCommand(string message = null) =>
 		new(ECommandResult.InvalidCommand, message);
 
-	public virtual CommandResult InvalidPermissions(string message = null) =>
+	public static CommandResult InvalidPermissions(string message = null) =>
 		new(ECommandResult.InvalidPermissions, message);
 
-	public virtual CommandResult InvalidState(string message = null) =>
+	public static CommandResult InvalidState(string message = null) =>
 		new(ECommandResult.InvalidState, message);
 
-	public virtual CommandResult NotImplemented(string message = null) =>
+	public static CommandResult NotImplemented(string message = null) =>
 		new(ECommandResult.NotImplemented, message);
 
-	public virtual CommandResult UnknownCommand(string message = null) =>
+	public static CommandResult UnknownCommand(string message = null) =>
 		new(ECommandResult.UnknownCommand, message);
 
-	public virtual CommandResult UnknownError(string message = null) =>
+	public static CommandResult UnknownError(string message = null) =>
 		new(ECommandResult.UnknownError, message);
 
 	public virtual string GenerateCommandManual()

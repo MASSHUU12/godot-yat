@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 -   Options -id & -name to ToggleAudio command.
 -   More results to ECommandResult.
 -   CommandResult record.
--   Virtual methods to ICommand that corresponds to the ECommandResult results.
+-   Static methods to ICommand that corresponds to the ECommandResult results.
 
 ### Changed
 
