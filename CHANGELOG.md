@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   Options -id & -name to ToggleAudio command.
+
 ## [1.23.0-beta 2024-02-13]
 
 ### Added
