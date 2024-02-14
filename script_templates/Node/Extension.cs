@@ -2,7 +2,6 @@
 
 using _BINDINGS_NAMESPACE_;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -11,8 +10,6 @@ public partial class _CLASS_ : IExtension
 {
 	public CommandResult Execute(CommandData data)
 	{
-		data.Terminal.Print("_CLASS_ is not yet implemented!", EPrintType.Error);
-
-		return CommandResult.Failure;
+		return CommandResult.NotImplemented("_CLASS_ is not yet implemented!");
 	}
 }
