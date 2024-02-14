@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   Options -id & -name to ToggleAudio command.
+-   More results to ECommandResult.
 
 ### Changed
 

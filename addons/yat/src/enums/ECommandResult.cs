@@ -6,6 +6,9 @@ public enum ECommandResult
 	Failure,
 	InvalidArguments,
 	InvalidCommand,
+	InvalidPermissions,
+	InvalidState,
 	NotImplemented,
-	UnknownCommand
+	UnknownCommand,
+	UnknownError,
 }
