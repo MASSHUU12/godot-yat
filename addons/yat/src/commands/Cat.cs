@@ -17,10 +17,7 @@ public sealed class Cat : ICommand
 		int lineLimit = (int)data.Options["-l"];
 
 		if (!FileAccess.FileExists(fileName))
-		{
-			data.Terminal.Print($"File '{fileName}' does not exist.", EPrintType.Error);
-			return CommandResult.InvalidArguments;
-		}
+			return ICommand.InvalidArguments($"File '{fileName}' does not exist.");
 
 		using FileAccess file = FileAccess.Open(fileName, FileAccess.ModeFlags.Read);
 		int lineCount = 0;
@@ -40,6 +37,6 @@ public sealed class Cat : ICommand
 			data.Terminal.Print(line);
 		}
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 }

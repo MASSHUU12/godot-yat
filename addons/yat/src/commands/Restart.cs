@@ -1,5 +1,4 @@
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -13,6 +12,6 @@ public sealed class Restart : ICommand
 		data.Terminal.Print($"Restarting {data.Yat.GetTree().CurrentScene.Name}...");
 		data.Yat.GetTree().ReloadCurrentScene();
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 }

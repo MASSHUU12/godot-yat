@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -60,7 +59,7 @@ public sealed class Cowsay : ICommand
 
 		PrintCow(data.RawData[1], eye, tongue);
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private static string GenerateSpeechBubble(string text)

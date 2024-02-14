@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -69,20 +68,17 @@ public sealed class Stats : ICommand
 
 		foreach (Node component in components) _monitorInstance.AddComponent(component);
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private CommandResult Close()
 	{
 		if (!GodotObject.IsInstanceValid(_monitorInstance))
-		{
-			_terminal.Print("The game monitor is not open.", EPrintType.Error);
-			return CommandResult.Failure;
-		}
+			return ICommand.Failure("The game monitor is not open.");
 
 		_monitorInstance.QueueFree();
 		_monitorInstance = null;
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 }

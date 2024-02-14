@@ -1,16 +1,11 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command(
-	"toggleaudio",
-	"Toggles audio on or off.",
-	"[b]Usage[/b]: toggleaudio"
-)]
+[Command("toggleaudio", "Toggles audio on or off.", "[b]Usage[/b]: toggleaudio")]
 [Option("-id", "int(0:32767)", "The ID of the audio bus to toggle. If not provided, all buses will be toggled.", -1)]
 [Option("-name", "string", "The name of the audio bus to toggle. If not provided, all buses will be toggled.", null)]
 public sealed class ToggleAudio : ICommand
@@ -23,28 +18,18 @@ public sealed class ToggleAudio : ICommand
 		if (id == -1 && string.IsNullOrEmpty(name))
 		{
 			ToggleAll();
-			return CommandResult.Success;
+			return ICommand.Success();
 		}
 
 		if (id != -1)
 		{
-			if (!ToggleById(id))
-			{
-				data.Terminal.Print("Invalid audio bus ID.", EPrintType.Error);
-				return CommandResult.InvalidArguments;
-			}
+			if (!ToggleById(id)) return ICommand.InvalidArguments("Invalid audio bus ID.");
 		}
 
 		if (!string.IsNullOrEmpty(name))
-		{
-			if (!ToggleByName(name))
-			{
-				data.Terminal.Print("Invalid audio bus name.", EPrintType.Error);
-				return CommandResult.InvalidArguments;
-			}
-		}
+			if (!ToggleByName(name)) return ICommand.InvalidArguments("Invalid audio bus name.");
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private static void ToggleAll()

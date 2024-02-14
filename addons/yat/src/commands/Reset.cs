@@ -1,5 +1,4 @@
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -31,6 +30,6 @@ public sealed class Reset : ICommand
 				break;
 		}
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 }

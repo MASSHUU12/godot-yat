@@ -47,13 +47,9 @@ public sealed class Cn : ICommand
 		else if (path.StartsWith(RAY_CAST_PREFIX)) result = ChangeSelectedNode(GetRayCastedNodePath(path));
 		else result = ChangeSelectedNode(path);
 
-		if (!result)
-		{
-			data.Terminal.Print($"Invalid node path: {path}", EPrintType.Error);
-			return CommandResult.Failure;
-		}
+		if (!result) return ICommand.Failure($"Invalid node path: {path}");
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private NodePath GetNodeFromSearch(string path)

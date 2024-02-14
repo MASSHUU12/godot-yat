@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes;
@@ -29,8 +28,8 @@ public sealed class Ls : ICommand
 		_terminal = data.Terminal;
 
 		if (n) return Scene.PrintChildren(_terminal, path)
-			? CommandResult.Success
-			: CommandResult.Failure;
+			? ICommand.Success()
+			: ICommand.Failure();
 		if (m) return PrintNodeMethods(path);
 		return PrintDirectoryContents(ProjectSettings.GlobalizePath(path));
 	}
@@ -40,11 +39,7 @@ public sealed class Ls : ICommand
 		Node node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
 		var methods = Scene.GetNodeMethods(node);
 
-		if (methods is null)
-		{
-			_terminal.Print($"Node '{path}' does not exist.", EPrintType.Error);
-			return CommandResult.Failure;
-		}
+		if (methods is null) return ICommand.Failure($"Node '{path}' does not exist.");
 
 		methods = node.GetMethodList().GetEnumerator();
 
@@ -66,16 +61,12 @@ public sealed class Ls : ICommand
 
 		_terminal.Print(sb.ToString());
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private CommandResult PrintDirectoryContents(string path)
 	{
-		if (!Directory.Exists(path))
-		{
-			_terminal.Print($"Directory '{path}' does not exist.", EPrintType.Error);
-			return CommandResult.Failure;
-		}
+		if (!Directory.Exists(path)) return ICommand.Failure($"Directory '{path}' does not exist.");
 
 		try
 		{
@@ -93,21 +84,18 @@ public sealed class Ls : ICommand
 		}
 		catch (UnauthorizedAccessException)
 		{
-			_terminal.Print($"Access to '{path}' is denied.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ICommand.Failure($"Access to '{path}' is denied.");
 		}
 		catch (PathTooLongException)
 		{
-			_terminal.Print($"Path '{path}' is too long.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ICommand.Failure($"Path '{path}' is too long.");
 		}
 		catch (Exception ex)
 		{
-			_terminal.Print($"Error accessing directory '{path}': {ex.Message}", EPrintType.Error);
-			return CommandResult.Failure;
+			return ICommand.Failure($"Error accessing directory '{path}': {ex.Message}");
 		}
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	/// <summary>

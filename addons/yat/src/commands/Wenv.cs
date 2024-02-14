@@ -25,7 +25,7 @@ public sealed class Wenv : ICommand
 		if (action == "remove") RemoveEnvironment();
 		else RestoreEnvironment();
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private void RestoreEnvironment()

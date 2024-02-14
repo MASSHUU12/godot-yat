@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
@@ -30,7 +29,7 @@ public partial class CommandManager : Node
 	/// <param name="args">The arguments passed to the command.</param>
 	/// <param name="result">The result of the command execution.</param>
 	[Signal]
-	public delegate void CommandFinishedEventHandler(string command, string[] args, CommandResult result);
+	public delegate void CommandFinishedEventHandler(string command, string[] args, ECommandResult result);
 
 	public CancellationTokenSource Cts { get; set; } = new();
 
@@ -94,8 +93,14 @@ public partial class CommandManager : Node
 		data.Terminal.Locked = false;
 
 		CallDeferredThreadGroup(
-			"emit_signal", SignalName.CommandFinished, commandName, data.RawData, (ushort)result
+			"emit_signal",
+			SignalName.CommandFinished,
+			commandName,
+			data.RawData,
+			(ushort)result.Result
 		);
+
+		PrintCommandResult(result, data.Terminal);
 	}
 
 	private async void ExecuteThreadedCommand(CommandData data)
@@ -106,13 +111,16 @@ public partial class CommandManager : Node
 		data.Terminal.Output.Success("Command execution finished.");
 	}
 
-	private static Dictionary<string, object> ConcatenatePassedData(Dictionary<string, object> args, Dictionary<string, object> opts)
+	private static void PrintCommandResult(CommandResult result, BaseTerminal terminal)
 	{
-		Dictionary<string, object> result = new();
+		if (string.IsNullOrEmpty(result.Message)) return;
 
-		if (args is not null) result = result.Concat(args).ToDictionary(x => x.Key, x => x.Value);
-		if (opts is not null) result = result.Concat(opts).ToDictionary(x => x.Key, x => x.Value);
+		if (result.Result == ECommandResult.Success)
+		{
+			terminal.Output.Success(result.Message);
+			return;
+		}
 
-		return result;
+		terminal.Output.Error(result.Message);
 	}
 }

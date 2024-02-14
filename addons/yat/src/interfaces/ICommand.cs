@@ -17,6 +17,33 @@ public partial interface ICommand
 	/// <returns>The result of the command execution.</returns>
 	public CommandResult Execute(CommandData data);
 
+	public static CommandResult Success(string message = null) =>
+		new(ECommandResult.Success, message);
+
+	public static CommandResult Failure(string message = null) =>
+		new(ECommandResult.Failure, message);
+
+	public static CommandResult InvalidArguments(string message = null) =>
+		new(ECommandResult.InvalidArguments, message);
+
+	public static CommandResult InvalidCommand(string message = null) =>
+		new(ECommandResult.InvalidCommand, message);
+
+	public static CommandResult InvalidPermissions(string message = null) =>
+		new(ECommandResult.InvalidPermissions, message);
+
+	public static CommandResult InvalidState(string message = null) =>
+		new(ECommandResult.InvalidState, message);
+
+	public static CommandResult NotImplemented(string message = null) =>
+		new(ECommandResult.NotImplemented, message);
+
+	public static CommandResult UnknownCommand(string message = null) =>
+		new(ECommandResult.UnknownCommand, message);
+
+	public static CommandResult UnknownError(string message = null) =>
+		new(ECommandResult.UnknownError, message);
+
 	public virtual string GenerateCommandManual()
 	{
 		CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this);

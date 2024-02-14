@@ -2,7 +2,6 @@
 
 using _BINDINGS_NAMESPACE_;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -13,9 +12,7 @@ namespace YAT.Commands
 	{
 		public CommandResult Execute(CommandData data)
 		{
-			data.Terminal.Print("_CLASS_ is not yet implemented!", EPrintType.Warning);
-
-			return CommandResult.Failure;
+			return CommandResult.NotImplemented("_CLASS_ is not yet implemented!");
 		}
 	}
 }

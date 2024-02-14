@@ -1,5 +1,4 @@
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -14,6 +13,6 @@ public sealed class Echo : ICommand
 		var text = string.Join(" ", data.RawData[1..^0]);
 		data.Terminal.Print(text);
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 }

@@ -17,6 +17,8 @@ The description and manual have BBCode support.
 The execution of the command begins in the `Execute` method.
 The `Execute` method accepts `CommandData`, which contains probably all the things your command could ever need, these are things like: reference to YAT and BaseTerminal, raw arguments & options, converted arguments & options, cancellation token and more.
 
+Each created command, at the end of its operation, must return a status and an optional message with which it finished. You can create it yourself, or use one of the static methods of the ICommand interface, such as Success(), or Failure().
+
 > [!NOTE]
 > Each time a command is called, a new instance of it is created.
 >
@@ -26,25 +28,19 @@ As an example, let's look at Cls command:
 
 ```csharp
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
+using YAT.Types;
 
-namespace YAT.Commands
+namespace YAT.Commands;
+
+[Command("cls", "Clears the console.", "[b]Usage[/b]: cls", "clear")]
+public sealed class Cls : ICommand
 {
-	[Command(
-		"cls",
-		"Clears the console.",
-		"[b]Usage[/b]: cls",
-		"clear"
-	)]
-	public sealed class Cls : ICommand
+	public CommandResult Execute(CommandData data)
 	{
-		public CommandResult Execute(CommandData data)
-		{
-			data.Terminal.Clear();
+		data.Terminal.Clear();
 
-			return CommandResult.Success;
-		}
+		return ICommand.Success();
 	}
 }
 ```
@@ -94,8 +90,7 @@ public CommandResult Execute(CommandData data)
    if (extensions.TryGetValue((string)data.Arguments["variable"], out Type extension))
       return ExecuteExtension(extension, data with { RawData = data.RawData[1..] });
 
-   data.Terminal.Print("Variable not found.", EPrintType.Error);
-   return CommandResult.Failure;
+   return ICommand.Failure("Variable not found.");
 }
 ```
 

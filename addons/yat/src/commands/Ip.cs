@@ -1,7 +1,6 @@
 using System.Text;
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -22,7 +21,7 @@ public sealed class Ip : ICommand
 
 		if (action == "addr") PrintLocalInterfaces();
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private void PrintLocalInterfaces()

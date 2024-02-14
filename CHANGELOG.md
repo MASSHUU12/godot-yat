@@ -7,6 +7,14 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   Options -id & -name to ToggleAudio command.
+-   More results to ECommandResult.
+-   CommandResult record.
+-   Static methods to ICommand that corresponds to the ECommandResult results.
+
+### Changed
+
+-   Renamed CommandResult to ECommandResult.
+-   Commands now return CommandResult record.
 
 ## [1.23.0-beta 2024-02-13]
 

@@ -1,6 +1,5 @@
 using System.Threading;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -51,21 +50,13 @@ public sealed class Ping : ICommand
 			Thread.Sleep(delay);
 		}
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
-	/// <summary>
-	/// Generates a string of specified length with repeated character 'a'.
-	/// </summary>
-	/// <param name="bytes">The number of bytes in the generated string.</param>
-	/// <returns>A string of specified length with repeated character 'a'.</returns>
 	private static string GenerateData(int bytes)
 	{
 		string data = string.Empty;
-		for (int i = 0; i < bytes; i++)
-		{
-			data += 'a';
-		}
+		for (int i = 0; i < bytes; i++) data += 'a';
 		return data;
 	}
 }

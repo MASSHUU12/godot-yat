@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -33,6 +32,6 @@ public partial class List : ICommand
 
 		data.Terminal.Print(sb.ToString());
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 }

@@ -1,5 +1,4 @@
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes;
@@ -26,10 +25,7 @@ public sealed class QuickCommands : ICommand
 		_terminal = data.Terminal;
 
 		if (action != "list" && string.IsNullOrEmpty(name))
-		{
-			_terminal.Print("You need to provide a command name for this action.", EPrintType.Error);
-			return CommandResult.Failure;
-		}
+			return ICommand.Failure("You need to provide a command name for this action.");
 
 		switch (action)
 		{
@@ -45,16 +41,13 @@ public sealed class QuickCommands : ICommand
 				break;
 		}
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private CommandResult AddQuickCommand(string name, string command)
 	{
 		if (string.IsNullOrEmpty(command))
-		{
-			_terminal.Print("You need to provide command for this action.", EPrintType.Error);
-			return CommandResult.Failure;
-		}
+			return ICommand.Failure("You need to provide command for this action.");
 
 		bool status = _yat.Commands.AddQuickCommand(name, command);
 		string message;
@@ -62,9 +55,7 @@ public sealed class QuickCommands : ICommand
 		if (status) message = $"Added quick command '{name}'.";
 		else message = $"Failed to add quick command '{name}'.";
 
-		_terminal.Print(message, status ? EPrintType.Success : EPrintType.Error);
-
-		return status ? CommandResult.Success : CommandResult.Failure;
+		return status ? ICommand.Success(message) : ICommand.Failure(message);
 	}
 
 	private CommandResult RemoveQuickCommand(string name)
@@ -75,8 +66,6 @@ public sealed class QuickCommands : ICommand
 		if (status) message = $"Removed quick command '{name}'.";
 		else message = $"Failed to remove quick command '{name}'.";
 
-		_terminal.Print(message, status ? EPrintType.Success : EPrintType.Error);
-
-		return status ? CommandResult.Success : CommandResult.Failure;
+		return status ? ICommand.Success(message) : ICommand.Failure(message);
 	}
 }

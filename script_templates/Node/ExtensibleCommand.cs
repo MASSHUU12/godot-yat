@@ -4,7 +4,6 @@ using _BINDINGS_NAMESPACE_;
 using System;
 using YAT.Attributes;
 using YAT.Classes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -19,7 +18,6 @@ public partial class _CLASS_ : Extensible, ICommand
 		if (extensions.TryGetValue((string)data.Arguments["action"], out Type extension))
 			return ExecuteExtension(extension, data with { RawData = data.RawData[1..] });
 
-		data.Terminal.Print("Action not found.", EPrintType.Error);
-		return CommandResult.Failure;
+		return ICommand.Failure("Variable not found.");
 	}
 }

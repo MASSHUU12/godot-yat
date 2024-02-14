@@ -1,6 +1,5 @@
 using System;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -15,27 +14,18 @@ namespace GdUnit4
 		[Command("test")]
 		private class TestCommand : ICommand
 		{
-			public CommandResult Execute(CommandData data)
-			{
-				return CommandResult.NotImplemented;
-			}
+			public CommandResult Execute(CommandData data) => ICommand.NotImplemented();
 		}
 
 		private class TestCommandWithoutAttribute : ICommand
 		{
-			public CommandResult Execute(CommandData data)
-			{
-				return CommandResult.NotImplemented;
-			}
+			public CommandResult Execute(CommandData data) => ICommand.NotImplemented();
 		}
 
 		[Command("test")]
 		private class TestCommandWithoutInterface
 		{
-			public CommandResult Execute(CommandData data)
-			{
-				return CommandResult.NotImplemented;
-			}
+			public CommandResult Execute(CommandData data) => ICommand.NotImplemented();
 		}
 
 		[TestCase(typeof(TestCommand), AddingResult.Success)]

@@ -1,7 +1,6 @@
 using System;
 using YAT.Attributes;
 using YAT.Classes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -19,7 +18,6 @@ public partial class Set : Extensible, ICommand
 		if (extensions.TryGetValue((string)data.Arguments["variable"], out Type extension))
 			return ExecuteExtension(extension, data with { RawData = data.RawData[1..] });
 
-		data.Terminal.Print("Variable not found.", EPrintType.Error);
-		return CommandResult.Failure;
+		return ICommand.Failure("Variable not found.");
 	}
 }

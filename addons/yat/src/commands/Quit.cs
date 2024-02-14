@@ -1,5 +1,4 @@
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -23,7 +22,7 @@ public sealed class Quit : ICommand
 		if (t) CloseTerminal();
 		else QuitTheGame();
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private void CloseTerminal()

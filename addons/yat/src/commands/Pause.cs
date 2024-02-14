@@ -1,5 +1,4 @@
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -12,6 +11,6 @@ public sealed class Pause : ICommand
 	{
 		data.Yat.GetTree().Paused = !data.Yat.GetTree().Paused;
 
-		return CommandResult.Success;
+		return ICommand.Success();
 	}
 }
