@@ -1,7 +1,6 @@
 using System;
 using YAT.Attributes;
 using YAT.Classes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -12,14 +11,13 @@ namespace YAT.Commands;
 [Argument("value", "string", "The value to set the variable to.")]
 public partial class Set : Extensible, ICommand
 {
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		var extensions = GetCommandExtensions("set");
 
 		if (extensions.TryGetValue((string)data.Arguments["variable"], out Type extension))
 			return ExecuteExtension(extension, data with { RawData = data.RawData[1..] });
 
-		data.Terminal.Print("Variable not found.", EPrintType.Error);
-		return ECommandResult.Failure;
+		return ICommand.Failure("Variable not found.");
 	}
 }

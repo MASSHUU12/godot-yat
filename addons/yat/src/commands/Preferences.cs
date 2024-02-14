@@ -1,6 +1,5 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -14,20 +13,20 @@ public sealed class Preferences : ICommand
 		"uid://ca2i4r24ny7y3"
 	);
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		var instanceValid = GodotObject.IsInstanceValid(_windowInstance);
 
 		if (instanceValid)
 		{
 			CloseWindow();
-			return ECommandResult.Success;
+			return ICommand.Success();
 		}
 
 		_windowInstance = _prefsWindow.Instantiate<Scenes.Preferences>();
 		data.Yat.Windows.AddChild(_windowInstance);
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private static void CloseWindow()

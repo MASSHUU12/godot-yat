@@ -34,7 +34,7 @@ public sealed class Cn : ICommand
 	private YAT _yat;
 	private BaseTerminal _terminal;
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		var path = data.Arguments["node_path"] as string;
 		bool result;
@@ -47,13 +47,9 @@ public sealed class Cn : ICommand
 		else if (path.StartsWith(RAY_CAST_PREFIX)) result = ChangeSelectedNode(GetRayCastedNodePath(path));
 		else result = ChangeSelectedNode(path);
 
-		if (!result)
-		{
-			data.Terminal.Print($"Invalid node path: {path}", EPrintType.Error);
-			return ECommandResult.Failure;
-		}
+		if (!result) return ICommand.Failure($"Invalid node path: {path}");
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private NodePath GetNodeFromSearch(string path)

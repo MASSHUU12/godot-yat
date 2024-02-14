@@ -1,6 +1,5 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -9,13 +8,9 @@ public sealed class SetCube : IExtension
 {
 	public static MeshInstance3D Cube { get; set; }
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
-		if (data.RawData.Length < 2)
-		{
-			data.Terminal.Print("Invalid arguments.", EPrintType.Error);
-			return ECommandResult.InvalidArguments;
-		}
+		if (data.RawData.Length < 2) return ICommand.InvalidArguments("Invalid arguments.");
 
 		try
 		{
@@ -27,10 +22,9 @@ public sealed class SetCube : IExtension
 		}
 		catch (System.Exception)
 		{
-			data.Terminal.Print("Invalid color.", EPrintType.Error);
-			return ECommandResult.Failure;
+			return ICommand.Failure("Invalid color.");
 		}
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 }

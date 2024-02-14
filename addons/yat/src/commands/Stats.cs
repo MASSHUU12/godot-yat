@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -27,7 +26,7 @@ public sealed class Stats : ICommand
 		"uid://dekp8nra5yo6u"
 	);
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		_yat = data.Yat;
 		_terminal = data.Terminal;
@@ -36,7 +35,7 @@ public sealed class Stats : ICommand
 		return Close();
 	}
 
-	private ECommandResult Open(Dictionary<string, object> opts)
+	private CommandResult Open(Dictionary<string, object> opts)
 	{
 		bool all = (bool)opts["-all"];
 		bool fps = (bool)opts["-fps"];
@@ -69,20 +68,17 @@ public sealed class Stats : ICommand
 
 		foreach (Node component in components) _monitorInstance.AddComponent(component);
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 
-	private ECommandResult Close()
+	private CommandResult Close()
 	{
 		if (!GodotObject.IsInstanceValid(_monitorInstance))
-		{
-			_terminal.Print("The game monitor is not open.", EPrintType.Error);
-			return ECommandResult.Failure;
-		}
+			return ICommand.Failure("The game monitor is not open.");
 
 		_monitorInstance.QueueFree();
 		_monitorInstance = null;
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 }

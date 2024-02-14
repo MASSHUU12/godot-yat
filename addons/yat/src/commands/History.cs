@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Text;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes;
@@ -25,7 +24,7 @@ public partial class History : ICommand
 	private YAT _yat;
 	private BaseTerminal _terminal;
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		_yat = data.Yat;
 		_terminal = data.Terminal;
@@ -40,15 +39,11 @@ public partial class History : ICommand
 				break;
 			default:
 				if (int.TryParse(data.RawData[1], out int index)) ExecuteFromHistory(index);
-				else
-				{
-					_terminal.Print($"Invalid action: {data.RawData[1]}");
-					return ECommandResult.Failure;
-				}
+				else return ICommand.Failure($"Invalid action: {data.RawData[1]}");
 				break;
 		}
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private void ClearHistory()

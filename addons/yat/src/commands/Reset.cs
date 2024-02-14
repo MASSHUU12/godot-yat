@@ -1,5 +1,4 @@
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -13,7 +12,7 @@ namespace YAT.Commands;
 [Argument("action", "[all, position, size]", "The action to perform.")]
 public sealed class Reset : ICommand
 {
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		var action = (string)data.Arguments["action"];
 
@@ -31,6 +30,6 @@ public sealed class Reset : ICommand
 				break;
 		}
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 }

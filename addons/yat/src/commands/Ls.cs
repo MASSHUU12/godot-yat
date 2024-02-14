@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes;
@@ -20,7 +19,7 @@ public sealed class Ls : ICommand
 {
 	private BaseTerminal _terminal;
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		string path = (string)data.Arguments["path"];
 		bool n = (bool)data.Options["-n"];
@@ -29,22 +28,18 @@ public sealed class Ls : ICommand
 		_terminal = data.Terminal;
 
 		if (n) return Scene.PrintChildren(_terminal, path)
-			? ECommandResult.Success
-			: ECommandResult.Failure;
+			? ICommand.Success()
+			: ICommand.Failure();
 		if (m) return PrintNodeMethods(path);
 		return PrintDirectoryContents(ProjectSettings.GlobalizePath(path));
 	}
 
-	private ECommandResult PrintNodeMethods(string path)
+	private CommandResult PrintNodeMethods(string path)
 	{
 		Node node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
 		var methods = Scene.GetNodeMethods(node);
 
-		if (methods is null)
-		{
-			_terminal.Print($"Node '{path}' does not exist.", EPrintType.Error);
-			return ECommandResult.Failure;
-		}
+		if (methods is null) return ICommand.Failure($"Node '{path}' does not exist.");
 
 		methods = node.GetMethodList().GetEnumerator();
 
@@ -66,16 +61,12 @@ public sealed class Ls : ICommand
 
 		_terminal.Print(sb.ToString());
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 
-	private ECommandResult PrintDirectoryContents(string path)
+	private CommandResult PrintDirectoryContents(string path)
 	{
-		if (!Directory.Exists(path))
-		{
-			_terminal.Print($"Directory '{path}' does not exist.", EPrintType.Error);
-			return ECommandResult.Failure;
-		}
+		if (!Directory.Exists(path)) return ICommand.Failure($"Directory '{path}' does not exist.");
 
 		try
 		{
@@ -93,21 +84,18 @@ public sealed class Ls : ICommand
 		}
 		catch (UnauthorizedAccessException)
 		{
-			_terminal.Print($"Access to '{path}' is denied.", EPrintType.Error);
-			return ECommandResult.Failure;
+			return ICommand.Failure($"Access to '{path}' is denied.");
 		}
 		catch (PathTooLongException)
 		{
-			_terminal.Print($"Path '{path}' is too long.", EPrintType.Error);
-			return ECommandResult.Failure;
+			return ICommand.Failure($"Path '{path}' is too long.");
 		}
 		catch (Exception ex)
 		{
-			_terminal.Print($"Error accessing directory '{path}': {ex.Message}", EPrintType.Error);
-			return ECommandResult.Failure;
+			return ICommand.Failure($"Error accessing directory '{path}': {ex.Message}");
 		}
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 
 	/// <summary>

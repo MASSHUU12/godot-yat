@@ -1,5 +1,4 @@
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -10,7 +9,7 @@ namespace YAT.Commands;
 [Option("-s", null, "Prints info about currently selected node.", false)]
 public sealed class Whereami : ICommand
 {
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		var scene = data.Yat.GetTree().CurrentScene;
 		var longForm = (bool)data.Options["-l"];
@@ -23,6 +22,6 @@ public sealed class Whereami : ICommand
 			(longForm ? " (" + scene.SceneFilePath + ")" : string.Empty)
 		);
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 }

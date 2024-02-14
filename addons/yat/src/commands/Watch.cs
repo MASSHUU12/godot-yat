@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -20,15 +19,12 @@ public sealed class Watch : ICommand
 {
 	private const uint SECONDS_MULTIPLIER = 1000;
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		if (!RegisteredCommands.Registered.TryGetValue((string)data.Arguments["command"], out var type))
-		{
-			data.Terminal.Output.Error(
+			return ICommand.InvalidArguments(
 				$"Command '{data.Arguments["command"]}' not found, exiting watch."
 			);
-			return ECommandResult.InvalidArguments;
-		}
 
 		ICommand command = (ICommand)Activator.CreateInstance(type);
 
@@ -37,17 +33,14 @@ public sealed class Watch : ICommand
 
 		while (!data.CancellationToken.IsCancellationRequested)
 		{
-			if (command.Execute(newArgs) != ECommandResult.Success)
-			{
-				data.Terminal.Output.Error(
+			if (command.Execute(newArgs) != ICommand.Success())
+				return ICommand.Failure(
 					$"Error executing command '{data.RawData[1]}', exiting watch."
 				);
-				return ECommandResult.Failure;
-			}
 
 			Thread.Sleep((int)interval);
 		}
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 }

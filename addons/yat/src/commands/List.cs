@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -13,7 +12,7 @@ namespace YAT.Commands;
 [Command("list", "List all available commands", "[b]Usage[/b]: list", "lc")]
 public partial class List : ICommand
 {
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		var sb = new StringBuilder();
 
@@ -33,6 +32,6 @@ public partial class List : ICommand
 
 		data.Terminal.Print(sb.ToString());
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 }

@@ -1,16 +1,11 @@
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command(
-	"sys",
-	"Runs a system command.",
-	"[b]sys[/b] [i]command[/i]"
-)]
+[Command("sys", "Runs a system command.", "[b]sys[/b] [i]command[/i]")]
 [Argument(
 	"command",
 	"string",
@@ -20,7 +15,7 @@ namespace YAT.Commands;
 [Threaded]
 public sealed class Sys : ICommand
 {
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		var program = (string)data.Options["-program"];
 		var command = (string)data.Arguments["command"];
@@ -29,11 +24,9 @@ public sealed class Sys : ICommand
 
 		var result = OS.RunCommand(commandName, out var status, program, commandArgs);
 
-		if (status == OS.ExecutionResult.Success)
-			data.Terminal.Output.Print(result.ToString());
-		else
-			data.Terminal.Output.Error(result.ToString());
+		if (status == OS.ExecutionResult.Success) data.Terminal.Output.Print(result.ToString());
+		else data.Terminal.Output.Error(result.ToString());
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 }

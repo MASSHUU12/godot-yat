@@ -3,7 +3,6 @@ namespace GdUnit4
 	using System;
 	using YAT.Attributes;
 	using YAT.Classes;
-	using YAT.Enums;
 	using YAT.Interfaces;
 	using YAT.Types;
 	using static Assertions;
@@ -14,18 +13,12 @@ namespace GdUnit4
 		[Extension("test", "Test extension.", "Test extension manual.", "test_alias", "test_alias2")]
 		private class TestExtension : IExtension
 		{
-			public ECommandResult Execute(CommandData data)
-			{
-				return ECommandResult.NotImplemented;
-			}
+			public CommandResult Execute(CommandData data) => ICommand.NotImplemented();
 		}
 
 		private class TestExtensionWithoutAttribute : IExtension
 		{
-			public ECommandResult Execute(CommandData data)
-			{
-				return ECommandResult.NotImplemented;
-			}
+			public CommandResult Execute(CommandData data) => ICommand.NotImplemented();
 		}
 
 		[TestCase("test_command", typeof(TestExtension), true)]

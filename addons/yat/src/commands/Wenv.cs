@@ -15,7 +15,7 @@ public sealed class Wenv : ICommand
 	private BaseTerminal _terminal;
 	private static Environment _world3DEnvironment;
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		var action = (string)data.Arguments["action"];
 
@@ -25,7 +25,7 @@ public sealed class Wenv : ICommand
 		if (action == "remove") RemoveEnvironment();
 		else RestoreEnvironment();
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private void RestoreEnvironment()

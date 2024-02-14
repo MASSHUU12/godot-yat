@@ -1,7 +1,6 @@
 using System;
 using YAT.Attributes;
 using YAT.Classes;
-using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes;
@@ -15,15 +14,12 @@ public sealed class Man : ICommand
 {
 	private readonly LRUCache<string, string> cache = new(10);
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		var commandName = data.RawData[1];
 
 		if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type value))
-		{
-			data.Terminal.Output.Error(Messages.UnknownCommand(commandName));
-			return ECommandResult.InvalidCommand;
-		}
+			return ICommand.InvalidCommand(Messages.UnknownCommand(commandName));
 
 		ICommand command = (ICommand)Activator.CreateInstance(value);
 
@@ -31,7 +27,7 @@ public sealed class Man : ICommand
 		if (cache.Get(commandName) is string manual)
 		{
 			data.Terminal.Print(manual);
-			return ECommandResult.Success;
+			return ICommand.Success();
 		}
 
 		manual = command.GenerateCommandManual();
@@ -46,6 +42,6 @@ public sealed class Man : ICommand
 
 		data.Terminal.Print(manual);
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 }

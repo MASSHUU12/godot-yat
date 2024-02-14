@@ -9,7 +9,7 @@ namespace YAT.Interfaces;
 
 public partial interface IExtension
 {
-	public ECommandResult Execute(CommandData args);
+	public CommandResult Execute(CommandData args);
 
 	public virtual string GenerateExtensionManual()
 	{

@@ -1,7 +1,6 @@
 using System.Text;
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -14,7 +13,7 @@ public sealed class Ip : ICommand
 {
 	private BaseTerminal _terminal;
 
-	public ECommandResult Execute(CommandData data)
+	public CommandResult Execute(CommandData data)
 	{
 		string action = data.Arguments["action"] as string;
 
@@ -22,7 +21,7 @@ public sealed class Ip : ICommand
 
 		if (action == "addr") PrintLocalInterfaces();
 
-		return ECommandResult.Success;
+		return ICommand.Success();
 	}
 
 	private void PrintLocalInterfaces()
