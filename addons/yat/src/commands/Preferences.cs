@@ -14,20 +14,20 @@ public sealed class Preferences : ICommand
 		"uid://ca2i4r24ny7y3"
 	);
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var instanceValid = GodotObject.IsInstanceValid(_windowInstance);
 
 		if (instanceValid)
 		{
 			CloseWindow();
-			return CommandResult.Success;
+			return ECommandResult.Success;
 		}
 
 		_windowInstance = _prefsWindow.Instantiate<Scenes.Preferences>();
 		data.Yat.Windows.AddChild(_windowInstance);
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
 	private static void CloseWindow()

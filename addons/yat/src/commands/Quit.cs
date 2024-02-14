@@ -13,7 +13,7 @@ public sealed class Quit : ICommand
 	private YAT _yat;
 	private BaseTerminal _terminal;
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var t = (bool)data.Options["-t"];
 
@@ -23,7 +23,7 @@ public sealed class Quit : ICommand
 		if (t) CloseTerminal();
 		else QuitTheGame();
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
 	private void CloseTerminal()

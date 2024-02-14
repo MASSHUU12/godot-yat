@@ -12,7 +12,7 @@ namespace YAT.Commands;
 [Argument("value", "string", "The value to set the variable to.")]
 public partial class Set : Extensible, ICommand
 {
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var extensions = GetCommandExtensions("set");
 
@@ -20,6 +20,6 @@ public partial class Set : Extensible, ICommand
 			return ExecuteExtension(extension, data with { RawData = data.RawData[1..] });
 
 		data.Terminal.Print("Variable not found.", EPrintType.Error);
-		return CommandResult.Failure;
+		return ECommandResult.Failure;
 	}
 }

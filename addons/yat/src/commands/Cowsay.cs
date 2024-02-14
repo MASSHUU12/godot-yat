@@ -23,7 +23,7 @@ public sealed class Cowsay : ICommand
 {
 	private BaseTerminal _terminal;
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		char eye = 'o';
 		char tongue = ' ';
@@ -60,7 +60,7 @@ public sealed class Cowsay : ICommand
 
 		PrintCow(data.RawData[1], eye, tongue);
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
 	private static string GenerateSpeechBubble(string text)

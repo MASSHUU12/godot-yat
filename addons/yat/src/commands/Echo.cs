@@ -9,11 +9,11 @@ namespace YAT.Commands;
 [Argument("message", "string", "The text to display.")]
 public sealed class Echo : ICommand
 {
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var text = string.Join(" ", data.RawData[1..^0]);
 		data.Terminal.Print(text);
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 }

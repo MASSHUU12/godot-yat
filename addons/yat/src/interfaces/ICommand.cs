@@ -15,7 +15,7 @@ public partial interface ICommand
 	/// </summary>
 	/// <param name="data">The data passed to the command.</param>
 	/// <returns>The result of the command execution.</returns>
-	public CommandResult Execute(CommandData data);
+	public ECommandResult Execute(CommandData data);
 
 	public virtual string GenerateCommandManual()
 	{

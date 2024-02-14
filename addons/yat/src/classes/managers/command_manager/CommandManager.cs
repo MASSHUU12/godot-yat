@@ -30,7 +30,7 @@ public partial class CommandManager : Node
 	/// <param name="args">The arguments passed to the command.</param>
 	/// <param name="result">The result of the command execution.</param>
 	[Signal]
-	public delegate void CommandFinishedEventHandler(string command, string[] args, CommandResult result);
+	public delegate void CommandFinishedEventHandler(string command, string[] args, ECommandResult result);
 
 	public CancellationTokenSource Cts { get; set; } = new();
 

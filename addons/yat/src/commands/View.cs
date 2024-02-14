@@ -38,7 +38,7 @@ public sealed class View : ICommand
 	private YAT _yat;
 	private BaseTerminal _terminal;
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var mode = data.RawData[1];
 
@@ -51,25 +51,25 @@ public sealed class View : ICommand
 		if (!int.TryParse(mode, out var iMode))
 		{
 			data.Terminal.Print($"Invalid mode: {mode}.", EPrintType.Error);
-			return CommandResult.InvalidArguments;
+			return ECommandResult.InvalidArguments;
 		}
 
 		if (!IsValidMode((ushort)iMode))
 		{
 			data.Terminal.Print($"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}.", EPrintType.Error);
-			return CommandResult.InvalidArguments;
+			return ECommandResult.InvalidArguments;
 		}
 
 		return SetDebugDraw((ViewportDebugDraw)iMode);
 	}
 
-	private CommandResult SetDebugDraw(ViewportDebugDraw debugDraw)
+	private ECommandResult SetDebugDraw(ViewportDebugDraw debugDraw)
 	{
 		ViewportSetDebugDraw(_yat.GetViewport().GetViewportRid(), debugDraw);
 
 		_terminal.Print($"Set viewport debug draw to {debugDraw} ({(ushort)debugDraw}).");
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
 	private bool IsValidMode(ushort mode) => mode >= 0 && mode <= MAX_DRAW_MODE;

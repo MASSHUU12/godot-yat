@@ -72,10 +72,10 @@ public partial class Extensible : Node
 		return true;
 	}
 
-	public virtual CommandResult ExecuteExtension(Type extension, CommandData args)
+	public virtual ECommandResult ExecuteExtension(Type extension, CommandData args)
 	{
 		if (!Reflection.HasInterface(extension, nameof(IExtension)))
-			return CommandResult.InvalidCommand;
+			return ECommandResult.InvalidCommand;
 
 		return (Activator.CreateInstance(extension) as IExtension).Execute(args);
 	}

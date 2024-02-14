@@ -16,7 +16,7 @@ public sealed class QuickCommands : ICommand
 	private BaseTerminal _terminal;
 	private YAT _yat;
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		string action = (string)data.Arguments["action"];
 		string name = data.Options.TryGetValue("-name", out object nameObj) ? (string)nameObj : null;
@@ -28,7 +28,7 @@ public sealed class QuickCommands : ICommand
 		if (action != "list" && string.IsNullOrEmpty(name))
 		{
 			_terminal.Print("You need to provide a command name for this action.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
 		switch (action)
@@ -45,15 +45,15 @@ public sealed class QuickCommands : ICommand
 				break;
 		}
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
-	private CommandResult AddQuickCommand(string name, string command)
+	private ECommandResult AddQuickCommand(string name, string command)
 	{
 		if (string.IsNullOrEmpty(command))
 		{
 			_terminal.Print("You need to provide command for this action.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
 		bool status = _yat.Commands.AddQuickCommand(name, command);
@@ -64,10 +64,10 @@ public sealed class QuickCommands : ICommand
 
 		_terminal.Print(message, status ? EPrintType.Success : EPrintType.Error);
 
-		return status ? CommandResult.Success : CommandResult.Failure;
+		return status ? ECommandResult.Success : ECommandResult.Failure;
 	}
 
-	private CommandResult RemoveQuickCommand(string name)
+	private ECommandResult RemoveQuickCommand(string name)
 	{
 		bool status = _yat.Commands.RemoveQuickCommand(name);
 		string message;
@@ -77,6 +77,6 @@ public sealed class QuickCommands : ICommand
 
 		_terminal.Print(message, status ? EPrintType.Success : EPrintType.Error);
 
-		return status ? CommandResult.Success : CommandResult.Failure;
+		return status ? ECommandResult.Success : ECommandResult.Failure;
 	}
 }

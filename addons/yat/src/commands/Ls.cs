@@ -20,7 +20,7 @@ public sealed class Ls : ICommand
 {
 	private BaseTerminal _terminal;
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		string path = (string)data.Arguments["path"];
 		bool n = (bool)data.Options["-n"];
@@ -29,13 +29,13 @@ public sealed class Ls : ICommand
 		_terminal = data.Terminal;
 
 		if (n) return Scene.PrintChildren(_terminal, path)
-			? CommandResult.Success
-			: CommandResult.Failure;
+			? ECommandResult.Success
+			: ECommandResult.Failure;
 		if (m) return PrintNodeMethods(path);
 		return PrintDirectoryContents(ProjectSettings.GlobalizePath(path));
 	}
 
-	private CommandResult PrintNodeMethods(string path)
+	private ECommandResult PrintNodeMethods(string path)
 	{
 		Node node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
 		var methods = Scene.GetNodeMethods(node);
@@ -43,7 +43,7 @@ public sealed class Ls : ICommand
 		if (methods is null)
 		{
 			_terminal.Print($"Node '{path}' does not exist.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
 		methods = node.GetMethodList().GetEnumerator();
@@ -66,15 +66,15 @@ public sealed class Ls : ICommand
 
 		_terminal.Print(sb.ToString());
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
-	private CommandResult PrintDirectoryContents(string path)
+	private ECommandResult PrintDirectoryContents(string path)
 	{
 		if (!Directory.Exists(path))
 		{
 			_terminal.Print($"Directory '{path}' does not exist.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
 		try
@@ -94,20 +94,20 @@ public sealed class Ls : ICommand
 		catch (UnauthorizedAccessException)
 		{
 			_terminal.Print($"Access to '{path}' is denied.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 		catch (PathTooLongException)
 		{
 			_terminal.Print($"Path '{path}' is too long.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 		catch (Exception ex)
 		{
 			_terminal.Print($"Error accessing directory '{path}': {ex.Message}", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
 	/// <summary>

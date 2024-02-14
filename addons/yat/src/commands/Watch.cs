@@ -20,14 +20,14 @@ public sealed class Watch : ICommand
 {
 	private const uint SECONDS_MULTIPLIER = 1000;
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		if (!RegisteredCommands.Registered.TryGetValue((string)data.Arguments["command"], out var type))
 		{
 			data.Terminal.Output.Error(
 				$"Command '{data.Arguments["command"]}' not found, exiting watch."
 			);
-			return CommandResult.InvalidArguments;
+			return ECommandResult.InvalidArguments;
 		}
 
 		ICommand command = (ICommand)Activator.CreateInstance(type);
@@ -37,17 +37,17 @@ public sealed class Watch : ICommand
 
 		while (!data.CancellationToken.IsCancellationRequested)
 		{
-			if (command.Execute(newArgs) != CommandResult.Success)
+			if (command.Execute(newArgs) != ECommandResult.Success)
 			{
 				data.Terminal.Output.Error(
 					$"Error executing command '{data.RawData[1]}', exiting watch."
 				);
-				return CommandResult.Failure;
+				return ECommandResult.Failure;
 			}
 
 			Thread.Sleep((int)interval);
 		}
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 }

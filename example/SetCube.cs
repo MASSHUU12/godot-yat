@@ -9,12 +9,12 @@ public sealed class SetCube : IExtension
 {
 	public static MeshInstance3D Cube { get; set; }
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		if (data.RawData.Length < 2)
 		{
 			data.Terminal.Print("Invalid arguments.", EPrintType.Error);
-			return CommandResult.InvalidArguments;
+			return ECommandResult.InvalidArguments;
 		}
 
 		try
@@ -28,9 +28,9 @@ public sealed class SetCube : IExtension
 		catch (System.Exception)
 		{
 			data.Terminal.Print("Invalid color.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 }

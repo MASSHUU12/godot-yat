@@ -24,7 +24,7 @@ public partial class Cs : Node, ICommand
 		SceneCantInstantiate,
 	}
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var scene = data.RawData[1];
 
@@ -34,7 +34,7 @@ public partial class Cs : Node, ICommand
 
 			data.Terminal.Print($"Scene '{scene}' does not exist.", EPrintType.Error);
 
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
 		EmitSignal(SignalName.SceneAboutToChange, scene);
@@ -51,13 +51,13 @@ public partial class Cs : Node, ICommand
 
 			data.Terminal.Print($"Failed to change scene to '{scene}'.", EPrintType.Error);
 
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
 		EmitSignal(SignalName.SceneChanged, scene);
 
 		data.Terminal.Print($"Changed scene to '{scene}'.", EPrintType.Success);
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 }

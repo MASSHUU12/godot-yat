@@ -25,7 +25,7 @@ public partial class History : ICommand
 	private YAT _yat;
 	private BaseTerminal _terminal;
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		_yat = data.Yat;
 		_terminal = data.Terminal;
@@ -43,12 +43,12 @@ public partial class History : ICommand
 				else
 				{
 					_terminal.Print($"Invalid action: {data.RawData[1]}");
-					return CommandResult.Failure;
+					return ECommandResult.Failure;
 				}
 				break;
 		}
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
 	private void ClearHistory()

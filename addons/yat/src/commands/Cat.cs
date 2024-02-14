@@ -11,7 +11,7 @@ namespace YAT.Commands;
 [Option("-l", "int(1:99)", "Limits the number of lines to print.", -1)]
 public sealed class Cat : ICommand
 {
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		string fileName = (string)data.Arguments["file"];
 		int lineLimit = (int)data.Options["-l"];
@@ -19,7 +19,7 @@ public sealed class Cat : ICommand
 		if (!FileAccess.FileExists(fileName))
 		{
 			data.Terminal.Print($"File '{fileName}' does not exist.", EPrintType.Error);
-			return CommandResult.InvalidArguments;
+			return ECommandResult.InvalidArguments;
 		}
 
 		using FileAccess file = FileAccess.Open(fileName, FileAccess.ModeFlags.Read);
@@ -40,6 +40,6 @@ public sealed class Cat : ICommand
 			data.Terminal.Print(line);
 		}
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 }

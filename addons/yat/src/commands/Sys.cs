@@ -20,7 +20,7 @@ namespace YAT.Commands;
 [Threaded]
 public sealed class Sys : ICommand
 {
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var program = (string)data.Options["-program"];
 		var command = (string)data.Arguments["command"];
@@ -34,6 +34,6 @@ public sealed class Sys : ICommand
 		else
 			data.Terminal.Output.Error(result.ToString());
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 }

@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 -   Options -id & -name to ToggleAudio command.
 
+### Changed
+
+-   Renamed CommandResult to ECommandResult.
+
 ## [1.23.0-beta 2024-02-13]
 
 ### Added

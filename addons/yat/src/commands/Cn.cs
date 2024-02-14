@@ -34,7 +34,7 @@ public sealed class Cn : ICommand
 	private YAT _yat;
 	private BaseTerminal _terminal;
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var path = data.Arguments["node_path"] as string;
 		bool result;
@@ -50,10 +50,10 @@ public sealed class Cn : ICommand
 		if (!result)
 		{
 			data.Terminal.Print($"Invalid node path: {path}", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
 	private NodePath GetNodeFromSearch(string path)

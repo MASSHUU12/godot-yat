@@ -14,7 +14,7 @@ public sealed class Ip : ICommand
 {
 	private BaseTerminal _terminal;
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		string action = data.Arguments["action"] as string;
 
@@ -22,7 +22,7 @@ public sealed class Ip : ICommand
 
 		if (action == "addr") PrintLocalInterfaces();
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
 	private void PrintLocalInterfaces()

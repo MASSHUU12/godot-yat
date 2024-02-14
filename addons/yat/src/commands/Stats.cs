@@ -27,7 +27,7 @@ public sealed class Stats : ICommand
 		"uid://dekp8nra5yo6u"
 	);
 
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		_yat = data.Yat;
 		_terminal = data.Terminal;
@@ -36,7 +36,7 @@ public sealed class Stats : ICommand
 		return Close();
 	}
 
-	private CommandResult Open(Dictionary<string, object> opts)
+	private ECommandResult Open(Dictionary<string, object> opts)
 	{
 		bool all = (bool)opts["-all"];
 		bool fps = (bool)opts["-fps"];
@@ -69,20 +69,20 @@ public sealed class Stats : ICommand
 
 		foreach (Node component in components) _monitorInstance.AddComponent(component);
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
-	private CommandResult Close()
+	private ECommandResult Close()
 	{
 		if (!GodotObject.IsInstanceValid(_monitorInstance))
 		{
 			_terminal.Print("The game monitor is not open.", EPrintType.Error);
-			return CommandResult.Failure;
+			return ECommandResult.Failure;
 		}
 
 		_monitorInstance.QueueFree();
 		_monitorInstance = null;
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 }

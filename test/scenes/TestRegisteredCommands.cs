@@ -15,26 +15,26 @@ namespace GdUnit4
 		[Command("test")]
 		private class TestCommand : ICommand
 		{
-			public CommandResult Execute(CommandData data)
+			public ECommandResult Execute(CommandData data)
 			{
-				return CommandResult.NotImplemented;
+				return ECommandResult.NotImplemented;
 			}
 		}
 
 		private class TestCommandWithoutAttribute : ICommand
 		{
-			public CommandResult Execute(CommandData data)
+			public ECommandResult Execute(CommandData data)
 			{
-				return CommandResult.NotImplemented;
+				return ECommandResult.NotImplemented;
 			}
 		}
 
 		[Command("test")]
 		private class TestCommandWithoutInterface
 		{
-			public CommandResult Execute(CommandData data)
+			public ECommandResult Execute(CommandData data)
 			{
-				return CommandResult.NotImplemented;
+				return ECommandResult.NotImplemented;
 			}
 		}
 

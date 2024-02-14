@@ -14,12 +14,12 @@ namespace YAT.Commands;
 [Option("-set", "float", "Sets the timescale to the specified number.", 1.0f)]
 public sealed class Timescale : ICommand
 {
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var scale = (float)data.Options["-set"];
 
 		Engine.TimeScale = scale;
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 }

@@ -14,17 +14,17 @@ namespace GdUnit4
 		[Extension("test", "Test extension.", "Test extension manual.", "test_alias", "test_alias2")]
 		private class TestExtension : IExtension
 		{
-			public CommandResult Execute(CommandData data)
+			public ECommandResult Execute(CommandData data)
 			{
-				return CommandResult.NotImplemented;
+				return ECommandResult.NotImplemented;
 			}
 		}
 
 		private class TestExtensionWithoutAttribute : IExtension
 		{
-			public CommandResult Execute(CommandData data)
+			public ECommandResult Execute(CommandData data)
 			{
-				return CommandResult.NotImplemented;
+				return ECommandResult.NotImplemented;
 			}
 		}
 

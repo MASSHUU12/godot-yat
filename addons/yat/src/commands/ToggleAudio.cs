@@ -15,7 +15,7 @@ namespace YAT.Commands;
 [Option("-name", "string", "The name of the audio bus to toggle. If not provided, all buses will be toggled.", null)]
 public sealed class ToggleAudio : ICommand
 {
-	public CommandResult Execute(CommandData data)
+	public ECommandResult Execute(CommandData data)
 	{
 		var id = (int)data.Options["-id"];
 		var name = (string)data.Options["-name"];
@@ -23,7 +23,7 @@ public sealed class ToggleAudio : ICommand
 		if (id == -1 && string.IsNullOrEmpty(name))
 		{
 			ToggleAll();
-			return CommandResult.Success;
+			return ECommandResult.Success;
 		}
 
 		if (id != -1)
@@ -31,7 +31,7 @@ public sealed class ToggleAudio : ICommand
 			if (!ToggleById(id))
 			{
 				data.Terminal.Print("Invalid audio bus ID.", EPrintType.Error);
-				return CommandResult.InvalidArguments;
+				return ECommandResult.InvalidArguments;
 			}
 		}
 
@@ -40,11 +40,11 @@ public sealed class ToggleAudio : ICommand
 			if (!ToggleByName(name))
 			{
 				data.Terminal.Print("Invalid audio bus name.", EPrintType.Error);
-				return CommandResult.InvalidArguments;
+				return ECommandResult.InvalidArguments;
 			}
 		}
 
-		return CommandResult.Success;
+		return ECommandResult.Success;
 	}
 
 	private static void ToggleAll()
