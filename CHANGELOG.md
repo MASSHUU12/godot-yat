@@ -10,11 +10,17 @@ All notable changes to this project will be documented in this file.
 -   More results to ECommandResult.
 -   CommandResult record.
 -   Static methods to ICommand that corresponds to the ECommandResult results.
+-   ESceneChangeFailureReason enum.
 
 ### Changed
 
 -   Renamed CommandResult to ECommandResult.
 -   Commands now return CommandResult record.
+-   The SceneAboutToChange signal in the Cs command now also gives the old path, not just the new one.
+
+### Removed
+
+-   FailureReason enum.
 
 ## [1.23.0-beta 2024-02-13]
 
