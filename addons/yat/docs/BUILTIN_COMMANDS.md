@@ -36,3 +36,4 @@
 | timescale     | N/A    | Sets the timescale.                                                              |
 | toggleaudio   | N/A    | Toggles audio on or off.                                                         |
 | preferences   | prefs  | Creates the preferences window.                                                  |
+| traceroute    | N/A    | Displays the route that packets take to reach the specified host.                |
