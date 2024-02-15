@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Threading;
 using YAT.Types;
 
 namespace YAT.Helpers;
@@ -12,15 +13,21 @@ public static class Networking
 	/// Returns a list of IP addresses that a packet would take to reach the specified host. <br />
 	/// Inspired by https://stackoverflow.com/questions/142614/traceroute-and-ping-in-c-sharp/45565253#45565253
 	/// </summary>
-	public static IEnumerable<IPAddress> GetTraceRoute(string hostname, NetworkingOptions options = null)
+	public static IEnumerable<IPAddress> GetTraceRoute(
+		string hostname,
+		NetworkingOptions options = null,
+		CancellationToken ct = default
+	)
 	{
+		if (string.IsNullOrEmpty(hostname)) yield return null;
+
 		options ??= new();
 
 		byte[] buffer = CreateBuffer(options.BufferSize);
 
 		using var ping = new Ping();
 
-		for (ushort ttl = 1; ttl <= options.TTL; ttl++)
+		for (ushort ttl = 1; ttl <= options.TTL && !ct.IsCancellationRequested; ttl++)
 		{
 			PingOptions pOptions = new(ttl, true);
 			PingReply reply = ping.Send(hostname, options.Timeout, buffer, pOptions);
