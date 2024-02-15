@@ -19,35 +19,51 @@ public partial class Cs : Node, ICommand
 
 	public CommandResult Execute(CommandData data)
 	{
-		var oldPath = data.Yat.GetTree().CurrentScene.SceneFilePath;
 		var scene = (string)data.Arguments["scene"];
 
-		if (!ResourceLoader.Exists(scene, typeof(PackedScene).Name))
-		{
-			EmitSignal(SignalName.SceneChangeFailed, scene, (short)ESceneChangeFailureReason.DoesNotExist);
+		if (!CheckSceneExistence(scene)) return ICommand.Failure(
+			$"Scene '{scene}' does not exist."
+		);
 
-			return ICommand.Failure($"Scene '{scene}' does not exist.");
-		}
+		EmitSceneAboutToChange(data.Yat, scene);
 
-		EmitSignal(SignalName.SceneAboutToChange, oldPath, scene);
-
-		var error = data.Yat.GetTree().ChangeSceneToFile(scene);
-
-		if (error != Error.Ok)
-		{
-			EmitSignal(SignalName.SceneChangeFailed, scene, (short)(
-				error == Error.CantOpen
-				? ESceneChangeFailureReason.CantOpen
-				: ESceneChangeFailureReason.CantInstantiate
-			));
-
-			return ICommand.Failure($"Failed to change scene to '{scene}'.");
-		}
+		if (!ChangeScene(scene, data.Yat)) return ICommand.Failure(
+			$"Failed to change scene to '{scene}'."
+		);
 
 		EmitSignal(SignalName.SceneChanged, scene);
 
-		data.Terminal.Print($"Changed scene to '{scene}'.", EPrintType.Success);
+		return ICommand.Success($"Changed scene to '{scene}'.");
+	}
 
-		return ICommand.Success();
+	private bool CheckSceneExistence(string scene)
+	{
+		var sceneExists = ResourceLoader.Exists(scene, typeof(PackedScene).Name);
+		if (!sceneExists) EmitSignal(
+			SignalName.SceneChangeFailed,
+			scene,
+			(short)ESceneChangeFailureReason.DoesNotExist
+		);
+		return sceneExists;
+	}
+
+	private void EmitSceneAboutToChange(YAT yat, string scene)
+	{
+		var oldPath = yat.GetTree().CurrentScene.SceneFilePath;
+		EmitSignal(SignalName.SceneAboutToChange, oldPath, scene);
+	}
+
+	private bool ChangeScene(string scene, YAT yat)
+	{
+		var error = yat.GetTree().ChangeSceneToFile(scene);
+		if (error == Error.Ok) return true;
+
+		EmitSignal(SignalName.SceneChangeFailed, scene, (short)(
+			error == Error.CantOpen
+			? ESceneChangeFailureReason.CantOpen
+			: ESceneChangeFailureReason.CantInstantiate
+		));
+
+		return false;
 	}
 }
