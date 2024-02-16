@@ -14,12 +14,14 @@ All notable changes to this project will be documented in this file.
 -   TraceRoute command.
 -   Networking helper class.
 -   NetworkingOptions record.
+-   -limit option to ping command.
 
 ### Changed
 
 -   Renamed CommandResult to ECommandResult.
 -   Commands now return CommandResult record.
 -   The SceneAboutToChange signal in the Cs command now also gives the old path, not just the new one.
+-   Renamed ping command options.
 
 ### Removed
 

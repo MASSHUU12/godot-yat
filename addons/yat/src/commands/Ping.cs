@@ -1,5 +1,7 @@
+using System.Net.NetworkInformation;
 using System.Threading;
 using YAT.Attributes;
+using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -11,52 +13,56 @@ namespace YAT.Commands;
 	"[b]Usage[/b]: ping [i]target[/i] [i]options[/i]"
 )]
 [Threaded]
-[Argument("target", "string", "The target to ping.")]
-[Option("-timeout", "int(120:1200)", "The timeout in milliseconds.", 120)]
+[Argument("hostname", "string", "The host to trace the route to.")]
+[Option("-t", "int(1:32767)", "The maximum time to wait for each reply, in milliseconds.", 10000)]
+[Option("-ttl", "int(1:255)", "The maximum number of hops to search for the target.", 30)]
+[Option("-b", "int(1:32767)", "The size of the buffer to send with the request.", 32)]
+[Option("-f", null, "Specifies that the packet can be fragmented.", false)]
 [Option("-delay", "int(1:10)", "The delay between pings in seconds.", 1)]
-[Option("-bytes", "int(16:65500)", "The number of bytes to send.", 32)]
-[Option("-ttl", "int(1:255)", "The time to live.", 128)]
-[Option("-fragment", null, "Fragment the packet.", false)]
+[Option("-limit", "int(1:255)", "The maximum number of pings to send.", 0)]
 public sealed class Ping : ICommand
 {
 	public CommandResult Execute(CommandData data)
 	{
-		string target = (string)data.Arguments["target"];
-		bool fragment = (bool)data.Options["-fragment"];
-		int timeout = (int)data.Options["-timeout"];
-		int bytes = (int)data.Options["-bytes"];
-		int ttl = (int)data.Options["-ttl"];
-		int delay = (int)data.Options["-delay"];
-		delay *= 1000;
-
-		byte[] buffer = System.Text.Encoding.ASCII.GetBytes(GenerateData(bytes));
-
-		while (!data.CancellationToken.IsCancellationRequested)
+		string hostname = (string)data.Arguments["hostname"];
+		var maxPings = (int)data.Options["-limit"];
+		var options = new NetworkingOptions
 		{
-			System.Net.NetworkInformation.Ping ping = new();
-			System.Net.NetworkInformation.PingOptions options = new()
-			{
-				Ttl = ttl,
-				DontFragment = !fragment
-			};
-			System.Net.NetworkInformation.PingReply reply = ping.Send(target, timeout, buffer, options);
+			Timeout = (ushort)(int)data.Options["-t"],
+			TTL = (ushort)(int)data.Options["-ttl"],
+			BufferSize = (ushort)(int)data.Options["-b"],
+			DontFragment = !(bool)data.Options["-f"],
+			Delay = (ushort)((int)data.Options["-delay"] * 1000),
+		};
 
-			if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
+		uint pings = 0;
+
+		data.Terminal.Output.Print($"Pinging {hostname}...");
+
+		while ((maxPings == 0 || pings < maxPings) && !data.CancellationToken.IsCancellationRequested)
+		{
+			var reply = Networking.Ping(hostname, options);
+
+			if (reply is null)
 			{
-				data.Terminal.Print($"Reply from {reply.Address}: bytes={reply.Buffer.Length} time={reply.RoundtripTime}ms TTL={reply.Options.Ttl}");
+				data.Terminal.Output.Print("Failed to ping the host.");
+				break;
 			}
-			else data.Terminal.Print($"Request timed out.");
 
-			Thread.Sleep(delay);
+			if (reply.Status == IPStatus.Success) data.Terminal.Print(string.Format(
+				"Reply from {0}: bytes={1} time={2}ms TTL={3}",
+				reply.Address,
+				reply.Buffer.Length,
+				reply.RoundtripTime,
+				reply.Options.Ttl
+			));
+			else data.Terminal.Output.Print($"Request timed out.");
+
+			if (maxPings != 0) pings++;
+
+			Thread.Sleep(options.Delay);
 		}
 
 		return ICommand.Success();
-	}
-
-	private static string GenerateData(int bytes)
-	{
-		string data = string.Empty;
-		for (int i = 0; i < bytes; i++) data += 'a';
-		return data;
 	}
 }
