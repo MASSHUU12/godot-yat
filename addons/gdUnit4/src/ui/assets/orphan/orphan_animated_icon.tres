@@ -1,30 +1,32 @@
-[gd_resource type="AnimatedTexture" load_steps=7 format=3 uid="uid://beklywyvr5nd4"]
+[gd_resource type="AnimatedTexture" load_steps=7 format=2]
 
-[ext_resource type="Texture2D" uid="uid://bjm3fxk3ieapk" path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red4.svg" id="1"]
-[ext_resource type="Texture2D" uid="uid://nj6xpoxpf6i5" path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red5.svg" id="2"]
-[ext_resource type="Texture2D" uid="uid://bylpj2dbacbaw" path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red6.svg" id="3"]
-[ext_resource type="Texture2D" uid="uid://cbnqfoh4n6bj5" path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red3.svg" id="4"]
-[ext_resource type="Texture2D" uid="uid://cnvenq5hici48" path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red2.svg" id="5"]
-[ext_resource type="Texture2D" uid="uid://bpqfgn22gmpjm" path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red7.svg" id="6"]
+[ext_resource path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red4.svg" type="Texture2D" id=1]
+[ext_resource path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red5.svg" type="Texture2D" id=2]
+[ext_resource path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red6.svg" type="Texture2D" id=3]
+[ext_resource path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red3.svg" type="Texture2D" id=4]
+[ext_resource path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red2.svg" type="Texture2D" id=5]
+[ext_resource path="res://addons/gdUnit4/src/ui/assets/orphan/orphan_red7.svg" type="Texture2D" id=6]
 
 [resource]
+flags = 4
 frames = 10
-frame_0/texture = ExtResource("5")
-frame_1/texture = ExtResource("4")
-frame_1/duration = 1.0
-frame_2/texture = ExtResource("1")
-frame_2/duration = 1.0
-frame_3/texture = ExtResource("2")
-frame_3/duration = 1.0
-frame_4/texture = ExtResource("3")
-frame_4/duration = 1.0
-frame_5/texture = ExtResource("6")
-frame_5/duration = 1.0
-frame_6/texture = ExtResource("3")
-frame_6/duration = 1.0
-frame_7/texture = ExtResource("2")
-frame_7/duration = 1.0
-frame_8/texture = ExtResource("1")
-frame_8/duration = 1.0
-frame_9/texture = ExtResource("4")
-frame_9/duration = 1.0
+fps = 9.0
+frame_0/texture = ExtResource( 5 )
+frame_1/texture = ExtResource( 4 )
+frame_1/delay_sec = 0.0
+frame_2/texture = ExtResource( 1 )
+frame_2/delay_sec = 0.0
+frame_3/texture = ExtResource( 2 )
+frame_3/delay_sec = 0.0
+frame_4/texture = ExtResource( 3 )
+frame_4/delay_sec = 0.0
+frame_5/texture = ExtResource( 6 )
+frame_5/delay_sec = 0.5
+frame_6/texture = ExtResource( 3 )
+frame_6/delay_sec = 0.0
+frame_7/texture = ExtResource( 2 )
+frame_7/delay_sec = 0.0
+frame_8/texture = ExtResource( 1 )
+frame_8/delay_sec = 0.0
+frame_9/texture = ExtResource( 4 )
+frame_9/delay_sec = 0.0
