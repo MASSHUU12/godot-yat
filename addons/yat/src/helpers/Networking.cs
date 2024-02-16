@@ -9,6 +9,28 @@ namespace YAT.Helpers;
 
 public static class Networking
 {
+	public static PingReply Ping(
+		string hostname,
+		NetworkingOptions options = null
+	)
+	{
+		if (string.IsNullOrEmpty(hostname)) return null;
+
+		options ??= new();
+
+		byte[] buffer = CreateBuffer(options.BufferSize);
+
+		using var ping = new Ping();
+
+		PingReply reply = ping.Send(hostname, options.Timeout, buffer, new()
+		{
+			Ttl = options.TTL,
+			DontFragment = options.DontFragment
+		});
+
+		return reply;
+	}
+
 	/// <summary>
 	/// Returns a list of IP addresses that a packet would take to reach the specified host. <br />
 	/// Inspired by https://stackoverflow.com/questions/142614/traceroute-and-ping-in-c-sharp/45565253#45565253
