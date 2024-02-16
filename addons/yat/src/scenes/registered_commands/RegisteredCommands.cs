@@ -136,6 +136,7 @@ public partial class RegisteredCommands : Node
 				typeof(View),
 				typeof(Ping),
 				typeof(Wenv),
+				typeof(Load),
 				typeof(Pause),
 				typeof(Watch),
 				typeof(Stats),
