@@ -1,0 +1,42 @@
+name: unit-tests
+run-name: ${{ github.head_ref || github.ref_name }}-unit-tests
+
+on:
+    workflow_call:
+        inputs:
+            os:
+                required: false
+                type: string
+                default: "ubuntu-22.04"
+            godot-version:
+                required: true
+                type: string
+
+    workflow_dispatch:
+        inputs:
+            os:
+                description: "The OS to run the unit tests"
+                required: false
+                type: string
+                default: "ubuntu-22.04"
+            godot-version:
+                description: "The Godot engine version"
+                required: true
+                type: string
+
+concurrency:
+    group: unit-tests-${{ github.head_ref || github.ref_name }}-${{ inputs.godot-version }}
+    cancel-in-progress: true
+
+jobs:
+    unit-tests:
+        runs-on: ${{ github.event.inputs.os }}
+        name: ${{ github.workflow }} - ${{ github.event.inputs.os }} - ${{ github.event.inputs.godot-version }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: MikeSchulze/gdUnit4-action@v1
+              with:
+                  godot-version: "4.2.1"
+                  version: "latest"
+                  paths: |
+                      res://test/
