@@ -22,13 +22,27 @@ public static class Networking
 
 		using var ping = new Ping();
 
-		PingReply reply = ping.Send(hostname, options.Timeout, buffer, new()
+		try
 		{
-			Ttl = options.TTL,
-			DontFragment = options.DontFragment
-		});
-
-		return reply;
+			PingReply reply = ping.Send(hostname, options.Timeout, buffer, new()
+			{
+				Ttl = options.TTL,
+				DontFragment = options.DontFragment
+			});
+			return reply;
+		}
+		catch (Exception ex) when (ex
+			is PingException
+			or InvalidOperationException
+			or ArgumentException
+		)
+		{
+			return null;
+		}
+		finally
+		{
+			ping.Dispose();
+		}
 	}
 
 	/// <summary>
