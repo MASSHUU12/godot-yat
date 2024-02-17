@@ -11,10 +11,12 @@ All notable changes to this project will be documented in this file.
 -   CommandResult record.
 -   Static methods to ICommand that corresponds to the ECommandResult results.
 -   ESceneChangeFailureReason enum.
--   TraceRoute command.
 -   Networking helper class.
 -   NetworkingOptions record.
 -   -limit option to ping command.
+-   Commands:
+    -   TraceRoute
+    -   Load
 
 ### Changed
 
