@@ -17,7 +17,9 @@ All notable changes to this project will be documented in this file.
 -   Commands:
     -   TraceRoute
     -   Load
--   Description attribute.
+-   Attributes:
+    -   Description
+    -   Usage
 
 ### Changed
 

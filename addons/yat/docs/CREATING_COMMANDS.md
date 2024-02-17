@@ -1,18 +1,17 @@
 <div align="center">
 	<h3>Creating commands</h1>
-	<p>Here you can find information on creating new commands, extending existing commands, and adding them to YAT</p>
+	<p>Here you can find information on creating new commands, extending existing commands, and adding them to YAT.</p>
 </div>
 
-## Creating commands
+<br />
 
-Information about automatic input validation can be found [here](./AUTOMATIC_INPUT_VALIDATION.md).
+> Information about automatic input validation can be found [here](./AUTOMATIC_INPUT_VALIDATION.md).
 
-To create a command, you need to create C# file and implement `ICommand` interface.
+To create a command, you need to create C# file and implement `ICommand` interface with `Command` attribute.
 
-In addition, you must use the `Command` attribute to add the necessary metadata for the command.
-
-The `Command` attribute accepts the command `name`, its `description`, `manual` and `aliases`.
-The description and manual have BBCode support.
+The `Command` attribute accepts the command `name`, and optionally its `description`, `manual` and `aliases`.
+For description and manual, you can also use `Description` and `Usage` attributes.
+The description and manual/usage have BBCode support.
 
 The execution of the command begins in the `Execute` method.
 The `Execute` method accepts `CommandData`, which contains probably all the things your command could ever need, these are things like: reference to YAT and BaseTerminal, raw arguments & options, converted arguments & options, cancellation token and more.

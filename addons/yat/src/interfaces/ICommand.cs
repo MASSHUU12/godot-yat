@@ -47,10 +47,9 @@ public partial interface ICommand
 	public virtual string GenerateCommandManual()
 	{
 		CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this);
+		UsageAttribute usage = Reflection.GetAttribute<UsageAttribute>(this);
 		DescriptionAttribute description = Reflection.GetAttribute<DescriptionAttribute>(this);
 		bool isThreaded = Reflection.HasAttribute<ThreadedAttribute>(this);
-
-		if (string.IsNullOrEmpty(command?.Manual)) return "This command does not have a manual.";
 
 		StringBuilder sb = new();
 
@@ -62,7 +61,7 @@ public partial interface ICommand
 			)
 		);
 		sb.AppendLine($"[p align=center]{description?.Description ?? command.Description}[/p]");
-		sb.AppendLine(command.Manual);
+		sb.AppendLine(usage is null ? command.Manual : $"\n[b]Usage[/b]: {usage?.Usage}");
 		sb.AppendLine("\n[b]Aliases[/b]:");
 		sb.AppendLine(command.Aliases.Length > 0
 				? string.Join("\n", command.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
