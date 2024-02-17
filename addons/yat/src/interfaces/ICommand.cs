@@ -47,6 +47,7 @@ public partial interface ICommand
 	public virtual string GenerateCommandManual()
 	{
 		CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this);
+		DescriptionAttribute description = Reflection.GetAttribute<DescriptionAttribute>(this);
 		bool isThreaded = Reflection.HasAttribute<ThreadedAttribute>(this);
 
 		if (string.IsNullOrEmpty(command?.Manual)) return "This command does not have a manual.";
@@ -60,7 +61,7 @@ public partial interface ICommand
 				isThreaded ? "[threaded]" : string.Empty
 			)
 		);
-		sb.AppendLine($"[p align=center]{command.Description}[/p]");
+		sb.AppendLine($"[p align=center]{description?.Description ?? command.Description}[/p]");
 		sb.AppendLine(command.Manual);
 		sb.AppendLine("\n[b]Aliases[/b]:");
 		sb.AppendLine(command.Aliases.Length > 0
