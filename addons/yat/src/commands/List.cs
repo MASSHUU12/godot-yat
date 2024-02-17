@@ -10,7 +10,7 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("list", "List all available commands", "[b]Usage[/b]: list", "lc")]
-public partial class List : ICommand
+public sealed class List : ICommand
 {
 	public CommandResult Execute(CommandData data)
 	{
@@ -22,11 +22,13 @@ public partial class List : ICommand
 		{
 			if (command.Value.GetCustomAttribute<CommandAttribute>() is not CommandAttribute attribute) continue;
 
+			var description = command.Value.GetCustomAttribute<DescriptionAttribute>();
+
 			// Skip aliases
 			if (attribute.Aliases.Contains(command.Key)) continue;
 
 			sb.Append($"[b]{command.Key}[/b] - ");
-			sb.Append(attribute.Description);
+			sb.Append(description?.Description ?? attribute.Description);
 			sb.AppendLine();
 		}
 
