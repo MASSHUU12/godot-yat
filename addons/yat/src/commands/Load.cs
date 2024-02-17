@@ -17,8 +17,8 @@ namespace YAT.Commands;
 [Option("-sx", "float", "The X scale of the object.", 1f)]
 [Option("-sy", "float", "The Y scale of the object.", 1f)]
 [Option("-sz", "float", "The Z scale of the object.", 1f)]
-[Option("-hidden", null, "If true, the object will be hidden.", false)]
-[Option("-2d", null, "If true, the object will be loaded as a 2D object.", false)]
+[Option("-hidden", null, "The object will be hidden.", false)]
+[Option("-2d", null, "The object will be loaded as a 2D object.", false)]
 public sealed class Load : ICommand
 {
 	public CommandResult Execute(CommandData data)
@@ -150,9 +150,6 @@ public sealed class Load : ICommand
 
 	private static bool ValidatePath(string path)
 	{
-		if (string.IsNullOrEmpty(path)) return false;
-		if (!ResourceLoader.Exists(path)) return false;
-
-		return true;
+		return !string.IsNullOrEmpty(path) && ResourceLoader.Exists(path);
 	}
 }
