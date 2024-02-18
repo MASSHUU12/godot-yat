@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file.
 -   Commands now return CommandResult record.
 -   The SceneAboutToChange signal in the Cs command now also gives the old path, not just the new one.
 -   Renamed ping command options.
+-   Argument & Option attributes inherit from CommandInput attribute.
 
 ### Removed
 

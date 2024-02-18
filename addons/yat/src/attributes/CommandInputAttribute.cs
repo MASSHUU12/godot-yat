@@ -20,6 +20,6 @@ public class CommandInputAttribute : Attribute
 		if (Text.TryParseCommandInputType(type, out var t))
 			Type = t;
 		else
-			GD.PrintErr($"Invalid command input type: {type}");
+			GD.PushError($"Invalid command input type '{type}' for command '{name}'.");
 	}
 }
