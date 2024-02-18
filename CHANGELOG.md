@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
     -   Usage
 -   CommandInputType record.
 -   TryParseCommandInputType method for Text helper class.
+-   CommandInput attribute.
 
 ### Changed
 
