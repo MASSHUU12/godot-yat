@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Godot;
+using YAT.Types;
 
 namespace YAT.Helpers;
 
@@ -202,5 +205,59 @@ public static class Text
 		}
 
 		return result.ToString() + ellipsisChar + lastPart;
+	}
+
+	public static bool TryParseCommandInputType(string type, out CommandInputType parsed)
+	{
+		parsed = null;
+		type = type?.Trim();
+
+		// Used to later get min/max values
+		static bool allowedToHaveRange(string t) => t switch
+		{
+			"int" => true,
+			"float" => true,
+			"string" => true,
+			_ => false
+		};
+
+		if (string.IsNullOrEmpty(type)) return false;
+
+		// Check if ends with ... to indicate an array
+		bool isArray = type.EndsWith("...");
+
+		if (isArray) type = type[..^3].Trim();
+
+		// Get the min and max values if present
+		var tokens = type.Trim(')').Split('(', StringSplitOptions.RemoveEmptyEntries);
+
+		if (tokens.Length > 1)
+		{
+			if (tokens[1].EndsWith(':')) return false;
+
+			var minMax = tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries);
+
+			if (!allowedToHaveRange(tokens[0]) || minMax.Length > 2) return false;
+
+			// If min value is not present, set it to 0
+			if (minMax.Length == 1)
+			{
+				if (minMax[0].TryConvert(out float max))
+					parsed = new(tokens[0], 0, max, isArray);
+				else return false;
+			}
+			else
+			{
+				if (minMax[0].TryConvert(out float min) &&
+					minMax[1].TryConvert(out float max))
+					parsed = new(tokens[0], min, max, isArray);
+				else return false;
+			}
+		}
+		else parsed = new(tokens[0], 0, 0, isArray);
+
+		if (parsed.Min > parsed.Max) return false;
+
+		return true;
 	}
 }

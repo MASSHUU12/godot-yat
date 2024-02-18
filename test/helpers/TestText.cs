@@ -87,9 +87,36 @@ namespace GdUnit4
 		[TestCase("res://example/main_menu/MainMenu.tscn", (ushort)15, "...ainMenu.tscn")]
 		[TestCase("res://example/main_menu/MainMenu.tscn", (ushort)0, "...")]
 		[TestCase("", (ushort)16, "...")]
-		public void ShortenPath(string path, ushort maxLength, string expected)
+		public void TestShortenPath(string path, ushort maxLength, string expected)
 		{
 			AssertThat(Text.ShortenPath(path, maxLength)).IsEqual(expected);
+		}
+
+		[TestCase("int", "int", 0, 0, false, true)]
+		[TestCase("int(0:10)", "int", 0, 10, false, true)]
+		[TestCase("int(5:10)", "int", 5, 10, false, true)]
+		[TestCase("int(:10)", "int", 0, 10, false, true)]
+		[TestCase("int(sda:da)", "int", 0, 0, false, false)]
+		[TestCase("int(:dxdx)", "int", 0, 0, false, false)]
+		[TestCase("int(0:)", "int", 0, 0, false, false)]
+		[TestCase("int()", "int", 0, 0, false, true)]
+		[TestCase("x(5:10)", "x", 5, 10, false, false)]
+		[TestCase("choice", "choice", 0, 0, false, true)]
+		[TestCase("choice(0:10)", "choice", 0, 10, false, false)]
+		[TestCase("float(5:10)", "float", 5f, 10f, false, true)]
+		[TestCase("float(5.5:10.5)", "float", 5.5f, 10.5f, false, true)]
+		[TestCase("float(5:10)...", "float", 5f, 10f, true, true)]
+		[TestCase("int...", "int", 0, 0, true, true)]
+		public static void TestTryParseCommandInputType(string type, string eType, float min, float max, bool isArray, bool successful)
+		{
+			AssertThat(Text.TryParseCommandInputType(type, out var result)).IsEqual(successful);
+
+			if (!successful) return;
+
+			AssertThat(result.Type).IsEqual(eType);
+			AssertThat(result.Min).IsEqual(min);
+			AssertThat(result.Max).IsEqual(max);
+			AssertThat(result.IsArray).IsEqual(isArray);
 		}
 	}
 }
