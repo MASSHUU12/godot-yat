@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using YAT.Helpers;
 using YAT.Types;
@@ -9,7 +10,7 @@ namespace YAT.Attributes;
 public class CommandInputAttribute : Attribute
 {
 	public string Name { get; private set; }
-	public CommandInputType Type { get; private set; }
+	public LinkedList<CommandInputType> Types { get; private set; }
 	public string Description { get; private set; }
 
 	public CommandInputAttribute(string name, string type, string description = "")
@@ -17,9 +18,12 @@ public class CommandInputAttribute : Attribute
 		Name = name;
 		Description = description;
 
-		if (Text.TryParseCommandInputType(type, out var t))
-			Type = t;
-		else
-			GD.PushError($"Invalid command input type '{type}' for command '{name}'.");
+		foreach (var t in type.Split('|'))
+		{
+			if (Text.TryParseCommandInputType(t, out var commandInputType))
+				Types.AddLast(commandInputType);
+			else
+				GD.PushError($"Invalid command input type '{t}' for command '{name}'.");
+		}
 	}
 }
