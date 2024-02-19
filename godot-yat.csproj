@@ -10,6 +10,9 @@
     <Optimize>true</Optimize>
     <!--Disable warning of invalid/incompatible GodotSharp version-->
     <NoWarn>NU1605</NoWarn>
+    <DefaultItemExcludes Condition="'$(Configuration)' == 'ExportRelease'">
+      $(DefaultItemExcludes);test/**/*
+    </DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="script_templates/**/*.cs" />
