@@ -49,8 +49,8 @@ public partial class CommandInfo : Node
 			bool current = tokens.Length - 1 == i;
 			bool valid = Terminal.CommandValidator.ValidateCommandArgument(
 				commandAttribute.Name,
-				arg.Type,
-				new() { { arg.Name, arg.Type } },
+				arg,
+				new() { { arg.Name, arg.Types } },
 				(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,
 				false
 			);
@@ -60,7 +60,7 @@ public partial class CommandInfo : Node
 				valid ? string.Empty : $"[color={_yat.PreferencesManager.Preferences.ErrorColor.ToHtml()}]",
 				current ? "[b]" : string.Empty,
 				arg.Name,
-				(arg.Type is string[]) ? "options" : arg.Type,
+				string.Join(" | ", arg.Types.Select(t => t.Type)),
 				current ? "[/b]" : string.Empty,
 				valid ? string.Empty : "[/color]"
 			);
