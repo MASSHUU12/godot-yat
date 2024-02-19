@@ -6,11 +6,11 @@ using YAT.Types;
 
 namespace YAT.Attributes;
 
-[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
 public class CommandInputAttribute : Attribute
 {
 	public string Name { get; private set; }
-	public LinkedList<CommandInputType> Types { get; private set; }
+	public LinkedList<CommandInputType> Types { get; private set; } = new();
 	public string Description { get; private set; }
 
 	public CommandInputAttribute(string name, string type, string description = "")
