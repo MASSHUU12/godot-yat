@@ -15,7 +15,7 @@ namespace GdUnit4
 		[TestCase(-1, 0, 10, false)]
 		public void TestIsWithinRangeInt(int value, int min, int max, bool expected)
 		{
-			AssertThat(Numeric.IsWithinRange(value, min, max)).IsEqual(expected);
+			AssertThat(Numeric.IsWithinRange<int>(value, min, max)).IsEqual(expected);
 		}
 
 		[TestCase(0.3, 0.1, 0.5, true)]
@@ -25,7 +25,7 @@ namespace GdUnit4
 		[TestCase(0, 0.1, 0.5, false)]
 		public void TestIsWithinRangeDouble(double value, double min, double max, bool expected)
 		{
-			AssertThat(Numeric.IsWithinRange(value, min, max)).IsEqual(expected);
+			AssertThat(Numeric.IsWithinRange<double>(value, min, max)).IsEqual(expected);
 		}
 		#endregion
 
