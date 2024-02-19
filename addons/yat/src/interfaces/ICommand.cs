@@ -72,13 +72,13 @@ public partial interface ICommand
 
 	public virtual string GenerateArgumentsManual()
 	{
-		var attributes = Reflection.GetAttributes<ArgumentAttribute>(this);
+		var arguments = Reflection.GetAttributes<ArgumentAttribute>(this);
 
-		if (attributes is null) return "\nThis command does not have any arguments.";
+		if (arguments is null) return "\nThis command does not have any arguments.";
 
 		StringBuilder sb = new();
 
-		if (attributes.Length == 0)
+		if (arguments.Length == 0)
 		{
 			sb.AppendLine("\nThis command does not have any arguments.");
 			return sb.ToString();
@@ -86,25 +86,21 @@ public partial interface ICommand
 
 		sb.AppendLine("[p align=center][font_size=18]Arguments[/font_size][/p]");
 
-		foreach (var attr in attributes)
-		{
-			sb.AppendLine($"[b]{attr.Name}[/b]: {(attr.Type is string[] type
-					? string.Join(" | ", type)
-					: attr.Type)} - {attr.Description}");
-		}
+		foreach (var arg in arguments)
+			sb.AppendLine($"[b]{arg.Name}[/b]: {string.Join(" | ", arg.Types)}");
 
 		return sb.ToString();
 	}
 
 	public virtual string GenerateOptionsManual()
 	{
-		var attributes = Reflection.GetAttributes<OptionAttribute>(this);
+		var options = Reflection.GetAttributes<OptionAttribute>(this);
 
-		if (attributes is null) return "\nThis command does not have any options.";
+		if (options is null) return "\nThis command does not have any options.";
 
 		StringBuilder sb = new();
 
-		if (attributes.Length == 0)
+		if (options.Length == 0)
 		{
 			sb.AppendLine("\nThis command does not have any options.");
 			return sb.ToString();
@@ -112,12 +108,8 @@ public partial interface ICommand
 
 		sb.AppendLine("[p align=center][font_size=18]Options[/font_size][/p]");
 
-		foreach (var attr in attributes)
-		{
-			sb.AppendLine($"[b]{attr.Name}[/b]: {(attr.Type is string[] type
-					? string.Join(" | ", type)
-					: attr.Type)} - {attr.Description}");
-		}
+		foreach (var opt in options)
+			sb.AppendLine($"[b]{opt.Name}[/b]: {string.Join(" | ", opt.Types)}");
 
 		return sb.ToString();
 	}
