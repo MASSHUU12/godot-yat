@@ -1,3 +1,5 @@
+using Godot;
+
 namespace YAT.Types;
 
-public record CommandInputType(string Type, float Min, float Max, bool IsArray);
+public record CommandInputType(StringName Type, float Min, float Max, bool IsArray);

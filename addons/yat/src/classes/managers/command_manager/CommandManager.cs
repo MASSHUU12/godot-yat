@@ -53,20 +53,28 @@ public partial class CommandManager : Node
 		}
 
 		ICommand command = Activator.CreateInstance(value) as ICommand;
-		Dictionary<string, object> convertedArgs = null;
-		Dictionary<string, object> convertedOpts = null;
+		Dictionary<StringName, object> convertedArgs = null;
+		Dictionary<StringName, object> convertedOpts = null;
 
 		if (command.GetAttribute<NoValidateAttribute>() is null)
 		{
 			if (!terminal.CommandValidator.ValidatePassedData<ArgumentAttribute>(
 				command, args[1..], out convertedArgs
-			)) return;
+			))
+			{
+				GD.Print("Failed to validate passed arguments.");
+				return;
+			}
 
 			if (command.GetAttributes<OptionAttribute>() is not null)
 			{
 				if (!terminal.CommandValidator.ValidatePassedData<OptionAttribute>(
 					command, args[1..], out convertedOpts
-				)) return;
+				))
+				{
+					GD.Print("Failed to validate passed options.");
+					return;
+				}
 			}
 		}
 
