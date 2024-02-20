@@ -3,31 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Godot;
 using YAT.Types;
 
 namespace YAT.Helpers;
 
-/// <summary>
-/// Provides helper methods for working with text.
-/// </summary>
 public static class Text
 {
-	/// <summary>
-	/// Escapes BBCode tags in the given text by replacing '[' with '[lb]'.
-	/// </summary>
-	/// <param name="text">The text to escape.</param>
-	/// <returns>The escaped text.</returns>
 	public static string EscapeBBCode(string text)
 	{
 		return text.Replace("[", "[lb]");
 	}
 
-	/// <summary>
-	/// Makes the specified text bold by surrounding it with the appropriate tags.
-	/// </summary>
-	/// <param name="text">The text to make bold.</param>
-	/// <returns>The specified text surrounded by bold tags.</returns>
 	public static string MakeBold(string text)
 	{
 		return $"[b]{text}[/b]";
