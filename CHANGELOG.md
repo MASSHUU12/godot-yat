@@ -10,10 +10,15 @@ All notable changes to this project will be documented in this file.
 -   More results to ECommandResult.
 -   CommandResult record.
 -   Static methods to ICommand that corresponds to the ECommandResult results.
--   ESceneChangeFailureReason enum.
 -   Networking helper class.
 -   NetworkingOptions record.
 -   -limit option to ping command.
+-   CommandInputType record.
+-   TryParseCommandInputType method for Text helper class.
+-   String in arguments and options can have defined min and max length.
+-   Enum:
+    -   ESceneChangeFailureReason
+    -   EStringConversionResult
 -   Commands:
     -   TraceRoute
     -   Load
@@ -21,12 +26,9 @@ All notable changes to this project will be documented in this file.
     -   Description
     -   Usage
     -   CommandInput
--   CommandInputType record.
--   TryParseCommandInputType method for Text helper class.
 -   Messages:
     -   InvalidOption,
     -   ValueOutOfRange
--   String in arguments and options can have defined min and max length.
 
 ### Changed
 
