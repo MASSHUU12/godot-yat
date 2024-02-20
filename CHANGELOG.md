@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 -   CommandInputType record.
 -   TryParseCommandInputType method for Text helper class.
 -   CommandInput attribute.
+-   InvalidOption method to Messages class.
 
 ### Changed
 
@@ -31,6 +32,7 @@ All notable changes to this project will be documented in this file.
 -   The SceneAboutToChange signal in the Cs command now also gives the old path, not just the new one.
 -   Renamed ping command options.
 -   Argument & Option attributes inherit from CommandInput attribute.
+-   Options with null type are no longer supported.
 
 ### Removed
 

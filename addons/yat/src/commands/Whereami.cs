@@ -5,8 +5,8 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("whereami", "Prints the current scene name and path.", "[b]Usage[/b]: whereami", "wai")]
-[Option("-l", null, "Prints the full path to the scene file.", false)]
-[Option("-s", null, "Prints info about currently selected node.", false)]
+[Option("-l", "bool", "Prints the full path to the scene file.", false)]
+[Option("-s", "bool", "Prints info about currently selected node.", false)]
 public sealed class Whereami : ICommand
 {
 	public CommandResult Execute(CommandData data)
