@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 -   Options with null type are no longer supported.
 -   The way of defining the type for arguments and options has changed.
 -   CommandData now uses StringName instead of string for dictionaries.
+-   Methods StartsWith & EndsWith from Text class are now extensions of string type.
 
 ### Removed
 

@@ -97,22 +97,22 @@ public static class Text
 		return modifiedStrings.ToArray();
 	}
 
-	public static bool StartsWith(string text, params char[] value)
+	public static bool StartsWith(this string text, params char[] value)
 	{
 		return value.Any(text.StartsWith);
 	}
 
-	public static bool StartsWith(string text, params string[] value)
+	public static bool StartsWith(this string text, params string[] value)
 	{
 		return value.Any(text.StartsWith);
 	}
 
-	public static bool EndsWith(string text, params char[] value)
+	public static bool EndsWith(this string text, params char[] value)
 	{
 		return value.Any(text.EndsWith);
 	}
 
-	public static bool EndsWith(string text, params string[] value)
+	public static bool EndsWith(this string text, params string[] value)
 	{
 		return value.Any(text.EndsWith);
 	}
