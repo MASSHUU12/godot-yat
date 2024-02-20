@@ -22,7 +22,7 @@ public partial class CommandValidator : Node
 	/// <param name="passedData">The arguments passed to the command.</param>
 	/// <param name="data">The dictionary of arguments.</param>
 	/// <returns>True if the passed data is valid, false otherwise.</returns>
-	public bool ValidatePassedData<T>(ICommand command, string[] passedData, out Dictionary<string, object> data) where T : CommandInputAttribute
+	public bool ValidatePassedData<T>(ICommand command, string[] passedData, out Dictionary<StringName, object> data) where T : CommandInputAttribute
 	{
 		Type type = typeof(T);
 		Type argType = typeof(ArgumentAttribute);
@@ -47,7 +47,7 @@ public partial class CommandValidator : Node
 			if (passedData.Length < dataAttrArr.Length)
 			{
 				Terminal.Output.Error(Messages.MissingArguments(
-					commandAttribute.Name, dataAttrArr.Select(a => a.Name).ToArray())
+					commandAttribute.Name, dataAttrArr.Select<T, string>(a => a.Name).ToArray())
 				);
 				return false;
 			}
@@ -68,7 +68,7 @@ public partial class CommandValidator : Node
 
 	private bool ValidateCommandArguments(
 		string commandName,
-		Dictionary<string, object> validatedArgs,
+		Dictionary<StringName, object> validatedArgs,
 		string[] passedArgs,
 		ArgumentAttribute[] arguments
 	)
@@ -81,7 +81,7 @@ public partial class CommandValidator : Node
 
 	private bool ValidateCommandOptions(
 		string commandName,
-		Dictionary<string, object> validatedOpts,
+		Dictionary<StringName, object> validatedOpts,
 		string[] passedOpts,
 		OptionAttribute[] options
 	)
@@ -96,7 +96,7 @@ public partial class CommandValidator : Node
 	public bool ValidateCommandArgument(
 		string commandName,
 		ArgumentAttribute argument,
-		Dictionary<string, object> validatedArgs,
+		Dictionary<StringName, object> validatedArgs,
 		string passedArg,
 		bool log = true
 	)
@@ -108,11 +108,12 @@ public partial class CommandValidator : Node
 				validatedArgs[argument.Name] = converted;
 				return true;
 			}
-			else if (log)
-				PrintNumericError(
-					commandName, argument.Name, argument.Types, converted,
-					type.Min, type.Max
-				);
+
+			if (log) PrintNumericError(
+				commandName, argument.Name,
+				argument.Types, converted,
+				type.Min, type.Max
+			);
 		}
 
 		return false;
@@ -121,7 +122,7 @@ public partial class CommandValidator : Node
 	private bool ValidateCommandOption(
 		string commandName,
 		OptionAttribute option,
-		Dictionary<string, object> validatedOpts,
+		Dictionary<StringName, object> validatedOpts,
 		string[] passedOpts
 	)
 	{
@@ -131,16 +132,17 @@ public partial class CommandValidator : Node
 		{
 			if (!passedOpt.StartsWith(option.Name)) continue;
 
+			bool isBool = lookup.Contains("bool");
 			string[] tokens = passedOpt.Split('=');
 
-			if (lookup.Contains("bool") && tokens.Length == 1)
+			if (isBool && tokens.Length == 1)
 			{
 				validatedOpts[option.Name] = true;
 				return true;
 			}
 
-			if ((!lookup.Contains("bool") && tokens.Length != 2)
-				|| (lookup.Contains("bool") && tokens.Length != 1)
+			if ((!isBool && tokens.Length != 2)
+				|| (isBool && tokens.Length != 1)
 			)
 			{
 				Terminal.Output.Error(
@@ -211,10 +213,12 @@ public partial class CommandValidator : Node
 		return true;
 	}
 
-	private static bool TryConvertStringToType(string value, CommandInputType type, out object result)
+	private static bool TryConvertStringToType(StringName value, CommandInputType type, out object result)
 	{
-		var t = type.Type;
+		var t = (string)type.Type;
 		result = null;
+
+		GD.Print($"Trying to convert '{value}' to type '{t}'");
 
 		if (t == "string" || t == value)
 		{
@@ -233,11 +237,9 @@ public partial class CommandValidator : Node
 		return false;
 	}
 
-	private static bool TryConvertNumeric<T>(string value, CommandInputType type, out T result)
+	private static bool TryConvertNumeric<T>(StringName value, CommandInputType type, out T result)
 	where T : notnull, IConvertible, IComparable<T>, IComparable<float>
 	{
-		result = default;
-
 		if (!Numeric.TryConvert(value, out result)) return false;
 
 		if (type.Min != type.Max) return Numeric.IsWithinRange(
@@ -248,8 +250,8 @@ public partial class CommandValidator : Node
 	}
 
 	private void PrintNumericError(
-		string commandName,
-		string argumentName,
+		StringName commandName,
+		StringName argumentName,
 		LinkedList<CommandInputType> types,
 		object value, float min, float max
 	)
@@ -258,7 +260,7 @@ public partial class CommandValidator : Node
 			Terminal.Output.Error(Messages.ArgumentValueOutOfRange(
 				commandName, argumentName, min, max
 			));
-		else Terminal.Output.Error(Messages.InvalidArgument(
+		else if (value is null) Terminal.Output.Error(Messages.InvalidArgument(
 			commandName, argumentName, string.Join(", ", types.Select(t => t.Type))
 		));
 	}
