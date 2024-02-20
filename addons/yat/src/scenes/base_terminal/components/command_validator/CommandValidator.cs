@@ -103,17 +103,16 @@ public partial class CommandValidator : Node
 	{
 		foreach (var type in argument.Types)
 		{
-			object converted = ConvertStringToType(type, passedArg);
-
-			if (converted is not null)
+			if (TryConvertStringToType(passedArg, type, out var converted))
 			{
 				validatedArgs[argument.Name] = converted;
 				return true;
 			}
 			else if (log)
-				Terminal.Output.Error(Messages.InvalidArgument(
-					commandName, argument.Name, string.Join(", ", argument.Types)
-				));
+				PrintNumericError(
+					commandName, argument.Name, argument.Types, converted,
+					type.Min, type.Max
+				);
 		}
 
 		return false;
@@ -144,7 +143,9 @@ public partial class CommandValidator : Node
 				|| (lookup.Contains("bool") && tokens.Length != 1)
 			)
 			{
-				Terminal.Output.Error(Messages.InvalidOption(commandName, passedOpt));
+				Terminal.Output.Error(
+					Messages.InvalidArgument(commandName, passedOpt, option.Name)
+				);
 				return false;
 			}
 
@@ -158,7 +159,9 @@ public partial class CommandValidator : Node
 
 					if (values.Length == 0)
 					{
-						Terminal.Output.Error(Messages.InvalidOption(commandName, passedOpt));
+						Terminal.Output.Error(
+							Messages.InvalidArgument(commandName, passedOpt, option.Name)
+						);
 						return false;
 					}
 
@@ -166,28 +169,41 @@ public partial class CommandValidator : Node
 
 					foreach (var v in values)
 					{
-						object convertedArrValue = ConvertStringToType(type, v);
-
-						if (convertedArrValue is null)
+						if (!TryConvertStringToType(v, type, out var convertedArrValue))
 						{
-							Terminal.Output.Error(Messages.InvalidOption(commandName, passedOpt));
+							PrintNumericError(
+								commandName, option.Name, option.Types, convertedArrValue,
+								type.Min, type.Max
+							);
 							return false;
 						}
 
 						convertedArr.Add(convertedArrValue);
 						validatedOpts[option.Name] = convertedArr.ToArray();
 					}
-				}
 
-				object converted = ConvertStringToType(type, value);
-
-				if (converted is not null)
-				{
-					validatedOpts[option.Name] = converted;
 					return true;
 				}
+
+				if (string.IsNullOrEmpty(value))
+				{
+					Terminal.Output.Error(Messages.MissingValue(commandName, option.Name));
+					return false;
+				}
+
+				if (!TryConvertStringToType(value, type, out var converted))
+				{
+					PrintNumericError(
+						commandName, option.Name, option.Types, converted,
+						type.Min, type.Max
+					);
+					return false;
+				}
+
+				validatedOpts[option.Name] = converted;
+				return true;
 			}
-			Terminal.Output.Error(Messages.InvalidOption(commandName, passedOpt));
+			Terminal.Output.Error(Messages.InvalidArgument(commandName, passedOpt, option.Name));
 		}
 
 		validatedOpts[option.Name] = option.DefaultValue;
@@ -195,27 +211,55 @@ public partial class CommandValidator : Node
 		return true;
 	}
 
-	private static object ConvertStringToType(CommandInputType type, string value)
+	private static bool TryConvertStringToType(string value, CommandInputType type, out object result)
 	{
 		var t = type.Type;
+		result = null;
 
-		if (t == "string" || t == value) return value;
-		if (t == "bool") return bool.TryParse(value, out bool result) ? result : null;
+		if (t == "string" || t == value)
+		{
+			result = value;
+			return true;
+		}
 
-		if (t.StartsWith("int")) return TryConvertNumeric<float>(type, value);
-		if (t.StartsWith("float")) return TryConvertNumeric<float>(type, value);
+		if (t.StartsWith("int") || t.StartsWith("float"))
+		{
+			var status = TryConvertNumeric(value, type, out float r);
+			result = r;
 
-		return null;
+			return status;
+		}
+
+		return false;
 	}
 
-	private static object TryConvertNumeric<T>(CommandInputType type, string value) where T : notnull, IConvertible, IComparable<T>, IComparable<float>
+	private static bool TryConvertNumeric<T>(string value, CommandInputType type, out T result)
+	where T : notnull, IConvertible, IComparable<T>, IComparable<float>
 	{
-		if (!Numeric.TryConvert(value, out T result)) return null;
+		result = default;
+
+		if (!Numeric.TryConvert(value, out result)) return false;
 
 		if (type.Min != type.Max) return Numeric.IsWithinRange(
 			result, type.Min, type.Max
-		) ? result : null;
+		);
 
-		return result;
+		return true;
+	}
+
+	private void PrintNumericError(
+		string commandName,
+		string argumentName,
+		LinkedList<CommandInputType> types,
+		object value, float min, float max
+	)
+	{
+		if (value is not null && !Numeric.IsWithinRange<float, float>((float)value, min, max))
+			Terminal.Output.Error(Messages.ArgumentValueOutOfRange(
+				commandName, argumentName, min, max
+			));
+		else Terminal.Output.Error(Messages.InvalidArgument(
+			commandName, argumentName, string.Join(", ", types.Select(t => t.Type))
+		));
 	}
 }
