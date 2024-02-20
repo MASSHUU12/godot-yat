@@ -23,7 +23,9 @@ All notable changes to this project will be documented in this file.
 -   CommandInputType record.
 -   TryParseCommandInputType method for Text helper class.
 -   CommandInput attribute.
--   InvalidOption method to Messages class.
+-   Messages:
+    -   InvalidOption,
+    -   ValueOutOfRange
 
 ### Changed
 
