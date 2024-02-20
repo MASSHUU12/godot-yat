@@ -1,23 +1,23 @@
 <Project Sdk="Godot.NET.Sdk/4.3.0-dev.3">
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <EnableDynamicLoading>true</EnableDynamicLoading>
-    <RootNamespace>godotyat</RootNamespace>
-    <LangVersion>11.0</LangVersion>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <!-- This option does not work well with Godot.NET.Sdk -->
-    <!-- <Nullable>enable</Nullable> -->
-    <Optimize>true</Optimize>
-    <!--Disable warning of invalid/incompatible GodotSharp version-->
-    <NoWarn>NU1605</NoWarn>
-    <DefaultItemExcludes Condition="'$(Configuration)' == 'ExportRelease'">
-      $(DefaultItemExcludes);test/**/*
-    </DefaultItemExcludes>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="script_templates/**/*.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="gdUnit4.api" Version="4.2.0-rc*" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<RootNamespace>godotyat</RootNamespace>
+		<LangVersion>11.0</LangVersion>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<!-- This option does not work well with Godot.NET.Sdk -->
+		<!-- <Nullable>enable</Nullable> -->
+		<Optimize>true</Optimize>
+		<!--Disable warning of invalid/incompatible GodotSharp version-->
+		<NoWarn>NU1605</NoWarn>
+		<DefaultItemExcludes Condition="'$(Configuration)' == 'ExportRelease'">
+			$(DefaultItemExcludes);test/**/*
+		</DefaultItemExcludes>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="script_templates/**/*.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="gdUnit4.api" Version="4.2.0-rc*" />
+	</ItemGroup>
 </Project>
