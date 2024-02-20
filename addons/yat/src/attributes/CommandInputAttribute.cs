@@ -18,6 +18,9 @@ public class CommandInputAttribute : Attribute
 		Name = name;
 		Description = description;
 
+		if (string.IsNullOrEmpty(type))
+			GD.PushError($"Invalid command input type '{type}' for command '{name}'.");
+
 		foreach (var t in type.Split('|'))
 		{
 			if (Text.TryParseCommandInputType(t, out var commandInputType))
