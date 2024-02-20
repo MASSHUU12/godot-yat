@@ -11,7 +11,7 @@ public static class Messages
 	public static string MissingValue(string command, string option) => $"{command} expected {option} to be provided.";
 
 	public static string InvalidNodePath(string path) => $"{path} is not a valid node path.";
-	public static string InvalidArgument(string command, string argument, string expected) => $"{command} expected {argument} to be an {expected}.";
+	public static string InvalidArgument(string command, string argument, string expected) => $"{command} expected {argument} to be an: {expected}.";
 	public static string InvalidMethod(string method) => $"{method} is not a valid method.";
 	public static string InvalidOption(string commandName, string opt) => $"{commandName} does not have an option named {opt}.";
 
