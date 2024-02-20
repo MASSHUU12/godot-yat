@@ -218,9 +218,15 @@ public partial class CommandValidator : Node
 		var t = (string)type.Type;
 		result = null;
 
-		GD.Print($"Trying to convert '{value}' to type '{t}'");
+		if (t == value)
+		{
+			result = value;
+			return true;
+		}
 
-		if (t == "string" || t == value)
+		if (t == "string" && (Numeric.IsWithinRange(
+			((string)value).Length, type.Min, type.Max) || type.Min == type.Max
+		))
 		{
 			result = value;
 			return true;
@@ -250,8 +256,7 @@ public partial class CommandValidator : Node
 	}
 
 	private void PrintNumericError(
-		StringName commandName,
-		StringName argumentName,
+		StringName commandName, StringName argumentName,
 		LinkedList<CommandInputType> types,
 		object value, float min, float max
 	)

@@ -20,12 +20,13 @@ All notable changes to this project will be documented in this file.
 -   Attributes:
     -   Description
     -   Usage
+    -   CommandInput
 -   CommandInputType record.
 -   TryParseCommandInputType method for Text helper class.
--   CommandInput attribute.
 -   Messages:
     -   InvalidOption,
     -   ValueOutOfRange
+-   String in arguments and options can have defined min and max length.
 
 ### Changed
 
@@ -35,6 +36,8 @@ All notable changes to this project will be documented in this file.
 -   Renamed ping command options.
 -   Argument & Option attributes inherit from CommandInput attribute.
 -   Options with null type are no longer supported.
+-   The way of defining the type for arguments and options has changed.
+-   CommandData now uses StringName instead of string for dictionaries.
 
 ### Removed
 
