@@ -32,7 +32,7 @@ public partial class CommandValidator : Node
 
 		CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
 
-		data = null;
+		data = new();
 
 		if (commandAttribute is null)
 		{
@@ -46,7 +46,9 @@ public partial class CommandValidator : Node
 		{
 			if (passedData.Length < dataAttrArr.Length)
 			{
-				Terminal.Output.Error(Messages.MissingArguments(commandAttribute.Name, data.Keys.ToArray()));
+				Terminal.Output.Error(Messages.MissingArguments(
+					commandAttribute.Name, dataAttrArr.Select(a => a.Name).ToArray())
+				);
 				return false;
 			}
 
@@ -59,6 +61,8 @@ public partial class CommandValidator : Node
 				commandAttribute.Name, data, passedData, dataAttrArr as OptionAttribute[]
 			);
 
+		data = null;
+
 		return false;
 	}
 
@@ -69,9 +73,9 @@ public partial class CommandValidator : Node
 		ArgumentAttribute[] arguments
 	)
 	{
-		for (int i = 0; i < passedArgs.Length; i++)
-			if (!ValidateCommandArgument(commandName, arguments[i], validatedArgs, passedArgs[i])) return false;
-
+		for (int i = 0; i < arguments.Length; i++)
+			if (!ValidateCommandArgument(commandName, arguments[i], validatedArgs, passedArgs[i]))
+				return false;
 		return true;
 	}
 
@@ -82,8 +86,9 @@ public partial class CommandValidator : Node
 		OptionAttribute[] options
 	)
 	{
-		foreach (var opt in options)
-			if (!ValidateCommandOption(commandName, opt, validatedOpts, passedOpts)) return false;
+		foreach (var opt in options) if (
+			!ValidateCommandOption(commandName, opt, validatedOpts, passedOpts)
+		) return false;
 
 		return true;
 	}
@@ -161,7 +166,7 @@ public partial class CommandValidator : Node
 		if (t == "string" || t == value) return value;
 		if (t == "bool") return bool.TryParse(value, out bool result) ? result : null;
 
-		if (t.StartsWith("int")) return (int)TryConvertNumeric<float>(type, value);
+		if (t.StartsWith("int")) return TryConvertNumeric<float>(type, value);
 		if (t.StartsWith("float")) return TryConvertNumeric<float>(type, value);
 
 		return null;
