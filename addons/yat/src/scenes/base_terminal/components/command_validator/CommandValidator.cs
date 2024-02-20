@@ -121,42 +121,78 @@ public partial class CommandValidator : Node
 
 	private bool ValidateCommandOption(
 		string commandName,
-		OptionAttribute options,
+		OptionAttribute option,
 		Dictionary<string, object> validatedOpts,
 		string[] passedOpts
 	)
 	{
-		foreach (var opt in passedOpts)
+		var lookup = option.Types.ToLookup(t => t.Type);
+
+		foreach (var passedOpt in passedOpts)
 		{
-			if (!opt.StartsWith(options.Name)) continue;
+			if (!passedOpt.StartsWith(option.Name)) continue;
 
-			string[] split = opt.Split('=');
+			string[] tokens = passedOpt.Split('=');
 
-			if (split.Length != 2)
+			if (lookup.Contains("bool") && tokens.Length == 1)
 			{
-				Terminal.Output.Error(Messages.InvalidOption(commandName, opt));
+				validatedOpts[option.Name] = true;
+				return true;
+			}
+
+			if ((!lookup.Contains("bool") && tokens.Length != 2)
+				|| (lookup.Contains("bool") && tokens.Length != 1)
+			)
+			{
+				Terminal.Output.Error(Messages.InvalidOption(commandName, passedOpt));
 				return false;
 			}
 
-			string value = split[1];
+			string value = tokens[1];
 
-			foreach (var type in options.Types)
+			foreach (var type in option.Types)
 			{
+				if (type.IsArray)
+				{
+					string[] values = value.Split(',');
+
+					if (values.Length == 0)
+					{
+						Terminal.Output.Error(Messages.InvalidOption(commandName, passedOpt));
+						return false;
+					}
+
+					List<object> convertedArr = new();
+
+					foreach (var v in values)
+					{
+						object convertedArrValue = ConvertStringToType(type, v);
+
+						if (convertedArrValue is null)
+						{
+							Terminal.Output.Error(Messages.InvalidOption(commandName, passedOpt));
+							return false;
+						}
+
+						convertedArr.Add(convertedArrValue);
+						validatedOpts[option.Name] = convertedArr.ToArray();
+					}
+				}
+
 				object converted = ConvertStringToType(type, value);
 
 				if (converted is not null)
 				{
-					validatedOpts[options.Name] = converted;
+					validatedOpts[option.Name] = converted;
 					return true;
 				}
-				else
-					Terminal.Output.Error(Messages.InvalidOption(commandName, opt));
 			}
+			Terminal.Output.Error(Messages.InvalidOption(commandName, passedOpt));
 		}
 
-		validatedOpts[options.Name] = options.DefaultValue;
+		validatedOpts[option.Name] = option.DefaultValue;
 
-		return false;
+		return true;
 	}
 
 	private static object ConvertStringToType(CommandInputType type, string value)
