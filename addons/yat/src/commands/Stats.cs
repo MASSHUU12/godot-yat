@@ -35,7 +35,7 @@ public sealed class Stats : ICommand
 		return Close();
 	}
 
-	private CommandResult Open(Dictionary<string, object> opts)
+	private CommandResult Open(Dictionary<StringName, object> opts)
 	{
 		bool all = (bool)opts["-all"];
 		bool fps = (bool)opts["-fps"];
