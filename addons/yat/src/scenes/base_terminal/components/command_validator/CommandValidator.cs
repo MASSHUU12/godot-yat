@@ -129,14 +129,13 @@ public partial class CommandValidator : Node
 	)
 	{
 		var lookup = option.Types.ToLookup(t => t.Type);
+		bool isBool = lookup.Contains("bool");
 
 		foreach (var passedOpt in passedOpts)
 		{
 			if (!passedOpt.StartsWith(option.Name)) continue;
 
-			bool isBool = lookup.Contains("bool");
 			string[] tokens = passedOpt.Split('=');
-
 			if (isBool && tokens.Length == 1)
 			{
 				validatedOpts[option.Name] = true;
@@ -209,7 +208,9 @@ public partial class CommandValidator : Node
 			Terminal.Output.Error(Messages.InvalidArgument(_commandName, passedOpt, option.Name));
 		}
 
-		validatedOpts[option.Name] = option.DefaultValue;
+		validatedOpts[option.Name] = isBool && option.DefaultValue is null
+			? false
+			: option.DefaultValue;
 
 		return true;
 	}
