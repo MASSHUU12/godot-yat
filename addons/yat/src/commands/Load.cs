@@ -7,7 +7,7 @@ namespace YAT.Commands;
 
 [Command("load", "Loads specified object into the scene.", "[b]Usage[/b]: load [i]object_path[/i]")]
 [Argument("object_path", "string", "The object path to load.")]
-[Option("-absolute", null, "If true, the object will be loaded at the origin, otherwise relative positioning will be used.", false)]
+[Option("-absolute", "bool", "If true, the object will be loaded at the origin, otherwise relative positioning will be used.")]
 [Option("-x", "float", "The X position of the object.", 0f)]
 [Option("-y", "float", "The Y position of the object.", 0f)]
 [Option("-z", "float", "The Z position of the object.", -5f)]
@@ -17,8 +17,8 @@ namespace YAT.Commands;
 [Option("-sx", "float", "The X scale of the object.", 1f)]
 [Option("-sy", "float", "The Y scale of the object.", 1f)]
 [Option("-sz", "float", "The Z scale of the object.", 1f)]
-[Option("-hidden", null, "The object will be hidden.", false)]
-[Option("-2d", null, "The object will be loaded as a 2D object.", false)]
+[Option("-hidden", "bool", "The object will be hidden.")]
+[Option("-2d", "bool", "The object will be loaded as a 2D object.")]
 public sealed class Load : ICommand
 {
 	public CommandResult Execute(CommandData data)

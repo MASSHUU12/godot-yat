@@ -18,7 +18,7 @@ namespace YAT.Commands;
 	"[b]list[/b]: Lists the history.",
 	"hist"
 )]
-[Argument("action", "[clear, list, int]", "The action to perform.")]
+[Argument("action", "clear|list|int", "The action to perform.")]
 public partial class History : ICommand
 {
 	private YAT _yat;
@@ -61,6 +61,12 @@ public partial class History : ICommand
 		}
 
 		var command = _terminal.History.ElementAt(index);
+
+		if (command.StartsWith("history", "hist"))
+		{
+			_terminal.Print("Cannot execute history command from history.");
+			return;
+		}
 
 		_terminal.Print(
 			$"Executing command at index {index}: {Text.EscapeBBCode(command)}"

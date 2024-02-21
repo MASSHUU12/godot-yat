@@ -14,12 +14,36 @@
 			"program": "${env:GODOT}",
 			"args": [],
 			"cwd": "${workspaceFolder}",
-			"stopAtEntry": false
+			"stopAtEntry": false,
+			"justMyCode": false,
+			"suppressJITOptimizations": true
 		},
 		// Debug the scene that matches the name of the currently open *.cs file
 		// (if there's a scene with the same name in the same directory).
 		{
 			"name": "🎭 Debug Current Scene",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${env:GODOT}",
+			"args": ["${fileDirname}/${fileBasenameNoExtension}.tscn"],
+			"cwd": "${workspaceFolder}",
+			"stopAtEntry": false,
+			"justMyCode": false,
+			"suppressJITOptimizations": true
+		},
+		{
+			"name": "🕹 Run Game",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${env:GODOT}",
+			"args": [],
+			"cwd": "${workspaceFolder}",
+			"stopAtEntry": false
+		},
+		{
+			"name": "🎭 Run Current Scene",
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",

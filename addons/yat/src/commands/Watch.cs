@@ -14,7 +14,7 @@ namespace YAT.Commands;
 )]
 [Threaded]
 [Argument("command", "string", "The command to run.")]
-[Argument("interval", "float(0.5, 60)", "The interval at which to run the command.")]
+[Argument("interval", "float(0.5:60)", "The interval at which to run the command.")]
 public sealed class Watch : ICommand
 {
 	private const uint SECONDS_MULTIPLIER = 1000;

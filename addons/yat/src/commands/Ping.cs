@@ -17,14 +17,14 @@ namespace YAT.Commands;
 [Option("-t", "int(1:32767)", "The maximum time to wait for each reply, in milliseconds.", 10000)]
 [Option("-ttl", "int(1:255)", "The maximum number of hops to search for the target.", 30)]
 [Option("-b", "int(1:32767)", "The size of the buffer to send with the request.", 32)]
-[Option("-f", null, "Specifies that the packet can be fragmented.", false)]
+[Option("-f", "bool", "Specifies that the packet can be fragmented.")]
 [Option("-delay", "int(1:10)", "The delay between pings in seconds.", 1)]
 [Option("-limit", "int(1:255)", "The maximum number of pings to send.", 0)]
 public sealed class Ping : ICommand
 {
 	public CommandResult Execute(CommandData data)
 	{
-		string hostname = (string)data.Arguments["hostname"];
+		var hostname = (string)data.Arguments["hostname"];
 		var maxPings = (int)data.Options["-limit"];
 		var options = new NetworkingOptions
 		{

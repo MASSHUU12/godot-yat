@@ -11,9 +11,7 @@ public sealed class Timescale : ICommand
 {
 	public CommandResult Execute(CommandData data)
 	{
-		var scale = (float)data.Options["-set"];
-
-		Engine.TimeScale = scale;
+		Engine.TimeScale = (float)data.Options["-set"];
 
 		return ICommand.Success();
 	}

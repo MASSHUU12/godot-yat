@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using YAT.Attributes;
+using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Types;
 
 namespace YAT.Scenes;
 
@@ -13,15 +15,17 @@ public partial class CommandValidator : Node
 {
 	[Export] public BaseTerminal Terminal { get; set; }
 
+	private StringName _commandName;
+
 	/// <summary>
 	/// Validates the passed data for a given command and returns a dictionary of arguments.
 	/// </summary>
 	/// <typeparam name="T">The type of attribute to validate.</typeparam>
 	/// <param name="command">The command to validate.</param>
-	/// <param name="passedArgs">The arguments passed to the command.</param>
-	/// <param name="args">The dictionary of arguments.</param>
+	/// <param name="passedData">The arguments passed to the command.</param>
+	/// <param name="data">The dictionary of arguments.</param>
 	/// <returns>True if the passed data is valid, false otherwise.</returns>
-	public bool ValidatePassedData<T>(ICommand command, string[] passedArgs, out Dictionary<string, object> args) where T : Attribute
+	public bool ValidatePassedData<T>(ICommand command, string[] passedData, out Dictionary<StringName, object> data) where T : CommandInputAttribute
 	{
 		Type type = typeof(T);
 		Type argType = typeof(ArgumentAttribute);
@@ -31,289 +35,269 @@ public partial class CommandValidator : Node
 
 		CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
 
+		_commandName = commandAttribute.Name;
+		data = new();
+
 		if (commandAttribute is null)
 		{
 			Terminal.Output.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
-			args = null;
 			return false;
 		}
 
-		T[] argsArr = command.GetType().GetCustomAttributes(type, false) as T[] ?? Array.Empty<T>();
+		T[] dataAttrArr = command.GetType().GetCustomAttributes(type, false) as T[] ?? Array.Empty<T>();
 
 		if (type == argType)
 		{
-			args = argsArr.ToDictionary(
-				a => (a as ArgumentAttribute).Name,
-				a => (a as ArgumentAttribute).Type
-			);
-
-			if (passedArgs.Length < args.Count)
+			if (passedData.Length < dataAttrArr.Length)
 			{
-				Terminal.Output.Error(Messages.MissingArguments(commandAttribute.Name, args.Keys.ToArray()));
+				Terminal.Output.Error(Messages.MissingArguments(
+					commandAttribute.Name, dataAttrArr.Select<T, string>(a => a.Name).ToArray())
+				);
 				return false;
 			}
 
-			return ValidateCommandArguments(commandAttribute.Name, args, passedArgs);
+			return ValidateCommandArguments(
+				data, passedData, dataAttrArr as ArgumentAttribute[]
+			);
 		}
 		else if (type == optType)
-		{
-			args = argsArr.ToDictionary(
-				a => (a as OptionAttribute)?.Name ?? string.Empty,
-				a => (object)new Tuple<object, object>(
-					(a as OptionAttribute)?.Type, (a as OptionAttribute)?.DefaultValue
-				)
+			return ValidateCommandOptions(
+				data, passedData, dataAttrArr as OptionAttribute[]
 			);
 
-			return ValidateCommandOptions(commandAttribute.Name, args, passedArgs);
-		}
+		data = null;
 
-		args = null;
+		return false;
+	}
 
+	private bool ValidateCommandArguments(
+		Dictionary<StringName, object> validatedArgs,
+		string[] passedArgs,
+		ArgumentAttribute[] arguments
+	)
+	{
+		for (int i = 0; i < arguments.Length; i++)
+			if (!ValidateCommandArgument(arguments[i], validatedArgs, passedArgs[i]))
+				return false;
 		return true;
 	}
 
-	private bool ValidateCommandArguments(string name, Dictionary<string, object> args, string[] passedArgs)
+	private bool ValidateCommandOptions(
+		Dictionary<StringName, object> validatedOpts,
+		string[] passedOpts,
+		OptionAttribute[] options
+	)
 	{
-		for (int i = 0; i < args.Count; i++)
-		{
-			string argName = args.Keys.ElementAt(i);
-			object argType = args.Values.ElementAt(i);
-
-			if (!ValidateCommandArgument(argName, argType, args, passedArgs[i]))
-				return false;
-		}
+		foreach (var opt in options) if (
+			!ValidateCommandOption(opt, validatedOpts, passedOpts)
+		) return false;
 
 		return true;
 	}
 
 	public bool ValidateCommandArgument(
-		string name,
-		object type,
-		Dictionary<string, object> args,
+		ArgumentAttribute argument,
+		Dictionary<StringName, object> validatedArgs,
 		string passedArg,
 		bool log = true
 	)
 	{
-		if (type is string[] options)
+		int index = 0;
+
+		foreach (var type in argument.Types)
 		{
-			var found = false;
+			var status = TryConvertStringToType(passedArg, type, out var converted);
 
-			foreach (var opt in options)
+			if (status == EStringConversionResult.Success)
 			{
-				if (opt == passedArg)
-				{
-					found = true;
-					args[name] = opt;
-					break;
-				}
-
-				object convertedArg = ConvertStringToType(opt, passedArg);
-
-				if (convertedArg is not null)
-				{
-					found = true;
-					args[name] = convertedArg;
-					break;
-				}
-			}
-
-			if (!found)
-			{
-				if (log) Terminal.Output.Error(
-					Messages.InvalidArgument(name, name, string.Join(", ", options))
-				);
-				return false;
-			}
-		}
-		else
-		{
-			object convertedArg = ConvertStringToType(
-				type?.ToString() ?? name, passedArg
-			);
-
-			if (convertedArg is null)
-			{
-				if (log) Terminal.Output.Error(
-					Messages.InvalidArgument(name, name, (string)(type ?? name))
-				);
-				return false;
-			}
-
-			args[name] = convertedArg;
-		}
-
-		return true;
-	}
-
-	private bool ValidateCommandOptions(string name, Dictionary<string, object> opts, string[] passedOpts)
-	{
-		foreach (var optEntry in opts)
-		{
-			string optName = optEntry.Key;
-			object optType = ((Tuple<object, object>)optEntry.Value)?.Item1;
-
-			var passedOpt = passedOpts.FirstOrDefault(o => o.StartsWith(optName), string.Empty)
-							.Split('=', 2, StringSplitOptions.TrimEntries);
-			string passedOptName = passedOpt?[0];
-			string passedOptValue = passedOpt?.Length >= 2 ? passedOpt?[1] : null;
-
-			// If option is not passed then set the option to its default value
-			if (string.IsNullOrEmpty(passedOptName))
-			{
-				opts[optName] = ((Tuple<object, object>)opts[optName])?.Item2;
-				continue;
-			}
-
-			// if option is a flag (there is no type specified for the option)
-			if (optType is null)
-			{
-				if (!string.IsNullOrEmpty(passedOptValue))
-				{
-					Terminal.Output.Error(Messages.InvalidArgument(name, optName, optName));
-					return false;
-				}
-
-				opts[optName] = !string.IsNullOrEmpty(passedOptName);
-				continue;
-			}
-
-			// If option is passed but it doesn't have a value
-			if (string.IsNullOrEmpty(passedOptValue))
-			{
-				Terminal.Output.Error(Messages.MissingValue(name, optName));
-				return false;
-			}
-
-			bool ProcessOptionValue(string valueType, Action<object> set)
-			{
-				object converted = ConvertStringToType(valueType, passedOptValue);
-
-				if (converted is null)
-				{
-					Terminal.Output.Error(Messages.InvalidArgument(name, optName, valueType ?? optName));
-					return false;
-				}
-
-				set(converted);
-
+				validatedArgs[argument.Name] = converted;
 				return true;
 			}
 
-			// If option expects a value (there is no ... at the end of the type)
-			if (optType is string valueType && !valueType.EndsWith("...") &&
-				!valueType.Contains('|')
+			if (log && index == argument.Types.Count - 1)
+				PrintErr(status, argument.Name, argument.Types, converted, type.Min, type.Max);
+			index++;
+		}
+
+		return false;
+	}
+
+	private bool ValidateCommandOption(
+		OptionAttribute option,
+		Dictionary<StringName, object> validatedOpts,
+		string[] passedOpts
+	)
+	{
+		var lookup = option.Types.ToLookup(t => t.Type);
+		bool isBool = lookup.Contains("bool");
+
+		foreach (var passedOpt in passedOpts)
+		{
+			if (!passedOpt.StartsWith(option.Name)) continue;
+
+			string[] tokens = passedOpt.Split('=');
+			if (isBool && tokens.Length == 1)
+			{
+				validatedOpts[option.Name] = true;
+				return true;
+			}
+
+			if ((!isBool && tokens.Length != 2)
+				|| (isBool && tokens.Length != 1)
 			)
 			{
-				if (ProcessOptionValue(valueType,
-					(converted) => opts[optName] = converted)
-				) continue;
+				Terminal.Output.Error(
+					Messages.InvalidArgument(_commandName, passedOpt, option.Name)
+				);
 				return false;
 			}
 
-			// If option expects an array of values (type ends with ...)
-			if (optType is string valuesType && valuesType.EndsWith("..."))
+			string value = tokens[1];
+
+			foreach (var type in option.Types)
 			{
-				string[] values = passedOptValue.Split(',',
-						StringSplitOptions.TrimEntries |
-						StringSplitOptions.RemoveEmptyEntries
-				);
-				List<object> validatedValues = new();
-
-				foreach (var value in values)
+				if (type.IsArray)
 				{
-					if (!ProcessOptionValue(valuesType.Replace("...", string.Empty),
-						(converted) => validatedValues.Add(converted)
-					)) return false;
-				}
+					string[] values = value.Split(',');
 
-				opts[optName] = validatedValues.ToArray();
-				continue;
-			}
-
-			// If option expects one of the specified values (type contains |)
-			if (optType is string optionsType && optionsType.Contains('|'))
-			{
-				string[] options = optionsType.Split('|');
-				var found = false;
-
-				foreach (var opt in options)
-				{
-					if (opt == passedOptValue)
+					if (values.Length == 0)
 					{
-						found = true;
-						opts[optName] = opt;
-						break;
+						Terminal.Output.Error(
+							Messages.InvalidArgument(_commandName, passedOpt, option.Name)
+						);
+						return false;
 					}
 
-					object converted = ConvertStringToType(opt, passedOptValue);
+					List<object> convertedL = new();
 
-					if (converted is not null)
+					foreach (var v in values)
 					{
-						found = true;
-						opts[optName] = converted;
-						break;
+						var st = TryConvertStringToType(v, type, out var convertedLValue);
+
+						if (st != EStringConversionResult.Success)
+						{
+							PrintErr(st, option.Name, option.Types, convertedLValue, type.Min, type.Max);
+							return false;
+						}
+
+						convertedL.Add(convertedLValue);
 					}
+					validatedOpts[option.Name] = convertedL.ToArray();
+
+					return true;
 				}
 
-				if (!found)
+				if (string.IsNullOrEmpty(value))
 				{
-					Terminal.Output.Error(Messages.InvalidArgument(name, optName, string.Join(", ", options)));
+					Terminal.Output.Error(Messages.MissingValue(_commandName, option.Name));
 					return false;
 				}
+
+				var status = TryConvertStringToType(value, type, out var converted);
+
+				if (status != EStringConversionResult.Success)
+				{
+					PrintErr(status, option.Name, option.Types, converted, type.Min, type.Max);
+
+					return false;
+				}
+
+				validatedOpts[option.Name] = converted;
+				return true;
 			}
+			Terminal.Output.Error(Messages.InvalidArgument(_commandName, passedOpt, option.Name));
+		}
+
+		validatedOpts[option.Name] = isBool && option.DefaultValue is null
+			? false
+			: option.DefaultValue;
+
+		return true;
+	}
+
+	private static EStringConversionResult TryConvertStringToType(
+		string value, CommandInputType type, out object result
+	)
+	{
+		var t = (string)type.Type;
+		result = null;
+
+		if (t.StartsWith("int", "float"))
+		{
+			var status = TryConvertNumeric(value, type, out var r);
+			result = r;
+
+			return status
+				? EStringConversionResult.Success
+				: EStringConversionResult.OutOfRange;
+		}
+
+		if (t == "string")
+		{
+			if (type.Min != type.Max && !Numeric.IsWithinRange(((string)value).Length, type.Min, type.Max)
+			) return EStringConversionResult.OutOfRange;
+
+			result = value;
+			return EStringConversionResult.Success;
+		}
+
+		if (t == value)
+		{
+			result = value;
+			return EStringConversionResult.Success;
+		}
+
+		return EStringConversionResult.Invalid;
+	}
+
+	private static bool TryConvertNumeric(StringName value, CommandInputType type, out object result)
+	{
+		result = null;
+
+		if (type.Type == "int")
+		{
+			if (!Numeric.TryConvert(value, out int r)) return false;
+
+			result = r;
+
+			if (type.Min != type.Max) return Numeric.IsWithinRange(
+				r, type.Min, type.Max
+			);
+		}
+
+		if (type.Type == "float")
+		{
+			if (!Numeric.TryConvert(value, out float r)) return false;
+
+			result = r;
+
+			if (type.Min != type.Max) return Numeric.IsWithinRange<float, float>(
+				r, type.Min, type.Max
+			);
 		}
 
 		return true;
 	}
 
-	/// <summary>
-	/// Parses a string argument to extract a range of values.
-	/// </summary>
-	/// <typeparam name="T">The type of the values in the range.</typeparam>
-	/// <param name="arg">The string argument to parse.</param>
-	/// <param name="min">Contains the minimum value of the range if the parse succeeded,
-	/// or the default value of <typeparamref name="T"/> if the parse failed.</param>
-	/// <param name="max">Contains the maximum value of the range if the parse succeeded,
-	/// or the default value of <typeparamref name="T"/> if the parse failed.</param>
-	/// <returns><c>true</c> if the parse succeeded; otherwise, <c>false</c>.</returns>
-	private static bool GetRange<T>(string arg, out T min, out T max) where T : notnull, IConvertible, IComparable<T>
+	private void PrintErr(
+		EStringConversionResult status,
+		StringName argumentName,
+		LinkedList<CommandInputType> types,
+		object value, float min, float max
+	)
 	{
-		min = default!;
-		max = default!;
-
-		if (!arg.Contains('(') || !arg.Contains(')')) return false;
-
-		string[] parts = arg.Split('(', ')');
-		string[] range = parts[1].Split(',', ':');
-
-		if (range.Length != 2) return false;
-
-		if (!Numeric.TryConvert<T>(range[0], out min)) return false;
-		if (!Numeric.TryConvert<T>(range[1], out max)) return false;
-
-		return true;
-	}
-
-	private static object ConvertStringToType(string type, string value)
-	{
-		var t = type.ToLower();
-
-		if (t == "string" || t == value) return value;
-		if (t == "bool") return bool.Parse(value);
-
-		if (t.StartsWith("int")) return TryConvertNumeric<int>(type, value);
-		if (t.StartsWith("float")) return TryConvertNumeric<float>(type, value);
-		if (t.StartsWith("double")) return TryConvertNumeric<double>(type, value);
-
-		return null;
-	}
-
-	private static object TryConvertNumeric<T>(string type, string value) where T : notnull, IConvertible, IComparable<T>
-	{
-		if (!Numeric.TryConvert<T>(value, out T result)) return null;
-
-		if (GetRange(type, out T min, out T max))
-			return Numeric.IsWithinRange(result, min, max) ? result : null;
-		return result;
+		switch (status)
+		{
+			case EStringConversionResult.Invalid:
+				Terminal.Output.Error(Messages.InvalidArgument(
+					_commandName, value as string, string.Join(", ", types.Select(t => t.Type))
+				));
+				break;
+			case EStringConversionResult.OutOfRange:
+				Terminal.Output.Error(Messages.ArgumentValueOutOfRange(
+					_commandName, argumentName, min, max
+				));
+				break;
+		}
 	}
 }

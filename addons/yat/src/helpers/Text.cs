@@ -1,30 +1,19 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using YAT.Types;
 
 namespace YAT.Helpers;
 
-/// <summary>
-/// Provides helper methods for working with text.
-/// </summary>
 public static class Text
 {
-	/// <summary>
-	/// Escapes BBCode tags in the given text by replacing '[' with '[lb]'.
-	/// </summary>
-	/// <param name="text">The text to escape.</param>
-	/// <returns>The escaped text.</returns>
 	public static string EscapeBBCode(string text)
 	{
 		return text.Replace("[", "[lb]");
 	}
 
-	/// <summary>
-	/// Makes the specified text bold by surrounding it with the appropriate tags.
-	/// </summary>
-	/// <param name="text">The text to make bold.</param>
-	/// <returns>The specified text surrounded by bold tags.</returns>
 	public static string MakeBold(string text)
 	{
 		return $"[b]{text}[/b]";
@@ -108,22 +97,22 @@ public static class Text
 		return modifiedStrings.ToArray();
 	}
 
-	public static bool StartsWith(string text, params char[] value)
+	public static bool StartsWith(this string text, params char[] value)
 	{
 		return value.Any(text.StartsWith);
 	}
 
-	public static bool StartsWith(string text, params string[] value)
+	public static bool StartsWith(this string text, params string[] value)
 	{
 		return value.Any(text.StartsWith);
 	}
 
-	public static bool EndsWith(string text, params char[] value)
+	public static bool EndsWith(this string text, params char[] value)
 	{
 		return value.Any(text.EndsWith);
 	}
 
-	public static bool EndsWith(string text, params string[] value)
+	public static bool EndsWith(this string text, params string[] value)
 	{
 		return value.Any(text.EndsWith);
 	}
@@ -202,5 +191,67 @@ public static class Text
 		}
 
 		return result.ToString() + ellipsisChar + lastPart;
+	}
+
+	public static bool TryParseCommandInputType(string type, out CommandInputType parsed)
+	{
+		parsed = null;
+		type = type?.Trim();
+
+		// Used to later get min/max values
+		static bool allowedToHaveRange(string t) => t switch
+		{
+			"int" => true,
+			"float" => true,
+			"string" => true,
+			_ => false
+		};
+
+		if (string.IsNullOrEmpty(type)) return false;
+
+		// Check if ends with ... to indicate an array
+		bool isArray = type.EndsWith("...");
+
+		if (isArray) type = type[..^3].Trim();
+
+		// Get the min and max values if present
+		var tokens = type.Trim(')').Split('(', StringSplitOptions.RemoveEmptyEntries);
+
+		if (tokens.Length > 1)
+		{
+			bool maxIsPresent = tokens[1].EndsWith(':');
+			var minMax = tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries);
+
+			if (!allowedToHaveRange(tokens[0]) || minMax.Length > 2) return false;
+
+			if (minMax.Length == 1)
+			{
+				// If only min value is not present, set it to float.MinValue
+				if (!maxIsPresent)
+				{
+					if (minMax[0].TryConvert(out float max))
+						parsed = new(tokens[0], float.MinValue, max, isArray);
+					else return false;
+				} // If only max value is not present, set it to float.MaxValue
+				else
+				{
+					if (minMax[0].TryConvert(out float min))
+						parsed = new(tokens[0], min, float.MaxValue, isArray);
+					else return false;
+				}
+			}
+			else
+			{
+				if (minMax[0].TryConvert(out float min) &&
+					minMax[1].TryConvert(out float max))
+					parsed = new(tokens[0], min, max, isArray);
+				else return false;
+			}
+		}
+		else parsed = new(tokens[0], 0, 0, isArray);
+
+		if (parsed.Min > parsed.Max) return false;
+
+		return true;
 	}
 }
