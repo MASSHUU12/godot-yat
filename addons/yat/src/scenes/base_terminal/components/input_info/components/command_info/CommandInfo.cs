@@ -48,7 +48,6 @@ public partial class CommandInfo : Node
 		{
 			bool current = tokens.Length - 1 == i;
 			bool valid = Terminal.CommandValidator.ValidateCommandArgument(
-				commandAttribute.Name,
 				arg,
 				new() { { arg.Name, arg.Types } },
 				(tokens.Length - 1 >= i + 1) ? tokens[i + 1] : string.Empty,

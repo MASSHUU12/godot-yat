@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using YAT.Attributes;
+using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
@@ -13,6 +14,8 @@ namespace YAT.Scenes;
 public partial class CommandValidator : Node
 {
 	[Export] public BaseTerminal Terminal { get; set; }
+
+	private StringName _commandName;
 
 	/// <summary>
 	/// Validates the passed data for a given command and returns a dictionary of arguments.
@@ -32,6 +35,7 @@ public partial class CommandValidator : Node
 
 		CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
 
+		_commandName = commandAttribute.Name;
 		data = new();
 
 		if (commandAttribute is null)
@@ -53,12 +57,12 @@ public partial class CommandValidator : Node
 			}
 
 			return ValidateCommandArguments(
-				commandAttribute.Name, data, passedData, dataAttrArr as ArgumentAttribute[]
+				data, passedData, dataAttrArr as ArgumentAttribute[]
 			);
 		}
 		else if (type == optType)
 			return ValidateCommandOptions(
-				commandAttribute.Name, data, passedData, dataAttrArr as OptionAttribute[]
+				data, passedData, dataAttrArr as OptionAttribute[]
 			);
 
 		data = null;
@@ -67,60 +71,58 @@ public partial class CommandValidator : Node
 	}
 
 	private bool ValidateCommandArguments(
-		string commandName,
 		Dictionary<StringName, object> validatedArgs,
 		string[] passedArgs,
 		ArgumentAttribute[] arguments
 	)
 	{
 		for (int i = 0; i < arguments.Length; i++)
-			if (!ValidateCommandArgument(commandName, arguments[i], validatedArgs, passedArgs[i]))
+			if (!ValidateCommandArgument(arguments[i], validatedArgs, passedArgs[i]))
 				return false;
 		return true;
 	}
 
 	private bool ValidateCommandOptions(
-		string commandName,
 		Dictionary<StringName, object> validatedOpts,
 		string[] passedOpts,
 		OptionAttribute[] options
 	)
 	{
 		foreach (var opt in options) if (
-			!ValidateCommandOption(commandName, opt, validatedOpts, passedOpts)
+			!ValidateCommandOption(opt, validatedOpts, passedOpts)
 		) return false;
 
 		return true;
 	}
 
 	public bool ValidateCommandArgument(
-		string commandName,
 		ArgumentAttribute argument,
 		Dictionary<StringName, object> validatedArgs,
 		string passedArg,
 		bool log = true
 	)
 	{
+		int index = 0;
+
 		foreach (var type in argument.Types)
 		{
-			if (TryConvertStringToType(passedArg, type, out var converted))
+			var status = TryConvertStringToType(passedArg, type, out var converted);
+
+			if (status == EStringConversionResult.Success)
 			{
 				validatedArgs[argument.Name] = converted;
 				return true;
 			}
 
-			if (log) PrintNumericError(
-				commandName, argument.Name,
-				argument.Types, converted,
-				type.Min, type.Max
-			);
+			if (log && index == argument.Types.Count - 1)
+				PrintErr(status, argument.Name, argument.Types, converted, type.Min, type.Max);
+			index++;
 		}
 
 		return false;
 	}
 
 	private bool ValidateCommandOption(
-		string commandName,
 		OptionAttribute option,
 		Dictionary<StringName, object> validatedOpts,
 		string[] passedOpts
@@ -146,7 +148,7 @@ public partial class CommandValidator : Node
 			)
 			{
 				Terminal.Output.Error(
-					Messages.InvalidArgument(commandName, passedOpt, option.Name)
+					Messages.InvalidArgument(_commandName, passedOpt, option.Name)
 				);
 				return false;
 			}
@@ -162,7 +164,7 @@ public partial class CommandValidator : Node
 					if (values.Length == 0)
 					{
 						Terminal.Output.Error(
-							Messages.InvalidArgument(commandName, passedOpt, option.Name)
+							Messages.InvalidArgument(_commandName, passedOpt, option.Name)
 						);
 						return false;
 					}
@@ -171,12 +173,11 @@ public partial class CommandValidator : Node
 
 					foreach (var v in values)
 					{
-						if (!TryConvertStringToType(v, type, out var convertedArrValue))
+						var st = TryConvertStringToType(v, type, out var convertedArrValue);
+
+						if (st != EStringConversionResult.Success)
 						{
-							PrintNumericError(
-								commandName, option.Name, option.Types, convertedArrValue,
-								type.Min, type.Max
-							);
+							PrintErr(st, option.Name, option.Types, convertedArrValue, type.Min, type.Max);
 							return false;
 						}
 
@@ -189,23 +190,23 @@ public partial class CommandValidator : Node
 
 				if (string.IsNullOrEmpty(value))
 				{
-					Terminal.Output.Error(Messages.MissingValue(commandName, option.Name));
+					Terminal.Output.Error(Messages.MissingValue(_commandName, option.Name));
 					return false;
 				}
 
-				if (!TryConvertStringToType(value, type, out var converted))
+				var status = TryConvertStringToType(value, type, out var converted);
+
+				if (status != EStringConversionResult.Success)
 				{
-					PrintNumericError(
-						commandName, option.Name, option.Types, converted,
-						type.Min, type.Max
-					);
+					PrintErr(status, option.Name, option.Types, converted, type.Min, type.Max);
+
 					return false;
 				}
 
 				validatedOpts[option.Name] = converted;
 				return true;
 			}
-			Terminal.Output.Error(Messages.InvalidArgument(commandName, passedOpt, option.Name));
+			Terminal.Output.Error(Messages.InvalidArgument(_commandName, passedOpt, option.Name));
 		}
 
 		validatedOpts[option.Name] = option.DefaultValue;
@@ -213,34 +214,39 @@ public partial class CommandValidator : Node
 		return true;
 	}
 
-	private static bool TryConvertStringToType(StringName value, CommandInputType type, out object result)
+	private static EStringConversionResult TryConvertStringToType(
+		string value, CommandInputType type, out object result
+	)
 	{
 		var t = (string)type.Type;
 		result = null;
 
-		if (t == value)
-		{
-			result = value;
-			return true;
-		}
-
-		if (t == "string" && (Numeric.IsWithinRange(
-			((string)value).Length, type.Min, type.Max) || type.Min == type.Max
-		))
-		{
-			result = value;
-			return true;
-		}
-
-		if (t.StartsWith("int") || t.StartsWith("float"))
+		if (t.StartsWith("int", "float"))
 		{
 			var status = TryConvertNumeric(value, type, out float r);
 			result = r;
 
-			return status;
+			return status
+				? EStringConversionResult.Success
+				: EStringConversionResult.OutOfRange;
 		}
 
-		return false;
+		if (t == "string")
+		{
+			if (type.Min != type.Max && !Numeric.IsWithinRange(((string)value).Length, type.Min, type.Max)
+			) return EStringConversionResult.OutOfRange;
+
+			result = value;
+			return EStringConversionResult.Success;
+		}
+
+		if (t == value)
+		{
+			result = value;
+			return EStringConversionResult.Success;
+		}
+
+		return EStringConversionResult.Invalid;
 	}
 
 	private static bool TryConvertNumeric<T>(StringName value, CommandInputType type, out T result)
@@ -255,18 +261,25 @@ public partial class CommandValidator : Node
 		return true;
 	}
 
-	private void PrintNumericError(
-		StringName commandName, StringName argumentName,
+	private void PrintErr(
+		EStringConversionResult status,
+		StringName argumentName,
 		LinkedList<CommandInputType> types,
 		object value, float min, float max
 	)
 	{
-		if (value is not null && !Numeric.IsWithinRange<float, float>((float)value, min, max))
-			Terminal.Output.Error(Messages.ArgumentValueOutOfRange(
-				commandName, argumentName, min, max
-			));
-		else if (value is null) Terminal.Output.Error(Messages.InvalidArgument(
-			commandName, argumentName, string.Join(", ", types.Select(t => t.Type))
-		));
+		switch (status)
+		{
+			case EStringConversionResult.Invalid:
+				Terminal.Output.Error(Messages.InvalidArgument(
+					_commandName, value as string, string.Join(", ", types.Select(t => t.Type))
+				));
+				break;
+			case EStringConversionResult.OutOfRange:
+				Terminal.Output.Error(Messages.ArgumentValueOutOfRange(
+					_commandName, argumentName, min, max
+				));
+				break;
+		}
 	}
 }
