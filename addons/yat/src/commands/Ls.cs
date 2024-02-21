@@ -13,8 +13,8 @@ namespace YAT.Commands;
 
 [Command("ls", "Lists the contents of the current directory.", "[b]Usage[/b]: ls")]
 [Argument("path", "string", "The path to list the contents of.")]
-[Option("-n", "bool", "Displays the children of the current node.", false)]
-[Option("-m", "bool", "Lists the methods of the current node.", false)]
+[Option("-n", "bool", "Displays the children of the current node.")]
+[Option("-m", "bool", "Lists the methods of the current node.")]
 public sealed class Ls : ICommand
 {
 	private BaseTerminal _terminal;

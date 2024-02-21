@@ -6,7 +6,7 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("toggleaudio", "Toggles audio on or off.", "[b]Usage[/b]: toggleaudio")]
-[Option("-id", "int(0:32767)", "The ID of the audio bus to toggle. If not provided, all buses will be toggled.", -1f)]
+[Option("-id", "int(0:32767)", "The ID of the audio bus to toggle. If not provided, all buses will be toggled.", -1)]
 [Option("-name", "string", "The name of the audio bus to toggle. If not provided, all buses will be toggled.", null)]
 public sealed class ToggleAudio : ICommand
 {

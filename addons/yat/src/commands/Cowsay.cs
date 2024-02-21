@@ -10,14 +10,14 @@ namespace YAT.Commands;
 
 [Command("cowsay", "Make a cow say something.", "[b]Usage[/b]: cowsay [i]message[/i]")]
 [Argument("message", "string", "The message to make the cow say.")]
-[Option("-b", "bool", "Borg", false)]
-[Option("-d", "bool", "Dead", false)]
-[Option("-g", "bool", "Greedy", false)]
-[Option("-p", "bool", "Paranoid", false)]
-[Option("-s", "bool", "Stoned", false)]
-[Option("-t", "bool", "Tired", false)]
-[Option("-w", "bool", "Wired", false)]
-[Option("-y", "bool", "Youthful", false)]
+[Option("-b", "bool", "Borg")]
+[Option("-d", "bool", "Dead")]
+[Option("-g", "bool", "Greedy")]
+[Option("-p", "bool", "Paranoid")]
+[Option("-s", "bool", "Stoned")]
+[Option("-t", "bool", "Tired")]
+[Option("-w", "bool", "Wired")]
+[Option("-y", "bool", "Youthful")]
 public sealed class Cowsay : ICommand
 {
 	private BaseTerminal _terminal;

@@ -12,10 +12,10 @@ namespace YAT.Commands;
 	"[b]Usage[/b]: traceroute [i]hostname[/i]"
 )]
 [Argument("hostname", "string", "The host to trace the route to.")]
-[Option("-t", "int(1:32767)", "The maximum time to wait for each reply, in milliseconds.", 10000f)]
-[Option("-ttl", "int(1:255)", "The maximum number of hops to search for the target.", 30f)]
-[Option("-b", "int(1:32767)", "The size of the buffer to send with the request.", 32f)]
-[Option("-f", "bool", "Specifies that the packet can be fragmented.", false)]
+[Option("-t", "int(1:32767)", "The maximum time to wait for each reply, in milliseconds.", 10000)]
+[Option("-ttl", "int(1:255)", "The maximum number of hops to search for the target.", 30)]
+[Option("-b", "int(1:32767)", "The size of the buffer to send with the request.", 32)]
+[Option("-f", "bool", "Specifies that the packet can be fragmented.")]
 [Threaded]
 public sealed class TraceRoute : ICommand
 {

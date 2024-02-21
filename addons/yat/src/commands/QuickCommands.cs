@@ -6,7 +6,9 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("quickcommands", "Manages Quick Commands.", "[b]Usage[/b]: quickcommands [i]action[/i] [i]name[/i] [i]command[/i]", "qc")]
+[Command("quickcommands", aliases: "qc")]
+[Description("Manages Quick Commands.")]
+[Usage("quickcommands [i]action[/i] [i]name[/i] [i]command[/i]")]
 [Argument("action", "[add, remove, list]", "The action to perform.")]
 [Option("-name", "string", "The name of the quick command.")]
 [Option("-command", "string", "The command to execute when the quick command is called.")]

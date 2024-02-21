@@ -9,14 +9,14 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("stats", "Manages the game monitor.", "[b]Usage:[/b] stats", "st")]
-[Option("-all", "bool", "Shows all the information in the game monitor.", false)]
-[Option("-fps", "bool", "Shows the FPS in the game monitor.", false)]
-[Option("-os", "bool", "Shows the OS information in the game monitor.", false)]
-[Option("-cpu", "bool", "Shows the CPU information in the game monitor.", false)]
-[Option("-mem", "bool", "Shows memory information in the game monitor.", false)]
-[Option("-engine", "bool", "Shows the engine information in the game monitor.", false)]
-[Option("-objects", "bool", "Shows the objects information in the game monitor.", false)]
-[Option("-lookingat", "bool", "Shows the info about node the player is looking at. Only in 3D.", false)]
+[Option("-all", "bool", "Shows all the information in the game monitor.")]
+[Option("-fps", "bool", "Shows the FPS in the game monitor.")]
+[Option("-os", "bool", "Shows the OS information in the game monitor.")]
+[Option("-cpu", "bool", "Shows the CPU information in the game monitor.")]
+[Option("-mem", "bool", "Shows memory information in the game monitor.")]
+[Option("-engine", "bool", "Shows the engine information in the game monitor.")]
+[Option("-objects", "bool", "Shows the objects information in the game monitor.")]
+[Option("-lookingat", "bool", "Shows the info about node the player is looking at. Only in 3D.")]
 public sealed class Stats : ICommand
 {
 	private YAT _yat;
