@@ -5,14 +5,15 @@ using YAT.Attributes;
 using YAT.Interfaces;
 using YAT.Types;
 
-namespace YAT.Commands
+namespace YAT.Commands;
+
+[Command("_CLASS_")]
+[Usage("_CLASS_")]
+[Description("Lorem ipsum dolor sit amet.")]
+public sealed class _CLASS_ : ICommand
 {
-	[Command("_CLASS_", "Lorem ipsum dolor sit amet.", "[b]Usage[/b]: _CLASS_")]
-	public sealed class _CLASS_ : ICommand
+	public CommandResult Execute(CommandData data)
 	{
-		public CommandResult Execute(CommandData data)
-		{
-			return CommandResult.NotImplemented("_CLASS_ is not yet implemented!");
-		}
+		return CommandResult.NotImplemented("_CLASS_ is not yet implemented!");
 	}
 }

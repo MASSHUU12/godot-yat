@@ -15,8 +15,8 @@ All notable changes to this project will be documented in this file.
 -   -limit option to ping command.
 -   CommandInputType record.
 -   TryParseCommandInputType method for Text helper class.
--   String in arguments and options can have defined min and max length.
--   Enum:
+-   String type in arguments and options can have defined min and max length.
+-   Enums:
     -   ESceneChangeFailureReason
     -   EStringConversionResult
 -   Commands:
@@ -41,6 +41,9 @@ All notable changes to this project will be documented in this file.
 -   The way of defining the type for arguments and options has changed.
 -   CommandData now uses StringName instead of string for dictionaries.
 -   Methods StartsWith & EndsWith from Text class are now extensions of string type.
+-   Using default value for bool type options is no longer necessary.
+-   Double is no longer a valid type for options & arguments.
+-   Updated AUTOMATIC_INPUT_VALIDATION.md & script templates.
 
 ### Removed
 
@@ -48,7 +51,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
--   It is no longer possible to call the history command via itself, which could have caused an endless loop.
+-   It is possible to call the history command via itself, which can cause an endless loop.
+-   The set command throws an exception when there are no registered extensions.
 
 ## [1.23.0-beta 2024-02-13]
 
