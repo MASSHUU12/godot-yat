@@ -223,7 +223,7 @@ public partial class CommandValidator : Node
 
 		if (t.StartsWith("int", "float"))
 		{
-			var status = TryConvertNumeric(value, type, out float r);
+			var status = TryConvertNumeric(value, type, out var r);
 			result = r;
 
 			return status
@@ -249,14 +249,31 @@ public partial class CommandValidator : Node
 		return EStringConversionResult.Invalid;
 	}
 
-	private static bool TryConvertNumeric<T>(StringName value, CommandInputType type, out T result)
-	where T : notnull, IConvertible, IComparable<T>, IComparable<float>
+	private static bool TryConvertNumeric(StringName value, CommandInputType type, out object result)
 	{
-		if (!Numeric.TryConvert(value, out result)) return false;
+		result = null;
 
-		if (type.Min != type.Max) return Numeric.IsWithinRange(
-			result, type.Min, type.Max
-		);
+		if (type.Type == "int")
+		{
+			if (!Numeric.TryConvert(value, out int r)) return false;
+
+			result = r;
+
+			if (type.Min != type.Max) return Numeric.IsWithinRange(
+				r, type.Min, type.Max
+			);
+		}
+
+		if (type.Type == "float")
+		{
+			if (!Numeric.TryConvert(value, out float r)) return false;
+
+			result = r;
+
+			if (type.Min != type.Max) return Numeric.IsWithinRange<float, float>(
+				r, type.Min, type.Max
+			);
+		}
 
 		return true;
 	}
