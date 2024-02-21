@@ -12,8 +12,7 @@ public sealed class Echo : ICommand
 {
 	public CommandResult Execute(CommandData data)
 	{
-		var text = string.Join(" ", data.RawData[1..^0]);
-		data.Terminal.Print(text);
+		data.Terminal.Print(data.Arguments["message"]);
 
 		return ICommand.Success();
 	}
