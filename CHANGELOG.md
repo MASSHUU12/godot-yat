@@ -46,6 +46,10 @@ All notable changes to this project will be documented in this file.
 
 -   FailureReason enum.
 
+### Fixed
+
+-   It is no longer possible to call the history command via itself, which could have caused an endless loop.
+
 ## [1.23.0-beta 2024-02-13]
 
 ### Added
