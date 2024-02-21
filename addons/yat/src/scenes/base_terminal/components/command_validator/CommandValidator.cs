@@ -168,21 +168,21 @@ public partial class CommandValidator : Node
 						return false;
 					}
 
-					List<object> convertedArr = new();
+					List<object> convertedL = new();
 
 					foreach (var v in values)
 					{
-						var st = TryConvertStringToType(v, type, out var convertedArrValue);
+						var st = TryConvertStringToType(v, type, out var convertedLValue);
 
 						if (st != EStringConversionResult.Success)
 						{
-							PrintErr(st, option.Name, option.Types, convertedArrValue, type.Min, type.Max);
+							PrintErr(st, option.Name, option.Types, convertedLValue, type.Min, type.Max);
 							return false;
 						}
 
-						convertedArr.Add(convertedArrValue);
-						validatedOpts[option.Name] = convertedArr.ToArray();
+						convertedL.Add(convertedLValue);
 					}
+					validatedOpts[option.Name] = convertedL.ToArray();
 
 					return true;
 				}
