@@ -14,7 +14,7 @@ public sealed class Cat : ICommand
 	public CommandResult Execute(CommandData data)
 	{
 		string fileName = (string)data.Arguments["file"];
-		int lineLimit = (int)data.Options["-l"];
+		int lineLimit = (int)(float)data.Options["-l"];
 
 		if (!FileAccess.FileExists(fileName))
 			return ICommand.InvalidArguments($"File '{fileName}' does not exist.");

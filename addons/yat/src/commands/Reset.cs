@@ -9,7 +9,7 @@ namespace YAT.Commands;
 	"Resets the terminal to its default position and/or size.",
 	"[b]reset[/b] [i]action[/i]"
 )]
-[Argument("action", "[all, position, size]", "The action to perform.")]
+[Argument("action", "all|position|size", "The action to perform.")]
 public sealed class Reset : ICommand
 {
 	public CommandResult Execute(CommandData data)

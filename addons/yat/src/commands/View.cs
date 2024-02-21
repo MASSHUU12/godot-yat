@@ -20,7 +20,7 @@ namespace YAT.Commands;
 	"You can also use the integer value of the type " +
 	"[url=https://docs.godotengine.org/en/stable/classes/class_renderingserver.html#class-renderingserver-method-set-debug-generate-wireframes]ViewportDebugDraw[/url]."
 )]
-[Argument("type", "[normal, unshaded, lightning, overdraw, wireframe, int]", "The type of debug draw to use.")]
+[Argument("type", "normal|unshaded|lightning|overdraw|wireframe|int", "The type of debug draw to use.")]
 public sealed class View : ICommand
 {
 	private static readonly int MAX_DRAW_MODE = Enum.GetValues(typeof(ViewportDebugDraw)).Length - 1;
