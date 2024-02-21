@@ -219,18 +219,26 @@ public static class Text
 
 		if (tokens.Length > 1)
 		{
-			if (tokens[1].EndsWith(':')) return false;
-
+			bool maxIsPresent = tokens[1].EndsWith(':');
 			var minMax = tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries);
 
 			if (!allowedToHaveRange(tokens[0]) || minMax.Length > 2) return false;
 
-			// If min value is not present, set it to 0
 			if (minMax.Length == 1)
 			{
-				if (minMax[0].TryConvert(out float max))
-					parsed = new(tokens[0], 0, max, isArray);
-				else return false;
+				// If only min value is not present, set it to float.MinValue
+				if (!maxIsPresent)
+				{
+					if (minMax[0].TryConvert(out float max))
+						parsed = new(tokens[0], float.MinValue, max, isArray);
+					else return false;
+				} // If only max value is not present, set it to float.MaxValue
+				else
+				{
+					if (minMax[0].TryConvert(out float min))
+						parsed = new(tokens[0], min, float.MaxValue, isArray);
+					else return false;
+				}
 			}
 			else
 			{
