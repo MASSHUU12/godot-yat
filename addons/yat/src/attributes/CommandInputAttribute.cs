@@ -10,7 +10,7 @@ namespace YAT.Attributes;
 public class CommandInputAttribute : Attribute
 {
 	public StringName Name { get; private set; }
-	public LinkedList<CommandInputType> Types { get; private set; } = new();
+	public List<CommandInputType> Types { get; private set; } = new();
 	public string Description { get; private set; }
 
 	public CommandInputAttribute(StringName name, string type, string description = "")
@@ -24,7 +24,7 @@ public class CommandInputAttribute : Attribute
 		foreach (var t in type.Split('|'))
 		{
 			if (Text.TryParseCommandInputType(t, out var commandInputType))
-				Types.AddLast(commandInputType);
+				Types.Add(commandInputType);
 			else
 				GD.PushError($"Invalid command input type '{t}' for command '{name}'.");
 		}

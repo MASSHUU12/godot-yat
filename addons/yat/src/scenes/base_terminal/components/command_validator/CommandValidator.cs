@@ -282,7 +282,7 @@ public partial class CommandValidator : Node
 	private void PrintErr(
 		EStringConversionResult status,
 		StringName argumentName,
-		LinkedList<CommandInputType> types,
+		List<CommandInputType> types,
 		object value, float min, float max
 	)
 	{
