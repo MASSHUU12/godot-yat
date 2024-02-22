@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 -   InvalidCommandInputType message.
 
+### Changed
+
+-   Keybindings class now uses array of tuples instead of a list of tuples.
+
 ## [1.24.0-beta 2024-02-21]
 
 ### Added
