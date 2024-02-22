@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using YAT.Classes;
 using YAT.Helpers;
 using YAT.Types;
 
@@ -23,7 +24,7 @@ public class CommandInputAttribute : Attribute
 
 		foreach (var t in type.Split('|'))
 		{
-			if (Text.TryParseCommandInputType(t, out var commandInputType))
+			if (Parser.TryParseCommandInputType(t, out var commandInputType))
 				Types.Add(commandInputType);
 			else
 				GD.PushError(Messages.InvalidCommandInputType(t, name));

@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Keybindings class now uses array of tuples instead of a list of tuples.
+-   Moved TestTryParseCommandInputType to Parser class.
 
 ## [1.24.0-beta 2024-02-21]
 
