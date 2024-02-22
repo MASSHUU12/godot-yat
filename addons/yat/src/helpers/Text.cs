@@ -17,15 +17,9 @@ public static class Text
 		return $"[b]{text}[/b]";
 	}
 
-	/// <summary>
-	/// Sanitizes the given text by removing leading and trailing white spaces
-	/// and empty entries.
-	/// </summary>
-	/// <param name="text">The text to sanitize.</param>
-	/// <returns>An array of sanitized strings.</returns>
 	public static string[] SanitizeText(string text)
 	{
-		return SplitClean(text, " ");
+		return SplitClean(EscapeBBCode(text), " ");
 	}
 
 	/// <summary>
