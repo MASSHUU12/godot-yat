@@ -7,11 +7,13 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   InvalidCommandInputType message.
+-   -f option to list command.
 
 ### Changed
 
 -   Keybindings class now uses array of tuples instead of a list of tuples.
 -   Moved TestTryParseCommandInputType to Parser class.
+-   The list command by default displays the list of commands stored in the cache, updating the list requires using the -f option.
 
 ## [1.24.0-beta 2024-02-21]
 

@@ -10,9 +10,22 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("list", "List all available commands", "[b]Usage[/b]: list", "lc")]
+[Option("-f", "bool", "Flush the cache before listing commands.")]
 public sealed class List : ICommand
 {
+	private static string _cache = string.Empty;
+
 	public CommandResult Execute(CommandData data)
+	{
+		if ((bool)data.Options["-f"]) _cache = string.Empty;
+
+		if (string.IsNullOrEmpty(_cache)) PrintList(data.Terminal);
+		else data.Terminal.Print(_cache);
+
+		return ICommand.Success();
+	}
+
+	private static void PrintList(BaseTerminal terminal)
 	{
 		var sb = new StringBuilder();
 
@@ -32,8 +45,7 @@ public sealed class List : ICommand
 			sb.AppendLine();
 		}
 
-		data.Terminal.Print(sb.ToString());
-
-		return ICommand.Success();
+		_cache = sb.ToString();
+		terminal.Print(_cache);
 	}
 }
