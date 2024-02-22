@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   InvalidCommandInputType message.
+
 ## [1.24.0-beta 2024-02-21]
 
 ### Added
