@@ -60,21 +60,13 @@ public partial class CommandManager : Node
 		{
 			if (!terminal.CommandValidator.ValidatePassedData<ArgumentAttribute>(
 				command, args[1..], out convertedArgs
-			))
-			{
-				GD.Print("Failed to validate passed arguments.");
-				return;
-			}
+			)) return;
 
 			if (command.GetAttributes<OptionAttribute>() is not null)
 			{
 				if (!terminal.CommandValidator.ValidatePassedData<OptionAttribute>(
 					command, args[1..], out convertedOpts
-				))
-				{
-					GD.Print("Failed to validate passed options.");
-					return;
-				}
+				)) return;
 			}
 		}
 
