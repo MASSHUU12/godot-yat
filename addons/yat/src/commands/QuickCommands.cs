@@ -1,30 +1,27 @@
 using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Scenes;
 using YAT.Types;
 
 namespace YAT.Commands;
 
 [Command("quickcommands", aliases: "qc")]
 [Description("Manages Quick Commands.")]
-[Usage("quickcommands [i]action[/i] [i]name[/i] [i]command[/i]")]
-[Argument("action", "[add, remove, list]", "The action to perform.")]
+[Usage("qc [i]action[/i]")]
+[Argument("action", "add|remove|list", "The action to perform.")]
 [Option("-name", "string", "The name of the quick command.")]
 [Option("-command", "string", "The command to execute when the quick command is called.")]
 public sealed class QuickCommands : ICommand
 {
-	private BaseTerminal _terminal;
 	private YAT _yat;
 
 	public CommandResult Execute(CommandData data)
 	{
-		string action = (string)data.Arguments["action"];
-		string name = data.Options.TryGetValue("-name", out object nameObj) ? (string)nameObj : null;
-		string command = data.Options.TryGetValue("-command", out object commandObj) ? (string)commandObj : null;
+		var action = (string)data.Arguments["action"];
+		var name = (string)data.Options["-name"];
+		var command = (string)data.Options["-command"];
 
 		_yat = data.Yat;
-		_terminal = data.Terminal;
 
 		if (action != "list" && string.IsNullOrEmpty(name))
 			return ICommand.Failure("You need to provide a command name for this action.");
@@ -37,9 +34,7 @@ public sealed class QuickCommands : ICommand
 				return RemoveQuickCommand(name);
 			default:
 				foreach (var qc in _yat.Commands.QuickCommands.Commands)
-				{
-					_terminal.Print($"[b]{qc.Key}[/b] - {Text.EscapeBBCode(qc.Value)}");
-				}
+					data.Terminal.Print($"[b]{qc.Key}[/b] - {Text.EscapeBBCode(qc.Value)}");
 				break;
 		}
 
@@ -51,23 +46,15 @@ public sealed class QuickCommands : ICommand
 		if (string.IsNullOrEmpty(command))
 			return ICommand.Failure("You need to provide command for this action.");
 
-		bool status = _yat.Commands.AddQuickCommand(name, command);
-		string message;
-
-		if (status) message = $"Added quick command '{name}'.";
-		else message = $"Failed to add quick command '{name}'.";
-
-		return status ? ICommand.Success(message) : ICommand.Failure(message);
+		return _yat.Commands.AddQuickCommand(name, command)
+			? ICommand.Success($"Added quick command '{name}'.")
+			: ICommand.Failure($"Failed to add quick command '{name}'.");
 	}
 
 	private CommandResult RemoveQuickCommand(string name)
 	{
-		bool status = _yat.Commands.RemoveQuickCommand(name);
-		string message;
-
-		if (status) message = $"Removed quick command '{name}'.";
-		else message = $"Failed to remove quick command '{name}'.";
-
-		return status ? ICommand.Success(message) : ICommand.Failure(message);
+		return _yat.Commands.RemoveQuickCommand(name)
+			? ICommand.Success($"Removed quick command '{name}'.")
+			: ICommand.Failure($"Failed to remove quick command '{name}'.");
 	}
 }
