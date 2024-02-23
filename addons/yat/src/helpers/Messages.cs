@@ -23,8 +23,8 @@ public static class Messages
 	// Invalid
 	public static string InvalidNodePath(string path)
 		=> $"{path} is not a valid node path.";
-	public static string InvalidArgument(StringName command, StringName argument, string expected)
-		=> $"{command} expected {argument} to be an: {expected}.";
+	public static string InvalidArgument(StringName command, string argument, string expected)
+		=> $"{command} expected {Text.EscapeBBCode(argument)} to be an: {expected}.";
 	public static string InvalidMethod(string method)
 		=> $"{method} is not a valid method.";
 	public static string InvalidOption(StringName command, string opt)
