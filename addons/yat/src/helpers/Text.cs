@@ -19,7 +19,7 @@ public static class Text
 
 	public static string[] SanitizeText(string text)
 	{
-		return SplitClean(EscapeBBCode(text), " ");
+		return SplitClean(text, " ");
 	}
 
 	/// <summary>
