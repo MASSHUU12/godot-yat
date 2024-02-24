@@ -1,8 +1,6 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Interfaces;
-using YAT.Scenes;
 using YAT.Types;
 
 namespace YAT.Commands;
@@ -11,61 +9,38 @@ namespace YAT.Commands;
 [Argument("action", "remove|restore", "Removes or restores the world environment.")]
 public sealed class Wenv : ICommand
 {
-	private YAT _yat;
-	private BaseTerminal _terminal;
 	private static Environment _world3DEnvironment;
 
 	public CommandResult Execute(CommandData data)
 	{
 		var action = (string)data.Arguments["action"];
+		var world = data.Yat.GetTree().Root.World3D;
 
-		_yat = data.Yat;
-		_terminal = data.Terminal;
-
-		if (action == "remove") RemoveEnvironment();
-		else RestoreEnvironment();
-
-		return ICommand.Success();
+		if (action == "remove") return RemoveEnvironment(world);
+		return RestoreEnvironment(world);
 	}
 
-	private void RestoreEnvironment()
+	private static CommandResult RestoreEnvironment(World3D world)
 	{
-		var world3D = _yat.GetTree().Root.World3D;
+		if (world is null) return ICommand.Failure("No world to restore environment to.");
+		if (_world3DEnvironment is null) return ICommand.Failure("No environment to restore.");
 
-		if (world3D is null)
-		{
-			_terminal.Print("No world to restore environment to.", EPrintType.Error);
-			return;
-		}
-
-		if (_world3DEnvironment is null)
-		{
-			_terminal.Print("No environment to restore.", EPrintType.Error);
-			return;
-		}
-
-		world3D.Environment = _world3DEnvironment;
+		world.Environment = _world3DEnvironment;
 		_world3DEnvironment = null;
+
+		return ICommand.Success("Restored environment.");
 	}
 
-	private void RemoveEnvironment()
+	private static CommandResult RemoveEnvironment(World3D world)
 	{
-		var world3D = _yat.GetTree().Root.World3D;
-		var env = world3D?.Environment;
+		var env = world?.Environment;
 
-		if (world3D is null)
-		{
-			_terminal.Print("No world to remove environment from.", EPrintType.Error);
-			return;
-		}
-
-		if (env is null)
-		{
-			_terminal.Print("No environment to remove.", EPrintType.Error);
-			return;
-		}
+		if (world is null) return ICommand.Failure("No world to remove environment from.");
+		if (env is null) return ICommand.Failure("No environment to remove.");
 
 		_world3DEnvironment = env;
-		world3D.Environment = null;
+		world.Environment = null;
+
+		return ICommand.Success("Removed environment.");
 	}
 }

@@ -8,7 +8,7 @@ public sealed class OptionAttribute : CommandInputAttribute
 	public object DefaultValue { get; private set; }
 
 	public OptionAttribute(string name, string type, string description = "", object defaultValue = null)
-		: base(name, type, description)
+	: base(name, type, description)
 	{
 		DefaultValue = defaultValue;
 	}

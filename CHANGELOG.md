@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   InvalidCommandInputType message.
+-   -f option to list command.
+-   'trace' alias for traceroute command.
+
+### Changed
+
+-   Keybindings class now uses array of tuples instead of a list of tuples.
+-   Moved TestTryParseCommandInputType to Parser class.
+-   The list command by default displays the list of commands stored in the cache, updating the list requires using the -f option.
+-   Removed left out log messages.
+-   Improved view command.
+
+### Fixed
+
+-   The action argument for the QuickCommands command was not aligned with recent changes.
+-   Entering text containing the '=' character was incorrectly handled.
+-   Attempting to run the toggleaudio & traceroute command threw an exception.
+
 ## [1.24.0-beta 2024-02-21]
 
 ### Added

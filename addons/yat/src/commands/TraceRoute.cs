@@ -6,11 +6,9 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command(
-	"traceroute",
-	"Displays the route that packets take to reach the specified host.",
-	"[b]Usage[/b]: traceroute [i]hostname[/i]"
-)]
+[Command("traceroute", aliases: "trace")]
+[Usage("traceroute [i]hostname[/i]")]
+[Description("Displays the route that packets take to reach the specified host.")]
 [Argument("hostname", "string", "The host to trace the route to.")]
 [Option("-t", "int(1:32767)", "The maximum time to wait for each reply, in milliseconds.", 10000)]
 [Option("-ttl", "int(1:255)", "The maximum number of hops to search for the target.", 30)]
@@ -24,9 +22,9 @@ public sealed class TraceRoute : ICommand
 		var hostname = (string)data.Arguments["hostname"];
 		var options = new NetworkingOptions
 		{
-			Timeout = (ushort)(float)data.Options["-t"],
-			TTL = (ushort)(float)data.Options["-ttl"],
-			BufferSize = (ushort)(float)data.Options["-b"],
+			Timeout = (ushort)(int)data.Options["-t"],
+			TTL = (ushort)(int)data.Options["-ttl"],
+			BufferSize = (ushort)(int)data.Options["-b"],
 			DontFragment = !(bool)data.Options["-f"]
 		};
 

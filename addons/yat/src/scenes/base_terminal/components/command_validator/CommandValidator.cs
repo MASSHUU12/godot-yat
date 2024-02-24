@@ -135,16 +135,14 @@ public partial class CommandValidator : Node
 		{
 			if (!passedOpt.StartsWith(option.Name)) continue;
 
-			string[] tokens = passedOpt.Split('=');
+			string[] tokens = passedOpt.Split('=', 2);
 			if (isBool && tokens.Length == 1)
 			{
 				validatedOpts[option.Name] = true;
 				return true;
 			}
 
-			if ((!isBool && tokens.Length != 2)
-				|| (isBool && tokens.Length != 1)
-			)
+			if (isBool && tokens.Length != 1)
 			{
 				Terminal.Output.Error(
 					Messages.InvalidArgument(_commandName, passedOpt, option.Name)
@@ -282,7 +280,7 @@ public partial class CommandValidator : Node
 	private void PrintErr(
 		EStringConversionResult status,
 		StringName argumentName,
-		LinkedList<CommandInputType> types,
+		List<CommandInputType> types,
 		object value, float min, float max
 	)
 	{

@@ -7,12 +7,18 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<!-- This option does not work well with Godot.NET.Sdk -->
 		<!-- <Nullable>enable</Nullable> -->
-		<Optimize>true</Optimize>
+		<Optimize Condition="'$(Configuration)' == 'ExportRelease'">
+			true
+		</Optimize>
 		<!--Disable warning of invalid/incompatible GodotSharp version-->
 		<NoWarn>NU1605</NoWarn>
 		<DefaultItemExcludes Condition="'$(Configuration)' == 'ExportRelease'">
 			$(DefaultItemExcludes);test/**/*
 		</DefaultItemExcludes>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' != 'ExportRelease'">
+		<DebugType>portable</DebugType>
+		<DebugSymbols>true</DebugSymbols>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="script_templates/**/*.cs" />

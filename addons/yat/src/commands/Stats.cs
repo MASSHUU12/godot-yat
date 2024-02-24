@@ -20,7 +20,6 @@ namespace YAT.Commands;
 public sealed class Stats : ICommand
 {
 	private YAT _yat;
-	private BaseTerminal _terminal;
 	private static Monitor _monitorInstance;
 	private static readonly PackedScene _monitor = GD.Load<PackedScene>(
 		"uid://dekp8nra5yo6u"
@@ -29,7 +28,6 @@ public sealed class Stats : ICommand
 	public CommandResult Execute(CommandData data)
 	{
 		_yat = data.Yat;
-		_terminal = data.Terminal;
 
 		if (data.Options.Any((arg) => (bool)arg.Value)) return Open(data.Options);
 		return Close();
@@ -71,7 +69,7 @@ public sealed class Stats : ICommand
 		return ICommand.Success();
 	}
 
-	private CommandResult Close()
+	private static CommandResult Close()
 	{
 		if (!GodotObject.IsInstanceValid(_monitorInstance))
 			return ICommand.Failure("The game monitor is not open.");

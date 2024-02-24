@@ -1,16 +1,15 @@
 using System;
-using System.Collections.Generic;
 using Godot;
 
 namespace YAT.Helpers;
 
 public static class Keybindings
 {
-	public static readonly StringName TerminalToggle = new("yat_terminal_toggle");
 	public static readonly StringName ContextMenu = new("yat_context_menu");
-	public static readonly StringName TerminalHistoryPrevious = new("yat_terminal_history_previous");
-	public static readonly StringName TerminalHistoryNext = new("yat_terminal_history_next");
+	public static readonly StringName TerminalToggle = new("yat_terminal_toggle");
 	public static readonly StringName TerminalInterrupt = new("yat_terminal_interrupt");
+	public static readonly StringName TerminalHistoryNext = new("yat_terminal_history_next");
+	public static readonly StringName TerminalHistoryPrevious = new("yat_terminal_history_previous");
 	public static readonly StringName TerminalAutocompletionNext = new("yat_terminal_autocompletion_next");
 	public static readonly StringName TerminalAutocompletionPrevious = new("yat_terminal_autocompletion_previous");
 
@@ -19,7 +18,7 @@ public static class Keybindings
 	public static readonly StringName ExamplePlayerMoveForward = new("yat_example_player_move_forward");
 	public static readonly StringName ExamplePlayerMoveBackward = new("yat_example_player_move_backward");
 
-	private static readonly List<Tuple<string, InputEvent>> _defaultActions = new()
+	private static readonly Tuple<StringName, InputEvent>[] _defaultActions = new Tuple<StringName, InputEvent>[]
 	{
 		new(TerminalToggle, new InputEventKey { PhysicalKeycode = Key.Quoteleft }),
 		new(ContextMenu, new InputEventMouseButton {

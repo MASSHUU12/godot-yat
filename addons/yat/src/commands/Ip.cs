@@ -7,40 +7,43 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("ip", "Displays your private IP addresses.", "[b]Usage[/b]: ip")]
+[Command("ip")]
+[Usage("ip [i]action[/i]")]
+[Description("Displays information about the local network interfaces.")]
 [Argument("action", "addr", "The action to perform.")]
 public sealed class Ip : ICommand
 {
-	private BaseTerminal _terminal;
-
 	public CommandResult Execute(CommandData data)
 	{
-		string action = data.Arguments["action"] as string;
+		var action = (string)data.Arguments["action"];
 
-		_terminal = data.Terminal;
-
-		if (action == "addr") PrintLocalInterfaces();
+		if (action == "addr") PrintLocalInterfaces(data.Terminal);
 
 		return ICommand.Success();
 	}
 
-	private void PrintLocalInterfaces()
+	private static void PrintLocalInterfaces(BaseTerminal terminal)
 	{
 		StringBuilder sb = new();
 		var interfaces = IP.GetLocalInterfaces();
+
+		if (interfaces.Count == 0)
+		{
+			terminal.Print("No local interfaces found.");
+			return;
+		}
 
 		foreach (var iface in interfaces)
 		{
 			sb.AppendLine($"[b]{iface["index"]}[/b]: {iface["friendly"]} ({iface["name"]})");
 			sb.AppendLine("Addresses:");
+
 			foreach (var addr in iface["addresses"].AsStringArray())
-			{
 				sb.AppendLine($"\t{addr}");
-			}
 
 			sb.AppendLine();
 		}
 
-		_terminal.Print(sb.ToString());
+		terminal.Print(sb.ToString());
 	}
 }

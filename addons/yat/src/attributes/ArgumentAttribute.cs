@@ -6,7 +6,5 @@ namespace YAT.Attributes;
 public sealed class ArgumentAttribute : CommandInputAttribute
 {
 	public ArgumentAttribute(string name, string type, string description = "")
-		: base(name, type, description)
-	{
-	}
+	: base(name, type, description) { }
 }

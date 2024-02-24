@@ -6,13 +6,13 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("toggleaudio", "Toggles audio on or off.", "[b]Usage[/b]: toggleaudio")]
-[Option("-id", "int(0:32767)", "The ID of the audio bus to toggle. If not provided, all buses will be toggled.", -1)]
-[Option("-name", "string", "The name of the audio bus to toggle. If not provided, all buses will be toggled.", null)]
+[Option("-id", "int(0:32767)", "The ID of the audio bus to toggle.", -1)]
+[Option("-name", "string", "The name of the audio bus to toggle.")]
 public sealed class ToggleAudio : ICommand
 {
 	public CommandResult Execute(CommandData data)
 	{
-		var id = (int)(float)data.Options["-id"];
+		var id = (int)data.Options["-id"];
 		var name = (string)data.Options["-name"];
 
 		if (id == -1 && string.IsNullOrEmpty(name))
@@ -21,13 +21,10 @@ public sealed class ToggleAudio : ICommand
 			return ICommand.Success();
 		}
 
-		if (id != -1)
-		{
-			if (!ToggleById(id)) return ICommand.InvalidArguments("Invalid audio bus ID.");
-		}
+		if (id != -1 && !ToggleById(id)) return ICommand.InvalidArguments("Invalid audio bus ID.");
 
-		if (!string.IsNullOrEmpty(name))
-			if (!ToggleByName(name)) return ICommand.InvalidArguments("Invalid audio bus name.");
+		if (!string.IsNullOrEmpty(name) && !ToggleByName(name))
+			return ICommand.InvalidArguments("Invalid audio bus name.");
 
 		return ICommand.Success();
 	}

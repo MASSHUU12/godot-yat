@@ -8,83 +8,66 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command(
-	"history",
-	"Manages the command history of the current session.",
-	"[b]Usage[/b]: history [i]action[/i]" +
-	"\n\n[b]Actions[/b]:\n" +
-	"[b]clear[/b]: Clears the history.\n" +
-	"[b]<number>[/b]: Executes the command at the specified index in the history.\n" +
-	"[b]list[/b]: Lists the history.",
-	"hist"
-)]
-[Argument("action", "clear|list|int", "The action to perform.")]
-public partial class History : ICommand
+[Command("history", aliases: "hist")]
+[Usage("history [i]action[/i]")]
+[Description("Manages the command history of the current session.")]
+[Argument("action", "clear|list|int(0:)", "The action to perform.")]
+public sealed class History : ICommand
 {
-	private YAT _yat;
 	private BaseTerminal _terminal;
 
 	public CommandResult Execute(CommandData data)
 	{
-		_yat = data.Yat;
 		_terminal = data.Terminal;
 
-		switch (data.RawData[1])
+		switch (data.Arguments["action"])
 		{
 			case "clear":
-				ClearHistory();
-				break;
+				return ClearHistory();
 			case "list":
-				ShowHistory();
-				break;
+				return ShowHistory();
 			default:
-				if (int.TryParse(data.RawData[1], out int index)) ExecuteFromHistory(index);
+				if (int.TryParse(data.RawData[1], out int index))
+					return ExecuteFromHistory(index);
 				else return ICommand.Failure($"Invalid action: {data.RawData[1]}");
-				break;
 		}
-
-		return ICommand.Success();
 	}
 
-	private void ClearHistory()
+	private CommandResult ClearHistory()
 	{
 		_terminal.History.Clear();
-		_terminal.Print("Terminal history cleared.");
+		return ICommand.Success("History cleared.");
 	}
 
-	private void ExecuteFromHistory(int index)
+	private CommandResult ExecuteFromHistory(int index)
 	{
 		if (index < 0 || index >= _terminal.History.Count)
-		{
-			_terminal.Print($"Invalid index: {index}");
-			return;
-		}
+			return ICommand.Failure($"Invalid index: {index}");
 
 		var command = _terminal.History.ElementAt(index);
-
-		if (command.StartsWith("history", "hist"))
-		{
-			_terminal.Print("Cannot execute history command from history.");
-			return;
-		}
+		if (command.StartsWith("history", "hist")) return ICommand.InvalidCommand(
+			"Cannot execute history command from history."
+		);
 
 		_terminal.Print(
 			$"Executing command at index {index}: {Text.EscapeBBCode(command)}"
 		);
 		_terminal.CommandManager.Run(Text.SanitizeText(command), _terminal);
+
+		return ICommand.Success();
 	}
 
-	private void ShowHistory()
+	private CommandResult ShowHistory()
 	{
 		StringBuilder sb = new();
 		sb.AppendLine("Terminal history:");
 
 		ushort i = 0;
 		foreach (string command in _terminal.History)
-		{
 			sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
-		}
 
 		_terminal.Print(sb);
+
+		return ICommand.Success();
 	}
 }
