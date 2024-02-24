@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 -   Moved TestTryParseCommandInputType to Parser class.
 -   The list command by default displays the list of commands stored in the cache, updating the list requires using the -f option.
 -   Removed left out log messages.
+-   Improved view command.
 
 ### Fixed
 
