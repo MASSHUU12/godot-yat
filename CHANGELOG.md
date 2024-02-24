@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 
 -   The action argument for the QuickCommands command was not aligned with recent changes.
 -   Entering text containing the '=' character was incorrectly handled.
+-   Attempting to run the toggleaudio command threw an exception.
 
 ## [1.24.0-beta 2024-02-21]
 
