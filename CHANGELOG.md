@@ -11,6 +11,15 @@ All notable changes to this project will be documented in this file.
 -   IDebugScreenItem interface.
 -   Added access to DebugScreen from YAT.
 
+### Changed
+
+-   Reworked components from Monitor for DebugScreen.
+
+### Removed
+
+-   Monitor.
+-   Stats command.
+
 ## [1.24.1-beta 2024-02-24]
 
 ### Added

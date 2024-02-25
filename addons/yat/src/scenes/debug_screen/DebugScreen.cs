@@ -20,10 +20,22 @@ public partial class DebugScreen : Control
 	public static readonly List<IDebugScreenItem>[] registeredItems =
 	// Use EDebugScreenItemPosition enum values as indices
 	new List<IDebugScreenItem>[4] {
-		new()
+		new() // Top Left
 		{
-			GD.Load<PackedScene>("uid://0e2nft11f3h1").Instantiate<FpsItem>()
-		}, new(), new(), new() };
+			GD.Load<PackedScene>("uid://0e2nft11f3h1").Instantiate<FpsItem>(),
+			GD.Load<PackedScene>("uid://lfgol2xetr88").Instantiate<MemoryInfoItem>(),
+			GD.Load<PackedScene>("uid://hvc8a2qwximn").Instantiate<LookingAtInfo>(),
+			GD.Load<PackedScene>("uid://lscv6c8lgnyh").Instantiate<SceneObjectsInfo>(),
+		},
+		new() // Top Right
+		{
+			GD.Load<PackedScene>("uid://dopcpwc6ch10v").Instantiate<CpuInfoItem>(),
+			GD.Load<PackedScene>("uid://ds38fns27q672").Instantiate<OsInfoItem>(),
+			GD.Load<PackedScene>("uid://fcjyl1y5lo").Instantiate<EngineInfoItem>(),
+		},
+		new(), // Bottom Left
+		new()  // Bottom Right
+	};
 
 	public override void _Ready()
 	{
@@ -38,7 +50,7 @@ public partial class DebugScreen : Control
 		_timer.WaitTime = UpdateInterval;
 		_timer.Timeout += OnTimerTimeout;
 
-		RunSelected("FPS");
+		RunSelected("FPS", "Memory", "CPU", "OS", "Engine", "LookingAt", "SceneObjects");
 	}
 
 	public void RunSelected(params string[] titles)
