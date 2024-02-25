@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://ds38fns27q672"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/items/os_info_item/OsInfoItem.cs" id="1_o8y1i"]
+
+[node name="OsInfoItem" type="PanelContainer"]
+layout_direction = 3
+script = ExtResource("1_o8y1i")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+text = "OS"
