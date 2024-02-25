@@ -5,6 +5,8 @@
 
 [node name="DebugScreen" type="Control"]
 process_mode = 3
+top_level = true
+z_index = 4096
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
