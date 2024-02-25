@@ -28,7 +28,6 @@
 | ip            | N/A    | Displays your private IP addresses.                                              |
 | ls            | N/A    | Lists the contents of the current directory.                                     |
 | cn            | N/A    | Changes the selected node to the specified node path.                            |
-| stats         | st     | Manages the game monitor.                                                        |
 | cs            | N/A    | Changes the scene.                                                               |
 | wenv          | N/A    | Manages the world environment.                                                   |
 | reset         | N/A    | Resets the terminal to its default position and/or size.                         |
@@ -38,3 +37,4 @@
 | preferences   | prefs  | Creates the preferences window.                                                  |
 | traceroute    | N/A    | Displays the route that packets take to reach the specified host.                |
 | load          | N/A    | Loads specified object into the scene.                                           |
+| ds            | N/A    | Displays items in the debug screen.                                              |

@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dhbvghhlqawa4"]
+[gd_scene load_steps=6 format=3 uid="uid://dhbvghhlqawa4"]
 
 [ext_resource type="Script" path="res://addons/yat/src/YAT.cs" id="1_683p6"]
 [ext_resource type="PackedScene" uid="uid://b8xfvdai1l0vo" path="res://addons/yat/src/classes/managers/preferences_manager/PreferencesManager.tscn" id="4_5x7ox"]
 [ext_resource type="PackedScene" uid="uid://c4oxru3g4p038" path="res://addons/yat/src/scenes/terminal_manager/TerminalManager.tscn" id="4_tgqer"]
+[ext_resource type="PackedScene" uid="uid://3avgdpuh3nap" path="res://addons/yat/src/scenes/debug_screen/DebugScreen.tscn" id="5_hnddm"]
 [ext_resource type="PackedScene" uid="uid://r45e18qb3ekv" path="res://addons/yat/src/scenes/registered_commands/RegisteredCommands.tscn" id="5_j53i0"]
 
 [node name="YAT" type="Node"]
@@ -17,3 +18,5 @@ script = ExtResource("1_683p6")
 unique_name_in_owner = true
 
 [node name="Windows" type="Node" parent="."]
+
+[node name="DebugScreen" parent="Windows" instance=ExtResource("5_hnddm")]

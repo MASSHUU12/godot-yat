@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   DebugScreen scene.
+-   EDebugScreenItemPosition enum.
+-   IDebugScreenItem interface.
+-   Added access to DebugScreen from YAT.
+-   Ds command.
+
+### Changed
+
+-   Reworked components from Monitor for DebugScreen.
+
+### Removed
+
+-   Monitor.
+-   Stats command.
+
+### Fixed
+
+-   Not passing any value to an option that expects a value caused an exception to be thrown.
+
 ## [1.24.1-beta 2024-02-24]
 
 ### Added

@@ -3,14 +3,15 @@ using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
-public partial class EngineInfo : PanelContainer, IMonitorComponent
+public partial class EngineInfoItem : PanelContainer, IDebugScreenItem
 {
-	public bool UseColors { get; set; }
+	public string Title { get; set; } = "Engine";
 
 	private Label _label;
-	private readonly string _engineVersion = Engine.GetVersionInfo()["string"].AsString();
-	private readonly bool _isDebug = OS.IsDebugBuild();
 	private string _engineInfo;
+
+	private readonly bool _isDebug = OS.IsDebugBuild();
+	private readonly string _engineVersion = Engine.GetVersionInfo()["string"].AsString();
 
 	public override void _Ready()
 	{

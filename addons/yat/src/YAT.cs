@@ -13,6 +13,7 @@ public partial class YAT : Node
 	public Node Windows { get; private set; }
 	public BaseTerminal CurrentTerminal { get; set; }
 
+	public DebugScreen DebugScreen { get; private set; }
 	public RegisteredCommands Commands { get; private set; }
 	public TerminalManager TerminalManager { get; private set; }
 	public PreferencesManager PreferencesManager { get; private set; }
@@ -20,6 +21,7 @@ public partial class YAT : Node
 	public override void _Ready()
 	{
 		Windows = GetNode<Node>("./Windows");
+		DebugScreen = GetNode<DebugScreen>("./Windows/DebugScreen");
 		Commands = GetNode<RegisteredCommands>("./RegisteredCommands");
 		PreferencesManager = GetNode<PreferencesManager>("%PreferencesManager");
 

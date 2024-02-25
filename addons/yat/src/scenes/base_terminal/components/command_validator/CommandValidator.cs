@@ -150,6 +150,16 @@ public partial class CommandValidator : Node
 				return false;
 			}
 
+			if (tokens.Length <= 1)
+			{
+				Terminal.Output.Error(
+					Messages.InvalidArgument(_commandName, passedOpt, string.Join(
+						", ", option.Types.Select(t => t.Type + (t.IsArray ? "..." : string.Empty))
+					))
+				);
+				return false;
+			}
+
 			string value = tokens[1];
 
 			foreach (var type in option.Types)

@@ -4,9 +4,9 @@ using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
-public partial class MemoryInfo : PanelContainer, IMonitorComponent
+public partial class MemoryInfoItem : PanelContainer, IDebugScreenItem
 {
-	public bool UseColors { get; set; }
+	public string Title { get; set; } = "Memory";
 
 	private YAT _yat;
 	private RichTextLabel _label;
@@ -29,11 +29,10 @@ public partial class MemoryInfo : PanelContainer, IMonitorComponent
 
 		_label.Clear();
 		_label.AppendText(
-			$"RAM: {Numeric.SizeToString(physical.AsInt64(), 3)}\n" +
-			$"Free: {(
-				freePercent < 15 && UseColors
+			$"RAM: {(freePercent < 15
 				? $"[color={_yat.PreferencesManager.Preferences.ErrorColor}]{Numeric.SizeToString(free.AsInt64(), 3)}[/color]"
-				: Numeric.SizeToString(free.AsInt64(), 3))}\n" +
+				: Numeric.SizeToString(free.AsInt64(), 3)
+			)}/{Numeric.SizeToString(physical.AsInt64(), 3)}\n" +
 			$"Stack: {Numeric.SizeToString(stack.AsInt64(), 1)}\n" +
 			$"VRAM: {Numeric.SizeToString((long)vram, 2)}"
 		);

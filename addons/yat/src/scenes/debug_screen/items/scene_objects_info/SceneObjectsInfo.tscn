@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://lscv6c8lgnyh"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/items/scene_objects_info/SceneObjectsInfo.cs" id="1_wkyk1"]
+
+[node name="SceneObjectsInfo" type="PanelContainer"]
+script = ExtResource("1_wkyk1")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.819608, 0.627451, 0.305882, 1)

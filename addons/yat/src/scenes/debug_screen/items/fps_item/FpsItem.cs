@@ -3,13 +3,14 @@ using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
-public partial class Fps : PanelContainer, IMonitorComponent
+public partial class FpsItem : PanelContainer, IDebugScreenItem
 {
-	public bool UseColors { get; set; }
+	public string Title { get; set; } = "FPS";
 
-	private RichTextLabel _label;
-	private RichTextLabel _times;
 	private YAT _yat;
+	private RichTextLabel
+		_label,
+		_times;
 
 	public override void _Ready()
 	{
@@ -23,22 +24,21 @@ public partial class Fps : PanelContainer, IMonitorComponent
 		var fps = Performance.GetMonitor(Performance.Monitor.TimeFps);
 		var process = Performance.GetMonitor(Performance.Monitor.TimeProcess) * 1000;
 		var physics = Performance.GetMonitor(Performance.Monitor.TimePhysicsProcess) * 1000;
-		var prefs = _yat.PreferencesManager.Preferences;
+		var pref = _yat.PreferencesManager.Preferences;
 
 		_label.Clear();
-		if (UseColors) _label.PushColor(fps < 30 ? prefs.ErrorColor : prefs.SuccessColor);
+		_label.PushColor(fps < 30 ? pref.ErrorColor : pref.SuccessColor);
 		_label.AppendText($"{fps} FPS");
-		if (UseColors) _label.Pop();
+		_label.Pop();
 
 		_times.Clear();
 		_times.AppendText("Process: ");
-		if (UseColors && fps < 30) _times.PushColor(prefs.ErrorColor);
+		if (fps < 30) _times.PushColor(pref.ErrorColor);
 		_times.AppendText($"{process:0.00} ms\n");
-		if (UseColors && fps < 30) _times.Pop();
+		if (fps < 30) _times.Pop();
 		_times.AppendText("Physics: ");
-		if (UseColors && fps < 30) _times.PushColor(prefs.ErrorColor);
+		if (fps < 30) _times.PushColor(pref.ErrorColor);
 		_times.AppendText($"{physics:0.000} ms");
-		if (UseColors && fps < 30) _times.Pop();
-
+		if (fps < 30) _times.Pop();
 	}
 }
