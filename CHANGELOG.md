@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 -   EDebugScreenItemPosition enum.
 -   IDebugScreenItem interface.
 -   Added access to DebugScreen from YAT.
+-   Ds command.
 
 ### Changed
 
