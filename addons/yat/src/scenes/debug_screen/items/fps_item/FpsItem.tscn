@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://0e2nft11f3h1"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/items/fps_item/FpsItem.cs" id="1_n5iqm"]
+
+[node name="FpsItem" type="PanelContainer"]
+script = ExtResource("1_n5iqm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "0 FPS"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
+
+[node name="Times" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/bold_italics_font_size = 12
+theme_override_font_sizes/italics_font_size = 12
+theme_override_font_sizes/mono_font_size = 12
+theme_override_font_sizes/normal_font_size = 12
+theme_override_font_sizes/bold_font_size = 12
+bbcode_enabled = true
+text = "Process: 0 ms
+Physics: 0 ms"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+shortcut_keys_enabled = false
