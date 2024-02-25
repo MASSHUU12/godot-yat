@@ -53,9 +53,22 @@ public partial class DebugScreen : Control
 		RunSelected("FPS", "Memory", "CPU", "OS", "Engine", "LookingAt", "SceneObjects");
 	}
 
+	public void RunAll()
+	{
+		RemoveAllChildren();
+
+		foreach (List<IDebugScreenItem> items in registeredItems)
+		{
+			foreach (IDebugScreenItem item in items)
+				_topLeftContainer.AddChild((item as Node).Duplicate());
+		}
+	}
+
 	public void RunSelected(params string[] titles)
 	{
 		RemoveAllChildren();
+
+		if (titles.Length == 0) return;
 
 		foreach (string title in titles)
 		{
