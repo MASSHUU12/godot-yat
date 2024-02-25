@@ -1,0 +1,16 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cymypue85kfr7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pfsv5"]
+
+[resource]
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 4
+Label/font_sizes/font_size = 14
+PanelContainer/styles/panel = SubResource("StyleBoxEmpty_pfsv5")
+RichTextLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+RichTextLabel/constants/outline_size = 4
+RichTextLabel/font_sizes/bold_font_size = 14
+RichTextLabel/font_sizes/bold_italics_font_size = 14
+RichTextLabel/font_sizes/italics_font_size = 14
+RichTextLabel/font_sizes/mono_font_size = 14
+RichTextLabel/font_sizes/normal_font_size = 14

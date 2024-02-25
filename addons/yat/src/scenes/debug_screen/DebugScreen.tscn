@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://3avgdpuh3nap"]
+
+[ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/yat_window/YatWindow.tscn" id="1_t25ql"]
+[ext_resource type="Theme" uid="uid://cymypue85kfr7" path="res://addons/yat/src/scenes/debug_screen/yat_debug_screen_theme.tres" id="2_hbjw0"]
+[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/DebugScreen.cs" id="3_odoyc"]
+
+[node name="DebugScreen" instance=ExtResource("1_t25ql")]
+transparent_bg = true
+wrap_controls = true
+transient = false
+unresizable = true
+borderless = true
+always_on_top = true
+transparent = true
+unfocusable = true
+min_size = Vector2i(0, 0)
+theme = ExtResource("2_hbjw0")
+script = ExtResource("3_odoyc")
+ViewportEdgeOffset = 0
+DefaultWindowPosition = 4
+AllowToGoOffScreen = true
+
+[node name="ContextMenu" parent="." index="1"]
+WallMargin = 16
