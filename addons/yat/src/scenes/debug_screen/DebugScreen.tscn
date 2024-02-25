@@ -1,24 +1,88 @@
 [gd_scene load_steps=4 format=3 uid="uid://3avgdpuh3nap"]
 
-[ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/yat_window/YatWindow.tscn" id="1_t25ql"]
+[ext_resource type="PackedScene" uid="uid://cqk7b35vstfc8" path="res://addons/yat/src/scenes/yat_window/context_menu/ContextMenu.tscn" id="2_en4db"]
 [ext_resource type="Theme" uid="uid://cymypue85kfr7" path="res://addons/yat/src/scenes/debug_screen/yat_debug_screen_theme.tres" id="2_hbjw0"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/DebugScreen.cs" id="3_odoyc"]
 
-[node name="DebugScreen" instance=ExtResource("1_t25ql")]
-transparent_bg = true
-wrap_controls = true
-transient = false
-unresizable = true
-borderless = true
-always_on_top = true
-transparent = true
-unfocusable = true
-min_size = Vector2i(0, 0)
-theme = ExtResource("2_hbjw0")
+[node name="DebugScreen" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("3_odoyc")
-ViewportEdgeOffset = 0
-DefaultWindowPosition = 4
-AllowToGoOffScreen = true
 
-[node name="ContextMenu" parent="." index="1"]
-WallMargin = 16
+[node name="Content" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme = ExtResource("2_hbjw0")
+
+[node name="MarginContainer" type="MarginContainer" parent="Content"]
+layout_mode = 2
+
+[node name="ComponentsContainer" type="HBoxContainer" parent="Content/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeftColumnComponents" type="HBoxContainer" parent="Content/MarginContainer/ComponentsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/MarginContainer/ComponentsContainer/LeftColumnComponents"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TopLeftContainer" type="VBoxContainer" parent="Content/MarginContainer/ComponentsContainer/LeftColumnComponents/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Content/MarginContainer/ComponentsContainer/LeftColumnComponents/VBoxContainer/TopLeftContainer"]
+layout_mode = 2
+text = "Top left"
+
+[node name="BottomLeftContainer" type="VBoxContainer" parent="Content/MarginContainer/ComponentsContainer/LeftColumnComponents/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
+
+[node name="Label" type="Label" parent="Content/MarginContainer/ComponentsContainer/LeftColumnComponents/VBoxContainer/BottomLeftContainer"]
+layout_mode = 2
+text = "BottomLeft"
+
+[node name="RightColumnComponents" type="HBoxContainer" parent="Content/MarginContainer/ComponentsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/MarginContainer/ComponentsContainer/RightColumnComponents"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TopRightContainer" type="VBoxContainer" parent="Content/MarginContainer/ComponentsContainer/RightColumnComponents/VBoxContainer"]
+unique_name_in_owner = true
+layout_direction = 3
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Content/MarginContainer/ComponentsContainer/RightColumnComponents/VBoxContainer/TopRightContainer"]
+layout_mode = 2
+text = "TopRight"
+
+[node name="BottomRightContainer" type="VBoxContainer" parent="Content/MarginContainer/ComponentsContainer/RightColumnComponents/VBoxContainer"]
+unique_name_in_owner = true
+layout_direction = 3
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
+
+[node name="Label" type="Label" parent="Content/MarginContainer/ComponentsContainer/RightColumnComponents/VBoxContainer/BottomRightContainer"]
+layout_mode = 2
+text = "BottomRight"
+
+[node name="ContextMenu" parent="." instance=ExtResource("2_en4db")]
+visible = false
