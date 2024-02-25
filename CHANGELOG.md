@@ -21,6 +21,10 @@ All notable changes to this project will be documented in this file.
 -   Monitor.
 -   Stats command.
 
+### Fixed
+
+-   Not passing any value to an option that expects a value caused an exception to be thrown.
+
 ## [1.24.1-beta 2024-02-24]
 
 ### Added
