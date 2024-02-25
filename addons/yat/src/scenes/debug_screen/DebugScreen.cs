@@ -49,18 +49,32 @@ public partial class DebugScreen : Control
 		_timer = GetNode<Timer>("Timer");
 		_timer.WaitTime = UpdateInterval;
 		_timer.Timeout += OnTimerTimeout;
-
-		RunSelected("FPS", "Memory", "CPU", "OS", "Engine", "LookingAt", "SceneObjects");
 	}
 
 	public void RunAll()
 	{
 		RemoveAllChildren();
 
-		foreach (List<IDebugScreenItem> items in registeredItems)
+		for (int i = 0; i < registeredItems.Length; i++)
 		{
-			foreach (IDebugScreenItem item in items)
-				_topLeftContainer.AddChild((item as Node).Duplicate());
+			foreach (IDebugScreenItem item in registeredItems[i])
+			{
+				switch (i)
+				{
+					case (int)EDebugScreenItemPosition.TopLeft:
+						_topLeftContainer.AddChild((item as Node).Duplicate());
+						break;
+					case (int)EDebugScreenItemPosition.TopRight:
+						_topRightContainer.AddChild((item as Node).Duplicate());
+						break;
+					case (int)EDebugScreenItemPosition.BottomLeft:
+						_bottomLeftContainer.AddChild((item as Node).Duplicate());
+						break;
+					case (int)EDebugScreenItemPosition.BottomRight:
+						_bottomRightContainer.AddChild((item as Node).Duplicate());
+						break;
+				}
+			}
 		}
 	}
 
