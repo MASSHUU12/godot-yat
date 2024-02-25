@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://lfgol2xetr88"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/items/memory_info_item/MemoryInfoItem.cs" id="1_xchxp"]
+
+[node name="MemoryInfoItem" type="PanelContainer"]
+offset_right = 109.0
+offset_bottom = 69.0
+script = ExtResource("1_xchxp")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.552941, 0.647059, 0.952941, 1)
+bbcode_enabled = true
+text = "Memory: 0 GB
+Free: 0 GB
+Stack: 0 MB"
+fit_content = true
+autowrap_mode = 0
