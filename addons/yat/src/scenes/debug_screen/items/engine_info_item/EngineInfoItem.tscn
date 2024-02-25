@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://fcjyl1y5lo"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/items/engine_info_item/EngineInfoItem.cs" id="1_j32i0"]
+
+[node name="EngineInfoItem" type="PanelContainer"]
+layout_direction = 3
+script = ExtResource("1_j32i0")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Godot"
