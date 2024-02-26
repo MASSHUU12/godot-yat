@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4f6crgbyioh1"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/items/gpu_info_item/GpuInfoItem.cs" id="1_jpn2i"]
+
+[node name="GpuInfoItem" type="PanelContainer"]
+layout_direction = 3
+script = ExtResource("1_jpn2i")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "GPU"

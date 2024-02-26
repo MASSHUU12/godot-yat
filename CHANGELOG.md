@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 -   IDebugScreenItem interface.
 -   Added access to DebugScreen from YAT.
 -   Ds command.
+-   GpuInfoItem for DebugScreen.
 
 ### Changed
 

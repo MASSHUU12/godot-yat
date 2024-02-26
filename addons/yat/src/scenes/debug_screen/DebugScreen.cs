@@ -30,6 +30,7 @@ public partial class DebugScreen : Control
 		new() // Top Right
 		{
 			GD.Load<PackedScene>("uid://dopcpwc6ch10v").Instantiate<CpuInfoItem>(),
+			GD.Load<PackedScene>("uid://c4f6crgbyioh1").Instantiate<GpuInfoItem>(),
 			GD.Load<PackedScene>("uid://ds38fns27q672").Instantiate<OsInfoItem>(),
 			GD.Load<PackedScene>("uid://fcjyl1y5lo").Instantiate<EngineInfoItem>(),
 		},
