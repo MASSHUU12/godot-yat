@@ -11,7 +11,7 @@ YAT stands for Yet Another Terminal. The goal of this project is to create a rea
 
 The second goal, which is particularly important to me, is to make YAT as open as possible to change, personalization, and expansion, so that everyone can customize it as much as possible for their own project.
 
-Of course, creating such a complex and ambitious project is extremely difficult (especially alone), so it will still be in beta for a long time to come. Nevertheless, all the basic functions are working mostly correctly, and major changes breaking compatibility are not expected to arrive anytime soon.
+Of course, creating such a complex and ambitious project is extremely difficult (especially alone), so it will still be in beta for a long time to come.
 
 ## Prerequisites
 
@@ -20,21 +20,21 @@ Of course, creating such a complex and ambitious project is extremely difficult 
 
 ## Features
 
+-   Over 25 built-in commands
+-   Small size footprint (< 200 KB)
+-   Custom commands (regular & threaded), extensions and windows
+-   Automatic input validation (arguments, options)
+-   Debug screen (FPS, CPU, GPU, etc.)
+-   Access to the node tree (experimental)
+-   Plugin customization
 -   Quick Commands
 -   Autocompletion
 -   Script templates
--   Performance monitor
--   Plugin customization
--   Over 25 built-in commands
--   Small size footprint (< 200 KB)
--   Access to the node tree (experimental)
 -   Ability to restrict access to the plugin
--   Automatic input validation (arguments, options)
--   Custom commands (regular & threaded), extensions and windows
 
 ## Showcase
 
-<video src="https://github.com/MASSHUU12/godot-yat/assets/61974579/85ec5856-d9ea-4496-89e5-a9d6cbec20ce" controls title="YAT showcase video"></video>
+<video src="https://github.com/MASSHUU12/godot-yat/assets/61974579/fff0af36-ef62-4e1d-b3c7-ff680f30c100" controls title="YAT showcase video"></video>
 
 ## Documentation
 
