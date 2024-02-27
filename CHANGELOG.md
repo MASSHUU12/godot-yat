@@ -16,6 +16,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Reworked components from Monitor for DebugScreen.
+-   ShortenPath method shortens paths in a better way and takes more parameters.
+-   Increased the maximum displayed path length in the terminal from 20 to 32 characters.
 
 ### Removed
 
