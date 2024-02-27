@@ -121,7 +121,7 @@ public partial class BaseTerminal : Control
 		var path = node?.GetPath() ?? string.Empty;
 
 		_selectedNodeLabel.TooltipText = path;
-		_selectedNodeLabel.Text = Text.ShortenPath(path, 20);
+		_selectedNodeLabel.Text = Text.ShortenPath(path, 32);
 	}
 
 	/// <summary>
