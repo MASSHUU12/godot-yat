@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace YAT.Helpers;
 
@@ -129,59 +128,34 @@ public static class Text
 	/// <summary>
 	/// Shortens a file path to the specified length.
 	///
-	/// Adapted from https://stackoverflow.com/a/4638913
+	/// Adapted from https://stackoverflow.com/a/32664181
 	/// </summary>
-	/// <param name="path">The file path to shorten</param>
-	/// <param name="maxLength">The max length of the output path (including the ellipsis if inserted)</param>
-	/// <returns>
-	/// The path with some of the middle directory paths replaced with an ellipsis
-	/// (or the entire path if it is already shorter than maxLength)
-	/// </returns>
-	public static string ShortenPath(string path, ushort maxLength, string ellipsisChar = "...")
+	public static string ShortenPath(string path, ushort maxLength, string ellipsisChar = "...", string splitChar = "/")
 	{
 		if (string.IsNullOrEmpty(path) || maxLength <= ellipsisChar.Length) return ellipsisChar;
 		if (path.Length <= maxLength) return path;
 
-		var dirSeparator = Path.DirectorySeparatorChar.ToString();
-		bool isFirstPartsTurn = true;
+		string[] parts = path.Split(splitChar);
 
-		string[] pathParts = path.Split(dirSeparator);
-		StringBuilder result = new();
+		int centerIndex = (parts.Length - 1) >> 1,
+			currentIndex = centerIndex,
+			lean = 1;
+		decimal step = 0;
+		string output = string.Join(splitChar, parts, 0, parts.Length);
 
-		int totalLength = 0;
-		int startIdx = 0;
-		int endIdx = pathParts.Length - 1;
-
-		while (startIdx <= endIdx && totalLength + ellipsisChar.Length <= maxLength)
+		while (output.Length >= maxLength && currentIndex != 0 && currentIndex != -1)
 		{
-			var partToAdd = isFirstPartsTurn
-				? pathParts[startIdx] + dirSeparator
-				: dirSeparator + pathParts[endIdx];
+			parts[currentIndex] = ellipsisChar;
 
-			if (totalLength + partToAdd.Length > maxLength) break;
+			output = string.Join(splitChar, parts, 0, parts.Length);
 
-			if (isFirstPartsTurn)
-			{
-				result.Append(partToAdd);
-				startIdx++;
-			}
-			else
-			{
-				result.Insert(0, partToAdd);
-				endIdx--;
-			}
+			step += 0.5M;
+			lean *= -1;
 
-			totalLength += partToAdd.Length;
-
-			if (partToAdd != dirSeparator) isFirstPartsTurn = !isFirstPartsTurn;
+			currentIndex = centerIndex + ((int)step * lean);
 		}
 
-		string lastPart = string.Join(dirSeparator, pathParts, startIdx, endIdx - startIdx + 1);
-		if (lastPart.Length + ellipsisChar.Length > maxLength)
-		{
-			lastPart = lastPart[^(maxLength - ellipsisChar.Length)..];
-		}
-
-		return result.ToString() + ellipsisChar + lastPart;
+		// Ensure the result does not exceed maxLength
+		return output[..Math.Min(maxLength, output.Length)];
 	}
 }
