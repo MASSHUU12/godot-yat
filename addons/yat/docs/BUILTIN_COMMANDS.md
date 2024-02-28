@@ -3,7 +3,8 @@
 	<p>Here you can find information about builtin commands.</p>
 </div>
 
-## Builtin commands
+> [!NOTE]
+> To disable the built-in command, just comment it out in the [RegisteredCommands](../src/scenes/registered_commands/RegisteredCommands.cs) file in the `RegisterBuiltinCommands` method.
 
 > More information about each command can be found in their manuals.
 
