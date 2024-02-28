@@ -10,10 +10,13 @@ All notable changes to this project will be documented in this file.
 -   EDebugScreenItemPosition enum.
 -   IDebugScreenItem interface.
 -   Added access to DebugScreen from YAT.
--   Ds command.
 -   GpuInfoItem for DebugScreen.
 -   ShrinkToFit exported variable for ContextMenu.
 -   Button to ContextMenu toggling preferences window.
+-   Commands:
+    -   Ds
+    -   Sc
+-   Clipboard class.
 
 ### Changed
 
