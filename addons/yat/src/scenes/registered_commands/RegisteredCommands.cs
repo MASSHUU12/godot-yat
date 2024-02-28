@@ -24,7 +24,7 @@ public partial class RegisteredCommands : Node
 	{
 		_yat = GetNode<YAT>("..");
 
-		RegisterBuiltinCOmmands();
+		RegisterBuiltinCommands();
 	}
 
 	public enum AddingResult
@@ -118,7 +118,7 @@ public partial class RegisteredCommands : Node
 		return qc is not null;
 	}
 
-	private void RegisterBuiltinCOmmands()
+	private void RegisterBuiltinCommands()
 	{
 		AddingResult[] results = AddCommand(new[] {
 			typeof(Ls),
