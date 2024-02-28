@@ -39,3 +39,4 @@
 | traceroute    | N/A    | Displays the route that packets take to reach the specified host.                |
 | load          | N/A    | Loads specified object into the scene.                                           |
 | ds            | N/A    | Displays items in the debug screen.                                              |
+| sc            | N/A    | Makes a screenshot.                                                              |
