@@ -1,10 +1,12 @@
 using System;
 using Godot;
 using YAT.Attributes;
+using YAT.Classes;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
 using static Godot.GodotObject;
+using static YAT.Helpers.OS;
 
 namespace YAT.Commands;
 
@@ -35,23 +37,20 @@ public sealed class Sc : ICommand
 		_yat = data.Yat;
 		_terminal = data.Terminal;
 
-		// if (cp)
-		// {
-		// 	OS.Clipboard = image.SavePngToBuffer();
-		// }
-
 		if (!keepOpen) data.Yat.TerminalManager.CloseTerminal();
 
 		RenderingServer.Singleton.Connect("frame_post_draw", Callable.From(() =>
 		{
-			CreateScreenshot(data.Yat.GetViewport(), path, name, extension);
+			if (cp) SaveScreenshotToClipboard(data.Yat.GetViewport(), extension);
+			else SaveScreenshot(data.Yat.GetViewport(), path, name, extension);
+
 			data.Yat.TerminalManager.OpenTerminal();
 		}), (uint)ConnectFlags.OneShot);
 
 		return ICommand.Success();
 	}
 
-	private void CreateScreenshot(Viewport viewport, string path, string name, string extension)
+	private void SaveScreenshot(Viewport viewport, string path, string name, string extension)
 	{
 		var image = viewport.GetTexture().GetImage();
 		var fileName = path + name + extension;
@@ -74,5 +73,34 @@ public sealed class Sc : ICommand
 		}
 
 		if (err != Error.Ok) _terminal.Output.Error($"Error saving the {fileName}");
+		else _terminal.Output.Success($"Screenshot saved to {fileName}");
+	}
+
+	private void SaveScreenshotToClipboard(Viewport viewport, string extension)
+	{
+		var image = viewport.GetTexture().GetImage();
+
+		byte[] buffer = null;
+		switch (extension)
+		{
+			case "exr":
+				buffer = image.SaveExrToBuffer();
+				break;
+			case "jpg":
+				buffer = image.SaveJpgToBuffer();
+				break;
+			case "png":
+				buffer = image.SavePngToBuffer();
+				break;
+			case "webp":
+				buffer = image.SaveWebpToBuffer();
+				break;
+		}
+
+		var result = Clipboard.SetImageData(buffer);
+
+		if (result != ExecutionResult.Success)
+			_terminal.Output.Error("Error saving the screenshot to the clipboard.");
+		else _terminal.Output.Success("Screenshot saved to the clipboard.");
 	}
 }
