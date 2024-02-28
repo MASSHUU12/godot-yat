@@ -26,9 +26,22 @@ public partial class GameTerminal : YatWindow
 		CurrentTerminal.SizeResetRequested += () => Size = InitialSize;
 
 		CloseRequested += _yat.TerminalManager.CloseTerminal;
+
 		ContextMenu.AddSubmenuItem("QuickCommands", "QuickCommandsContext");
+		ContextMenu.AddItem("Preferences", 1);
+		ContextMenu.IdPressed += ContextMenuItemSelected;
 
 		MoveToCenter();
+	}
+
+	private void ContextMenuItemSelected(long id)
+	{
+		if (id == 1)
+		{
+			new Commands.Preferences().Execute(new(
+				_yat, CurrentTerminal, null, null, null, null, default
+			));
+		}
 	}
 
 	public override void _Input(InputEvent @event)

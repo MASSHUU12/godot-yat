@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 -   Ds command.
 -   GpuInfoItem for DebugScreen.
 -   ShrinkToFit exported variable for ContextMenu.
+-   Button to ContextMenu toggling preferences window.
 
 ### Changed
 
