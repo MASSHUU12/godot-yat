@@ -5,7 +5,7 @@
 
 [node name="ContextMenu" type="PopupMenu"]
 disable_3d = true
-size = Vector2i(255, 100)
+size = Vector2i(44, 24)
 visible = true
 theme = ExtResource("1_yydo2")
 script = ExtResource("2_ura0f")

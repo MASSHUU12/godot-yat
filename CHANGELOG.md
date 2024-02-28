@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 -   Added access to DebugScreen from YAT.
 -   Ds command.
 -   GpuInfoItem for DebugScreen.
+-   ShrinkToFit exported variable for ContextMenu.
 
 ### Changed
 
@@ -27,6 +28,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Not passing any value to an option that expects a value caused an exception to be thrown.
+-   QuickCommands menu had a fixed size.
 
 ## [1.24.1-beta 2024-02-24]
 

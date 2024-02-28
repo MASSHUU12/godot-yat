@@ -5,6 +5,7 @@ namespace YAT.Scenes;
 public partial class ContextMenu : PopupMenu
 {
 	[Export] public ushort WallMargin { get; set; } = 16;
+	[Export] public bool ShrinkToFit { get; set; } = true;
 
 	private Viewport _viewport = null;
 	private Rect2 _viewportRect = new();
@@ -15,11 +16,38 @@ public partial class ContextMenu : PopupMenu
 		_viewportRect = _viewport.GetVisibleRect();
 
 		Hide();
+
+		if (ShrinkToFit) MenuChanged += Shrink;
 	}
 
-	/// <summary>
-	/// Shows the context menu next to the mouse cursor.
-	/// </summary>
+	private void Shrink()
+	{
+		var itemsSize = GetItemsSize();
+
+		Size = new()
+		{
+			X = 1,
+			Y = 1
+		};
+		Size = (Vector2I)itemsSize;
+	}
+
+	private Vector2 GetItemsSize()
+	{
+		var items = GetChildren();
+		var size = new Vector2();
+
+		foreach (var item in items)
+		{
+			if (item is Control control)
+				size += control.Size;
+			if (item is PopupMenu popupMenu)
+				size += popupMenu.Size;
+		}
+
+		return size;
+	}
+
 	public void ShowNextToMouse()
 	{
 		var mousePos = _viewport.GetMousePosition();
