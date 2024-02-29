@@ -17,7 +17,8 @@ All notable changes to this project will be documented in this file.
     -   'ds'
     -   'ss'
     -   'fov'
-    -   'inspect
+    -   'inspect'
+    -   'crash'
 -   Clipboard class.
 -   '-e' option for 'wai' command.
 

@@ -143,6 +143,7 @@ public partial class RegisteredCommands : Node
 			typeof(Pause),
 			typeof(Watch),
 			typeof(Reset),
+			typeof(Crash),
 			typeof(Cowsay),
 			typeof(Restart),
 			typeof(History),
