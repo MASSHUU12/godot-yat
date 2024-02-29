@@ -42,3 +42,4 @@
 | ss            | N/A    | Makes a screenshot.                                                              |
 | fov           | N/A    | Sets the field of view for the camera.                                           |
 | inspect       | ins    | Inspect selected object.                                                         |
+| crash         | N/A    | Crashes the game.                                                                |
