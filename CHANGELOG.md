@@ -14,9 +14,10 @@ All notable changes to this project will be documented in this file.
 -   ShrinkToFit exported variable for ContextMenu.
 -   Button to ContextMenu toggling preferences window.
 -   Commands:
-    -   Ds
-    -   Ss
+    -   'Ds'
+    -   'Ss'
 -   Clipboard class.
+-   '-e' option for 'wai' command.
 
 ### Changed
 
@@ -27,7 +28,7 @@ All notable changes to this project will be documented in this file.
 ### Removed
 
 -   Monitor.
--   Stats command.
+-   'Stats' command.
 
 ### Fixed
 
