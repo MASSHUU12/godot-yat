@@ -40,3 +40,4 @@
 | load          | N/A    | Loads specified object into the scene.                                           |
 | ds            | N/A    | Displays items in the debug screen.                                              |
 | ss            | N/A    | Makes a screenshot.                                                              |
+| fov           | N/A    | Sets the field of view for the camera.                                           |
