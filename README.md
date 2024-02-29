@@ -20,8 +20,8 @@ Of course, creating such a complex and ambitious project is extremely difficult 
 
 ## Features
 
--   Over 25 built-in commands
--   Small size footprint (< 200 KB)
+-   Over 30 built-in commands
+-   Small size footprint (< 256 KB)
 -   Custom commands (regular & threaded), extensions and windows
 -   Automatic input validation (arguments, options)
 -   Debug screen (FPS, CPU, GPU, etc.)

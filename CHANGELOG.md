@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 -   Commands:
     -   'Ds'
     -   'Ss'
+    -   'Fov'
 -   Clipboard class.
 -   '-e' option for 'wai' command.
 
