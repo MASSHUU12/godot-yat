@@ -14,9 +14,10 @@ All notable changes to this project will be documented in this file.
 -   ShrinkToFit exported variable for ContextMenu.
 -   Button to ContextMenu toggling preferences window.
 -   Commands:
-    -   'Ds'
-    -   'Ss'
-    -   'Fov'
+    -   'ds'
+    -   'ss'
+    -   'fov'
+    -   'inspect
 -   Clipboard class.
 -   '-e' option for 'wai' command.
 

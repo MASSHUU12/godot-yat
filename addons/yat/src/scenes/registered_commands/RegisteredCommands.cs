@@ -146,6 +146,7 @@ public partial class RegisteredCommands : Node
 			typeof(Cowsay),
 			typeof(Restart),
 			typeof(History),
+			typeof(Inspect),
 			typeof(Whereami),
 			typeof(Timescale),
 			typeof(TraceRoute),
