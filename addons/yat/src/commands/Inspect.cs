@@ -10,7 +10,7 @@ namespace YAT.Commands;
 
 [Command("inspect", "Inspect selected object.", aliases: new[] { "ins" })]
 [Usage("inspect [i]object[/i]")]
-[Option("-ray", "bool", "Use raycast to select an object.")]
+[Option("-ray", "bool", "Use RayCast to select an object.")]
 [Option("-all", "bool", "Inspect all properties. Some properties might not be displayed correctly.")]
 public sealed class Inspect : ICommand
 {
@@ -18,17 +18,12 @@ public sealed class Inspect : ICommand
 	{
 		var useRayCast = (bool)data.Options["-ray"];
 		var all = (bool)data.Options["-all"];
+		StringBuilder result;
 
-		if (useRayCast)
-		{
-			var result = InspectRayCastedObject(World.RayCast(data.Yat.GetViewport()), all);
-			data.Terminal.Print(result);
-		}
-		else
-		{
-			var result = InspectNode(data.Terminal.SelectedNode.Current, all);
-			data.Terminal.Print(result);
-		}
+		if (useRayCast) result = InspectRayCastedObject(World.RayCast(data.Yat.GetViewport()), all);
+		else result = InspectNode(data.Terminal.SelectedNode.Current, all);
+
+		data.Terminal.Print(result);
 
 		return ICommand.Success();
 	}
