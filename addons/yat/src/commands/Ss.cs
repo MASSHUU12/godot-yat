@@ -10,8 +10,8 @@ using static YAT.Helpers.OS;
 
 namespace YAT.Commands;
 
-[Command("sc", "Makes a screenshot.")]
-[Usage("sc")]
+[Command("ss", "Makes a screenshot.")]
+[Usage("ss")]
 [Option("-cp", "bool", "Copy the screenshot to the clipboard.")]
 [Option(
 	"-path",
@@ -21,7 +21,7 @@ namespace YAT.Commands;
 [Option("-name", "string", "Name of the screenshot file.")]
 [Option("-keepOpen", "bool", "Do not close the terminal window.")]
 [Option("-e", "exr|jpg|png|webp", "The extension of the screenshot file.", "png")]
-public sealed class Sc : ICommand
+public sealed class Ss : ICommand
 {
 	private YAT _yat;
 	private BaseTerminal _terminal;

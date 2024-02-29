@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file.
 -   Button to ContextMenu toggling preferences window.
 -   Commands:
     -   Ds
-    -   Sc
+    -   Ss
 -   Clipboard class.
 
 ### Changed
