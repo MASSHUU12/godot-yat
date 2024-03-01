@@ -27,7 +27,14 @@ public partial class GameTerminal : YatWindow
 
 		CloseRequested += _yat.TerminalManager.CloseTerminal;
 
+#if GODOT4_3_OR_GREATER
+		ContextMenu.AddSubmenuNodeItem(
+			"QuickCommands",
+			GetNode<QuickCommandsContext>("ContextMenu/QuickCommandsContext")
+		);
+#else
 		ContextMenu.AddSubmenuItem("QuickCommands", "QuickCommandsContext");
+#endif
 		ContextMenu.AddItem("Preferences", 1);
 		ContextMenu.IdPressed += ContextMenuItemSelected;
 

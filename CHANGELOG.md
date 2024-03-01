@@ -28,6 +28,8 @@ All notable changes to this project will be documented in this file.
 -   ShortenPath method shortens paths in a better way and takes more parameters.
 -   Increased the maximum displayed path length in the terminal from 20 to 32 characters.
 -   Testing on Godot SDK 4.3.0-dev.4.
+-   Using 'AddSubmenuNodeItem' to display QuickCommands context menu on Godot 4.3,
+    for Godot 4.2 'AddSubmenuItem' is still used.
 
 ### Removed
 
