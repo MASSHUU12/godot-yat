@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
     -   'inspect'
     -   'crash'
     -   'forcegc'
+    -   'version'
 -   Clipboard class.
 -   '-e' option for 'wai' command.
 
