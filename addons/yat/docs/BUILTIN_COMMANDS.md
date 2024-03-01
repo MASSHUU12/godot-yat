@@ -44,3 +44,4 @@
 | inspect       | ins    | Inspect selected object.                                                         |
 | crash         | N/A    | Crashes the game.                                                                |
 | forcegc       | fgc    | Forces the garbage collector to run.                                             |
+| version       | N/A    | Displays the current game version.                                               |

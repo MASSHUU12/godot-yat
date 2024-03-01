@@ -154,6 +154,7 @@ public partial class RegisteredCommands : Node
 			typeof(TraceRoute),
 			typeof(ToggleAudio),
 			typeof(QuickCommands),
+			typeof(Commands.Version),
 			typeof(Commands.Preferences),
 		});
 
