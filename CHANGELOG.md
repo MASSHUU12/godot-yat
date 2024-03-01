@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
     -   'fov'
     -   'inspect'
     -   'crash'
+    -   'forcegc'
 -   Clipboard class.
 -   '-e' option for 'wai' command.
 

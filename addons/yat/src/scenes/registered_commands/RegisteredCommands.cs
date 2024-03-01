@@ -148,6 +148,7 @@ public partial class RegisteredCommands : Node
 			typeof(Restart),
 			typeof(History),
 			typeof(Inspect),
+			typeof(Forcegc),
 			typeof(Whereami),
 			typeof(Timescale),
 			typeof(TraceRoute),
