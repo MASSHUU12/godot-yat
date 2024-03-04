@@ -78,14 +78,13 @@ unique_name_in_owner = true
 layout_mode = 2
 text = ">"
 
-[node name="Input" type="LineEdit" parent="PanelContainer/VBoxContainer/InputLine/HBoxContainer" node_paths=PackedStringArray("Terminal", "MethodManager")]
+[node name="Input" type="LineEdit" parent="PanelContainer/VBoxContainer/InputLine/HBoxContainer" node_paths=PackedStringArray("Terminal")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 caret_blink = true
 script = ExtResource("4_4lcgu")
 Terminal = NodePath("../../../../..")
-MethodManager = NodePath("")
 
 [node name="SelectedNode" parent="." instance=ExtResource("6_prlgb")]
 
