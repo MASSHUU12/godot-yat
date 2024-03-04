@@ -6,7 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
--   '$' command.
+-   Commands:
+    -   '$'
+    -   'tfs'
 
 ### Changed
 
