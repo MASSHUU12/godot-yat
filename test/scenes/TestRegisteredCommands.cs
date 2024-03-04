@@ -28,11 +28,11 @@ namespace GdUnit4
 			public CommandResult Execute(CommandData data) => ICommand.NotImplemented();
 		}
 
-		[TestCase(typeof(TestCommand), AddingResult.Success)]
-		[TestCase(typeof(TestCommand), AddingResult.ExistentCommand)]
-		[TestCase(typeof(TestCommandWithoutAttribute), AddingResult.MissingAttribute)]
-		[TestCase(typeof(TestCommandWithoutInterface), AddingResult.UnknownCommand)]
-		public void TestAddCommand(Type commandType, AddingResult expected)
+		[TestCase(typeof(TestCommand), ECommandAdditionStatus.Success)]
+		[TestCase(typeof(TestCommand), ECommandAdditionStatus.ExistentCommand)]
+		[TestCase(typeof(TestCommandWithoutAttribute), ECommandAdditionStatus.MissingAttribute)]
+		[TestCase(typeof(TestCommandWithoutInterface), ECommandAdditionStatus.UnknownCommand)]
+		public void TestAddCommand(Type commandType, ECommandAdditionStatus expected)
 		{
 			AssertObject(AddCommand(commandType)).IsEqual(expected);
 		}

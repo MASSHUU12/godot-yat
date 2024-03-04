@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 
 -   Moved calling methods on selected nodes to '$' command.
 -   Moved MethodCalled signal to BaseTerminal.
+-   Renamed AddingResult enum to ECommandAdditionStatus
+    and moved it to a separate file.
 
 ### Removed
 

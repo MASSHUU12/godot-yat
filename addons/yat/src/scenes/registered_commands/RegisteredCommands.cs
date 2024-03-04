@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using YAT.Attributes;
 using YAT.Commands;
+using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 
@@ -27,46 +28,34 @@ public partial class RegisteredCommands : Node
 		RegisterBuiltinCommands();
 	}
 
-	public enum AddingResult
-	{
-		Success,
-		UnknownCommand,
-		MissingAttribute,
-		ExistentCommand
-	}
-
-	/// <summary>
-	/// Adds a command to the command manager.
-	/// </summary>
-	/// <param name="commandType">The type of the command to add.</param>
-	public static AddingResult AddCommand(Type commandType)
+	public static ECommandAdditionStatus AddCommand(Type commandType)
 	{
 		var commandInstance = Activator.CreateInstance(commandType);
 
 		if (commandInstance is not ICommand command)
-			return AddingResult.UnknownCommand;
+			return ECommandAdditionStatus.UnknownCommand;
 
 		if (Reflection.GetAttribute<CommandAttribute>(command)
 			is not CommandAttribute attribute)
-			return AddingResult.MissingAttribute;
+			return ECommandAdditionStatus.MissingAttribute;
 
 		if (Registered.ContainsKey(attribute.Name))
-			return AddingResult.ExistentCommand;
+			return ECommandAdditionStatus.ExistentCommand;
 
 		Registered[attribute.Name] = commandType;
 		foreach (string alias in attribute.Aliases)
 		{
-			if (Registered.ContainsKey(alias)) return AddingResult.ExistentCommand;
+			if (Registered.ContainsKey(alias)) return ECommandAdditionStatus.ExistentCommand;
 
 			Registered[alias] = commandType;
 		}
 
-		return AddingResult.Success;
+		return ECommandAdditionStatus.Success;
 	}
 
-	public static AddingResult[] AddCommand(params Type[] commands)
+	public static ECommandAdditionStatus[] AddCommand(params Type[] commands)
 	{
-		AddingResult[] results = new AddingResult[commands.Length];
+		var results = new ECommandAdditionStatus[commands.Length];
 
 		for (int i = 0; i < commands.Length; i++)
 			results[i] = AddCommand(commands[i]);
@@ -120,7 +109,7 @@ public partial class RegisteredCommands : Node
 
 	private void RegisterBuiltinCommands()
 	{
-		AddingResult[] results = AddCommand(new[] {
+		ECommandAdditionStatus[] results = AddCommand(new[] {
 			typeof(Ls),
 			typeof(Ip),
 			typeof(Cn),
@@ -164,17 +153,17 @@ public partial class RegisteredCommands : Node
 		{
 			switch (results[i])
 			{
-				case AddingResult.UnknownCommand:
+				case ECommandAdditionStatus.UnknownCommand:
 					_yat.CurrentTerminal.Output.Error(
 						Messages.UnknownCommand(results[i].ToString())
 					);
 					break;
-				case AddingResult.MissingAttribute:
+				case ECommandAdditionStatus.MissingAttribute:
 					_yat.CurrentTerminal.Output.Error(
 						Messages.MissingAttribute("CommandAttribute", results[i].ToString())
 					);
 					break;
-				case AddingResult.ExistentCommand:
+				case ECommandAdditionStatus.ExistentCommand:
 					_yat.CurrentTerminal.Output.Error($"Command {results[i]} already exists.");
 					break;
 				default:
