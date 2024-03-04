@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   '$' command.
+
+### Changed
+
+-   Moved calling methods on selected nodes to '$' command.
+
 ## [1.25.0-beta 2024-03-01]
 
 ### Added
