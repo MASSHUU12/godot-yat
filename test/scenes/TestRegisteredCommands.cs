@@ -1,5 +1,6 @@
 using System;
 using YAT.Attributes;
+using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Types;
 
