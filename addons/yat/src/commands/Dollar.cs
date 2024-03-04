@@ -10,6 +10,10 @@ public sealed class Dollar : ICommand
 {
 	public CommandResult Execute(CommandData data)
 	{
-		return ICommand.Success(string.Join(" ", data.RawData[1..]));
+		var status = data.Terminal.MethodManager.CallMethods(string.Join(" ", data.RawData[1..]));
+
+		return status
+			? ICommand.Success()
+			: ICommand.Failure("Failed to execute the method.");
 	}
 }
