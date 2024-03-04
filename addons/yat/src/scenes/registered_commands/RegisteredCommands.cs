@@ -133,6 +133,7 @@ public partial class RegisteredCommands : Node
 			typeof(Cat),
 			typeof(Sys),
 			typeof(Fov),
+			typeof(Tfs),
 			typeof(Quit),
 			typeof(Echo),
 			typeof(List),
