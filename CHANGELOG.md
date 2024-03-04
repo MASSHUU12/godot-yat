@@ -11,10 +11,11 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Moved calling methods on selected nodes to '$' command.
+-   Moved MethodCalled signal to BaseTerminal.
 
-### Fixed
+### Removed
 
--   Reference to MethodManager in BaseTerminal was not set to the instance of an object.
+-   MethodManager component.
 
 ## [1.25.0-beta 2024-03-01]
 
