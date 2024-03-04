@@ -24,7 +24,7 @@ public sealed class Dollar : ICommand
 
 		return MethodChaining(methods)
 			? ICommand.Success()
-			: ICommand.Failure("Failed to execute the method.");
+			: ICommand.Failure();
 	}
 
 	private void EmitStatus(string methods, Variant result, EMethodStatus status)
@@ -58,7 +58,7 @@ public sealed class Dollar : ICommand
 		return true;
 	}
 
-	private bool MethodChaining(in string[] methods)
+	private bool MethodChaining(string[] methods)
 	{
 		Variant result = new();
 
@@ -68,15 +68,19 @@ public sealed class Dollar : ICommand
 
 			if (result.As<Node>() is { })
 			{
-				if (args.Length == 0
-					? !CallMethod((Node)result, name, out result)
-					: !CallMethod((Node)result, name, out result, args)) return false;
+				var status = args.Length == 0
+					? CallMethod((Node)result, name, out result)
+					: CallMethod((Node)result, name, out result, args);
+
+				if (!status) return false;
 			}
 			else
 			{
-				if (args.Length == 0
-					? !CallMethod(_terminal.SelectedNode.Current, name, out result)
-					: !CallMethod(_terminal.SelectedNode.Current, name, out result, args)) return false;
+				var status = args.Length == 0
+					? CallMethod(_terminal.SelectedNode.Current, name, out result)
+					: CallMethod(_terminal.SelectedNode.Current, name, out result, args);
+
+				if (!status) return false;
 			}
 
 			_terminal.Print(result.ToString());
@@ -89,8 +93,6 @@ public sealed class Dollar : ICommand
 	{
 		methods = Text.SplitClean(input, ".");
 
-		if (methods.Length == 0) return false;
-
-		return true;
+		return !(methods.Length == 0);
 	}
 }
