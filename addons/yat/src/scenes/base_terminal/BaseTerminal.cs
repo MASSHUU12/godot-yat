@@ -49,10 +49,11 @@ public partial class BaseTerminal : Control
 		SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
 		CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
+		MethodManager = GetNode<MethodManager>("Components/MethodManager");
+		Input = GetNode<Input>("%Input");
 
 		_promptLabel = GetNode<Label>("%PromptLabel");
 		_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
-		Input = GetNode<Input>("%Input");
 
 		Output = GetNode<Output>("%Output");
 		Output.MetaClicked += (link) => Godot.OS.ShellOpen((string)link);

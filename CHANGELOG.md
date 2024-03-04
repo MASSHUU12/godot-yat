@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 
 -   Moved calling methods on selected nodes to '$' command.
 
+### Fixed
+
+-   Reference to MethodManager in BaseTerminal was not set to the instance of an object.
+
 ## [1.25.0-beta 2024-03-01]
 
 ### Added
