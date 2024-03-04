@@ -145,6 +145,7 @@ public partial class RegisteredCommands : Node
 			typeof(Reset),
 			typeof(Crash),
 			typeof(Cowsay),
+			typeof(Dollar),
 			typeof(Restart),
 			typeof(History),
 			typeof(Inspect),

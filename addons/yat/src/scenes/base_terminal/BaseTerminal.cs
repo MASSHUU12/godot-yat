@@ -13,12 +13,15 @@ public partial class BaseTerminal : Control
 	[Signal] public delegate void TitleChangeRequestedEventHandler(string title);
 	[Signal] public delegate void PositionResetRequestedEventHandler();
 	[Signal] public delegate void SizeResetRequestedEventHandler();
+	[Signal]
+	public delegate void MethodCalledEventHandler(
+		StringName method, Variant returnValue, EMethodStatus status
+	);
 
 	public bool Locked { get; set; }
 	public Input Input { get; private set; }
 	public Output Output { get; private set; }
 	public SelectedNode SelectedNode { get; private set; }
-	public MethodManager MethodManager { get; private set; }
 	public CommandManager CommandManager { get; private set; }
 	public CommandValidator CommandValidator { get; private set; }
 
@@ -49,10 +52,10 @@ public partial class BaseTerminal : Control
 		SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
 		CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
+		Input = GetNode<Input>("%Input");
 
 		_promptLabel = GetNode<Label>("%PromptLabel");
 		_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
-		Input = GetNode<Input>("%Input");
 
 		Output = GetNode<Output>("%Output");
 		Output.MetaClicked += (link) => Godot.OS.ShellOpen((string)link);

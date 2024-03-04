@@ -1,13 +1,11 @@
 using Godot;
 using YAT.Classes;
-using YAT.Classes.Managers;
 
 namespace YAT.Scenes;
 
 public partial class Input : LineEdit
 {
 	[Export] public BaseTerminal Terminal { get; set; }
-	[Export] public MethodManager MethodManager { get; set; }
 
 	private YAT _yat;
 
@@ -26,16 +24,6 @@ public partial class Input : LineEdit
 	private void OnTextSubmitted(string input)
 	{
 		if (Terminal.Locked || string.IsNullOrEmpty(input)) return;
-
-		// If the input string starts with a specified character,
-		// treat it as a method call on the selected node
-		if (input.StartsWith('$'))
-		{
-			MethodManager.CallMethods(input[1..]);
-			AddToTheHistory(input);
-			Clear();
-			return;
-		}
 
 		var command = Parser.ParseCommand(input);
 

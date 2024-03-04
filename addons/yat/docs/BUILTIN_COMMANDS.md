@@ -45,3 +45,4 @@
 | crash         | N/A    | Crashes the game.                                                                |
 | forcegc       | fgc    | Forces the garbage collector to run.                                             |
 | version       | N/A    | Displays the current game version.                                               |
+| $             | N/A    | Executes a method on the selected node.                                          |
