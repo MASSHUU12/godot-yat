@@ -1,13 +1,11 @@
 using Godot;
 using YAT.Classes;
-using YAT.Classes.Managers;
 
 namespace YAT.Scenes;
 
 public partial class Input : LineEdit
 {
 	[Export] public BaseTerminal Terminal { get; set; }
-	[Export] public MethodManager MethodManager { get; set; }
 
 	private YAT _yat;
 
