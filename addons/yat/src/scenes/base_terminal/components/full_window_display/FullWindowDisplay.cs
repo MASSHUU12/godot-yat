@@ -8,6 +8,7 @@ public partial class FullWindowDisplay : Control
 	[Signal] public delegate void OpenedEventHandler();
 	[Signal] public delegate void ClosedEventHandler();
 
+	public bool IsOpen => Visible;
 	public RichTextLabel MainDisplay { get; private set; }
 	private Label _helpLabel;
 
@@ -36,6 +37,8 @@ public partial class FullWindowDisplay : Control
 
 	public void Close()
 	{
+		if (!Visible) return;
+
 		MainDisplay.Clear();
 		Visible = false;
 

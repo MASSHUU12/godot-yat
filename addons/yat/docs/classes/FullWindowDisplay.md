@@ -11,6 +11,7 @@
 
 | Type        | Name        | Default |
 | ----------- | ----------- | ------- |
+| bool        | IsOpen      | false   |
 | MainDisplay | MainDisplay | -       |
 
 ### Methods
