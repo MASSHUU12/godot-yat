@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 -   Commands:
     -   '$'
     -   'tfs'
+-   FullWindowDisplay component for BaseTerminal.
 
 ### Changed
 
