@@ -24,6 +24,7 @@ public partial class BaseTerminal : Control
 	public SelectedNode SelectedNode { get; private set; }
 	public CommandManager CommandManager { get; private set; }
 	public CommandValidator CommandValidator { get; private set; }
+	public FullWindowDisplay FullWindowDisplay { get; private set; }
 
 	public readonly LinkedList<string> History = new();
 	public LinkedListNode<string> HistoryNode = null;
@@ -51,8 +52,9 @@ public partial class BaseTerminal : Control
 		SelectedNode = GetNode<SelectedNode>("SelectedNode");
 		SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
-		CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
 		Input = GetNode<Input>("%Input");
+		FullWindowDisplay = GetNode<FullWindowDisplay>("FullWindowDisplay");
+		CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
 
 		_promptLabel = GetNode<Label>("%PromptLabel");
 		_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
