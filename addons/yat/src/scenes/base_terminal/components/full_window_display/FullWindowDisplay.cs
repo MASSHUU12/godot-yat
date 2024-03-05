@@ -5,6 +5,9 @@ namespace YAT.Scenes;
 
 public partial class FullWindowDisplay : Control
 {
+	[Signal] public delegate void OpenedEventHandler();
+	[Signal] public delegate void ClosedEventHandler();
+
 	public RichTextLabel MainDisplay { get; private set; }
 	private Label _helpLabel;
 
@@ -27,12 +30,16 @@ public partial class FullWindowDisplay : Control
 		MainDisplay.Clear();
 		MainDisplay.CallDeferred("append_text", text);
 		Visible = true;
+
+		EmitSignal(SignalName.Opened);
 	}
 
 	public void Close()
 	{
 		MainDisplay.Clear();
 		Visible = false;
+
+		EmitSignal(SignalName.Closed);
 	}
 
 	private void GenerateHelp()
