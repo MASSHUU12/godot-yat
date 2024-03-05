@@ -20,6 +20,7 @@ You can find all the used actions below.
 -   `yat_terminal_interrupt` - Used to stop command working on separate thread.
 -   `yat_terminal_autocompletion_next` - Used to display next suggestions from autocompletion.
 -   `yat_terminal_autocompletion_previous` - Used to display previous suggestions from autocompletion.
+-   `yat_terminal_close_full_window_display` - Used to close full window display.
 
 ## Example
 
@@ -37,6 +38,7 @@ You can find all the used actions below.
 -   yat_terminal_history_previous: `Arrow Up`
 -   yat_terminal_autocompletion_next: `Tab`
 -   yat_terminal_autocompletion_previous: `Shift + Tab`
+-   yat_terminal_close_full_window_display: `Q`
 
 #### Example
 
