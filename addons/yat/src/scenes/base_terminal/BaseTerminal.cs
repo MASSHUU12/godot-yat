@@ -52,8 +52,11 @@ public partial class BaseTerminal : Control
 		SelectedNode = GetNode<SelectedNode>("SelectedNode");
 		SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
-		Input = GetNode<Input>("%Input");
 		FullWindowDisplay = GetNode<FullWindowDisplay>("FullWindowDisplay");
+		FullWindowDisplay.Opened += () => Input.ReleaseFocus();
+		FullWindowDisplay.Closed += () => Input.CallDeferred("grab_focus");
+
+		Input = GetNode<Input>("%Input");
 		CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
 
 		_promptLabel = GetNode<Label>("%PromptLabel");
