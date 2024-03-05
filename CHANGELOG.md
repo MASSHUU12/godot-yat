@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
     -   '$'
     -   'tfs'
 -   FullWindowDisplay component for BaseTerminal.
+-   '-e' option for 'man' command.
+-   'yat_terminal_close_full_window_display' keybinding.
 
 ### Changed
 
