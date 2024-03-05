@@ -82,7 +82,11 @@ public partial interface ICommand
 		sb.AppendLine("[p align=center][font_size=18]Arguments[/font_size][/p]");
 
 		foreach (var arg in arguments)
-			sb.AppendLine($"[b]{arg.Name}[/b]: {string.Join(" | ", arg.Types.Select(t => t.Type))}");
+		{
+			string types = string.Join(" | ", arg.Types.Select(t => t.Type));
+
+			sb.AppendLine($"[b]{arg.Name}[/b]: {types} - {arg.Description}");
+		}
 
 		return sb;
 	}
@@ -99,7 +103,11 @@ public partial interface ICommand
 		sb.AppendLine("[p align=center][font_size=18]Options[/font_size][/p]");
 
 		foreach (var opt in options)
-			sb.AppendLine($"[b]{opt.Name}[/b]: {string.Join(" | ", opt.Types.Select(t => t.Type))}");
+		{
+			string types = string.Join(" | ", opt.Types.Select(t => t.Type));
+
+			sb.AppendLine($"[b]{opt.Name}[/b]: {types} - {opt.Description}");
+		}
 
 		return sb;
 	}
