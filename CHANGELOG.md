@@ -23,10 +23,19 @@ All notable changes to this project will be documented in this file.
 -   Updated docs:
     -   BaseTerminal
     -   Input
+-   The following methods now return StringBuilder:
+    -   GenerateCommandManual
+    -   GenerateArgumentsManual
+    -   GenerateOptionsManual
+    -   GenerateSignalsManual
 
 ### Removed
 
 -   MethodManager component.
+
+### Fixed
+
+-   Description for arguments and options was missing in the manual.
 
 ## [1.25.0-beta 2024-03-01]
 

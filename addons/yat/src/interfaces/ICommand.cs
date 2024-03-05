@@ -44,7 +44,7 @@ public partial interface ICommand
 	public static CommandResult UnknownError(string message = null) =>
 		new(ECommandResult.UnknownError, message);
 
-	public virtual string GenerateCommandManual()
+	public virtual StringBuilder GenerateCommandManual()
 	{
 		CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this);
 		UsageAttribute usage = Reflection.GetAttribute<UsageAttribute>(this);
@@ -67,68 +67,61 @@ public partial interface ICommand
 				? string.Join("\n", command.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
 				: "[ul]\tNone[/ul]");
 
-		return sb.ToString();
+		return sb;
 	}
 
-	public virtual string GenerateArgumentsManual()
+	public virtual StringBuilder GenerateArgumentsManual()
 	{
 		var arguments = Reflection.GetAttributes<ArgumentAttribute>(this);
 
-		if (arguments is null) return "\nThis command does not have any arguments.";
+		if (arguments is null || arguments.Length == 0)
+			return new("\nThis command does not have any arguments.");
 
 		StringBuilder sb = new();
-
-		if (arguments.Length == 0)
-		{
-			sb.AppendLine("\nThis command does not have any arguments.");
-			return sb.ToString();
-		}
 
 		sb.AppendLine("[p align=center][font_size=18]Arguments[/font_size][/p]");
 
 		foreach (var arg in arguments)
 			sb.AppendLine($"[b]{arg.Name}[/b]: {string.Join(" | ", arg.Types.Select(t => t.Type))}");
 
-		return sb.ToString();
+		return sb;
 	}
 
-	public virtual string GenerateOptionsManual()
+	public virtual StringBuilder GenerateOptionsManual()
 	{
 		var options = Reflection.GetAttributes<OptionAttribute>(this);
 
-		if (options is null) return "\nThis command does not have any options.";
+		if (options is null || options.Length == 0)
+			return new("\nThis command does not have any options.");
 
 		StringBuilder sb = new();
-
-		if (options.Length == 0)
-		{
-			sb.AppendLine("\nThis command does not have any options.");
-			return sb.ToString();
-		}
 
 		sb.AppendLine("[p align=center][font_size=18]Options[/font_size][/p]");
 
 		foreach (var opt in options)
 			sb.AppendLine($"[b]{opt.Name}[/b]: {string.Join(" | ", opt.Types.Select(t => t.Type))}");
 
-		return sb.ToString();
+		return sb;
 	}
 
-	public virtual string GenerateSignalsManual()
+	public virtual StringBuilder GenerateSignalsManual()
 	{
-		var signals = Reflection.GetEvents(this, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
+		var signals = Reflection.GetEvents(
+			this,
+			BindingFlags.DeclaredOnly
+			| BindingFlags.Instance
+			| BindingFlags.Public
+		);
 
-		if (signals.Length == 0) return "\nThis command does not have any signals.";
+		if (signals.Length == 0)
+			return new("\nThis command does not have any signals.");
 
 		StringBuilder sb = new();
 
 		sb.AppendLine("[p align=center][font_size=18]Signals[/font_size][/p]");
 
-		foreach (var signal in signals)
-		{
-			sb.AppendLine(signal.Name);
-		}
+		foreach (var signal in signals) sb.AppendLine(signal.Name);
 
-		return sb.ToString();
+		return sb;
 	}
 }

@@ -28,22 +28,23 @@ public sealed class Man : ICommand
 		// Check if the command manual is already in the cache.
 		if (cache.Get(commandName) is string manual)
 		{
-			data.Terminal.Print(manual);
+			if (embed) data.Terminal.Print(manual);
+			else data.Terminal.FullWindowDisplay.Open(manual);
 			return ICommand.Success();
 		}
 
-		manual = command.GenerateCommandManual();
-		manual += command.GenerateArgumentsManual();
-		manual += command.GenerateOptionsManual();
-		manual += command.GenerateSignalsManual();
+		var bManual = command.GenerateCommandManual();
+		bManual.Append(command.GenerateArgumentsManual());
+		bManual.Append(command.GenerateOptionsManual());
+		bManual.Append(command.GenerateSignalsManual());
 
 		if (command is Extensible extensible)
-			manual += extensible.GenerateExtensionsManual();
+			bManual.Append(extensible.GenerateExtensionsManual());
 
-		cache.Add(commandName, manual);
+		cache.Add(commandName, bManual.ToString());
 
-		if (embed) data.Terminal.Print(manual);
-		else data.Terminal.FullWindowDisplay.Open(manual);
+		if (embed) data.Terminal.Print(bManual);
+		else data.Terminal.FullWindowDisplay.Open(bManual.ToString());
 
 		return ICommand.Success();
 	}
