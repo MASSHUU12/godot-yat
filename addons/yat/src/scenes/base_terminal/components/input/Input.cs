@@ -42,9 +42,6 @@ public partial class Input : LineEdit
 		if (Terminal.History.Count > _yat.PreferencesManager.Preferences.HistoryLimit) Terminal.History.RemoveFirst();
 	}
 
-	/// <summary>
-	/// Moves the caret to the end of the input text.
-	/// </summary>
 	public void MoveCaretToEnd()
 	{
 		CaretColumn = Text.Length;

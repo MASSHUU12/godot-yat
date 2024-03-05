@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
     and moved it to a separate file.
 -   Updated docs:
     -   BaseTerminal
+    -   Input
 
 ### Removed
 
