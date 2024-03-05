@@ -19,11 +19,13 @@ public partial class BaseTerminal : Control
 	);
 
 	public bool Locked { get; set; }
+	public bool Current { get; set; } = true;
 	public Input Input { get; private set; }
 	public Output Output { get; private set; }
 	public SelectedNode SelectedNode { get; private set; }
 	public CommandManager CommandManager { get; private set; }
 	public CommandValidator CommandValidator { get; private set; }
+	public FullWindowDisplay FullWindowDisplay { get; private set; }
 
 	public readonly LinkedList<string> History = new();
 	public LinkedListNode<string> HistoryNode = null;
@@ -51,8 +53,12 @@ public partial class BaseTerminal : Control
 		SelectedNode = GetNode<SelectedNode>("SelectedNode");
 		SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
-		CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
+		FullWindowDisplay = GetNode<FullWindowDisplay>("FullWindowDisplay");
+		FullWindowDisplay.Opened += () => { Input.ReleaseFocus(); };
+		FullWindowDisplay.Closed += () => { Input.CallDeferred("grab_focus"); };
+
 		Input = GetNode<Input>("%Input");
+		CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
 
 		_promptLabel = GetNode<Label>("%PromptLabel");
 		_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
@@ -153,8 +159,5 @@ public partial class BaseTerminal : Control
 
 	public void Print<T>(T text, EPrintType type = EPrintType.Normal) => Print(text.ToString(), type);
 
-	/// <summary>
-	/// Clears the output text of the terminal window.
-	/// </summary>
 	public void Clear() => Output.Clear();
 }

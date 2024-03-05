@@ -15,7 +15,14 @@ public partial class Input : LineEdit
 		_yat.YatReady += () =>
 		{
 			// This 'fixes' the issue where terminal toggle key is writing to the input
-			_yat.TerminalManager.TerminalOpened += () => { GrabFocus(); Clear(); };
+			_yat.TerminalManager.TerminalOpened += () =>
+			{
+				Clear();
+
+				if (!Terminal.Current || Terminal.FullWindowDisplay.IsOpen) return;
+
+				GrabFocus();
+			};
 		};
 
 		TextSubmitted += OnTextSubmitted;
@@ -42,9 +49,6 @@ public partial class Input : LineEdit
 		if (Terminal.History.Count > _yat.PreferencesManager.Preferences.HistoryLimit) Terminal.History.RemoveFirst();
 	}
 
-	/// <summary>
-	/// Moves the caret to the end of the input text.
-	/// </summary>
 	public void MoveCaretToEnd()
 	{
 		CaretColumn = Text.Length;

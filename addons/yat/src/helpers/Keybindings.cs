@@ -12,6 +12,7 @@ public static class Keybindings
 	public static readonly StringName TerminalHistoryPrevious = new("yat_terminal_history_previous");
 	public static readonly StringName TerminalAutocompletionNext = new("yat_terminal_autocompletion_next");
 	public static readonly StringName TerminalAutocompletionPrevious = new("yat_terminal_autocompletion_previous");
+	public static readonly StringName TerminalCloseFullWindowDisplay = new("yat_terminal_close_full_window_display");
 
 	public static readonly StringName ExamplePlayerMoveLeft = new("yat_example_player_move_left");
 	public static readonly StringName ExamplePlayerMoveRight = new("yat_example_player_move_right");
@@ -36,6 +37,7 @@ public static class Keybindings
 			PhysicalKeycode = Key.Tab,
 			ShiftPressed = true
 		}),
+		new(TerminalCloseFullWindowDisplay, new InputEventKey { PhysicalKeycode = Key.Q }),
 		new(ExamplePlayerMoveLeft, new InputEventKey { PhysicalKeycode = Key.A }),
 		new(ExamplePlayerMoveRight, new InputEventKey { PhysicalKeycode = Key.D }),
 		new(ExamplePlayerMoveForward, new InputEventKey { PhysicalKeycode = Key.W }),

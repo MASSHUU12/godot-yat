@@ -9,17 +9,18 @@
 
 ### Properties
 
-| Type                   | Name             | Default |
-| ---------------------- | ---------------- | ------- |
-| bool                   | Locked           | -       |
-| Input                  | Input            | -       |
-| Output                 | Output           | -       |
-| SelectedNode           | SelectedNode     | -       |
-| MethodManager          | MethodManager    | -       |
-| CommandManager         | CommandManager   | -       |
-| CommandValidator       | CommandValidator | -       |
-| LinkedList<string>     | History          | new     |
-| LinkedListNode<string> | HistoryNode      | null    |
+| Type                   | Name              | Default |
+| ---------------------- | ----------------- | ------- |
+| bool                   | Locked            | -       |
+| bool                   | Current           | true    |
+| Input                  | Input             | -       |
+| Output                 | Output            | -       |
+| SelectedNode           | SelectedNode      | -       |
+| CommandManager         | CommandManager    | -       |
+| CommandValidator       | CommandValidator  | -       |
+| FullWindowDisplay      | FullWindowDisplay | -       |
+| LinkedList<string>     | History           | new     |
+| LinkedListNode<string> | HistoryNode       | null    |
 
 ### Methods
 
@@ -38,6 +39,8 @@
 **PositionResetRequested** ()
 
 **SizeResetRequested** ()
+
+**MethodCalled** (StringName method, Variant returnValue, EMethodStatus status)
 
 ### Enumerations
 

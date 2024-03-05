@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 -   Commands:
     -   '$'
     -   'tfs'
+-   FullWindowDisplay component (with docs) for BaseTerminal.
+-   '-e' option for 'man' command.
+-   'yat_terminal_close_full_window_display' keybinding.
+-   'Current' property for BaseTerminal.
 
 ### Changed
 
@@ -16,6 +20,9 @@ All notable changes to this project will be documented in this file.
 -   Moved MethodCalled signal to BaseTerminal.
 -   Renamed AddingResult enum to ECommandAdditionStatus
     and moved it to a separate file.
+-   Updated docs:
+    -   BaseTerminal
+    -   Input
 
 ### Removed
 
