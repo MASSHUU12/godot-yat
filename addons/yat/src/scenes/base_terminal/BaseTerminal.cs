@@ -155,8 +155,5 @@ public partial class BaseTerminal : Control
 
 	public void Print<T>(T text, EPrintType type = EPrintType.Normal) => Print(text.ToString(), type);
 
-	/// <summary>
-	/// Clears the output text of the terminal window.
-	/// </summary>
 	public void Clear() => Output.Clear();
 }

@@ -19,6 +19,8 @@ All notable changes to this project will be documented in this file.
 -   Moved MethodCalled signal to BaseTerminal.
 -   Renamed AddingResult enum to ECommandAdditionStatus
     and moved it to a separate file.
+-   Updated docs:
+    -   BaseTerminal
 
 ### Removed
 
