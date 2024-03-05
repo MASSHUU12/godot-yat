@@ -6,12 +6,12 @@ namespace YAT.Scenes;
 public partial class FullWindowDisplay : Control
 {
 	public RichTextLabel MainDisplay { get; private set; }
-	public Label HelpLabel { get; private set; }
+	private Label _helpLabel;
 
 	public override void _Ready()
 	{
 		MainDisplay = GetNode<RichTextLabel>("%MainDisplay");
-		HelpLabel = GetNode<Label>("%HelpLabel");
+		_helpLabel = GetNode<Label>("%HelpLabel");
 	}
 
 	public override void _Input(InputEvent @event)
@@ -22,6 +22,8 @@ public partial class FullWindowDisplay : Control
 
 	public void Open(string text)
 	{
+		GenerateHelp();
+
 		MainDisplay.Clear();
 		MainDisplay.CallDeferred("append_text", text);
 		Visible = true;
@@ -31,5 +33,12 @@ public partial class FullWindowDisplay : Control
 	{
 		MainDisplay.Clear();
 		Visible = false;
+	}
+
+	private void GenerateHelp()
+	{
+		var closeKey = InputMap.ActionGetEvents(Keybindings.TerminalCloseFullWindowDisplay)[0];
+
+		_helpLabel.Text = $"{closeKey.AsText()} - Close";
 	}
 }
