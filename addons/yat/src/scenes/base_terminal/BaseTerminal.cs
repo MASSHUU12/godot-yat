@@ -54,8 +54,8 @@ public partial class BaseTerminal : Control
 		SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
 		FullWindowDisplay = GetNode<FullWindowDisplay>("FullWindowDisplay");
-		FullWindowDisplay.Opened += () => Input.ReleaseFocus();
-		FullWindowDisplay.Closed += () => Input.CallDeferred("grab_focus");
+		FullWindowDisplay.Opened += () => { Input.ReleaseFocus(); };
+		FullWindowDisplay.Closed += () => { Input.CallDeferred("grab_focus"); };
 
 		Input = GetNode<Input>("%Input");
 		CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
