@@ -12,6 +12,7 @@
 | Type                   | Name              | Default |
 | ---------------------- | ----------------- | ------- |
 | bool                   | Locked            | -       |
+| bool                   | Current           | true    |
 | Input                  | Input             | -       |
 | Output                 | Output            | -       |
 | SelectedNode           | SelectedNode      | -       |

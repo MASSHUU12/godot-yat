@@ -94,12 +94,14 @@ public partial class TerminalSwitcher : PanelContainer
 		CurrentTerminal.Hide();
 		CurrentTerminal.Input.ReleaseFocus();
 		CurrentTerminal.SetProcessInput(false);
+		CurrentTerminal.Current = false;
 
 		CurrentTerminal = TerminalInstances[(int)index];
 
 		CurrentTerminal.Show();
 		CurrentTerminal.Input.GrabFocus();
 		CurrentTerminal.SetProcessInput(true);
+		CurrentTerminal.Current = true;
 
 		_tabBar.CurrentTab = (int)index;
 

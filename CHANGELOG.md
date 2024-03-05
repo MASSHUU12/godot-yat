@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 -   FullWindowDisplay component (with docs) for BaseTerminal.
 -   '-e' option for 'man' command.
 -   'yat_terminal_close_full_window_display' keybinding.
+-   'Current' property for BaseTerminal.
 
 ### Changed
 

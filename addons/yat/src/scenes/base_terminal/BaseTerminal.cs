@@ -19,6 +19,7 @@ public partial class BaseTerminal : Control
 	);
 
 	public bool Locked { get; set; }
+	public bool Current { get; set; } = true;
 	public Input Input { get; private set; }
 	public Output Output { get; private set; }
 	public SelectedNode SelectedNode { get; private set; }
