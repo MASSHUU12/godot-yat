@@ -17,6 +17,7 @@
 # Exclude files and directories from the export
 /**                      export-ignore
 /addons/**               export-ignore
+/addons/*               !export-ignore
 /addons/yat             !export-ignore
 /addons/yat/**          !export-ignore
 /example                !export-ignore
