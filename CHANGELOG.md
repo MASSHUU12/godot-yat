@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 -   Updated docs:
     -   BaseTerminal
     -   Input
+    -   Usage
 -   The following methods now return StringBuilder:
     -   GenerateCommandManual
     -   GenerateArgumentsManual
