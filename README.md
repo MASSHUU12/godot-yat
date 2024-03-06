@@ -15,8 +15,11 @@ Of course, creating such a complex and ambitious project is extremely difficult 
 
 ## Prerequisites
 
--   [.NET SDK 7](https://dotnet.microsoft.com/en-us/download)
+-   [.NET SDK 7^](https://dotnet.microsoft.com/en-us/download)
 -   [.NET enabled Godot 4.2^](https://godotengine.org/download)
+-   C# 11^
+
+Make sure to update your [.csproj](./addons/yat/docs/USAGE.md).
 
 ## Features
 
