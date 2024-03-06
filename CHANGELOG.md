@@ -36,6 +36,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Description for arguments and options was missing in the manual.
+-   Documentation was not included in the exported project.
+-   Unnecessary files were included in the exported project.
 
 ## [1.25.0-beta 2024-03-01]
 
