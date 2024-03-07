@@ -7,6 +7,11 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   'sr' command.
+-   JetBrainsMono font (OFL).
+
+### Changed
+
+-   Terminal now uses JetBrainsMono font.
 
 ## [1.26.0-beta 2024-03-06]
 

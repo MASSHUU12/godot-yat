@@ -1,18 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://o1hlj04h0rri"]
+[gd_scene load_steps=6 format=3 uid="uid://o1hlj04h0rri"]
 
 [ext_resource type="Theme" uid="uid://b0caaqjmiluf7" path="res://addons/yat/src/scenes/yat_window/theme/yat_yatwindow_theme.tres" id="1_cty0e"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/yat_window/YatWindow.cs" id="2_1mdws"]
+[ext_resource type="FontFile" uid="uid://dsa5x2qgsn705" path="res://addons/yat/assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf" id="2_as7xm"]
 [ext_resource type="PackedScene" uid="uid://cqk7b35vstfc8" path="res://addons/yat/src/scenes/yat_window/context_menu/ContextMenu.tscn" id="3_u6so0"]
+
+[sub_resource type="Theme" id="Theme_tk4rv"]
+default_font = ExtResource("2_as7xm")
 
 [node name="YatWindow" type="Window"]
 disable_3d = true
+canvas_item_default_texture_filter = 2
 title = "Window"
 position = Vector2i(0, 36)
 size = Vector2i(512, 256)
 transient = true
 min_size = Vector2i(256, 144)
-content_scale_mode = 2
+content_scale_mode = 1
 theme = ExtResource("1_cty0e")
+theme_override_fonts/title_font = ExtResource("2_as7xm")
 script = ExtResource("2_1mdws")
 
 [node name="Content" type="PanelContainer" parent="."]
@@ -21,6 +27,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_tk4rv")
 
 [node name="ContextMenu" parent="." instance=ExtResource("3_u6so0")]
 visible = false

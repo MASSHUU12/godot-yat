@@ -1,5 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://dfig0yknmx6b7"]
+[gd_scene load_steps=17 format=3 uid="uid://dfig0yknmx6b7"]
 
+[ext_resource type="FontFile" uid="uid://dsa5x2qgsn705" path="res://addons/yat/assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf" id="1_5yxg8"]
 [ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.cs" id="1_gwi3k"]
 [ext_resource type="Theme" uid="uid://csssl8ua88ca4" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_theme.tres" id="1_mdg7i"]
 [ext_resource type="PackedScene" uid="uid://duldfph1vr1yb" path="res://addons/yat/src/scenes/base_terminal/components/autocompletion/Autocompletion.tscn" id="3_6vb77"]
@@ -12,6 +13,9 @@
 [ext_resource type="PackedScene" uid="uid://cm6kd53al1tcc" path="res://addons/yat/src/scenes/base_terminal/components/full_window_display/FullWindowDisplay.tscn" id="8_c4hfa"]
 [ext_resource type="PackedScene" uid="uid://x1dyt4bknu3x" path="res://addons/yat/src/scenes/base_terminal/components/command_validator/CommandValidator.tscn" id="10_isg4j"]
 [ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/classes/managers/command_manager/CommandManager.tscn" id="11_623me"]
+
+[sub_resource type="Theme" id="Theme_aojys"]
+default_font = ExtResource("1_5yxg8")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6fw"]
 bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
@@ -32,6 +36,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = SubResource("Theme_aojys")
 script = ExtResource("1_gwi3k")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
