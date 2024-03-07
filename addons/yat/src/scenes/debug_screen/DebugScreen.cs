@@ -50,6 +50,7 @@ public partial class DebugScreen : Control
 		_timer = GetNode<Timer>("Timer");
 		_timer.WaitTime = UpdateInterval;
 		_timer.Timeout += OnTimerTimeout;
+		_timer.Stop();
 	}
 
 	public void RunAll()
@@ -77,13 +78,19 @@ public partial class DebugScreen : Control
 				}
 			}
 		}
+
+		_timer.Start();
 	}
 
 	public void RunSelected(params string[] titles)
 	{
 		RemoveAllChildren();
 
-		if (titles.Length == 0) return;
+		if (titles.Length == 0)
+		{
+			_timer.Stop();
+			return;
+		}
 
 		foreach (string title in titles)
 		{
@@ -110,6 +117,8 @@ public partial class DebugScreen : Control
 				lowerTitle
 			);
 		}
+
+		_timer.Start();
 	}
 
 	private static void AddItemToContainer(
@@ -145,6 +154,8 @@ public partial class DebugScreen : Control
 		children.AddRange(_bottomRightContainer.GetChildren());
 
 		foreach (Node child in children) (child as IDebugScreenItem)?.Update();
+
+		GD.Print("DebugScreen updated");
 	}
 
 	private static void RemoveChildren(VBoxContainer container)

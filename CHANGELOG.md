@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   Terminal now uses JetBrainsMono font.
+-   Timer in DebugScreen no longer works when DebugScreen does not display anything.
 
 ## [1.26.0-beta 2024-03-06]
 
