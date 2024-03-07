@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   'sr' command.
--   JetBrainsMono font (OFL license).
+-   JetBrainsMono font (OFL).
 
 ### Changed
 
