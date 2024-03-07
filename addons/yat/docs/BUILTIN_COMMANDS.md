@@ -47,3 +47,4 @@
 | version       | N/A    | Displays the current game version.                                               |
 | $             | N/A    | Executes a method on the selected node.                                          |
 | tfs           | N/A    | Toggles the full screen mode.                                                    |
+| sr            | N/A    | Set the screen resolution.                                                       |

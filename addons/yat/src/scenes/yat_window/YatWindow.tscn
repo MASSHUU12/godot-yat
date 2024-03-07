@@ -14,9 +14,6 @@ min_size = Vector2i(256, 144)
 content_scale_mode = 2
 theme = ExtResource("1_cty0e")
 script = ExtResource("2_1mdws")
-ViewportEdgeOffset = null
-DefaultWindowPosition = null
-AllowToGoOffScreen = null
 
 [node name="Content" type="PanelContainer" parent="."]
 anchors_preset = 15
@@ -27,4 +24,3 @@ grow_vertical = 2
 
 [node name="ContextMenu" parent="." instance=ExtResource("3_u6so0")]
 visible = false
-WallMargin = null
