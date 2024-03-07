@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   'sr' command.
+
 ## [1.26.0-beta 2024-03-06]
 
 ### Added
