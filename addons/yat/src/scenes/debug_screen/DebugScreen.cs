@@ -50,7 +50,11 @@ public partial class DebugScreen : Control
 		_bottomRightContainer = GetNode<VBoxContainer>("%BottomRightContainer");
 
 		RemoveAllChildren();
+		InitializeTimer();
+	}
 
+	private void InitializeTimer()
+	{
 		_timer = GetNode<Timer>("Timer");
 		_timer.WaitTime = UpdateInterval;
 		_timer.Timeout += OnTimerTimeout;
@@ -158,24 +162,29 @@ public partial class DebugScreen : Control
 
 	private void RemoveAllChildren()
 	{
-		RemoveChildren(_topLeftContainer);
-		RemoveChildren(_topRightContainer);
-		RemoveChildren(_bottomLeftContainer);
-		RemoveChildren(_bottomRightContainer);
+		RemoveContainerChildren(_topLeftContainer);
+		RemoveContainerChildren(_topRightContainer);
+		RemoveContainerChildren(_bottomLeftContainer);
+		RemoveContainerChildren(_bottomRightContainer);
 	}
 
 	private void OnTimerTimeout()
 	{
-		List<Node> children = new();
-		children.AddRange(_topLeftContainer.GetChildren());
-		children.AddRange(_topRightContainer.GetChildren());
-		children.AddRange(_bottomLeftContainer.GetChildren());
-		children.AddRange(_bottomRightContainer.GetChildren());
-
-		foreach (Node child in children) (child as IDebugScreenItem)?.Update();
+		foreach (var container in new[] {
+			_topLeftContainer,
+			_topRightContainer,
+			_bottomLeftContainer,
+			_bottomRightContainer
+		})
+		{
+			foreach (var child in container.GetChildren())
+			{
+				(child as IDebugScreenItem).Update();
+			}
+		}
 	}
 
-	private static void RemoveChildren(VBoxContainer container)
+	private static void RemoveContainerChildren(VBoxContainer container)
 	{
 		foreach (Node child in container.GetChildren())
 		{
