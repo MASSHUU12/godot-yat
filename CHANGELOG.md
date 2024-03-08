@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 -   'sr' command.
 -   JetBrainsMono font (OFL).
 -   Title attribute for DebugScreenItems.
+-   Value None to EDebugScreenItemPosition enum.
 
 ### Changed
 
