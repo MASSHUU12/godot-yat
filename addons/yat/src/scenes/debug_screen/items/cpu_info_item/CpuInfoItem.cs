@@ -1,12 +1,12 @@
 using Godot;
+using YAT.Attributes;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
+[Title("CPU")]
 public partial class CpuInfoItem : PanelContainer, IDebugScreenItem
 {
-	public string Title { get; set; } = "CPU";
-
 	private Label _label;
 	private string _cpuInfo;
 

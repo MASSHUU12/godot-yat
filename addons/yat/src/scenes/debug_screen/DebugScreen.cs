@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using YAT.Enums;
+using YAT.Helpers;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
@@ -17,22 +20,22 @@ public partial class DebugScreen : Control
 		_bottomLeftContainer,
 		_bottomRightContainer;
 
-	public static readonly List<IDebugScreenItem>[] registeredItems =
+	public static readonly HashSet<Tuple<string, Type>>[] registeredItems =
 	// Use EDebugScreenItemPosition enum values as indices
-	new List<IDebugScreenItem>[4] {
+	new HashSet<Tuple<string, Type>>[4] {
 		new() // Top Left
 		{
-			GD.Load<PackedScene>("uid://0e2nft11f3h1").Instantiate<FpsItem>(),
-			GD.Load<PackedScene>("uid://lfgol2xetr88").Instantiate<MemoryInfoItem>(),
-			GD.Load<PackedScene>("uid://hvc8a2qwximn").Instantiate<LookingAtInfo>(),
-			GD.Load<PackedScene>("uid://lscv6c8lgnyh").Instantiate<SceneObjectsInfo>(),
+			new("uid://0e2nft11f3h1", typeof(FpsItem)),
+			new("uid://lfgol2xetr88", typeof(MemoryInfoItem)),
+			new("uid://hvc8a2qwximn", typeof(LookingAtInfo)),
+			new("uid://lscv6c8lgnyh", typeof(SceneObjectsInfo)),
 		},
 		new() // Top Right
 		{
-			GD.Load<PackedScene>("uid://dopcpwc6ch10v").Instantiate<CpuInfoItem>(),
-			GD.Load<PackedScene>("uid://c4f6crgbyioh1").Instantiate<GpuInfoItem>(),
-			GD.Load<PackedScene>("uid://ds38fns27q672").Instantiate<OsInfoItem>(),
-			GD.Load<PackedScene>("uid://fcjyl1y5lo").Instantiate<EngineInfoItem>(),
+			new("uid://dopcpwc6ch10v", typeof(CpuInfoItem)),
+			new("uid://c4f6crgbyioh1", typeof(GpuInfoItem)),
+			new("uid://ds38fns27q672", typeof(OsInfoItem)),
+			new("uid://fcjyl1y5lo", typeof(EngineInfoItem)),
 		},
 		new(), // Bottom Left
 		new()  // Bottom Right
@@ -59,7 +62,7 @@ public partial class DebugScreen : Control
 
 		for (int i = 0; i < registeredItems.Length; i++)
 		{
-			foreach (IDebugScreenItem item in registeredItems[i])
+			foreach (IDebugScreenItem item in registeredItems[i].Cast<IDebugScreenItem>())
 			{
 				switch (i)
 				{
@@ -121,13 +124,13 @@ public partial class DebugScreen : Control
 		_timer.Start();
 	}
 
-	private static void AddItemToContainer(
-		List<IDebugScreenItem> items,
+	private static void AddItemsToContainer(
+		HashSet<Tuple<string, Type>> items,
 		VBoxContainer container,
 		string lowerTitle
 	)
 	{
-		foreach (IDebugScreenItem item in items)
+		foreach (var item in items)
 		{
 			if (item.Title.ToLower() == lowerTitle)
 			{
@@ -135,6 +138,20 @@ public partial class DebugScreen : Control
 				break;
 			}
 		}
+	}
+
+	private static string GetTitle(Type item)
+	{
+		var @interface = item.GetInterface(nameof(IDebugScreenItem));
+
+		if (@interface == null) return string.Empty;
+
+		return @interface.GetProperty("Title").GetValue() as string;
+	}
+
+	private static IDebugScreenItem CreateItem(Type item, string path)
+	{
+		return GD.Load<PackedScene>(path).Instantiate<IDebugScreenItem>();
 	}
 
 	private void RemoveAllChildren()
@@ -167,23 +184,15 @@ public partial class DebugScreen : Control
 		}
 	}
 
-	public static bool RegisterItem(Node item, EDebugScreenItemPosition position)
+	public static bool RegisterItem(Type item, string path, EDebugScreenItemPosition position)
 	{
-		if (item is not IDebugScreenItem debugItem) return false;
+		if (!item.HasInterface<IDebugScreenItem>()) return false;
 
-		if (registeredItems[(int)position].Contains(debugItem)) return false;
-
-		registeredItems[(int)position].Add(debugItem);
-
-		return true;
+		return registeredItems[(int)position].Add(new(path, item));
 	}
 
-	public static bool UnregisterItem(IDebugScreenItem item, EDebugScreenItemPosition position)
+	public static bool UnregisterItem(Type item, string path, EDebugScreenItemPosition position)
 	{
-		if (!registeredItems[(int)position].Contains(item)) return false;
-
-		registeredItems[(int)position].Remove(item);
-
-		return true;
+		return registeredItems[(int)position].Remove(new(path, item));
 	}
 }

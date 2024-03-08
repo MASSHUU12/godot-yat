@@ -1,12 +1,12 @@
 using Godot;
+using YAT.Attributes;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
+[Title("FPS")]
 public partial class FpsItem : PanelContainer, IDebugScreenItem
 {
-	public string Title { get; set; } = "FPS";
-
 	private YAT _yat;
 	private RichTextLabel
 		_label,
