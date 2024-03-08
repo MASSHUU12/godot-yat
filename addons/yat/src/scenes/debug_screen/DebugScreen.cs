@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using Godot;
+using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
@@ -62,21 +63,37 @@ public partial class DebugScreen : Control
 
 		for (int i = 0; i < registeredItems.Length; i++)
 		{
-			foreach (IDebugScreenItem item in registeredItems[i].Cast<IDebugScreenItem>())
+			foreach (var item in registeredItems[i])
 			{
 				switch (i)
 				{
 					case (int)EDebugScreenItemPosition.TopLeft:
-						_topLeftContainer.AddChild((item as Node).Duplicate());
+						AddItemsToContainer(
+							registeredItems[i],
+							_topLeftContainer,
+							GetTitle(item.Item2).ToLower()
+						);
 						break;
 					case (int)EDebugScreenItemPosition.TopRight:
-						_topRightContainer.AddChild((item as Node).Duplicate());
+						AddItemsToContainer(
+							registeredItems[i],
+							_topRightContainer,
+							GetTitle(item.Item2).ToLower()
+						);
 						break;
 					case (int)EDebugScreenItemPosition.BottomLeft:
-						_bottomLeftContainer.AddChild((item as Node).Duplicate());
+						AddItemsToContainer(
+							registeredItems[i],
+							_topRightContainer,
+							GetTitle(item.Item2).ToLower()
+						);
 						break;
 					case (int)EDebugScreenItemPosition.BottomRight:
-						_bottomRightContainer.AddChild((item as Node).Duplicate());
+						AddItemsToContainer(
+							registeredItems[i],
+							_topRightContainer,
+							GetTitle(item.Item2).ToLower()
+						);
 						break;
 				}
 			}
@@ -99,22 +116,22 @@ public partial class DebugScreen : Control
 		{
 			var lowerTitle = title.ToLower();
 
-			AddItemToContainer(
+			AddItemsToContainer(
 				registeredItems[(int)EDebugScreenItemPosition.TopLeft],
 				_topLeftContainer,
 				lowerTitle
 			);
-			AddItemToContainer(
+			AddItemsToContainer(
 				registeredItems[(int)EDebugScreenItemPosition.TopRight],
 				_topRightContainer,
 				lowerTitle
 			);
-			AddItemToContainer(
+			AddItemsToContainer(
 				registeredItems[(int)EDebugScreenItemPosition.BottomLeft],
 				_bottomLeftContainer,
 				lowerTitle
 			);
-			AddItemToContainer(
+			AddItemsToContainer(
 				registeredItems[(int)EDebugScreenItemPosition.BottomRight],
 				_bottomRightContainer,
 				lowerTitle
@@ -132,9 +149,9 @@ public partial class DebugScreen : Control
 	{
 		foreach (var item in items)
 		{
-			if (item.Title.ToLower() == lowerTitle)
+			if (GetTitle(item.Item2).ToLower() == lowerTitle)
 			{
-				container.AddChild((item as Node).Duplicate());
+				container.AddChild(CreateItem(item.Item1) as Node);
 				break;
 			}
 		}
@@ -142,14 +159,10 @@ public partial class DebugScreen : Control
 
 	private static string GetTitle(Type item)
 	{
-		var @interface = item.GetInterface(nameof(IDebugScreenItem));
-
-		if (@interface == null) return string.Empty;
-
-		return @interface.GetProperty("Title").GetValue() as string;
+		return item.GetCustomAttribute<TitleAttribute>().Title;
 	}
 
-	private static IDebugScreenItem CreateItem(Type item, string path)
+	private static IDebugScreenItem CreateItem(string path)
 	{
 		return GD.Load<PackedScene>(path).Instantiate<IDebugScreenItem>();
 	}
@@ -171,8 +184,6 @@ public partial class DebugScreen : Control
 		children.AddRange(_bottomRightContainer.GetChildren());
 
 		foreach (Node child in children) (child as IDebugScreenItem)?.Update();
-
-		GD.Print("DebugScreen updated");
 	}
 
 	private static void RemoveChildren(VBoxContainer container)
@@ -187,6 +198,8 @@ public partial class DebugScreen : Control
 	public static bool RegisterItem(Type item, string path, EDebugScreenItemPosition position)
 	{
 		if (!item.HasInterface<IDebugScreenItem>()) return false;
+		if (item.GetAttribute<TitleAttribute>() is not TitleAttribute title) return false;
+		if (string.IsNullOrEmpty(title.Title)) return false;
 
 		return registeredItems[(int)position].Add(new(path, item));
 	}
