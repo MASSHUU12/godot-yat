@@ -116,32 +116,32 @@ public partial class DebugScreen : Control
 		{
 			var lowerTitle = title.ToLower();
 
-			AddItemsToContainer(
+			if (AddItemsToContainer(
 				registeredItems[(int)EDebugScreenItemPosition.TopLeft],
 				_topLeftContainer,
 				lowerTitle
-			);
-			AddItemsToContainer(
+			)) continue;
+			if (AddItemsToContainer(
 				registeredItems[(int)EDebugScreenItemPosition.TopRight],
 				_topRightContainer,
 				lowerTitle
-			);
-			AddItemsToContainer(
+			)) continue;
+			if (AddItemsToContainer(
 				registeredItems[(int)EDebugScreenItemPosition.BottomLeft],
 				_bottomLeftContainer,
 				lowerTitle
-			);
-			AddItemsToContainer(
+			)) continue;
+			if (AddItemsToContainer(
 				registeredItems[(int)EDebugScreenItemPosition.BottomRight],
 				_bottomRightContainer,
 				lowerTitle
-			);
+			)) continue;
 		}
 
 		_timer.Start();
 	}
 
-	private static void AddItemsToContainer(
+	private static bool AddItemsToContainer(
 		HashSet<Tuple<string, Type>> items,
 		VBoxContainer container,
 		string lowerTitle
@@ -152,9 +152,11 @@ public partial class DebugScreen : Control
 			if (GetTitle(item.Item2).ToLower() == lowerTitle)
 			{
 				container.AddChild(CreateItem(item.Item1) as Node);
-				break;
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	private static string GetTitle(Type item)
