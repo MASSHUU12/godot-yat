@@ -57,6 +57,18 @@ public partial class DebugScreen : Control
 		_timer.Stop();
 	}
 
+	private VBoxContainer GetContainer(EDebugScreenItemPosition position)
+	{
+		return position switch
+		{
+			EDebugScreenItemPosition.TopLeft => _topLeftContainer,
+			EDebugScreenItemPosition.TopRight => _topRightContainer,
+			EDebugScreenItemPosition.BottomLeft => _bottomLeftContainer,
+			EDebugScreenItemPosition.BottomRight => _bottomRightContainer,
+			_ => null,
+		};
+	}
+
 	public void RunAll()
 	{
 		RemoveAllChildren();
@@ -65,37 +77,7 @@ public partial class DebugScreen : Control
 		{
 			foreach (var item in registeredItems[i])
 			{
-				switch (i)
-				{
-					case (int)EDebugScreenItemPosition.TopLeft:
-						AddItemsToContainer(
-							registeredItems[i],
-							_topLeftContainer,
-							GetTitle(item.Item2).ToLower()
-						);
-						break;
-					case (int)EDebugScreenItemPosition.TopRight:
-						AddItemsToContainer(
-							registeredItems[i],
-							_topRightContainer,
-							GetTitle(item.Item2).ToLower()
-						);
-						break;
-					case (int)EDebugScreenItemPosition.BottomLeft:
-						AddItemsToContainer(
-							registeredItems[i],
-							_topRightContainer,
-							GetTitle(item.Item2).ToLower()
-						);
-						break;
-					case (int)EDebugScreenItemPosition.BottomRight:
-						AddItemsToContainer(
-							registeredItems[i],
-							_topRightContainer,
-							GetTitle(item.Item2).ToLower()
-						);
-						break;
-				}
+				AddItemToContainer(item.Item1, GetContainer((EDebugScreenItemPosition)i));
 			}
 		}
 
@@ -151,12 +133,17 @@ public partial class DebugScreen : Control
 		{
 			if (GetTitle(item.Item2).ToLower() == lowerTitle)
 			{
-				container.AddChild(CreateItem(item.Item1) as Node);
+				AddItemToContainer(item.Item1, container);
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	private static void AddItemToContainer(string path, VBoxContainer container)
+	{
+		container.AddChild(CreateItem(path) as Node);
 	}
 
 	private static string GetTitle(Type item)
