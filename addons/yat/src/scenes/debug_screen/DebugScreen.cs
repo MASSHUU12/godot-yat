@@ -21,25 +21,37 @@ public partial class DebugScreen : Control
 		_bottomLeftContainer,
 		_bottomRightContainer;
 
-	public static readonly HashSet<Tuple<string, Type>>[] registeredItems =
-	// Use EDebugScreenItemPosition enum values as indices
-	new HashSet<Tuple<string, Type>>[4] {
-		new() // Top Left
+	public static readonly Dictionary<EDebugScreenItemPosition, HashSet<Tuple<string, Type>>>
+	registeredItems = new()
+	{
 		{
-			new("uid://0e2nft11f3h1", typeof(FpsItem)),
-			new("uid://lfgol2xetr88", typeof(MemoryInfoItem)),
-			new("uid://hvc8a2qwximn", typeof(LookingAtInfo)),
-			new("uid://lscv6c8lgnyh", typeof(SceneObjectsInfo)),
+			EDebugScreenItemPosition.TopLeft,
+			new()
+			{
+				new("uid://0e2nft11f3h1", typeof(FpsItem)),
+				new("uid://lfgol2xetr88", typeof(MemoryInfoItem)),
+				new("uid://hvc8a2qwximn", typeof(LookingAtInfo)),
+				new("uid://lscv6c8lgnyh", typeof(SceneObjectsInfo)),
+			}
 		},
-		new() // Top Right
 		{
-			new("uid://dopcpwc6ch10v", typeof(CpuInfoItem)),
-			new("uid://c4f6crgbyioh1", typeof(GpuInfoItem)),
-			new("uid://ds38fns27q672", typeof(OsInfoItem)),
-			new("uid://fcjyl1y5lo", typeof(EngineInfoItem)),
+			EDebugScreenItemPosition.TopRight,
+			new()
+			{
+				new("uid://dopcpwc6ch10v", typeof(CpuInfoItem)),
+				new("uid://c4f6crgbyioh1", typeof(GpuInfoItem)),
+				new("uid://ds38fns27q672", typeof(OsInfoItem)),
+				new("uid://fcjyl1y5lo", typeof(EngineInfoItem)),
+			}
 		},
-		new(), // Bottom Left
-		new()  // Bottom Right
+		{
+			EDebugScreenItemPosition.BottomLeft,
+			new()
+		},
+		{
+			EDebugScreenItemPosition.BottomRight,
+			new()
+		}
 	};
 
 	public override void _Ready()
@@ -77,11 +89,17 @@ public partial class DebugScreen : Control
 	{
 		RemoveAllChildren();
 
-		for (int i = 0; i < registeredItems.Length; i++)
+		foreach (var (position, container) in new[]
 		{
-			foreach (var item in registeredItems[i])
+			(EDebugScreenItemPosition.TopLeft, _topLeftContainer),
+			(EDebugScreenItemPosition.TopRight, _topRightContainer),
+			(EDebugScreenItemPosition.BottomLeft, _bottomLeftContainer),
+			(EDebugScreenItemPosition.BottomRight, _bottomRightContainer)
+		})
+		{
+			foreach (var item in registeredItems[position])
 			{
-				AddItemToContainer(item.Item1, GetContainer((EDebugScreenItemPosition)i));
+				AddItemToContainer(item.Item1, container);
 			}
 		}
 
@@ -98,30 +116,21 @@ public partial class DebugScreen : Control
 			return;
 		}
 
-		foreach (string title in titles)
+		foreach (var title in titles)
 		{
 			var lowerTitle = title.ToLower();
 
-			if (AddItemsToContainer(
-				registeredItems[(int)EDebugScreenItemPosition.TopLeft],
-				_topLeftContainer,
-				lowerTitle
-			)) continue;
-			if (AddItemsToContainer(
-				registeredItems[(int)EDebugScreenItemPosition.TopRight],
-				_topRightContainer,
-				lowerTitle
-			)) continue;
-			if (AddItemsToContainer(
-				registeredItems[(int)EDebugScreenItemPosition.BottomLeft],
-				_bottomLeftContainer,
-				lowerTitle
-			)) continue;
-			if (AddItemsToContainer(
-				registeredItems[(int)EDebugScreenItemPosition.BottomRight],
-				_bottomRightContainer,
-				lowerTitle
-			)) continue;
+			foreach (var (position, container) in new[]
+			{
+				(EDebugScreenItemPosition.TopLeft, _topLeftContainer),
+				(EDebugScreenItemPosition.TopRight, _topRightContainer),
+				(EDebugScreenItemPosition.BottomLeft, _bottomLeftContainer),
+				(EDebugScreenItemPosition.BottomRight, _bottomRightContainer)
+			})
+			{
+				if (AddItemsToContainer(registeredItems[position], container, lowerTitle))
+					continue;
+			}
 		}
 
 		_timer.Start();
@@ -199,11 +208,11 @@ public partial class DebugScreen : Control
 		if (item.GetAttribute<TitleAttribute>() is not TitleAttribute title) return false;
 		if (string.IsNullOrEmpty(title.Title)) return false;
 
-		return registeredItems[(int)position].Add(new(path, item));
+		return registeredItems[position].Add(new(path, item));
 	}
 
 	public static bool UnregisterItem(Type item, string path, EDebugScreenItemPosition position)
 	{
-		return registeredItems[(int)position].Remove(new(path, item));
+		return registeredItems[position].Remove(new(path, item));
 	}
 }

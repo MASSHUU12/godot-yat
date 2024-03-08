@@ -36,7 +36,7 @@ public sealed class Ds : ICommand
 
 		message.AppendLine("Registered items:");
 
-		foreach (var item in DebugScreen.registeredItems.SelectMany(x => x))
+		foreach (var item in DebugScreen.registeredItems.Values.SelectMany(x => x))
 		{
 			message.AppendLine(
 				string.Format(
