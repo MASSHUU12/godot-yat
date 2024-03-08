@@ -8,11 +8,15 @@ All notable changes to this project will be documented in this file.
 
 -   'sr' command.
 -   JetBrainsMono font (OFL).
+-   Title attribute for DebugScreenItems.
 
 ### Changed
 
 -   Terminal now uses JetBrainsMono font.
 -   Timer in DebugScreen no longer works when DebugScreen does not display anything.
+-   Reworked the way the items in DebugScreen are stored and used.
+-   Reduced memory usage by around 25% when YAT is not in use,
+    and by ~6% when using DebugScreen.
 
 ## [1.26.0-beta 2024-03-06]
 
