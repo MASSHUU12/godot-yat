@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Godot;
 using YAT.Attributes;
@@ -116,20 +117,23 @@ public partial class DebugScreen : Control
 			return;
 		}
 
-		foreach (var title in titles)
-		{
-			var lowerTitle = title.ToLower();
+		var lowerTitles = titles.Select(t => t.ToLower());
 
-			foreach (var (position, container) in new[]
+		foreach (var position in new[]
+		{
+			EDebugScreenItemPosition.TopLeft,
+			EDebugScreenItemPosition.TopRight,
+			EDebugScreenItemPosition.BottomLeft,
+			EDebugScreenItemPosition.BottomRight
+		})
+		{
+			var container = GetContainer(position);
+
+			if (container == null) continue;
+
+			foreach (var title in lowerTitles)
 			{
-				(EDebugScreenItemPosition.TopLeft, _topLeftContainer),
-				(EDebugScreenItemPosition.TopRight, _topRightContainer),
-				(EDebugScreenItemPosition.BottomLeft, _bottomLeftContainer),
-				(EDebugScreenItemPosition.BottomRight, _bottomRightContainer)
-			})
-			{
-				if (AddItemsToContainer(registeredItems[position], container, lowerTitle))
-					continue;
+				AddItemsToContainer(registeredItems[position], container, title);
 			}
 		}
 
