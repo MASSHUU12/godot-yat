@@ -1,12 +1,12 @@
 using Godot;
+using YAT.Attributes;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
+[Title("GPU")]
 public partial class GpuInfoItem : PanelContainer, IDebugScreenItem
 {
-	public string Title { get; set; } = "GPU";
-
 	private readonly RenderingDevice _device = RenderingServer.GetRenderingDevice();
 
 	private Label _label;

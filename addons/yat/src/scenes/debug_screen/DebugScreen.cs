@@ -1,6 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Godot;
+using YAT.Attributes;
 using YAT.Enums;
+using YAT.Helpers;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
@@ -17,25 +22,37 @@ public partial class DebugScreen : Control
 		_bottomLeftContainer,
 		_bottomRightContainer;
 
-	public static readonly List<IDebugScreenItem>[] registeredItems =
-	// Use EDebugScreenItemPosition enum values as indices
-	new List<IDebugScreenItem>[4] {
-		new() // Top Left
+	public static readonly Dictionary<EDebugScreenItemPosition, HashSet<Tuple<string, Type>>>
+	registeredItems = new()
+	{
 		{
-			GD.Load<PackedScene>("uid://0e2nft11f3h1").Instantiate<FpsItem>(),
-			GD.Load<PackedScene>("uid://lfgol2xetr88").Instantiate<MemoryInfoItem>(),
-			GD.Load<PackedScene>("uid://hvc8a2qwximn").Instantiate<LookingAtInfo>(),
-			GD.Load<PackedScene>("uid://lscv6c8lgnyh").Instantiate<SceneObjectsInfo>(),
+			EDebugScreenItemPosition.TopLeft,
+			new()
+			{
+				new("uid://0e2nft11f3h1", typeof(FpsItem)),
+				new("uid://lfgol2xetr88", typeof(MemoryInfoItem)),
+				new("uid://hvc8a2qwximn", typeof(LookingAtInfo)),
+				new("uid://lscv6c8lgnyh", typeof(SceneObjectsInfo)),
+			}
 		},
-		new() // Top Right
 		{
-			GD.Load<PackedScene>("uid://dopcpwc6ch10v").Instantiate<CpuInfoItem>(),
-			GD.Load<PackedScene>("uid://c4f6crgbyioh1").Instantiate<GpuInfoItem>(),
-			GD.Load<PackedScene>("uid://ds38fns27q672").Instantiate<OsInfoItem>(),
-			GD.Load<PackedScene>("uid://fcjyl1y5lo").Instantiate<EngineInfoItem>(),
+			EDebugScreenItemPosition.TopRight,
+			new()
+			{
+				new("uid://dopcpwc6ch10v", typeof(CpuInfoItem)),
+				new("uid://c4f6crgbyioh1", typeof(GpuInfoItem)),
+				new("uid://ds38fns27q672", typeof(OsInfoItem)),
+				new("uid://fcjyl1y5lo", typeof(EngineInfoItem)),
+			}
 		},
-		new(), // Bottom Left
-		new()  // Bottom Right
+		{
+			EDebugScreenItemPosition.BottomLeft,
+			new()
+		},
+		{
+			EDebugScreenItemPosition.BottomRight,
+			new()
+		}
 	};
 
 	public override void _Ready()
@@ -46,36 +63,44 @@ public partial class DebugScreen : Control
 		_bottomRightContainer = GetNode<VBoxContainer>("%BottomRightContainer");
 
 		RemoveAllChildren();
+		InitializeTimer();
+	}
 
+	private void InitializeTimer()
+	{
 		_timer = GetNode<Timer>("Timer");
 		_timer.WaitTime = UpdateInterval;
 		_timer.Timeout += OnTimerTimeout;
 		_timer.Stop();
 	}
 
+	private VBoxContainer GetContainer(EDebugScreenItemPosition position)
+	{
+		return position switch
+		{
+			EDebugScreenItemPosition.TopLeft => _topLeftContainer,
+			EDebugScreenItemPosition.TopRight => _topRightContainer,
+			EDebugScreenItemPosition.BottomLeft => _bottomLeftContainer,
+			EDebugScreenItemPosition.BottomRight => _bottomRightContainer,
+			_ => null,
+		};
+	}
+
 	public void RunAll()
 	{
 		RemoveAllChildren();
 
-		for (int i = 0; i < registeredItems.Length; i++)
+		foreach (var (position, container) in new[]
 		{
-			foreach (IDebugScreenItem item in registeredItems[i])
+			(EDebugScreenItemPosition.TopLeft, _topLeftContainer),
+			(EDebugScreenItemPosition.TopRight, _topRightContainer),
+			(EDebugScreenItemPosition.BottomLeft, _bottomLeftContainer),
+			(EDebugScreenItemPosition.BottomRight, _bottomRightContainer)
+		})
+		{
+			foreach (var item in registeredItems[position])
 			{
-				switch (i)
-				{
-					case (int)EDebugScreenItemPosition.TopLeft:
-						_topLeftContainer.AddChild((item as Node).Duplicate());
-						break;
-					case (int)EDebugScreenItemPosition.TopRight:
-						_topRightContainer.AddChild((item as Node).Duplicate());
-						break;
-					case (int)EDebugScreenItemPosition.BottomLeft:
-						_bottomLeftContainer.AddChild((item as Node).Duplicate());
-						break;
-					case (int)EDebugScreenItemPosition.BottomRight:
-						_bottomRightContainer.AddChild((item as Node).Duplicate());
-						break;
-				}
+				AddItemToContainer(item.Item1, container);
 			}
 		}
 
@@ -92,73 +117,87 @@ public partial class DebugScreen : Control
 			return;
 		}
 
-		foreach (string title in titles)
-		{
-			var lowerTitle = title.ToLower();
+		var lowerTitles = titles.Select(t => t.ToLower());
 
-			AddItemToContainer(
-				registeredItems[(int)EDebugScreenItemPosition.TopLeft],
-				_topLeftContainer,
-				lowerTitle
-			);
-			AddItemToContainer(
-				registeredItems[(int)EDebugScreenItemPosition.TopRight],
-				_topRightContainer,
-				lowerTitle
-			);
-			AddItemToContainer(
-				registeredItems[(int)EDebugScreenItemPosition.BottomLeft],
-				_bottomLeftContainer,
-				lowerTitle
-			);
-			AddItemToContainer(
-				registeredItems[(int)EDebugScreenItemPosition.BottomRight],
-				_bottomRightContainer,
-				lowerTitle
-			);
+		foreach (var position in new[]
+		{
+			EDebugScreenItemPosition.TopLeft,
+			EDebugScreenItemPosition.TopRight,
+			EDebugScreenItemPosition.BottomLeft,
+			EDebugScreenItemPosition.BottomRight
+		})
+		{
+			var container = GetContainer(position);
+
+			if (container == null) continue;
+
+			foreach (var title in lowerTitles)
+			{
+				AddItemsToContainer(registeredItems[position], container, title);
+			}
 		}
 
 		_timer.Start();
 	}
 
-	private static void AddItemToContainer(
-		List<IDebugScreenItem> items,
+	private static bool AddItemsToContainer(
+		HashSet<Tuple<string, Type>> items,
 		VBoxContainer container,
 		string lowerTitle
 	)
 	{
-		foreach (IDebugScreenItem item in items)
+		foreach (var item in items)
 		{
-			if (item.Title.ToLower() == lowerTitle)
+			if (GetTitle(item.Item2).ToLower() == lowerTitle)
 			{
-				container.AddChild((item as Node).Duplicate());
-				break;
+				AddItemToContainer(item.Item1, container);
+				return true;
 			}
 		}
+
+		return false;
+	}
+
+	private static void AddItemToContainer(string path, VBoxContainer container)
+	{
+		container.AddChild(CreateItem(path) as Node);
+	}
+
+	private static string GetTitle(Type item)
+	{
+		return item.GetCustomAttribute<TitleAttribute>().Title;
+	}
+
+	private static IDebugScreenItem CreateItem(string path)
+	{
+		return GD.Load<PackedScene>(path).Instantiate<IDebugScreenItem>();
 	}
 
 	private void RemoveAllChildren()
 	{
-		RemoveChildren(_topLeftContainer);
-		RemoveChildren(_topRightContainer);
-		RemoveChildren(_bottomLeftContainer);
-		RemoveChildren(_bottomRightContainer);
+		RemoveContainerChildren(_topLeftContainer);
+		RemoveContainerChildren(_topRightContainer);
+		RemoveContainerChildren(_bottomLeftContainer);
+		RemoveContainerChildren(_bottomRightContainer);
 	}
 
 	private void OnTimerTimeout()
 	{
-		List<Node> children = new();
-		children.AddRange(_topLeftContainer.GetChildren());
-		children.AddRange(_topRightContainer.GetChildren());
-		children.AddRange(_bottomLeftContainer.GetChildren());
-		children.AddRange(_bottomRightContainer.GetChildren());
-
-		foreach (Node child in children) (child as IDebugScreenItem)?.Update();
-
-		GD.Print("DebugScreen updated");
+		foreach (var container in new[] {
+			_topLeftContainer,
+			_topRightContainer,
+			_bottomLeftContainer,
+			_bottomRightContainer
+		})
+		{
+			foreach (var child in container.GetChildren())
+			{
+				(child as IDebugScreenItem).Update();
+			}
+		}
 	}
 
-	private static void RemoveChildren(VBoxContainer container)
+	private static void RemoveContainerChildren(VBoxContainer container)
 	{
 		foreach (Node child in container.GetChildren())
 		{
@@ -167,23 +206,17 @@ public partial class DebugScreen : Control
 		}
 	}
 
-	public static bool RegisterItem(Node item, EDebugScreenItemPosition position)
+	public static bool RegisterItem(Type item, string path, EDebugScreenItemPosition position)
 	{
-		if (item is not IDebugScreenItem debugItem) return false;
+		if (!item.HasInterface<IDebugScreenItem>()) return false;
+		if (item.GetAttribute<TitleAttribute>() is not TitleAttribute title) return false;
+		if (string.IsNullOrEmpty(title.Title)) return false;
 
-		if (registeredItems[(int)position].Contains(debugItem)) return false;
-
-		registeredItems[(int)position].Add(debugItem);
-
-		return true;
+		return registeredItems[position].Add(new(path, item));
 	}
 
-	public static bool UnregisterItem(IDebugScreenItem item, EDebugScreenItemPosition position)
+	public static bool UnregisterItem(Type item, string path, EDebugScreenItemPosition position)
 	{
-		if (!registeredItems[(int)position].Contains(item)) return false;
-
-		registeredItems[(int)position].Remove(item);
-
-		return true;
+		return registeredItems[position].Remove(new(path, item));
 	}
 }

@@ -1,13 +1,13 @@
 using Godot;
+using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
+[Title("LookingAt")]
 public partial class LookingAtInfo : PanelContainer, IDebugScreenItem
 {
-	public string Title { get; set; } = "LookingAt";
-
 	private YAT _yat;
 	private Label _label;
 	private const uint RAY_LENGTH = 1024;

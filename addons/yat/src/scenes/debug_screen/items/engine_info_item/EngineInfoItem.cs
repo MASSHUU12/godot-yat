@@ -1,12 +1,12 @@
 using Godot;
+using YAT.Attributes;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
+[Title("Engine")]
 public partial class EngineInfoItem : PanelContainer, IDebugScreenItem
 {
-	public string Title { get; set; } = "Engine";
-
 	private Label _label;
 	private string _engineInfo;
 

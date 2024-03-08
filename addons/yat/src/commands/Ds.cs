@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text;
 using YAT.Attributes;
+using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -35,9 +36,16 @@ public sealed class Ds : ICommand
 
 		message.AppendLine("Registered items:");
 
-		foreach (IDebugScreenItem item in DebugScreen.registeredItems.SelectMany(x => x))
+		foreach (var item in DebugScreen.registeredItems.Values.SelectMany(x => x))
 		{
-			message.AppendLine($"- {item.Title} ({item.GetType().Name})");
+			message.AppendLine(
+				string.Format(
+					"- [b]{0}[/b] ({1}): {2}",
+					item.Item2.GetAttribute<TitleAttribute>()?.Title ?? item.Item2.Name,
+					item.Item2.Name,
+					item.Item1
+				)
+			);
 		}
 
 		terminal.Print(message);

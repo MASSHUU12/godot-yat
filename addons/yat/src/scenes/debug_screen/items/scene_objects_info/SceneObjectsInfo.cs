@@ -1,12 +1,12 @@
 using Godot;
+using YAT.Attributes;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
+[Title("SceneObjects")]
 public partial class SceneObjectsInfo : PanelContainer, IDebugScreenItem
 {
-	public string Title { get; set; } = "SceneObjects";
-
 	private Label _label;
 
 	public override void _Ready()

@@ -1,12 +1,12 @@
 using Godot;
+using YAT.Attributes;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
+[Title("OS")]
 public partial class OsInfoItem : PanelContainer, IDebugScreenItem
 {
-	public string Title { get; set; } = "OS";
-
 	private Label _label;
 	private string _osInfo;
 

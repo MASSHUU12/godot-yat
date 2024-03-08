@@ -1,13 +1,13 @@
 using Godot;
+using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
 
 namespace YAT.Scenes;
 
+[Title("Memory")]
 public partial class MemoryInfoItem : PanelContainer, IDebugScreenItem
 {
-	public string Title { get; set; } = "Memory";
-
 	private YAT _yat;
 	private RichTextLabel _label;
 
