@@ -8,20 +8,13 @@
 [resource]
 HBoxContainer/constants/separation = 0
 Label/colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
-Label/font_sizes/font_size = 14
 Label/styles/normal = ExtResource("1_oqkbl")
 LineEdit/colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
 LineEdit/colors/font_placeholder_color = Color(0.875, 0.875, 0.875, 0.6)
-LineEdit/font_sizes/font_size = 14
 LineEdit/styles/focus = ExtResource("2_bmswo")
 LineEdit/styles/normal = ExtResource("2_bmswo")
 LineEdit/styles/read_only = ExtResource("2_bmswo")
 PanelContainer/styles/panel = ExtResource("3_haqrw")
 RichTextLabel/colors/default_color = Color(0.87451, 0.87451, 0.87451, 0.501961)
-RichTextLabel/font_sizes/bold_font_size = 14
-RichTextLabel/font_sizes/bold_italics_font_size = 14
-RichTextLabel/font_sizes/italics_font_size = 14
-RichTextLabel/font_sizes/mono_font_size = 14
-RichTextLabel/font_sizes/normal_font_size = 14
 RichTextLabel/styles/focus = ExtResource("3_s35bd")
 RichTextLabel/styles/normal = ExtResource("3_s35bd")

@@ -9,21 +9,15 @@
 [ext_resource type="PackedScene" uid="uid://pig28ykj8ss3" path="res://addons/yat/src/scenes/game_terminal/components/quick_commands_context/QuickCommandsContext.tscn" id="7_ofci7"]
 
 [sub_resource type="Theme" id="Theme_1ovvd"]
+default_font_size = 18
 HBoxContainer/constants/separation = 0
 Label/colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
-Label/font_sizes/font_size = 14
 Label/styles/normal = ExtResource("3_xmkp7")
 LineEdit/colors/font_color = Color(0.87451, 0.87451, 0.87451, 0.6)
 LineEdit/colors/font_placeholder_color = Color(0.87451, 0.87451, 0.87451, 0.6)
-LineEdit/font_sizes/font_size = 14
 LineEdit/styles/focus = ExtResource("4_pb6kd")
 LineEdit/styles/normal = ExtResource("4_pb6kd")
 RichTextLabel/colors/default_color = Color(0.87451, 0.87451, 0.87451, 0.501961)
-RichTextLabel/font_sizes/bold_font_size = 14
-RichTextLabel/font_sizes/bold_italics_font_size = 14
-RichTextLabel/font_sizes/italics_font_size = 14
-RichTextLabel/font_sizes/mono_font_size = 14
-RichTextLabel/font_sizes/normal_font_size = 14
 RichTextLabel/styles/focus = ExtResource("5_iupxt")
 RichTextLabel/styles/normal = ExtResource("5_iupxt")
 
@@ -32,20 +26,13 @@ title = "YAT"
 size = Vector2i(728, 384)
 script = ExtResource("2_17k82")
 ViewportEdgeOffset = 48
-DefaultWindowPosition = 4
-AllowToGoOffScreen = true
 
 [node name="Content" parent="." index="0"]
-size_flags_horizontal = 3
-size_flags_vertical = 3
 theme = SubResource("Theme_1ovvd")
 
 [node name="TerminalSwitcher" parent="Content" index="0" instance=ExtResource("6_q6yte")]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="ContextMenu" parent="." index="1"]
-WallMargin = 16
 
 [node name="QuickCommandsContext" parent="ContextMenu" index="3" instance=ExtResource("7_ofci7")]
 visible = false
