@@ -11,8 +11,9 @@ namespace YAT.Scenes;
 
 public partial class Preferences : YatWindow
 {
-	private Button _load, _save, _update, _restoreDefaults;
 	private TabContainer _tabContainer;
+	private Button _load, _save, _update, _restoreDefaults;
+	private PackedScene _section, _inputContainer, _preferencesTab;
 
 	private readonly Dictionary<StringName, PreferencesTab> _groups = new();
 	private readonly Dictionary<StringName, PreferencesSection> _sections = new();
@@ -23,6 +24,10 @@ public partial class Preferences : YatWindow
 
 		_yat.PreferencesManager.PreferencesUpdated += UpdateDisplayedPreferences;
 		_tabContainer = GetNode<TabContainer>("%TabContainer");
+
+		_section = GD.Load<PackedScene>("uid://o78tqt867i13");
+		_preferencesTab = GD.Load<PackedScene>("uid://bxdeasqh565nr");
+		_inputContainer = GD.Load<PackedScene>("uid://dgq3jncmxdomf");
 
 		_load = GetNode<Button>("%Load");
 		_load.Pressed += LoadPreferences;
@@ -155,7 +160,7 @@ public partial class Preferences : YatWindow
 
 	private void CreateSection(StringName name, StringName groupName)
 	{
-		var section = GD.Load<PackedScene>("uid://o78tqt867i13").Instantiate<PreferencesSection>();
+		var section = _section.Instantiate<PreferencesSection>();
 
 		section.Name = name;
 
@@ -185,7 +190,7 @@ public partial class Preferences : YatWindow
 		if (string.IsNullOrEmpty(name) || _groups.ContainsKey(name) || propertyType == "Nil")
 			return;
 
-		var inputContainer = GD.Load<PackedScene>("uid://dgq3jncmxdomf").Instantiate<InputContainer>();
+		var inputContainer = _inputContainer.Instantiate<InputContainer>();
 
 		inputContainer.Name = name;
 		inputContainer.Text = name;
@@ -200,7 +205,7 @@ public partial class Preferences : YatWindow
 
 	private void CreateTab(StringName name)
 	{
-		var tab = GD.Load<PackedScene>("uid://bxdeasqh565nr").Instantiate<PreferencesTab>();
+		var tab = _preferencesTab.Instantiate<PreferencesTab>();
 
 		tab.Name = name;
 
