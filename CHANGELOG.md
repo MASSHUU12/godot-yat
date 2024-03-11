@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [v1.27.0-beta 2024-03-11]
 
 ### Added
 
@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 -   JetBrainsMono font (OFL).
 -   Title attribute for DebugScreenItems.
 -   Value None to EDebugScreenItemPosition enum.
--   Setting for terminal font & font size.
+-   Setting for terminal font size & window font.
 -   Ignore attribute.
 
 ### Changed
