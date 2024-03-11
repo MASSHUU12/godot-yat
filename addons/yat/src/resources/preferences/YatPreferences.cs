@@ -21,6 +21,12 @@ public partial class YatPreferences : Resource
 	[Export] public int DefaultHeight { get; set; } = 384;
 	#endregion
 
+	#region Window
+	[ExportGroup("Window")]
+	[Export(PropertyHint.Range, "1, 64, 0")]
+	public ushort BaseFontSize { get; set; } = 16;
+	#endregion
+
 	#region Colors
 	[ExportGroup("Colors")]
 	[Export] public Color BackgroundColor { get; set; } = new("1d2229"); // #192229
