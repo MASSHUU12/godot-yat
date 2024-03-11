@@ -1,10 +1,33 @@
-[gd_scene load_steps=6 format=3 uid="uid://dhbvghhlqawa4"]
+[gd_scene load_steps=9 format=3 uid="uid://dhbvghhlqawa4"]
 
 [ext_resource type="Script" path="res://addons/yat/src/YAT.cs" id="1_683p6"]
 [ext_resource type="PackedScene" uid="uid://b8xfvdai1l0vo" path="res://addons/yat/src/classes/managers/preferences_manager/PreferencesManager.tscn" id="4_5x7ox"]
 [ext_resource type="PackedScene" uid="uid://c4oxru3g4p038" path="res://addons/yat/src/scenes/terminal_manager/TerminalManager.tscn" id="4_tgqer"]
+[ext_resource type="FontFile" uid="uid://dsa5x2qgsn705" path="res://addons/yat/assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf" id="5_3fowk"]
 [ext_resource type="PackedScene" uid="uid://3avgdpuh3nap" path="res://addons/yat/src/scenes/debug_screen/DebugScreen.tscn" id="5_hnddm"]
 [ext_resource type="PackedScene" uid="uid://r45e18qb3ekv" path="res://addons/yat/src/scenes/registered_commands/RegisteredCommands.tscn" id="5_j53i0"]
+[ext_resource type="Script" path="res://addons/yat/src/resources/preferences/YatPreferences.cs" id="6_l2tdx"]
+
+[sub_resource type="Resource" id="Resource_x0850"]
+script = ExtResource("6_l2tdx")
+Prompt = ">"
+ShowPrompt = true
+HistoryLimit = 15
+AutoScroll = true
+FontSize = 16
+DefaultWidth = 728
+DefaultHeight = 384
+BaseFontSize = 16
+BaseFont = ExtResource("5_3fowk")
+BackgroundColor = Color(0.113725, 0.133333, 0.160784, 1)
+InputColor = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
+OutputColor = Color(0.87451, 0.87451, 0.87451, 0.501961)
+ErrorColor = Color(1, 0.470588, 0.419608, 1)
+WarningColor = Color(1, 0.866667, 0.396078, 1)
+SuccessColor = Color(0.647059, 1, 0.541176, 1)
+UseYatEnableFile = false
+YatEnableFile = ".yatenable"
+YatEnableLocation = 0
 
 [node name="YAT" type="Node"]
 process_mode = 3
@@ -16,6 +39,7 @@ script = ExtResource("1_683p6")
 
 [node name="PreferencesManager" parent="." instance=ExtResource("4_5x7ox")]
 unique_name_in_owner = true
+Preferences = SubResource("Resource_x0850")
 
 [node name="Windows" type="Node" parent="."]
 
