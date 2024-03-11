@@ -113,13 +113,8 @@ public partial class Preferences : YatWindow
 	{
 		foreach (var key in _groups.Keys)
 		{
-			PreferencesTab group = _groups[key];
-			var children = group.Container.GetChildren();
-
-			foreach (var child in children)
-			{
+			foreach (var child in _groups[key].Container.GetChildren())
 				if (child is InputContainer container) func(container);
-			}
 		}
 	}
 
