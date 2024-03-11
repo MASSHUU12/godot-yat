@@ -10,7 +10,8 @@ All notable changes to this project will be documented in this file.
 -   JetBrainsMono font (OFL).
 -   Title attribute for DebugScreenItems.
 -   Value None to EDebugScreenItemPosition enum.
--   Setting for terminal font size.
+-   Setting for terminal font & font size.
+-   Ignore attribute.
 
 ### Changed
 
@@ -20,7 +21,9 @@ All notable changes to this project will be documented in this file.
 -   Reduced memory usage by around 25% when YAT is not in use,
     and by ~6% when using DebugScreen.
 -   Default font size is now 16.
--   From now on it is possible to customize the font size in windows and separately in the terminal.
+-   It is possible to customize:
+    -   the font size in windows and separately in the terminal
+    -   used font
 
 ## [1.26.0-beta 2024-03-06]
 

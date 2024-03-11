@@ -55,10 +55,7 @@ public partial class GameTerminal : YatWindow
 	private new void UpdateOptions(YatPreferences prefs)
 	{
 		Size = new(prefs.DefaultWidth, prefs.DefaultHeight);
-		AddThemeFontSizeOverride("title_font_size", prefs.FontSize);
 
-		var theme = _content.Theme;
-		theme.DefaultFontSize = prefs.FontSize;
-		_content.Theme = theme;
+		base.UpdateOptions(prefs);
 	}
 }

@@ -128,6 +128,7 @@ public partial class BaseTerminal : Control
 		Output.ScrollFollowing = prefs.AutoScroll;
 
 		var theme = _content.Theme;
+		theme.DefaultFont = prefs.BaseFont;
 		theme.DefaultFontSize = prefs.FontSize;
 		_content.Theme = theme;
 	}

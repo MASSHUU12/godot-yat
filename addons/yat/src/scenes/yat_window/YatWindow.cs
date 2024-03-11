@@ -188,8 +188,10 @@ public partial class YatWindow : Window
 	protected void UpdateOptions(YatPreferences prefs)
 	{
 		AddThemeFontSizeOverride("title_font_size", prefs.BaseFontSize);
+		AddThemeFontOverride("title_font", prefs.BaseFont);
 
 		var theme = _content.Theme;
+		theme.DefaultFont = prefs.BaseFont;
 		theme.DefaultFontSize = prefs.BaseFontSize;
 		_content.Theme = theme;
 	}

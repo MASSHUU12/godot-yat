@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Attributes;
 using YAT.Enums;
 
 namespace YAT.Resources;
@@ -25,6 +26,9 @@ public partial class YatPreferences : Resource
 	[ExportGroup("Window")]
 	[Export(PropertyHint.Range, "1, 64, 0")]
 	public ushort BaseFontSize { get; set; } = 16;
+	[Ignore]
+	[Export]
+	public Font BaseFont { get; set; } = ThemeDB.FallbackFont;
 	#endregion
 
 	#region Colors

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Godot;
+using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Resources;
@@ -10,9 +11,9 @@ namespace YAT.Scenes;
 
 public partial class Preferences : YatWindow
 {
-	private YAT _yat;
-	private Button _load, _save, _update, _restoreDefaults;
 	private TabContainer _tabContainer;
+	private Button _load, _save, _update, _restoreDefaults;
+	private PackedScene _section, _inputContainer, _preferencesTab;
 
 	private readonly Dictionary<StringName, PreferencesTab> _groups = new();
 	private readonly Dictionary<StringName, PreferencesSection> _sections = new();
@@ -21,9 +22,12 @@ public partial class Preferences : YatWindow
 	{
 		base._Ready();
 
-		_yat = GetNode<YAT>("/root/YAT");
 		_yat.PreferencesManager.PreferencesUpdated += UpdateDisplayedPreferences;
 		_tabContainer = GetNode<TabContainer>("%TabContainer");
+
+		_section = GD.Load<PackedScene>("uid://o78tqt867i13");
+		_preferencesTab = GD.Load<PackedScene>("uid://bxdeasqh565nr");
+		_inputContainer = GD.Load<PackedScene>("uid://dgq3jncmxdomf");
 
 		_load = GetNode<Button>("%Load");
 		_load.Pressed += LoadPreferences;
@@ -109,13 +113,8 @@ public partial class Preferences : YatWindow
 	{
 		foreach (var key in _groups.Keys)
 		{
-			PreferencesTab group = _groups[key];
-			var children = group.Container.GetChildren();
-
-			foreach (var child in children)
-			{
+			foreach (var child in _groups[key].Container.GetChildren())
 				if (child is InputContainer container) func(container);
-			}
 		}
 	}
 
@@ -128,6 +127,8 @@ public partial class Preferences : YatWindow
 
 		foreach (var propertyInfo in properties)
 		{
+			if (GetAttribute<IgnoreAttribute>(propertyInfo) is not null) continue;
+
 			var exportGroup = GetAttribute<ExportGroupAttribute>(propertyInfo);
 			var exportSubgroup = GetAttribute<ExportSubgroupAttribute>(propertyInfo);
 
@@ -154,7 +155,7 @@ public partial class Preferences : YatWindow
 
 	private void CreateSection(StringName name, StringName groupName)
 	{
-		var section = GD.Load<PackedScene>("uid://o78tqt867i13").Instantiate<PreferencesSection>();
+		var section = _section.Instantiate<PreferencesSection>();
 
 		section.Name = name;
 
@@ -184,7 +185,7 @@ public partial class Preferences : YatWindow
 		if (string.IsNullOrEmpty(name) || _groups.ContainsKey(name) || propertyType == "Nil")
 			return;
 
-		var inputContainer = GD.Load<PackedScene>("uid://dgq3jncmxdomf").Instantiate<InputContainer>();
+		var inputContainer = _inputContainer.Instantiate<InputContainer>();
 
 		inputContainer.Name = name;
 		inputContainer.Text = name;
@@ -199,7 +200,7 @@ public partial class Preferences : YatWindow
 
 	private void CreateTab(StringName name)
 	{
-		var tab = GD.Load<PackedScene>("uid://bxdeasqh565nr").Instantiate<PreferencesTab>();
+		var tab = _preferencesTab.Instantiate<PreferencesTab>();
 
 		tab.Name = name;
 
@@ -210,13 +211,11 @@ public partial class Preferences : YatWindow
 
 	private static T GetAttribute<T>(Godot.Collections.Dictionary propertyInfo) where T : Attribute
 	{
-		if (!propertyInfo.TryGetValue("name", out var name)) return default;
+		if (!propertyInfo.TryGetValue("name", out var name)) return null;
 
 		var type = typeof(YatPreferences);
 		var property = type.GetProperty((string)name);
 
-		if (property is null) return default;
-
-		return property.GetCustomAttribute<T>();
+		return property?.GetCustomAttribute<T>();
 	}
 }

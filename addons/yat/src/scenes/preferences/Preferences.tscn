@@ -7,9 +7,6 @@
 [node name="Preferences" instance=ExtResource("1_f8myu")]
 title = "Preferences"
 script = ExtResource("2_1u1aj")
-ViewportEdgeOffset = 0
-DefaultWindowPosition = 4
-AllowToGoOffScreen = true
 
 [node name="Content" parent="." index="0"]
 theme = ExtResource("4_ti2tk")
@@ -48,6 +45,3 @@ text = "Restore Defaults"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="ContextMenu" parent="." index="1"]
-WallMargin = 16
