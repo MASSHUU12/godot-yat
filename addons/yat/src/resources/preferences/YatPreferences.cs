@@ -26,10 +26,9 @@ public partial class YatPreferences : Resource
 	[ExportGroup("Window")]
 	[Export(PropertyHint.Range, "1, 64, 0")]
 	public ushort BaseFontSize { get; set; } = 16;
-
 	[Ignore]
 	[Export]
-	public FontFile BaseFont { get; set; } = GD.Load<FontFile>("uid://dsa5x2qgsn705");
+	public Font BaseFont { get; set; } = ThemeDB.FallbackFont;
 	#endregion
 
 	#region Colors
