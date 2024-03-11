@@ -16,7 +16,7 @@ public partial class YatPreferences : Resource
 	// [Export] public bool AutoComplete { get; set; } = true;
 	// [Export] public bool AutoCompleteOnTab { get; set; } = true;
 	// [Export] public bool AutoCompleteOnEnter { get; set; } = true;
-	[Export(PropertyHint.Range, "1, 64, 0")] public ushort FontSize { get; set; } = 14;
+	[Export(PropertyHint.Range, "1, 64, 0")] public ushort FontSize { get; set; } = 16;
 	[Export] public int DefaultWidth { get; set; } = 728;
 	[Export] public int DefaultHeight { get; set; } = 384;
 	#endregion
