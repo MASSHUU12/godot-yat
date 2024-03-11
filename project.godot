@@ -26,4 +26,4 @@ project/assembly_name="godot-yat"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/yat/plugin.cfg")
+enabled=PackedStringArray("res://addons/yat/plugin.cfg")

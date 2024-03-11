@@ -22,8 +22,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="script_templates/**/*.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="gdUnit4.api" Version="4.2.0-rc*" />
+    <Compile Remove="test/**/*.cs" />
   </ItemGroup>
 </Project>
