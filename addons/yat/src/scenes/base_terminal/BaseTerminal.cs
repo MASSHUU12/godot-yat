@@ -33,6 +33,8 @@ public partial class BaseTerminal : Control
 	private YAT _yat;
 	private Label _promptLabel;
 	private Label _selectedNodeLabel;
+	private PanelContainer _content;
+
 	private string _prompt = "> ";
 
 	public override void _Ready()
@@ -61,6 +63,7 @@ public partial class BaseTerminal : Control
 		CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
 
 		_promptLabel = GetNode<Label>("%PromptLabel");
+		_content = GetNode<PanelContainer>("PanelContainer");
 		_selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
 
 		Output = GetNode<Output>("%Output");
@@ -123,6 +126,10 @@ public partial class BaseTerminal : Control
 		_promptLabel.Visible = prefs.ShowPrompt;
 		_promptLabel.Text = prefs.Prompt;
 		Output.ScrollFollowing = prefs.AutoScroll;
+
+		var theme = _content.Theme;
+		theme.DefaultFontSize = prefs.FontSize;
+		_content.Theme = theme;
 	}
 
 	private void OnCurrentNodeChanged(Node node)
