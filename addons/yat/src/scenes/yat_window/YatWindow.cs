@@ -1,5 +1,6 @@
 using Godot;
 using YAT.Helpers;
+using YAT.Resources;
 
 namespace YAT.Scenes;
 
@@ -18,7 +19,9 @@ public partial class YatWindow : Window
 
 	public bool IsWindowMoving { get; private set; } = false;
 
-	private YAT _yat;
+	protected YAT _yat;
+	protected PanelContainer _content;
+
 	private Viewport _viewport;
 
 	private Vector2 _previousPosition;
@@ -37,6 +40,10 @@ public partial class YatWindow : Window
 	public override void _Ready()
 	{
 		_yat = GetNode<YAT>("/root/YAT");
+		_yat.PreferencesManager.PreferencesUpdated += UpdateOptions;
+
+		_content = GetNode<PanelContainer>("Content");
+
 		_viewport = _yat.GetTree().Root.GetViewport();
 		_viewport.SizeChanged += OnViewportSizeChanged;
 
@@ -176,5 +183,14 @@ public partial class YatWindow : Window
 	protected void MoveToTheCenter()
 	{
 		MoveToCenter();
+	}
+
+	protected void UpdateOptions(YatPreferences prefs)
+	{
+		AddThemeFontSizeOverride("title_font_size", prefs.BaseFontSize);
+
+		var theme = _content.Theme;
+		theme.DefaultFontSize = prefs.BaseFontSize;
+		_content.Theme = theme;
 	}
 }

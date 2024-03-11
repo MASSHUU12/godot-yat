@@ -9,17 +9,9 @@ public partial class GameTerminal : YatWindow
 	public BaseTerminal CurrentTerminal { get; private set; }
 	public TerminalSwitcher TerminalSwitcher { get; private set; }
 
-	private YAT _yat;
-	private PanelContainer _content;
-
 	public override void _Ready()
 	{
 		base._Ready();
-
-		_yat = GetNode<YAT>("/root/YAT");
-		_yat.PreferencesManager.PreferencesUpdated += UpdateOptions;
-
-		_content = GetNode<PanelContainer>("Content");
 
 		TerminalSwitcher = GetNode<TerminalSwitcher>("%TerminalSwitcher");
 
@@ -60,7 +52,7 @@ public partial class GameTerminal : YatWindow
 			CallDeferred("emit_signal", SignalName.CloseRequested);
 	}
 
-	private void UpdateOptions(YatPreferences prefs)
+	private new void UpdateOptions(YatPreferences prefs)
 	{
 		Size = new(prefs.DefaultWidth, prefs.DefaultHeight);
 		AddThemeFontSizeOverride("title_font_size", prefs.FontSize);
