@@ -7,6 +7,7 @@
 
 [sub_resource type="Theme" id="Theme_tk4rv"]
 default_font = ExtResource("2_as7xm")
+default_font_size = 18
 
 [node name="YatWindow" type="Window"]
 disable_3d = true
