@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+-   '-e' option for 'cat' command.
+
+### Changed
+
+-   'cat' command by default uses FullWindowDisplay to display content of the file.
+
+### Fixed
+
+-   Scrolling text in FullWindowDisplay did not work.
+
 ## [v1.27.0-beta 2024-03-11]
 
 ### Added
@@ -232,16 +246,16 @@ All notable changes to this project will be documented in this file.
 -   Tooltip for selected node.
 -   Parser class.
 -   Documentation for:
-    - Parser
-    - Storage
-    - Scene
+    -   Parser
+    -   Storage
+    -   Scene
 -   NodeMethodInfo struct.
 -   Methods to Scene class:
-    - GetNodeMethods
-    - TryFindNodeMethodInfo
-    - GetNodeMethodInfo
-    - ValidateMethod
-    - CallMethod
+    -   GetNodeMethods
+    -   TryFindNodeMethodInfo
+    -   GetNodeMethodInfo
+    -   ValidateMethod
+    -   CallMethod
 -   DisposedNode & InvalidMethod messages.
 -   MethodValidationResult enum.
 -   '-all' option to stats command.
