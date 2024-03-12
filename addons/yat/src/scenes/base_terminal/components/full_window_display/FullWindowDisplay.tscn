@@ -31,7 +31,6 @@ size_flags_vertical = 3
 focus_mode = 2
 bbcode_enabled = true
 text = "Lorem ipsum dolor sit amet"
-fit_content = true
 selection_enabled = true
 
 [node name="HelpContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
