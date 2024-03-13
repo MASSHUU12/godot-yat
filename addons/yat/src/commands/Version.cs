@@ -22,10 +22,5 @@ public sealed class Version : ICommand
 		_version = $"{_gameName} {_gameVersion}";
 	}
 
-	public CommandResult Execute(CommandData data)
-	{
-		data.Terminal.Print(_version);
-
-		return ICommand.Success();
-	}
+	public CommandResult Execute(CommandData data) => ICommand.Ok(_version);
 }
