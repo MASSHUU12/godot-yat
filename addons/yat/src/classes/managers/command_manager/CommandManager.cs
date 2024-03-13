@@ -121,6 +121,12 @@ public partial class CommandManager : Node
 			return;
 		}
 
+		if (result.Result == ECommandResult.Ok)
+		{
+			terminal.Output.Print(result.Message);
+			return;
+		}
+
 		terminal.Output.Error(result.Message);
 	}
 }
