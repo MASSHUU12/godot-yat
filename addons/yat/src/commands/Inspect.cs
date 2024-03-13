@@ -23,9 +23,7 @@ public sealed class Inspect : ICommand
 		if (useRayCast) result = InspectRayCastedObject(World.RayCast(data.Yat.GetViewport()), all);
 		else result = InspectNode(data.Terminal.SelectedNode.Current, all);
 
-		data.Terminal.Print(result);
-
-		return ICommand.Success();
+		return ICommand.Ok(result.ToString());
 	}
 
 	private static StringBuilder GetAllProperties(Node node)
