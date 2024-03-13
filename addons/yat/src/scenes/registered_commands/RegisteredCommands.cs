@@ -124,6 +124,7 @@ public partial class RegisteredCommands : Node
 			typeof(Sys),
 			typeof(Fov),
 			typeof(Tfs),
+			typeof(Lcr),
 			typeof(Quit),
 			typeof(Echo),
 			typeof(List),
