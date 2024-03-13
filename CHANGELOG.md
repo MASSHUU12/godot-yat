@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 -   Scrolling text in FullWindowDisplay did not work.
+-   YatWindow did not update its settings when it was opened after changes were made.
 
 ## [v1.27.0-beta 2024-03-11]
 

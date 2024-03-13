@@ -55,6 +55,7 @@ public partial class YatWindow : Window
 
 		Move(DefaultWindowPosition, ViewportEdgeOffset);
 		OnViewportSizeChanged();
+		UpdateOptions(_yat.PreferencesManager.Preferences);
 	}
 
 	public void ResetPosition()
