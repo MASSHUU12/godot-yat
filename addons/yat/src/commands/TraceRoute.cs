@@ -35,8 +35,6 @@ public sealed class TraceRoute : ICommand
 
 		foreach (var address in addresses) result.AppendLine(address.ToString());
 
-		data.Terminal.Print(result);
-
-		return ICommand.Success();
+		return ICommand.Ok(result.ToString());
 	}
 }
