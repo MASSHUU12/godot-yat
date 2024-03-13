@@ -2,6 +2,7 @@ namespace YAT.Enums;
 
 public enum ECommandResult
 {
+	Unavailable = -1,
 	Success,
 	Failure,
 	InvalidArguments,
