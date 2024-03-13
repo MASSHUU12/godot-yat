@@ -44,6 +44,9 @@ public partial interface ICommand
 	public static CommandResult UnknownError(string message = null) =>
 		new(ECommandResult.UnknownError, message);
 
+	public static CommandResult Ok(string message = null) =>
+		new(ECommandResult.Ok, message);
+
 	public virtual StringBuilder GenerateCommandManual()
 	{
 		CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this);
