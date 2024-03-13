@@ -19,15 +19,14 @@ public sealed class List : ICommand
 	{
 		if ((bool)data.Options["-f"]) _cache = string.Empty;
 
-		if (string.IsNullOrEmpty(_cache)) PrintList(data.Terminal);
-		else data.Terminal.Print(_cache);
+		if (string.IsNullOrEmpty(_cache)) GenerateList(data.Terminal);
 
-		return ICommand.Success();
+		return ICommand.Ok(_cache);
 	}
 
-	private static void PrintList(BaseTerminal terminal)
+	private static void GenerateList(BaseTerminal terminal)
 	{
-		var sb = new StringBuilder();
+		StringBuilder sb = new();
 
 		sb.AppendLine("Available commands:");
 
@@ -46,6 +45,5 @@ public sealed class List : ICommand
 		}
 
 		_cache = sb.ToString();
-		terminal.Print(_cache);
 	}
 }
