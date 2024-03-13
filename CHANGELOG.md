@@ -8,7 +8,10 @@ All notable changes to this project will be documented in this file.
 
 -   '-e' option for 'cat' command.
 -   Ok to ECommandResult enum.
+-   Unavailable to ECommandResult enum.
 -   Ok method to ICommand interface.
+-   LastCommandResult property to BaseTerminal.
+-   'lcr' command.
 
 ### Changed
 

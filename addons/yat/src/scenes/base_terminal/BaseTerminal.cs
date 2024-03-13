@@ -26,6 +26,7 @@ public partial class BaseTerminal : Control
 	public CommandManager CommandManager { get; private set; }
 	public CommandValidator CommandValidator { get; private set; }
 	public FullWindowDisplay FullWindowDisplay { get; private set; }
+	public ECommandResult LastCommandResult { get; set; } = ECommandResult.Unavailable;
 
 	public readonly LinkedList<string> History = new();
 	public LinkedListNode<string> HistoryNode = null;

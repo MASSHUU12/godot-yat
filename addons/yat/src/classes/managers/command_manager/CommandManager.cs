@@ -100,6 +100,8 @@ public partial class CommandManager : Node
 			(ushort)result.Result
 		);
 
+		data.Terminal.LastCommandResult = result.Result;
+
 		PrintCommandResult(result, data.Terminal);
 	}
 

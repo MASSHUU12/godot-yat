@@ -9,18 +9,19 @@
 
 ### Properties
 
-| Type                   | Name              | Default |
-| ---------------------- | ----------------- | ------- |
-| bool                   | Locked            | -       |
-| bool                   | Current           | true    |
-| Input                  | Input             | -       |
-| Output                 | Output            | -       |
-| SelectedNode           | SelectedNode      | -       |
-| CommandManager         | CommandManager    | -       |
-| CommandValidator       | CommandValidator  | -       |
-| FullWindowDisplay      | FullWindowDisplay | -       |
-| LinkedList<string>     | History           | new     |
-| LinkedListNode<string> | HistoryNode       | null    |
+| Type                   | Name              | Default          |
+| ---------------------- | ----------------- | ---------------- |
+| bool                   | Locked            | -                |
+| bool                   | Current           | true             |
+| Input                  | Input             | -                |
+| Output                 | Output            | -                |
+| SelectedNode           | SelectedNode      | -                |
+| CommandManager         | CommandManager    | -                |
+| CommandValidator       | CommandValidator  | -                |
+| FullWindowDisplay      | FullWindowDisplay | -                |
+| ECommandResult         | LastCommandResult | Unavailable (-1) |
+| LinkedList<string>     | History           | new              |
+| LinkedListNode<string> | HistoryNode       | null             |
 
 ### Methods
 
