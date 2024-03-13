@@ -66,8 +66,6 @@ public sealed class History : ICommand
 		foreach (string command in _terminal.History)
 			sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
 
-		_terminal.Print(sb);
-
-		return ICommand.Success();
+		return ICommand.Ok(sb.ToString());
 	}
 }

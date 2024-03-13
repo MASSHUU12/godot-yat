@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 -   '-e' option for 'cat' command.
+-   Ok to ECommandResult enum.
+-   Ok method to ICommand interface.
 
 ### Changed
 

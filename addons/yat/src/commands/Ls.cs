@@ -36,14 +36,13 @@ public sealed class Ls : ICommand
 
 	private CommandResult PrintNodeMethods(string path)
 	{
+		StringBuilder sb = new();
 		Node node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
 		var methods = Scene.GetNodeMethods(node);
 
 		if (methods is null) return ICommand.Failure($"Node '{path}' does not exist.");
 
 		methods = node.GetMethodList().GetEnumerator();
-
-		StringBuilder sb = new();
 
 		while (methods.MoveNext())
 		{
@@ -59,9 +58,7 @@ public sealed class Ls : ICommand
 			sb.AppendLine();
 		}
 
-		_terminal.Print(sb.ToString());
-
-		return ICommand.Success();
+		return ICommand.Ok(sb.ToString());
 	}
 
 	private CommandResult PrintDirectoryContents(string path)

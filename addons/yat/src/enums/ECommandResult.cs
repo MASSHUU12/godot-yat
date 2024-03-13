@@ -11,4 +11,5 @@ public enum ECommandResult
 	NotImplemented,
 	UnknownCommand,
 	UnknownError,
+	Ok
 }
