@@ -48,3 +48,4 @@
 | $             | N/A    | Executes a method on the selected node.                                          |
 | tfs           | N/A    | Toggles the full screen mode.                                                    |
 | sr            | N/A    | Set the screen resolution.                                                       |
+| lcr           | N/A    | Shows the result of the last command.                                            |

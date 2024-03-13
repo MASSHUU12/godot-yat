@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 -   Ok to ECommandResult enum.
 -   Unavailable to ECommandResult enum.
 -   Ok method to ICommand interface.
+-   LastCommandResult property to BaseTerminal.
+-   'lcr' command.
 
 ### Changed
 
