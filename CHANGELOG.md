@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 -   'cat' command by default uses FullWindowDisplay to display content of the file.
+-   'inspect' command displays node's UID.
 
 ### Fixed
 

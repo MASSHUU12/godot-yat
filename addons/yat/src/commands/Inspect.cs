@@ -113,6 +113,7 @@ public sealed class Inspect : ICommand
 
 		sb.AppendLine();
 		sb.AppendLine("[b]Node[/b]: " + node.Name);
+		sb.AppendLine("[b]UID[/b]: " + ResourceUid.IdToText(ResourceLoader.GetResourceUid(node.SceneFilePath)));
 		sb.AppendLine("[b]Path[/b]: " + node.GetPath());
 		sb.AppendLine("[b]Scene Path[/b]: " + node.SceneFilePath);
 		sb.AppendLine("[b]Script[/b]: " + ((Script)node.GetScript())?.ResourcePath);
