@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 
 -   'cat' command by default uses FullWindowDisplay to display content of the file.
 -   'inspect' command displays node's UID.
+-   'InputColor' preference is used by YAT from now on.
 
 ### Fixed
 

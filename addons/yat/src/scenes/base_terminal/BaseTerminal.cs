@@ -126,7 +126,9 @@ public partial class BaseTerminal : Control
 		OnCurrentNodeChanged(SelectedNode.Current);
 		_promptLabel.Visible = prefs.ShowPrompt;
 		_promptLabel.Text = prefs.Prompt;
+
 		Output.ScrollFollowing = prefs.AutoScroll;
+		Input.AddThemeColorOverride("font_color", prefs.InputColor);
 
 		var theme = _content.Theme;
 		theme.DefaultFont = prefs.BaseFont;
