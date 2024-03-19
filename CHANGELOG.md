@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 -   'inspect' command displays node's UID.
 -   'InputColor' preference is used by YAT from now on.
 -   'BackgroundColor' preference is hidden.
+-   Testing on Godot SDK 4.3.0-dev.5.
 
 ### Fixed
 
