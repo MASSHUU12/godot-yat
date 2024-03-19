@@ -5,7 +5,9 @@ using System.Reflection;
 using Chickensoft.GoDotTest;
 #endif
 
-public partial class Main : Node2D
+namespace Test;
+
+public partial class Test : Node
 {
 #if DEBUG
 	public TestEnvironment Environment = default!;
@@ -24,7 +26,7 @@ public partial class Main : Node2D
 		}
 #endif
 		// If we don't need to run tests, we can just switch to the game scene.
-		GetTree().ChangeSceneToFile("uid://d4fqgp0bjijcv");
+		// GetTree().ChangeSceneToFile("uid://d4fqgp0bjijcv");
 	}
 
 #if DEBUG

@@ -53,12 +53,13 @@
 			"stopAtEntry": false
 		},
 		{
-			"name": "Debug Tests",
+			"name": "🧪 Debug Tests",
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
 			"program": "${env:GODOT}",
 			"args": [
+				"uid://2x6cfhujoahs",
 				// These command line flags are used by GoDotTest to run tests.
 				"--run-tests",
 				"--quit-on-finish"
@@ -67,12 +68,13 @@
 			"stopAtEntry": false
 		},
 		{
-			"name": "Debug Current Test",
+			"name": "🧪 Debug Current Test",
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
 			"program": "${env:GODOT}",
 			"args": [
+				"uid://2x6cfhujoahs",
 				// These command line flags are used by GoDotTest to run tests.
 				"--run-tests=${fileBasenameNoExtension}",
 				"--quit-on-finish"
