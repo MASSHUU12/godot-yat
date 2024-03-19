@@ -7,6 +7,8 @@ using YAT.Types;
 using Shouldly;
 using YAT.Enums;
 
+namespace Test;
+
 public class TestRegisteredCommands : TestClass
 {
 	public TestRegisteredCommands(Node testScene) : base(testScene) { }
