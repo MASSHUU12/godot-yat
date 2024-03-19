@@ -22,6 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="script_templates/**/*.cs" />
-    <Compile Remove="test/**/*.cs" />
+    <Compile Remove="test/old/**/*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Chickensoft.GoDotTest" Version="1.5.1-godot4.2.2-rc.2" />
   </ItemGroup>
 </Project>
