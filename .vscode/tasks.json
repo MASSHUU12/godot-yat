@@ -5,7 +5,7 @@
 			"label": "build",
 			"command": "dotnet",
 			"type": "process",
-			"args": ["build"],
+			"args": ["build", "--no-restore"],
 			"problemMatcher": "$msCompile",
 			"presentation": {
 				"echo": true,

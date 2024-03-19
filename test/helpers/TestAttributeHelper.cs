@@ -1,77 +1,77 @@
+using Chickensoft.GoDotTest;
+using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
+using Shouldly;
 
-namespace GdUnit4
+namespace Test;
+
+public class TestAttributeHelper : TestClass
 {
-	using static Assertions;
+	public TestAttributeHelper(Node testScene) : base(testScene) { }
 
+	[Command("test")]
+	[Argument("arg1", "string")]
+	[Argument("arg3", "string")]
+	[Argument("arg3", "string")]
+	private class TestClass { }
 
-	[TestSuite]
-	public partial class TestAttributeHelper
+	[Test]
+	public void TestGetAttribute_AttributePresent()
 	{
-		[Command("test")]
-		[Argument("arg1", "string")]
-		[Argument("arg3", "string")]
-		[Argument("arg3", "string")]
-		private class TestClass { }
+		var obj = new TestClass();
+		var attribute = Reflection.GetAttribute<CommandAttribute>(obj);
 
-		[TestCase]
-		public void TestGetAttribute_AttributePresent()
-		{
-			var obj = new TestClass();
-			var attribute = Reflection.GetAttribute<CommandAttribute>(obj);
+		attribute.ShouldNotBeNull();
+		attribute.Name.ShouldBe("test");
+	}
 
-			AssertObject(attribute).IsNotNull();
-			AssertString(attribute.Name).IsEqual("test");
-		}
+	[Test]
+	public void TestGetAttribute_AttributeNotPresent()
+	{
+		var obj = new TestClass();
+		var attribute = Reflection.GetAttribute<OptionAttribute>(obj);
 
-		[TestCase]
-		public void TestGetAttribute_AttributeNotPresent()
-		{
-			var obj = new TestClass();
-			var attribute = Reflection.GetAttribute<OptionAttribute>(obj);
+		attribute.ShouldBeNull();
+	}
 
-			AssertObject(attribute).IsNull();
-		}
+	[Test]
+	public void TestGetAttribute_AttributesPresent()
+	{
+		var obj = new TestClass();
+		var attributes = Reflection.GetAttributes<ArgumentAttribute>(obj);
 
-		[TestCase]
-		public void TestGetAttribute_AttributesPresent()
-		{
-			var obj = new TestClass();
-			var attributes = Reflection.GetAttributes<ArgumentAttribute>(obj);
+		attributes.ShouldNotBeNull();
+		attributes.Length.ShouldBe(3);
+		attributes[0].Name.ToString().ShouldBe("arg1");
+		attributes[1].Name.ToString().ShouldBe("arg3");
+		attributes[2].Name.ToString().ShouldBe("arg3");
+	}
 
-			AssertObject(attributes).IsNotNull();
-			AssertInt(attributes.Length).IsEqual(3);
-			AssertString(attributes[0].Name).IsEqual("arg1");
-			AssertString(attributes[1].Name).IsEqual("arg3");
-			AssertString(attributes[2].Name).IsEqual("arg3");
-		}
+	[Test]
+	public void TestGetAttribute_AttributesNotPresent()
+	{
+		var obj = new TestClass();
+		var attributes = Reflection.GetAttributes<OptionAttribute>(obj);
 
-		[TestCase]
-		public void TestGetAttribute_AttributesNotPresent()
-		{
-			var obj = new TestClass();
-			var attributes = Reflection.GetAttributes<OptionAttribute>(obj);
+		attributes.ShouldBeEmpty();
+	}
 
-			AssertArray(attributes).IsEmpty();
-		}
+	[Test]
+	public void TestHasAttribute_AttributePresent()
+	{
+		var obj = new TestClass();
+		var hasAttribute = Reflection.HasAttribute<CommandAttribute>(obj);
 
-		[TestCase]
-		public void TestHasAttribute_AttributePresent()
-		{
-			var obj = new TestClass();
-			var hasAttribute = Reflection.HasAttribute<CommandAttribute>(obj);
+		hasAttribute.ShouldBeTrue();
+	}
 
-			AssertBool(hasAttribute).IsEqual(true);
-		}
+	[Test]
+	public void TestHasAttribute_AttributeNotPresent()
+	{
+		var obj = new TestClass();
+		var hasAttribute = Reflection.HasAttribute<OptionAttribute>(obj);
 
-		[TestCase]
-		public void TestHasAttribute_AttributeNotPresent()
-		{
-			var obj = new TestClass();
-			var hasAttribute = Reflection.HasAttribute<OptionAttribute>(obj);
-
-			AssertBool(hasAttribute).IsEqual(false);
-		}
+		hasAttribute.ShouldBeFalse();
 	}
 }
