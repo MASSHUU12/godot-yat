@@ -26,5 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Chickensoft.GoDotTest" Version="1.5.1-godot4.2.2-rc.2" />
+    <PackageReference Include="Shouldly" Version="4.2.1" />
   </ItemGroup>
 </Project>
