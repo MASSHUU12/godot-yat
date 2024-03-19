@@ -59,7 +59,7 @@
 			"preLaunchTask": "build",
 			"program": "${env:GODOT}",
 			"args": [
-				"uid://2x6cfhujoahs",
+				"res://test/Test.tscn",
 				// These command line flags are used by GoDotTest to run tests.
 				"--run-tests",
 				"--quit-on-finish"
@@ -74,7 +74,7 @@
 			"preLaunchTask": "build",
 			"program": "${env:GODOT}",
 			"args": [
-				"uid://2x6cfhujoahs",
+				"res://test/Test.tscn",
 				// These command line flags are used by GoDotTest to run tests.
 				"--run-tests=${fileBasenameNoExtension}",
 				"--quit-on-finish"
