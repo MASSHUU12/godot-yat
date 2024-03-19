@@ -58,9 +58,11 @@ public static class Parser
 		// Get the min and max values if present
 		var tokens = type.Trim(')').Split('(', StringSplitOptions.RemoveEmptyEntries);
 
+		if (tokens.Length == 0) return false;
+
 		if (tokens.Length > 1)
 		{
-			bool maxIsPresent = tokens[1].EndsWith(':');
+			bool isMaxPresent = tokens[1].EndsWith(':');
 			var minMax = tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries);
 
 			if (!allowedToHaveRange(tokens[0]) || minMax.Length > 2) return false;
@@ -68,7 +70,7 @@ public static class Parser
 			if (minMax.Length == 1)
 			{
 				// If only min value is not present, set it to float.MinValue
-				if (!maxIsPresent)
+				if (!isMaxPresent)
 				{
 					if (minMax[0].TryConvert(out float max))
 						parsed = new(tokens[0], float.MinValue, max, isArray);
@@ -81,17 +83,18 @@ public static class Parser
 					else return false;
 				}
 			}
-			else
+			else if (minMax.Length > 0)
 			{
 				if (minMax[0].TryConvert(out float min)
 					&& minMax[1].TryConvert(out float max)
 				) parsed = new(tokens[0], min, max, isArray);
 				else return false;
 			}
+			else return false;
 		}
-		else parsed = new(tokens[0], 0, 0, isArray);
+		else parsed = new(tokens[0], float.MinValue, float.MaxValue, isArray);
 
-		if (parsed.Min > parsed.Max) return false;
+		if (parsed.Min >= parsed.Max) return false;
 
 		return true;
 	}
