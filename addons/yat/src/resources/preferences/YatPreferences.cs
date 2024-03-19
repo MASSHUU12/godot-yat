@@ -33,7 +33,7 @@ public partial class YatPreferences : Resource
 
 	#region Colors
 	[ExportGroup("Colors")]
-	[Export] public Color InputColor { get; set; } = new("15191fc0"); // #15191fc0
+	[Export] public Color InputColor { get; set; } = new("dfdfdf99"); // #dfdfdf99
 	[Ignore]
 	[Export] public Color BackgroundColor { get; set; } = new("1d2229"); // #192229
 	[Export] public Color OutputColor { get; set; } = new("dfdfdf80"); // #dfdfdf80
