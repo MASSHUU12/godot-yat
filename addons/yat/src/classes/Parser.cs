@@ -39,7 +39,6 @@ public static class Parser
 		parsed = null;
 		type = type?.Trim();
 
-		// Used to later get min/max values
 		static bool allowedToHaveRange(string t) => t switch
 		{
 			"int" => true,
@@ -50,9 +49,7 @@ public static class Parser
 
 		if (string.IsNullOrEmpty(type)) return false;
 
-		// Check if ends with ... to indicate an array
 		bool isArray = type.EndsWith("...");
-
 		if (isArray) type = type[..^3].Trim();
 
 		// Get the min and max values if present
@@ -60,12 +57,14 @@ public static class Parser
 
 		if (tokens.Length == 0) return false;
 
-		if (tokens.Length > 1)
+		if (tokens.Length > 1) // type with range
 		{
 			bool isMaxPresent = tokens[1].EndsWith(':');
 			var minMax = tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries);
 
-			if (!allowedToHaveRange(tokens[0]) || minMax.Length > 2) return false;
+			if (!allowedToHaveRange(tokens[0]) ||
+				minMax.Length > 2 || (isMaxPresent && minMax.Length == 0)
+			) return false;
 
 			if (minMax.Length == 1)
 			{
@@ -75,8 +74,8 @@ public static class Parser
 					if (minMax[0].TryConvert(out float max))
 						parsed = new(tokens[0], float.MinValue, max, isArray);
 					else return false;
-				} // If only max value is not present, set it to float.MaxValue
-				else
+				}
+				else // If only max value is not present, set it to float.MaxValue
 				{
 					if (minMax[0].TryConvert(out float min))
 						parsed = new(tokens[0], min, float.MaxValue, isArray);
@@ -90,12 +89,13 @@ public static class Parser
 				) parsed = new(tokens[0], min, max, isArray);
 				else return false;
 			}
-			else return false;
+			else parsed = new(tokens[0], float.MinValue, float.MaxValue, isArray);
 		}
-		else parsed = new(tokens[0], float.MinValue, float.MaxValue, isArray);
+		// Check if only range was passed
+		else if (!tokens[0].Contains(':'))
+			parsed = new(tokens[0], float.MinValue, float.MaxValue, isArray);
+		else return false;
 
-		if (parsed.Min >= parsed.Max) return false;
-
-		return true;
+		return parsed.Min < parsed.Max;
 	}
 }
