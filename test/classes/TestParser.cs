@@ -51,44 +51,44 @@ public class TestParser : TestClass
 		// Valid range and type, no array
 		TryParseCommandInputType("int(0:10)", "int", 0, 10, false, true);
 		TryParseCommandInputType("int(5:10)", "int", 5, 10, false, true);
-		TryParseCommandInputType("int(:10)", "int", float.MinValue, 10, false, true);
 		TryParseCommandInputType("int(-12:8)", "int", -12, 8, false, true);
 		TryParseCommandInputType("float(5:10)", "float", 5, 10, false, true);
-		TryParseCommandInputType("float(5.5:10.5)", "float", 5.5f, 10.5f, false, true);
+		TryParseCommandInputType("int(-12:-5)", "int", -12, -5, false, true);
+		TryParseCommandInputType("string(5:10)", "string", 5, 10, false, true);
 		TryParseCommandInputType("float(0.5:60)", "float", 0.5f, 60, false, true);
 		TryParseCommandInputType("float(0.5 : 60)", "float", 0.5f, 60, false, true);
 		TryParseCommandInputType("float(-0.5:60)", "float", -0.5f, 60, false, true);
-		TryParseCommandInputType("string(5:10)", "string", 5, 10, false, true);
-		TryParseCommandInputType("string(5:)", "string", 5, float.MaxValue, false, true);
+		TryParseCommandInputType("int(:10)", "int", float.MinValue, 10, false, true);
 		TryParseCommandInputType("int(:-5)", "int", float.MinValue, -5, false, true);
-		TryParseCommandInputType("int(-12:-5)", "int", -12, -5, false, true);
-		// TryParseCommandInputType("float(:)", "float", float.MinValue, float.MaxValue, false, true);
+		TryParseCommandInputType("float(5.5:10.5)", "float", 5.5f, 10.5f, false, true);
+		TryParseCommandInputType("string(5:)", "string", 5, float.MaxValue, false, true);
 		TryParseCommandInputType("int()", "int", float.MinValue, float.MaxValue, false, true);
 		// Invalid range and valid type, no array
-		TryParseCommandInputType("int(sda:da)", "int", 0, 0, false, false);
-		TryParseCommandInputType("int(:dxdx)", "int", 0, 0, false, false);
-		TryParseCommandInputType("float( : )", "float", 0, 0, false, false);
-		TryParseCommandInputType("string(x:10)", "string", 0, 0, false, false);
-		TryParseCommandInputType("string(5:10:15)", "string", 0, 0, false, false);
-		TryParseCommandInputType("string(5:x)", "string", 0, 0, false, false);
-		TryParseCommandInputType("string(5::5)", "string", 0, 0, false, false);
 		TryParseCommandInputType("int(10:5)", "int", 0, 0, false, false);
+		TryParseCommandInputType("float(:)", "float", 0, 0, false, false);
+		TryParseCommandInputType("int(:dxdx)", "int", 0, 0, false, false);
+		TryParseCommandInputType("int(sda:da)", "int", 0, 0, false, false);
+		TryParseCommandInputType("float( : )", "float", 0, 0, false, false);
+		TryParseCommandInputType("string(5:x)", "string", 0, 0, false, false);
+		TryParseCommandInputType("string(x:10)", "string", 0, 0, false, false);
+		TryParseCommandInputType("string(5::5)", "string", 0, 0, false, false);
+		TryParseCommandInputType("string(5:10:15)", "string", 0, 0, false, false);
 		// No range and valid type, no array
-		TryParseCommandInputType("int", "int", float.MinValue, float.MaxValue, false, true);
-		TryParseCommandInputType("choice", "choice", float.MinValue, float.MaxValue, false, true);
-		TryParseCommandInputType("float", "float", float.MinValue, float.MaxValue, false, true);
-		TryParseCommandInputType("string", "string", float.MinValue, float.MaxValue, false, true);
 		TryParseCommandInputType("x", "x", float.MinValue, float.MaxValue, false, true);
+		TryParseCommandInputType("int", "int", float.MinValue, float.MaxValue, false, true);
+		TryParseCommandInputType("float", "float", float.MinValue, float.MaxValue, false, true);
+		TryParseCommandInputType("choice", "choice", float.MinValue, float.MaxValue, false, true);
+		TryParseCommandInputType("string", "string", float.MinValue, float.MaxValue, false, true);
 		// Valid range, type not allowed to have range, no array
 		TryParseCommandInputType("x(5:10)", "x", 0, 0, false, false);
-		TryParseCommandInputType("choice(0:10)", "choice", 0, 0, false, false);
-		TryParseCommandInputType("choice(5:10)", "choice", 0, 0, false, false);
 		TryParseCommandInputType("y(:10)", "choice", 0, 0, false, false);
 		TryParseCommandInputType("y(-12:8)", "choice", 0, 0, false, false);
+		TryParseCommandInputType("choice(5:10)", "choice", 0, 0, false, false);
+		TryParseCommandInputType("choice(0:10)", "choice", 0, 0, false, false);
 		// Invalid range and no type, no array
-		// TryParseCommandInputType("( : )", "", 0, 0, false, false);
-		// TryParseCommandInputType("(:)", "", 0, 0, false, false);
-		// TryParseCommandInputType("()", "", 0, 0, false, false);
+		TryParseCommandInputType("()", "", 0, 0, false, false);
+		TryParseCommandInputType("(:)", "", 0, 0, false, false);
+		TryParseCommandInputType("( : )", "", 0, 0, false, false);
 		// No range and no type, no array
 		TryParseCommandInputType("", "", 0, 0, false, false);
 		// Valid type and array, no range

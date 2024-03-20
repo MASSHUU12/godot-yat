@@ -39,20 +39,9 @@ public static class Parser
 		parsed = null;
 		type = type?.Trim();
 
-		// Used to later get min/max values
-		static bool allowedToHaveRange(string t) => t switch
-		{
-			"int" => true,
-			"float" => true,
-			"string" => true,
-			_ => false
-		};
-
 		if (string.IsNullOrEmpty(type)) return false;
 
-		// Check if ends with ... to indicate an array
 		bool isArray = type.EndsWith("...");
-
 		if (isArray) type = type[..^3].Trim();
 
 		// Get the min and max values if present
@@ -60,41 +49,63 @@ public static class Parser
 
 		if (tokens.Length == 0) return false;
 
-		if (tokens.Length > 1)
+		if (tokens.Length > 1) // type with range
 		{
-			bool isMaxPresent = tokens[1].EndsWith(':');
-			var minMax = tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries);
+			if (!TryParseTypeWithRange(tokens, isArray, out parsed))
+				return false;
+		}
+		// Check if only range was passed
+		else if (!tokens[0].Contains(':'))
+			parsed = new(tokens[0], float.MinValue, float.MaxValue, isArray);
+		else return false;
 
-			if (!allowedToHaveRange(tokens[0]) || minMax.Length > 2) return false;
+		return parsed.Min < parsed.Max;
+	}
 
-			if (minMax.Length == 1)
+	private static bool TryParseTypeWithRange(string[] tokens, bool isArray, out CommandInputType parsed)
+	{
+		static bool AllowedToHaveRange(string type)
+		{
+			return type switch
 			{
-				// If only min value is not present, set it to float.MinValue
-				if (!isMaxPresent)
-				{
-					if (minMax[0].TryConvert(out float max))
-						parsed = new(tokens[0], float.MinValue, max, isArray);
-					else return false;
-				} // If only max value is not present, set it to float.MaxValue
-				else
-				{
-					if (minMax[0].TryConvert(out float min))
-						parsed = new(tokens[0], min, float.MaxValue, isArray);
-					else return false;
-				}
-			}
-			else if (minMax.Length > 0)
+				"int" or "float" or "string" => true,
+				_ => false,
+			};
+		}
+
+		parsed = null;
+
+		bool isMaxPresent = tokens[1].EndsWith(':');
+		var minMax = tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries);
+
+		if (!AllowedToHaveRange(tokens[0]) ||
+			minMax.Length > 2 || (isMaxPresent && minMax.Length == 0)
+		) return false;
+
+		if (minMax.Length == 1)
+		{
+			// If only min value is not present, set it to float.MinValue
+			if (!isMaxPresent)
 			{
-				if (minMax[0].TryConvert(out float min)
-					&& minMax[1].TryConvert(out float max)
-				) parsed = new(tokens[0], min, max, isArray);
+				if (minMax[0].TryConvert(out float max))
+					parsed = new(tokens[0], float.MinValue, max, isArray);
 				else return false;
 			}
+			else // If only max value is not present, set it to float.MaxValue
+			{
+				if (minMax[0].TryConvert(out float min))
+					parsed = new(tokens[0], min, float.MaxValue, isArray);
+				else return false;
+			}
+		}
+		else if (minMax.Length > 0)
+		{
+			if (minMax[0].TryConvert(out float min)
+				&& minMax[1].TryConvert(out float max)
+			) parsed = new(tokens[0], min, max, isArray);
 			else return false;
 		}
 		else parsed = new(tokens[0], float.MinValue, float.MaxValue, isArray);
-
-		if (parsed.Min >= parsed.Max) return false;
 
 		return true;
 	}
