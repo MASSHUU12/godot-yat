@@ -11,7 +11,7 @@ public sealed record CommandData(
 	BaseTerminal Terminal,
 	ICommand Command,
 	string[] RawData,
-	Dictionary<StringName, object> Arguments,
-	Dictionary<StringName, object> Options,
+	Dictionary<StringName, object?> Arguments,
+	Dictionary<StringName, object?> Options,
 	CancellationToken CancellationToken
 );
