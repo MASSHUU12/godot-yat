@@ -7,8 +7,10 @@ namespace YAT.Scenes;
 [Title("CPU")]
 public partial class CpuInfoItem : PanelContainer, IDebugScreenItem
 {
+#nullable disable
 	private Label _label;
 	private string _cpuInfo;
+#nullable restore
 
 	private readonly string _arch = Engine.GetArchitectureName();
 	private readonly string _cpuName = OS.GetProcessorName();

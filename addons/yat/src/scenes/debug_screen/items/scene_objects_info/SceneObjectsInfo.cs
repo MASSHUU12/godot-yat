@@ -7,7 +7,9 @@ namespace YAT.Scenes;
 [Title("SceneObjects")]
 public partial class SceneObjectsInfo : PanelContainer, IDebugScreenItem
 {
+#nullable disable
 	private Label _label;
+#nullable restore
 
 	public override void _Ready()
 	{

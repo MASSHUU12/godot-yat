@@ -15,12 +15,14 @@ public partial class DebugScreen : Control
 	[Export(PropertyHint.Range, "0.05, 5, 0.1")]
 	public float UpdateInterval { get; set; } = 0.5f;
 
+#nullable disable
 	private Timer _timer;
 	private VBoxContainer
 		_topLeftContainer,
 		_topRightContainer,
 		_bottomLeftContainer,
 		_bottomRightContainer;
+#nullable restore
 
 	public static readonly Dictionary<EDebugScreenItemPosition, HashSet<Tuple<string, Type>>>
 	registeredItems = new()
@@ -74,7 +76,7 @@ public partial class DebugScreen : Control
 		_timer.Stop();
 	}
 
-	private VBoxContainer GetContainer(EDebugScreenItemPosition position)
+	private VBoxContainer? GetContainer(EDebugScreenItemPosition position)
 	{
 		return position switch
 		{
@@ -165,7 +167,7 @@ public partial class DebugScreen : Control
 
 	private static string GetTitle(Type item)
 	{
-		return item.GetCustomAttribute<TitleAttribute>().Title;
+		return item.GetCustomAttribute<TitleAttribute>()?.Title ?? string.Empty;
 	}
 
 	private static IDebugScreenItem CreateItem(string path)
@@ -192,7 +194,7 @@ public partial class DebugScreen : Control
 		{
 			foreach (var child in container.GetChildren())
 			{
-				(child as IDebugScreenItem).Update();
+				(child as IDebugScreenItem)!.Update();
 			}
 		}
 	}
