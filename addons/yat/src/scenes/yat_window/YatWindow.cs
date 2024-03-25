@@ -14,6 +14,7 @@ public partial class YatWindow : Window
 	[Export] public EWindowPosition DefaultWindowPosition = EWindowPosition.Center;
 	[Export] public bool AllowToGoOffScreen = true;
 
+#nullable disable
 	public ContextMenu ContextMenu { get; private set; }
 	public Vector2I InitialSize { get; private set; }
 
@@ -23,6 +24,7 @@ public partial class YatWindow : Window
 	protected PanelContainer _content;
 
 	private Viewport _viewport;
+#nullable restore
 
 	private Vector2 _previousPosition;
 	private float _windowMoveTimer = 0f;

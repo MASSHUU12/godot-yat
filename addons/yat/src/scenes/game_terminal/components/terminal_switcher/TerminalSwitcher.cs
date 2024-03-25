@@ -11,6 +11,7 @@ public partial class TerminalSwitcher : PanelContainer
 	[Signal] public delegate void TerminalRemovedEventHandler(BaseTerminal terminal);
 	[Signal] public delegate void CurrentTerminalChangedEventHandler(BaseTerminal terminal);
 
+#nullable disable
 	public const ushort MAX_TERMINAL_INSTANCES = 5;
 	public List<BaseTerminal> TerminalInstances = new();
 	public BaseTerminal CurrentTerminal;
@@ -20,6 +21,7 @@ public partial class TerminalSwitcher : PanelContainer
 	private TabBar _tabBar;
 	private PanelContainer _instancesContainer;
 	private BaseTerminal _initialTerminal;
+#nullable restore
 
 	public override void _Ready()
 	{

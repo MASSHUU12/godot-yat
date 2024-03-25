@@ -8,9 +8,11 @@ public partial class TerminalManager : Node
 	[Signal] public delegate void TerminalOpenedEventHandler();
 	[Signal] public delegate void TerminalClosedEventHandler();
 
+#nullable disable
 	public GameTerminal GameTerminal;
 
 	private YAT _yat;
+#nullable restore
 
 	public override void _Ready()
 	{

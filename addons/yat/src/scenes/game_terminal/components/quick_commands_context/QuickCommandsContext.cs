@@ -4,8 +4,10 @@ namespace YAT.Scenes;
 
 public partial class QuickCommandsContext : ContextSubmenu
 {
+#nullable disable
 	private YAT _yat;
 	private TerminalSwitcher _terminalSwitcher;
+#nullable restore
 
 	public override void _Ready()
 	{

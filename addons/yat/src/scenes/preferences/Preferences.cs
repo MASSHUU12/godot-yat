@@ -11,9 +11,11 @@ namespace YAT.Scenes;
 
 public partial class Preferences : YatWindow
 {
+#nullable disable
 	private TabContainer _tabContainer;
 	private Button _load, _save, _update, _restoreDefaults;
 	private PackedScene _section, _inputContainer, _preferencesTab;
+#nullable restore
 
 	private readonly Dictionary<StringName, PreferencesTab> _groups = new();
 	private readonly Dictionary<StringName, PreferencesSection> _sections = new();
@@ -122,8 +124,8 @@ public partial class Preferences : YatWindow
 	{
 		var properties = _yat.PreferencesManager.Preferences.GetPropertyList();
 
-		ExportGroupAttribute currentGroup = null;
-		ExportSubgroupAttribute currentSubgroup = null;
+		ExportGroupAttribute? currentGroup = null;
+		ExportSubgroupAttribute? currentSubgroup = null;
 
 		foreach (var propertyInfo in properties)
 		{
@@ -144,12 +146,12 @@ public partial class Preferences : YatWindow
 			{
 				currentSubgroup = exportSubgroup;
 
-				CreateSection(currentSubgroup.Name, currentGroup.Name);
+				CreateSection(currentSubgroup.Name, currentGroup!.Name);
 			}
 
 			if (currentGroup is null && currentSubgroup is null) continue;
 
-			CreateInputContainer(currentGroup.Name, propertyInfo);
+			CreateInputContainer(currentGroup!.Name, propertyInfo);
 		}
 	}
 
@@ -209,7 +211,7 @@ public partial class Preferences : YatWindow
 		_tabContainer.SetTabTitle(_tabContainer.GetTabCount() - 1, name);
 	}
 
-	private static T GetAttribute<T>(Godot.Collections.Dictionary propertyInfo) where T : Attribute
+	private static T? GetAttribute<T>(Godot.Collections.Dictionary propertyInfo) where T : Attribute
 	{
 		if (!propertyInfo.TryGetValue("name", out var name)) return null;
 
