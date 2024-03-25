@@ -36,7 +36,7 @@ public partial class CommandValidator : Node
 
 		Debug.Assert(type == argType || type == optType);
 
-		CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
+		CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>()!;
 
 		_commandName = commandAttribute.Name;
 		data = new();

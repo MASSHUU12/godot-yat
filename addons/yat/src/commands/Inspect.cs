@@ -64,7 +64,7 @@ public sealed class Inspect : ICommand
 		return sb;
 	}
 
-	private static StringBuilder InspectRayCastedObject(Dictionary result, bool all)
+	private static StringBuilder InspectRayCastedObject(Dictionary? result, bool all)
 	{
 		StringBuilder sb = new();
 

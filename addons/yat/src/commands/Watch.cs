@@ -26,7 +26,7 @@ public sealed class Watch : ICommand
 				$"Command '{data.Arguments["command"]}' not found, exiting watch."
 			);
 
-		ICommand command = (ICommand)Activator.CreateInstance(type);
+		ICommand command = (ICommand)Activator.CreateInstance(type)!;
 
 		float interval = (float)data.Arguments["interval"] * SECONDS_MULTIPLIER;
 		CommandData newArgs = data with { RawData = data.RawData[2..] };

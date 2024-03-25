@@ -44,9 +44,9 @@ public partial interface ICommand
 
 	public virtual StringBuilder GenerateCommandManual()
 	{
-		CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this);
-		UsageAttribute usage = Reflection.GetAttribute<UsageAttribute>(this);
-		DescriptionAttribute description = Reflection.GetAttribute<DescriptionAttribute>(this);
+		CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this)!;
+		UsageAttribute usage = Reflection.GetAttribute<UsageAttribute>(this)!;
+		DescriptionAttribute description = Reflection.GetAttribute<DescriptionAttribute>(this)!;
 		bool isThreaded = Reflection.HasAttribute<ThreadedAttribute>(this);
 
 		StringBuilder sb = new();

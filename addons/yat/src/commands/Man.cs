@@ -20,10 +20,10 @@ public sealed class Man : ICommand
 		var commandName = (string)data.Arguments["command_name"];
 		var embed = (bool)data.Options["-e"];
 
-		if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type value))
+		if (!RegisteredCommands.Registered.TryGetValue(commandName, out var value))
 			return ICommand.InvalidCommand(Messages.UnknownCommand(commandName));
 
-		ICommand command = (ICommand)Activator.CreateInstance(value);
+		ICommand command = (ICommand)Activator.CreateInstance(value)!;
 
 		// Check if the command manual is already in the cache.
 		if (cache.Get(commandName) is string manual)

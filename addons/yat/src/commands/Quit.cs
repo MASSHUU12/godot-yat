@@ -9,8 +9,10 @@ namespace YAT.Commands;
 [Option("-t", "bool", "Closes the terminal.")]
 public sealed class Quit : ICommand
 {
+#nullable disable
 	private YAT _yat;
 	private BaseTerminal _terminal;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{

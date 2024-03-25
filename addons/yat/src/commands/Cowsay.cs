@@ -20,7 +20,9 @@ namespace YAT.Commands;
 [Option("-y", "bool", "Youthful")]
 public sealed class Cowsay : ICommand
 {
+#nullable disable
 	private BaseTerminal _terminal;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{

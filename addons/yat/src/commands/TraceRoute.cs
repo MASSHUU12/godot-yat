@@ -33,7 +33,7 @@ public sealed class TraceRoute : ICommand
 		var addresses = Networking.GetTraceRoute(hostname, options, data.CancellationToken);
 		var result = new StringBuilder();
 
-		foreach (var address in addresses) result.AppendLine(address.ToString());
+		foreach (var address in addresses) result.AppendLine(address?.ToString());
 
 		return ICommand.Ok(result.ToString());
 	}

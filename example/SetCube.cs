@@ -6,7 +6,9 @@ using YAT.Types;
 [Extension("cubecolor", "Sets the cube's color.", "[b]Usage[/b]: setcube [i]color[/i]")]
 public sealed class SetCube : IExtension
 {
+#nullable disable
 	public static MeshInstance3D Cube { get; set; }
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{

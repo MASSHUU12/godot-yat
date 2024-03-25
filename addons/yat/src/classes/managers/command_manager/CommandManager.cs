@@ -75,7 +75,7 @@ public partial class CommandManager : Node
 		EmitSignal(SignalName.CommandStarted, commandName, args);
 
 		Cts = new();
-		CommandData data = new(_yat, terminal, command, args, convertedArgs, convertedOpts, Cts.Token);
+		CommandData data = new(_yat, terminal, command, args, convertedArgs!, convertedOpts!, Cts.Token);
 
 		if (command.GetAttribute<ThreadedAttribute>() is not null)
 		{

@@ -17,9 +17,11 @@ namespace YAT.Commands;
 )]
 public sealed class Cat : ICommand
 {
+#nullable disable
 	private YAT _yat;
 	private BaseTerminal _terminal;
 	private RichTextLabel _display;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{

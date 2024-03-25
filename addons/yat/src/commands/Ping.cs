@@ -54,7 +54,7 @@ public sealed class Ping : ICommand
 				reply.Address,
 				reply.Buffer.Length,
 				reply.RoundtripTime,
-				reply.Options.Ttl
+				reply.Options?.Ttl
 			));
 			else data.Terminal.Output.Print($"Request timed out.");
 

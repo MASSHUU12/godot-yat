@@ -2,9 +2,13 @@ using Godot;
 using YAT.Classes;
 using YAT.Helpers;
 
+namespace Example;
+
 public partial class Game : Node3D
 {
+#nullable disable
 	private Label3D _hint;
+#nullable restore
 
 	public override void _Ready()
 	{
