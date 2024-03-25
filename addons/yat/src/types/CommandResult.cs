@@ -2,4 +2,4 @@ using YAT.Enums;
 
 namespace YAT.Types;
 
-public record CommandResult(ECommandResult Result, string Message = null);
+public record CommandResult(ECommandResult Result, string Message = "");
