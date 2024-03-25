@@ -26,10 +26,12 @@ public sealed class View : ICommand
 		var values = Enum.GetValues(typeof(ViewportDebugDraw));
 		MAX_DRAW_MODE = values.Length - 1;
 
-		foreach (var mode in values) Modes.Add(mode.ToString().ToLower());
+		foreach (var mode in values) Modes.Add(mode!.ToString()!.ToLower());
 	}
 
+#nullable disable
 	private YAT _yat;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{

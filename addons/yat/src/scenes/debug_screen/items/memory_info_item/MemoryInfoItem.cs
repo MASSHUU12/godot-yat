@@ -8,8 +8,10 @@ namespace YAT.Scenes;
 [Title("Memory")]
 public partial class MemoryInfoItem : PanelContainer, IDebugScreenItem
 {
+#nullable disable
 	private YAT _yat;
 	private RichTextLabel _label;
+#nullable restore
 
 	public override void _Ready()
 	{

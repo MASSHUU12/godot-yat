@@ -9,6 +9,7 @@ namespace YAT.Scenes;
 
 public partial class Autocompletion : Node
 {
+#nullable disable
 	[Export] public CommandInfo CommandInfo { get; set; }
 
 	private YAT _yat;
@@ -17,6 +18,7 @@ public partial class Autocompletion : Node
 	private string cachedInput = string.Empty;
 	private LinkedList<string> suggestions = new();
 	private LinkedListNode<string> currentSuggestion;
+#nullable restore
 
 	public override void _Ready()
 	{
@@ -71,7 +73,7 @@ public partial class Autocompletion : Node
 		if (suggestions.Count == 0) return;
 
 		currentSuggestion = currentSuggestion?.Next ?? suggestions.First;
-		_input.Text = currentSuggestion.Value;
+		_input.Text = currentSuggestion?.Value ?? string.Empty;
 
 		_input.MoveCaretToEnd();
 
@@ -83,7 +85,7 @@ public partial class Autocompletion : Node
 		if (suggestions.Count == 0) return;
 
 		currentSuggestion = currentSuggestion?.Previous ?? suggestions.Last;
-		_input.Text = currentSuggestion.Value;
+		_input.Text = currentSuggestion?.Value ?? string.Empty;
 
 		_input.MoveCaretToEnd();
 

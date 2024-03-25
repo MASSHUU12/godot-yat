@@ -14,7 +14,9 @@ namespace YAT.Commands;
 [Argument("action", "clear|list|int(0:)", "The action to perform.")]
 public sealed class History : ICommand
 {
+#nullable disable
 	private BaseTerminal _terminal;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{

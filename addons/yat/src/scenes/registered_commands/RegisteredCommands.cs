@@ -17,7 +17,9 @@ public partial class RegisteredCommands : Node
 
 	public static Dictionary<string, Type> Registered { get; private set; } = new();
 
+#nullable disable
 	private YAT _yat;
+#nullable restore
 	private const ushort MAX_QUICK_COMMANDS = 10;
 	private const string QUICK_COMMANDS_PATH = "user://yat_qc.tres";
 

@@ -10,7 +10,9 @@ namespace YAT.Commands;
 [Description("Creates a window with the available preferences.")]
 public sealed class Preferences : ICommand
 {
+#nullable disable
 	private static Scenes.Preferences _windowInstance;
+#nullable restore
 	private static readonly PackedScene _prefsWindow = GD.Load<PackedScene>(
 		"uid://ca2i4r24ny7y3"
 	);

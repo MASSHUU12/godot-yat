@@ -9,11 +9,13 @@ namespace YAT.Scenes;
 
 public partial class CommandInfo : Node
 {
+#nullable disable
 	[Export] public Input Input { get; set; }
 	[Export] public InputInfo InputInfo { get; set; }
 	[Export] public BaseTerminal Terminal { get; set; }
 
 	private YAT _yat;
+#nullable restore
 
 	public override void _Ready()
 	{
@@ -34,11 +36,11 @@ public partial class CommandInfo : Node
 	private string GenerateCommandInfo(string[] tokens)
 	{
 		var command = RegisteredCommands.Registered[tokens[0]];
-		CommandAttribute commandAttribute = command.GetCustomAttribute<CommandAttribute>();
+		CommandAttribute? commandAttribute = command.GetCustomAttribute<CommandAttribute>();
 		var commandArguments = command.GetCustomAttributes<ArgumentAttribute>();
 
 		StringBuilder commandInfo = new();
-		commandInfo.Append(commandAttribute.Name);
+		commandInfo.Append(commandAttribute?.Name);
 
 		if (commandArguments is null) return commandInfo.ToString();
 

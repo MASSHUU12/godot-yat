@@ -10,11 +10,13 @@ public partial class InputContainer : PanelContainer
 	[Export] public float MinValue { get; set; } = 0;
 	[Export] public float MaxValue { get; set; } = 1;
 
+#nullable disable
 	private Label _label;
 	private SpinBox _spinBox;
 	private CheckBox _checkBox;
 	private LineEdit _lineEdit;
 	private ColorPickerButton _colorPickerButton;
+#nullable restore
 
 	public override void _Ready()
 	{

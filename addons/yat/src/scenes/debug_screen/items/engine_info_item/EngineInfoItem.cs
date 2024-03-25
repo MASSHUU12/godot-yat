@@ -7,8 +7,10 @@ namespace YAT.Scenes;
 [Title("Engine")]
 public partial class EngineInfoItem : PanelContainer, IDebugScreenItem
 {
+#nullable disable
 	private Label _label;
 	private string _engineInfo;
+#nullable restore
 
 	private readonly bool _isDebug = OS.IsDebugBuild();
 	private readonly string _engineVersion = Engine.GetVersionInfo()["string"].AsString();

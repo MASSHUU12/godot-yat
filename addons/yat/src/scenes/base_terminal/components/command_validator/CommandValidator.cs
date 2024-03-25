@@ -13,9 +13,11 @@ namespace YAT.Scenes;
 
 public partial class CommandValidator : Node
 {
+#nullable disable
 	[Export] public BaseTerminal Terminal { get; set; }
 
 	private StringName _commandName;
+#nullable restore
 
 	/// <summary>
 	/// Validates the passed data for a given command and returns a dictionary of arguments.
@@ -25,7 +27,8 @@ public partial class CommandValidator : Node
 	/// <param name="passedData">The arguments passed to the command.</param>
 	/// <param name="data">The dictionary of arguments.</param>
 	/// <returns>True if the passed data is valid, false otherwise.</returns>
-	public bool ValidatePassedData<T>(ICommand command, string[] passedData, out Dictionary<StringName, object> data) where T : CommandInputAttribute
+	public bool ValidatePassedData<T>(ICommand command, string[] passedData, out Dictionary<StringName, object?> data)
+	where T : CommandInputAttribute
 	{
 		Type type = typeof(T);
 		Type argType = typeof(ArgumentAttribute);
@@ -33,7 +36,7 @@ public partial class CommandValidator : Node
 
 		Debug.Assert(type == argType || type == optType);
 
-		CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>();
+		CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>()!;
 
 		_commandName = commandAttribute.Name;
 		data = new();
@@ -57,21 +60,19 @@ public partial class CommandValidator : Node
 			}
 
 			return ValidateCommandArguments(
-				data, passedData, dataAttrArr as ArgumentAttribute[]
+				data, passedData, (dataAttrArr as ArgumentAttribute[])!
 			);
 		}
 		else if (type == optType)
 			return ValidateCommandOptions(
-				data, passedData, dataAttrArr as OptionAttribute[]
+				data, passedData, (dataAttrArr as OptionAttribute[])!
 			);
-
-		data = null;
 
 		return false;
 	}
 
 	private bool ValidateCommandArguments(
-		Dictionary<StringName, object> validatedArgs,
+		Dictionary<StringName, object?> validatedArgs,
 		string[] passedArgs,
 		ArgumentAttribute[] arguments
 	)
@@ -83,7 +84,7 @@ public partial class CommandValidator : Node
 	}
 
 	private bool ValidateCommandOptions(
-		Dictionary<StringName, object> validatedOpts,
+		Dictionary<StringName, object?> validatedOpts,
 		string[] passedOpts,
 		OptionAttribute[] options
 	)
@@ -97,7 +98,7 @@ public partial class CommandValidator : Node
 
 	public bool ValidateCommandArgument(
 		ArgumentAttribute argument,
-		Dictionary<StringName, object> validatedArgs,
+		Dictionary<StringName, object?> validatedArgs,
 		string passedArg,
 		bool log = true
 	)
@@ -124,7 +125,7 @@ public partial class CommandValidator : Node
 
 	private bool ValidateCommandOption(
 		OptionAttribute option,
-		Dictionary<StringName, object> validatedOpts,
+		Dictionary<StringName, object?> validatedOpts,
 		string[] passedOpts
 	)
 	{
@@ -176,7 +177,7 @@ public partial class CommandValidator : Node
 						return false;
 					}
 
-					List<object> convertedL = new();
+					List<object?> convertedL = new();
 
 					foreach (var v in values)
 					{
@@ -224,7 +225,7 @@ public partial class CommandValidator : Node
 	}
 
 	private static EStringConversionResult TryConvertStringToType(
-		string value, CommandInputType type, out object result
+		string value, CommandInputType type, out object? result
 	)
 	{
 		var t = (string)type.Type;
@@ -258,7 +259,7 @@ public partial class CommandValidator : Node
 		return EStringConversionResult.Invalid;
 	}
 
-	private static bool TryConvertNumeric(StringName value, CommandInputType type, out object result)
+	private static bool TryConvertNumeric(StringName value, CommandInputType type, out object? result)
 	{
 		result = null;
 
@@ -291,14 +292,17 @@ public partial class CommandValidator : Node
 		EStringConversionResult status,
 		StringName argumentName,
 		List<CommandInputType> types,
-		object value, float min, float max
+		object? value, float min, float max
 	)
 	{
 		switch (status)
 		{
 			case EStringConversionResult.Invalid:
 				Terminal.Output.Error(Messages.InvalidArgument(
-					_commandName, value as string, string.Join(", ", types.Select(t => t.Type))
+						_commandName,
+						value?.ToString() ?? string.Empty,
+						string.Join(", ", types.Select(t => t.Type)
+					)
 				));
 				break;
 			case EStringConversionResult.OutOfRange:

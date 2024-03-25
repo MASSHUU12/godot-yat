@@ -7,10 +7,12 @@ namespace YAT.Scenes;
 [Title("FPS")]
 public partial class FpsItem : PanelContainer, IDebugScreenItem
 {
+#nullable disable
 	private YAT _yat;
 	private RichTextLabel
 		_label,
 		_times;
+#nullable restore
 
 	public override void _Ready()
 	{

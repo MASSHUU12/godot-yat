@@ -13,7 +13,9 @@ namespace YAT.Commands;
 [Argument("method", "string", "The method to execute.")]
 public sealed class Dollar : ICommand
 {
+#nullable disable
 	private BaseTerminal _terminal;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{

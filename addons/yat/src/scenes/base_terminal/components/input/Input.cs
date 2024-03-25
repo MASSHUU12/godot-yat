@@ -5,9 +5,11 @@ namespace YAT.Scenes;
 
 public partial class Input : LineEdit
 {
+#nullable disable
 	[Export] public BaseTerminal Terminal { get; set; }
 
 	private YAT _yat;
+#nullable restore
 
 	public override void _Ready()
 	{

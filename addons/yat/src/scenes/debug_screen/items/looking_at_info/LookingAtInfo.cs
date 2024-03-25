@@ -8,8 +8,10 @@ namespace YAT.Scenes;
 [Title("LookingAt")]
 public partial class LookingAtInfo : PanelContainer, IDebugScreenItem
 {
+#nullable disable
 	private YAT _yat;
 	private Label _label;
+#nullable restore
 	private const uint RAY_LENGTH = 1024;
 
 	private const string PREFIX = "Looking at: ";

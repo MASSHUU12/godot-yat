@@ -1,6 +1,8 @@
 using Godot;
 using YAT.Helpers;
 
+namespace Example;
+
 public partial class Player : CharacterBody3D
 {
 	[ExportSubgroup("Mouse")]
@@ -15,10 +17,12 @@ public partial class Player : CharacterBody3D
 	[ExportSubgroup("Jump")]
 	[Export(PropertyHint.Range, "0, 100, 0.1")] public float JumpVelocity { get; set; } = 4.5f;
 
+#nullable disable
 	private YAT.YAT _yat;
 	private Node3D _head;
 	private Camera3D _camera;
 	private Vector2 _mouseMovement;
+#nullable restore
 	private bool _playerHaveControl = true;
 
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();

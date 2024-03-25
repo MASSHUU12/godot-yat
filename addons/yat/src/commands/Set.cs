@@ -17,7 +17,7 @@ public partial class Set : Extensible, ICommand
 
 		if (extensions is null) return ICommand.Failure("No extensions found.");
 
-		if (extensions.TryGetValue((string)data.Arguments["variable"], out Type extension))
+		if (extensions.TryGetValue((string)data.Arguments["variable"], out var extension))
 			return ExecuteExtension(extension, data with { RawData = data.RawData[1..] });
 
 		return ICommand.Failure("Variable not found.");

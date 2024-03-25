@@ -18,6 +18,7 @@ public partial class BaseTerminal : Control
 		StringName method, Variant returnValue, EMethodStatus status
 	);
 
+#nullable disable
 	public bool Locked { get; set; }
 	public bool Current { get; set; } = true;
 	public Input Input { get; private set; }
@@ -35,6 +36,7 @@ public partial class BaseTerminal : Control
 	private Label _promptLabel;
 	private Label _selectedNodeLabel;
 	private PanelContainer _content;
+#nullable restore
 
 	private string _prompt = "> ";
 
@@ -83,7 +85,7 @@ public partial class BaseTerminal : Control
 				if (HistoryNode is null && History.Count > 0)
 				{
 					HistoryNode = History.Last;
-					Input.Text = HistoryNode.Value;
+					Input.Text = HistoryNode!.Value;
 				}
 				else if (HistoryNode?.Previous is not null)
 				{
@@ -116,7 +118,7 @@ public partial class BaseTerminal : Control
 
 				CommandManager.Cts.Cancel();
 				CommandManager.Cts.Dispose();
-				CommandManager.Cts = null;
+				// CommandManager.Cts = null;
 			}
 		}
 	}
@@ -168,7 +170,16 @@ public partial class BaseTerminal : Control
 		Output.CallDeferred("pop_all");
 	}
 
-	public void Print<T>(T text, EPrintType type = EPrintType.Normal) => Print(text.ToString(), type);
+	public void Print<T>(T text, EPrintType type = EPrintType.Normal)
+	{
+		if (text is null)
+		{
+			GD.PushError("Text is null.");
+			return;
+		}
+
+		Print(text.ToString() ?? string.Empty, type);
+	}
 
 	public void Clear() => Output.Clear();
 }

@@ -36,8 +36,8 @@ public static class Parser
 
 	public static bool TryParseCommandInputType(string type, out CommandInputType parsed)
 	{
-		parsed = null;
-		type = type?.Trim();
+		parsed = new();
+		type = type.Trim();
 
 		if (string.IsNullOrEmpty(type)) return false;
 
@@ -73,7 +73,7 @@ public static class Parser
 			};
 		}
 
-		parsed = null;
+		parsed = new();
 
 		bool isMaxPresent = tokens[1].EndsWith(':');
 		var minMax = tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries);

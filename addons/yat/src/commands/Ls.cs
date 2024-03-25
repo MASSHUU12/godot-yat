@@ -17,7 +17,9 @@ namespace YAT.Commands;
 [Option("-m", "bool", "Lists the methods of the current node.")]
 public sealed class Ls : ICommand
 {
+#nullable disable
 	private BaseTerminal _terminal;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{
@@ -37,13 +39,11 @@ public sealed class Ls : ICommand
 	private CommandResult PrintNodeMethods(string path)
 	{
 		StringBuilder sb = new();
-		Node node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
-		var methods = Scene.GetNodeMethods(node);
+		Node? node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
 
-		if (methods is null) return ICommand.Failure($"Node '{path}' does not exist.");
+		if (node is null) return ICommand.Failure($"Node '{path}' does not exist.");
 
-		methods = node.GetMethodList().GetEnumerator();
-
+		var methods = node.GetMethodList().GetEnumerator();
 		while (methods.MoveNext())
 		{
 			var info = Scene.GetNodeMethodInfo(methods.Current);

@@ -64,7 +64,7 @@ public class TestNumeric : TestClass
 	private static void TryConvert<T>(string value, T expectedResult, bool expected)
 	where T : IConvertible, IComparable<T>
 	{
-		Numeric.TryConvert(value, out T result).ShouldBe(expected);
+		Numeric.TryConvert(value, out T? result).ShouldBe(expected);
 
 		if (expected) result.ShouldBe(expectedResult);
 	}

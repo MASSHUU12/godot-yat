@@ -13,7 +13,9 @@ namespace YAT.Commands;
 [Option("-command", "string", "The command to execute when the quick command is called.")]
 public sealed class QuickCommands : ICommand
 {
+#nullable disable
 	private YAT _yat;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{

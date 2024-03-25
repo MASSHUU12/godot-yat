@@ -10,9 +10,11 @@ public partial class SelectedNode : Node
 	[Signal]
 	public delegate void CurrentNodeChangeFailedEventHandler(ERejectionReason reason);
 
+#nullable disable
 	public Node Current { get; private set; }
 
 	private BaseTerminal _terminal;
+#nullable restore
 
 	public override void _Ready()
 	{

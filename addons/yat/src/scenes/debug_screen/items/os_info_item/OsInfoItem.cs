@@ -7,8 +7,10 @@ namespace YAT.Scenes;
 [Title("OS")]
 public partial class OsInfoItem : PanelContainer, IDebugScreenItem
 {
+#nullable disable
 	private Label _label;
 	private string _osInfo;
+#nullable restore
 
 	private readonly string _osName = OS.GetName();
 	private readonly string _locale = OS.GetLocale();

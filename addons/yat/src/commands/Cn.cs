@@ -31,12 +31,14 @@ public sealed class Cn : ICommand
 	private const string TREE_DEEP_SEARCH_PREFIX = "?";
 	private const string TREE_SHALLOW_SEARCH_PREFIX = "??";
 
+#nullable disable
 	private YAT _yat;
 	private BaseTerminal _terminal;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{
-		var path = data.Arguments["node_path"] as string;
+		var path = (string)data.Arguments["node_path"];
 		bool result;
 
 		_yat = data.Yat;
@@ -52,9 +54,9 @@ public sealed class Cn : ICommand
 		return ICommand.Success();
 	}
 
-	private NodePath GetNodeFromSearch(string path)
+	private NodePath? GetNodeFromSearch(string path)
 	{
-		Node result = path.StartsWith(TREE_SHALLOW_SEARCH_PREFIX)
+		Node? result = path.StartsWith(TREE_SHALLOW_SEARCH_PREFIX)
 			? World.SearchNode(_terminal.SelectedNode.Current, path[2..])
 			: World.SearchNode(_yat.GetTree().Root, path[1..]);
 
@@ -64,7 +66,7 @@ public sealed class Cn : ICommand
 		return null;
 	}
 
-	private NodePath GetRayCastedNodePath(string path)
+	private NodePath? GetRayCastedNodePath(string path)
 	{
 		var result = World.RayCast(_yat.GetViewport(), GetRayLength(path));
 
@@ -74,7 +76,7 @@ public sealed class Cn : ICommand
 			return null;
 		}
 
-		Node collider = result.TryGetValue("collider", out Variant value) ? value.As<Node>() : null;
+		Node? collider = result.TryGetValue("collider", out Variant value) ? value.As<Node>() : null;
 
 		return collider?.GetPath();
 	}
@@ -86,8 +88,9 @@ public sealed class Cn : ICommand
 			: DEFAULT_RAY_LENGTH;
 	}
 
-	private bool ChangeSelectedNode(NodePath path)
+	private bool ChangeSelectedNode(NodePath? path)
 	{
+		if (path is null) return false;
 		return _terminal.SelectedNode.ChangeSelectedNode(path);
 	}
 }

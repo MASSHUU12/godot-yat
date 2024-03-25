@@ -5,8 +5,7 @@
     <RootNamespace>godotyat</RootNamespace>
     <LangVersion>11.0</LangVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <!-- This option does not work well with Godot.NET.Sdk -->
-    <!-- <Nullable>enable</Nullable> -->
+    <Nullable>enable</Nullable>
     <Optimize Condition="'$(Configuration)' == 'ExportRelease'">
         true
     </Optimize>

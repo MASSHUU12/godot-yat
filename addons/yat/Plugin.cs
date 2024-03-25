@@ -6,7 +6,7 @@ namespace YAT
 	[Tool]
 	public partial class Plugin : EditorPlugin
 	{
-		private string _version;
+		private string _version = string.Empty;
 		private const string _name = "YAT";
 
 		public override void _EnterTree()

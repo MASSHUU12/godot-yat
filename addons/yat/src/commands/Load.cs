@@ -60,7 +60,7 @@ public sealed class Load : ICommand
 
 		data.Yat.GetTree().Root.AddChild(node);
 
-		TransformNode3D(node, camera, position, rotation, scale, hidden, absolute);
+		TransformNode3D(node, camera!, position, rotation, scale, hidden, absolute);
 
 		return ICommand.Success(
 			string.Format(
@@ -96,7 +96,7 @@ public sealed class Load : ICommand
 
 		data.Yat.GetTree().Root.AddChild(node);
 
-		TransformNode2D(node, camera, position, rotation, scale, hidden, absolute);
+		TransformNode2D(node, camera!, position, rotation, scale, hidden, absolute);
 
 		return ICommand.Success(
 			string.Format(

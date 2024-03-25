@@ -23,8 +23,10 @@ namespace YAT.Commands;
 [Option("-e", "exr|jpg|png|webp", "The extension of the screenshot file.", "png")]
 public sealed class Ss : ICommand
 {
+#nullable disable
 	private YAT _yat;
 	private BaseTerminal _terminal;
+#nullable restore
 
 	public CommandResult Execute(CommandData data)
 	{
@@ -80,7 +82,7 @@ public sealed class Ss : ICommand
 	{
 		var image = viewport.GetTexture().GetImage();
 
-		byte[] buffer = null;
+		byte[] buffer = Array.Empty<byte>();
 		switch (extension)
 		{
 			case "exr":

@@ -8,7 +8,9 @@ namespace YAT.Scenes;
 
 public partial class Output : RichTextLabel
 {
+#nullable disable
 	[Export] public BaseTerminal Terminal { get; set; }
+#nullable restore
 
 	[Flags]
 	public enum LogOutput
@@ -108,16 +110,18 @@ public partial class Output : RichTextLabel
 
 			for (int i = 0; i < st.FrameCount; i++)
 			{
-				StackFrame sf = st.GetFrame(i);
+				StackFrame? sf = st.GetFrame(i);
+
+				if (sf is null) continue;
 
 				sb.Append(string.Format(
 					"\n{0}({1},{2}): {3}.{4}",
 					sf.GetFileName(),
 					sf.GetFileLineNumber(),
 					sf.GetFileColumnNumber(),
-					sf.GetMethod().DeclaringType,
-					sf.GetMethod())
-				);
+					sf.GetMethod()?.DeclaringType?.FullName ?? string.Empty,
+					sf.GetMethod()
+				));
 			}
 
 			message = sb.ToString();

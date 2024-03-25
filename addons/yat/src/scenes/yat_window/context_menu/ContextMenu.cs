@@ -7,7 +7,7 @@ public partial class ContextMenu : PopupMenu
 	[Export] public ushort WallMargin { get; set; } = 16;
 	[Export] public bool ShrinkToFit { get; set; } = true;
 
-	private Viewport _viewport = null;
+	private Viewport? _viewport = null;
 	private Rect2 _viewportRect = new();
 
 	public override void _Ready()
@@ -50,6 +50,8 @@ public partial class ContextMenu : PopupMenu
 
 	public void ShowNextToMouse()
 	{
+		if (_viewport is null) return;
+
 		var mousePos = _viewport.GetMousePosition();
 		var (limitX, limitY) = CalculateLimits(_viewportRect);
 
