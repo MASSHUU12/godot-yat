@@ -8,7 +8,7 @@ namespace YAT.Helpers;
 public static class OS
 {
 	public static OperatingSystem Platform { get; private set; }
-	public static string DefaultTerminal { get; private set; }
+	public static string DefaultTerminal { get; private set; } = string.Empty;
 
 	public enum OperatingSystem
 	{

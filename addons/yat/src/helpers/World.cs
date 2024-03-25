@@ -5,7 +5,7 @@ namespace YAT.Helpers;
 
 public static class World
 {
-	public static Dictionary RayCast(Viewport viewport, float rayLength = 1000)
+	public static Dictionary? RayCast(Viewport viewport, float rayLength = 1000)
 	{
 		var camera = viewport.GetCamera3D();
 		var mousePos = viewport.GetMousePosition();
@@ -21,7 +21,7 @@ public static class World
 		return camera.GetWorld3D().DirectSpaceState.IntersectRay(query);
 	}
 
-	public static Node SearchNode(Node root, string name, bool recursive = true)
+	public static Node? SearchNode(Node root, string name, bool recursive = true)
 	{
 		if (!GodotObject.IsInstanceValid(root)) return null;
 

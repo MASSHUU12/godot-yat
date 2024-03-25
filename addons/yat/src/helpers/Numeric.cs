@@ -24,7 +24,7 @@ public static class Numeric
 	/// <param name="output">When this method returns, contains the converted value if the conversion succeeded, or the fallback value if the conversion failed.</param>
 	/// <param name="fallback">The fallback value to use if the conversion fails. The default value of the type T is used if no fallback value is specified.</param>
 	/// <returns><c>true</c> if the conversion succeeded; otherwise, <c>false</c>.</returns>
-	public static bool TryConvert<T>(this string input, out T output, T fallback = default)
+	public static bool TryConvert<T>(this string input, out T? output, T? fallback = default)
 		where T : notnull, IConvertible, IComparable<T>
 	{
 		output = fallback;
@@ -37,7 +37,7 @@ public static class Numeric
 
 		try
 		{
-			output = (T)converter.ConvertFrom(input);
+			output = (T?)converter.ConvertFrom(input);
 			return output is not null;
 		}
 		catch (Exception ex) when (ex

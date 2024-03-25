@@ -12,7 +12,7 @@ public static class Scene
 {
 	public static bool PrintChildren(BaseTerminal terminal, string path)
 	{
-		Node node = GetFromPathOrDefault(path, terminal.SelectedNode.Current, out path);
+		Node? node = GetFromPathOrDefault(path, terminal.SelectedNode.Current, out path);
 
 		if (node is null)
 		{
@@ -50,21 +50,21 @@ public static class Scene
 	/// <param name="defaultNode">The default Node to return if the path is "." or "./".</param>
 	/// <param name="newPath">The updated path of the retrieved Node.</param>
 	/// <returns>The retrieved Node if it is a valid instance; otherwise, null.</returns>
-	public static Node GetFromPathOrDefault(string path, Node defaultNode, out string newPath)
+	public static Node? GetFromPathOrDefault(string path, Node defaultNode, out string newPath)
 	{
 		Node node = (path == "." || path == "./")
 			? defaultNode
 			: defaultNode.GetNodeOrNull(path);
 
-		newPath = node?.GetPath();
-		newPath = newPath is null ? path : newPath;
+		var temp = node?.GetPath();
+		newPath = temp is null ? path : temp;
 
 		if (GodotObject.IsInstanceValid(node)) return node;
 
 		return null;
 	}
 
-	public static IEnumerator<Dictionary> GetNodeMethods(Node node)
+	public static IEnumerator<Dictionary>? GetNodeMethods(Node node)
 	{
 		if (!GodotObject.IsInstanceValid(node)) return null;
 
