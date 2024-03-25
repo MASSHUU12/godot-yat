@@ -33,7 +33,9 @@ public partial class CommandManager : Node
 
 	public CancellationTokenSource Cts { get; set; } = new();
 
+#nullable disable
 	private YAT _yat;
+#nullable restore
 
 	public override void _Ready()
 	{
@@ -46,15 +48,15 @@ public partial class CommandManager : Node
 
 		string commandName = args[0];
 
-		if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type value))
+		if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type? value))
 		{
 			terminal.Output.Error(Messages.UnknownCommand(commandName));
 			return;
 		}
 
-		ICommand command = Activator.CreateInstance(value) as ICommand;
-		Dictionary<StringName, object> convertedArgs = null;
-		Dictionary<StringName, object> convertedOpts = null;
+		ICommand command = (Activator.CreateInstance(value) as ICommand)!;
+		Dictionary<StringName, object?> convertedArgs = new();
+		Dictionary<StringName, object?> convertedOpts = new();
 
 		if (command.GetAttribute<NoValidateAttribute>() is null)
 		{

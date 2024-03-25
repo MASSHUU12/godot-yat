@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Godot;
 using YAT.Attributes;
-using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
@@ -22,13 +21,13 @@ public partial class Extensible : Node
 
 		var instance = Activator.CreateInstance(extension) as IExtension;
 
-		if (Reflection.GetAttribute<ExtensionAttribute>(instance)
+		if (Reflection.GetAttribute<ExtensionAttribute>(instance!)
 			is not ExtensionAttribute attribute
 		) return false;
 
 		// Check if dictionary have entry for the command
 		// if entry exists, check if the entry contains the extension
-		if (!Extensions.TryGetValue(commandName, out Dictionary<StringName, Type> extensions))
+		if (!Extensions.TryGetValue(commandName, out var extensions))
 			Extensions.Add(commandName, new Dictionary<StringName, Type>());
 		else if (extensions.ContainsKey(commandName)) return false;
 
@@ -55,7 +54,7 @@ public partial class Extensible : Node
 			is not ExtensionAttribute attribute
 		) return false;
 
-		if (!Extensions.TryGetValue(commandName, out Dictionary<StringName, Type> extensions))
+		if (!Extensions.TryGetValue(commandName, out var extensions))
 			return false;
 
 		if (!extensions.ContainsKey(attribute.Name)) return false;
@@ -77,15 +76,15 @@ public partial class Extensible : Node
 		if (!Reflection.HasInterface(extension, nameof(IExtension)))
 			return ICommand.InvalidCommand();
 
-		return (Activator.CreateInstance(extension) as IExtension).Execute(args);
+		return (Activator.CreateInstance(extension) as IExtension)!.Execute(args);
 	}
 
 	public virtual StringBuilder GenerateExtensionsManual()
 	{
 		StringBuilder sb = new();
-		var commandName = Reflection.GetAttribute<CommandAttribute>(this)?.Name;
+		var commandName = Reflection.GetAttribute<CommandAttribute>(this)?.Name ?? string.Empty;
 
-		if (!Extensions.TryGetValue(commandName, out Dictionary<StringName, Type> value))
+		if (!Extensions.TryGetValue(commandName, out var value))
 		{
 			sb.AppendLine("\nThis command does not have any extensions.");
 			return sb;
@@ -102,18 +101,17 @@ public partial class Extensible : Node
 		foreach (var extension in value)
 		{
 			var extensionInstance = Activator.CreateInstance(extension.Value) as IExtension;
-			sb.Append(extensionInstance.GenerateExtensionManual());
+			sb.Append(extensionInstance!.GenerateExtensionManual());
 		}
 
 		return sb;
 	}
 
-	public static Dictionary<StringName, Type> GetCommandExtensions(StringName commandName)
+	public static Dictionary<StringName, Type>? GetCommandExtensions(StringName commandName)
 	{
 		if (string.IsNullOrEmpty(commandName)) return null;
 
-		if (!Extensions.TryGetValue(commandName, out Dictionary<StringName, Type> extensions))
-			return null;
+		if (!Extensions.TryGetValue(commandName, out var extensions)) return null;
 
 		return extensions;
 	}
