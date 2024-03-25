@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.27.1-beta 2024-03-25]
 
 ### Added
 
@@ -29,7 +29,7 @@ All notable changes to this project will be documented in this file.
 -   YatWindow did not update its settings when it was opened after changes were made.
 -   'TryParseCommandInputType' should not accept '( : )', '(:)' and '()' as valid input type (#266).
 
-## [v1.27.0-beta 2024-03-11]
+## [1.27.0-beta 2024-03-11]
 
 ### Added
 
