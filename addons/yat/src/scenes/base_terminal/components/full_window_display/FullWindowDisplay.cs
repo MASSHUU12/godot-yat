@@ -8,9 +8,11 @@ public partial class FullWindowDisplay : Control
 	[Signal] public delegate void OpenedEventHandler();
 	[Signal] public delegate void ClosedEventHandler();
 
+#nullable disable
 	public bool IsOpen => Visible;
 	public RichTextLabel MainDisplay { get; private set; }
 	private Label _helpLabel;
+#nullable restore
 
 	public override void _Ready()
 	{

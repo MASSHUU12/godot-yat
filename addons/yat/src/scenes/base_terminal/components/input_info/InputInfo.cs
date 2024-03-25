@@ -4,8 +4,10 @@ namespace YAT.Scenes;
 
 public partial class InputInfo : PanelContainer
 {
+#nullable disable
 	public RichTextLabel _text;
 	private MarginContainer _container;
+#nullable restore
 
 	public override void _Ready()
 	{
