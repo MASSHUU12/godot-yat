@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 -   Ok method to ICommand interface.
 -   LastCommandResult property to BaseTerminal.
 -   'lcr' command.
+-   Default constructor for CommandInputType record.
 
 ### Changed
 
@@ -20,6 +21,7 @@ All notable changes to this project will be documented in this file.
 -   'InputColor' preference is used by YAT from now on.
 -   'BackgroundColor' preference is hidden.
 -   Testing on Godot SDK 4.3.0-dev.5.
+-   Improved type-safety via better handling null values.
 
 ### Fixed
 
