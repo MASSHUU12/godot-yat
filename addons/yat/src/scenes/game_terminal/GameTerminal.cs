@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using YAT.Helpers;
 using YAT.Resources;
@@ -6,8 +7,10 @@ namespace YAT.Scenes;
 
 public partial class GameTerminal : YatWindow
 {
+#nullable disable
 	public BaseTerminal CurrentTerminal { get; private set; }
 	public TerminalSwitcher TerminalSwitcher { get; private set; }
+#nullable restore
 
 	public override void _Ready()
 	{
@@ -40,8 +43,9 @@ public partial class GameTerminal : YatWindow
 	{
 		if (id == 1)
 		{
-			new Commands.Preferences().Execute(new(
-				_yat, CurrentTerminal, null, null, null, null, default
+			var prefs = new Commands.Preferences();
+			prefs.Execute(new(
+				_yat, CurrentTerminal, prefs, Array.Empty<string>(), new(), new(), default
 			));
 		}
 	}
