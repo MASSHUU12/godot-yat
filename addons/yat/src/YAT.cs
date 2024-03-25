@@ -9,6 +9,7 @@ public partial class YAT : Node
 {
 	[Signal] public delegate void YatReadyEventHandler();
 
+#nullable disable
 	public bool YatEnabled = true;
 	public Node Windows { get; private set; }
 	public BaseTerminal CurrentTerminal { get; set; }
@@ -17,6 +18,7 @@ public partial class YAT : Node
 	public RegisteredCommands Commands { get; private set; }
 	public TerminalManager TerminalManager { get; private set; }
 	public PreferencesManager PreferencesManager { get; private set; }
+#nullable restore
 
 	public override void _Ready()
 	{
