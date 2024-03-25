@@ -10,41 +10,36 @@ namespace YAT.Interfaces;
 
 public partial interface ICommand
 {
-	/// <summary>
-	/// Represents the result of executing a command.
-	/// </summary>
-	/// <param name="data">The data passed to the command.</param>
-	/// <returns>The result of the command execution.</returns>
 	public CommandResult Execute(CommandData data);
 
-	public static CommandResult Success(string message = null) =>
+	public static CommandResult Success(string message = "") =>
 		new(ECommandResult.Success, message);
 
-	public static CommandResult Failure(string message = null) =>
+	public static CommandResult Failure(string message = "") =>
 		new(ECommandResult.Failure, message);
 
-	public static CommandResult InvalidArguments(string message = null) =>
+	public static CommandResult InvalidArguments(string message = "") =>
 		new(ECommandResult.InvalidArguments, message);
 
-	public static CommandResult InvalidCommand(string message = null) =>
+	public static CommandResult InvalidCommand(string message = "") =>
 		new(ECommandResult.InvalidCommand, message);
 
-	public static CommandResult InvalidPermissions(string message = null) =>
+	public static CommandResult InvalidPermissions(string message = "") =>
 		new(ECommandResult.InvalidPermissions, message);
 
-	public static CommandResult InvalidState(string message = null) =>
+	public static CommandResult InvalidState(string message = "") =>
 		new(ECommandResult.InvalidState, message);
 
-	public static CommandResult NotImplemented(string message = null) =>
+	public static CommandResult NotImplemented(string message = "") =>
 		new(ECommandResult.NotImplemented, message);
 
-	public static CommandResult UnknownCommand(string message = null) =>
+	public static CommandResult UnknownCommand(string message = "") =>
 		new(ECommandResult.UnknownCommand, message);
 
-	public static CommandResult UnknownError(string message = null) =>
+	public static CommandResult UnknownError(string message = "") =>
 		new(ECommandResult.UnknownError, message);
 
-	public static CommandResult Ok(string message = null) =>
+	public static CommandResult Ok(string message = "") =>
 		new(ECommandResult.Ok, message);
 
 	public virtual StringBuilder GenerateCommandManual()
