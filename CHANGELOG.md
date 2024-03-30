@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+-   The display of the contents of the 'list' command has been improved (#271).
+
 ## [1.27.1-beta 2024-03-25]
 
 ### Added
