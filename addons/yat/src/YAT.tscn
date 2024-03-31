@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dhbvghhlqawa4"]
+[gd_scene load_steps=10 format=3 uid="uid://dhbvghhlqawa4"]
 
 [ext_resource type="Script" path="res://addons/yat/src/YAT.cs" id="1_683p6"]
 [ext_resource type="PackedScene" uid="uid://b8xfvdai1l0vo" path="res://addons/yat/src/classes/managers/preferences_manager/PreferencesManager.tscn" id="4_5x7ox"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://3avgdpuh3nap" path="res://addons/yat/src/scenes/debug_screen/DebugScreen.tscn" id="5_hnddm"]
 [ext_resource type="PackedScene" uid="uid://r45e18qb3ekv" path="res://addons/yat/src/scenes/registered_commands/RegisteredCommands.tscn" id="5_j53i0"]
 [ext_resource type="Script" path="res://addons/yat/src/resources/preferences/YatPreferences.cs" id="6_l2tdx"]
+[ext_resource type="PackedScene" uid="uid://bkrycicg7xrko" path="res://addons/yat/src/scenes/yat_enable/YatEnable.tscn" id="7_ar0j0"]
 
 [sub_resource type="Resource" id="Resource_x0850"]
 script = ExtResource("6_l2tdx")
@@ -25,9 +26,6 @@ OutputColor = Color(0.87451, 0.87451, 0.87451, 0.501961)
 ErrorColor = Color(1, 0.470588, 0.419608, 1)
 WarningColor = Color(1, 0.866667, 0.396078, 1)
 SuccessColor = Color(0.647059, 1, 0.541176, 1)
-UseYatEnableFile = false
-YatEnableFile = ".yatenable"
-YatEnableLocation = 0
 
 [node name="YAT" type="Node"]
 process_mode = 3
@@ -40,6 +38,9 @@ script = ExtResource("1_683p6")
 [node name="PreferencesManager" parent="." instance=ExtResource("4_5x7ox")]
 unique_name_in_owner = true
 Preferences = SubResource("Resource_x0850")
+
+[node name="YatEnable" parent="." instance=ExtResource("7_ar0j0")]
+YatEnableAction = 2
 
 [node name="Windows" type="Node" parent="."]
 

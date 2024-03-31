@@ -3,12 +3,26 @@
 	<p>Here you can find information on the YatEnable functionality that allows you to restrict access to the terminal.</p>
 </div>
 
-### YatEnable
+<br />
 
-Yat allows you to restrict access to the terminal via the `YatEnable` file located in the `user://` or `res://` directories.
+If you don't want users to access the terminal, you can easily **block** access to YAT in several different ways. By default YAT is **accessible**, you can change this in the `YatEnable` scene, which is a child of the `YAT` scene.
 
-The file name as well as the target directory can be customized.
+Checking whether the requirements to allow access to YAT have been met is done only once during the startup of the plugin.
 
-If the file is present, Yat is available, otherwise running the terminal is not possible.
+Requirements can be combined, when one of them is met YAT will become available.
 
-Checking for the presence of the file is only done during Ready.
+### File
+
+You can set the terminal to become accessible only if the specified file (default `.yatenable`) is in the `user://` and/or `res://` directory.
+
+### CMD argument
+
+The access restriction can also be lifted when the specified argument (default `--yat`) is passed to the executable file.
+
+The argument can be passed this way:
+
+```bash
+my_awesome_game -- --yat
+```
+
+Note the two hyphens preceding the argument, without them it won't work.

@@ -1,0 +1,1 @@
+& $env:GODOT ./ -- --yat

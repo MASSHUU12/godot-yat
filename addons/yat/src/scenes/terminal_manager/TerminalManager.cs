@@ -28,7 +28,7 @@ public partial class TerminalManager : Node
 
 	public void ToggleTerminal()
 	{
-		if (!_yat.YatEnabled) return;
+		if (!_yat.YatEnable.YatEnabled) return;
 
 		if (GameTerminal.IsInsideTree()) CloseTerminal();
 		else OpenTerminal();

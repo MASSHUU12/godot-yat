@@ -4,9 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+-   YatEnable scene.
+-   YAT can be enabled when a specific CMD argument is passed to executable.
+
 ### Changed
 
 -   The display of the contents of the 'list' command has been improved (#271).
+-   Moved Yat Enable preferences to YatEnable scene.
+-   Reworked Yat Enable functionality.
+-   Updated the documentation for Yat Enable to reflect the latest changes.
+
+### Removed
+
+-   EYatEnableLocation.cs.
 
 ## [1.27.1-beta 2024-03-25]
 
