@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bkrycicg7xrko"]
+
+[ext_resource type="Script" path="res://addons/yat/src/scenes/yat_enable/YatEnable.cs" id="1_uoety"]
+
+[node name="YatEnable" type="Node"]
+script = ExtResource("1_uoety")
