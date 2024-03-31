@@ -41,12 +41,4 @@ public partial class YatPreferences : Resource
 	[Export] public Color WarningColor { get; set; } = new("ffdd65"); // #ffdd65
 	[Export] public Color SuccessColor { get; set; } = new("a5ff8a"); // #a5ff8a
 	#endregion
-
-	#region Other
-	[ExportGroup("Other")]
-	[ExportSubgroup("YatEnableFile")]
-	[Export] public bool UseYatEnableFile { get; set; } = false;
-	[Export] public string YatEnableFile { get; set; } = ".yatenable";
-	[Export] public EYatEnableLocation YatEnableLocation { get; set; } = EYatEnableLocation.UserData;
-	#endregion
 }
