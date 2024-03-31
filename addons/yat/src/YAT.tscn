@@ -40,7 +40,6 @@ unique_name_in_owner = true
 Preferences = SubResource("Resource_x0850")
 
 [node name="YatEnable" parent="." instance=ExtResource("7_ar0j0")]
-YatEnableAction = 2
 
 [node name="Windows" type="Node" parent="."]
 
