@@ -15,6 +15,8 @@ public partial class DebugScreen : Control
 	[Export(PropertyHint.Range, "0.05, 5, 0.1")]
 	public float UpdateInterval { get; set; } = 0.5f;
 
+	public float DefaultUpdateInterval { get; private set; } = 0.5f;
+
 #nullable disable
 	private Timer _timer;
 	private VBoxContainer
@@ -63,6 +65,8 @@ public partial class DebugScreen : Control
 		_topRightContainer = GetNode<VBoxContainer>("%TopRightContainer");
 		_bottomLeftContainer = GetNode<VBoxContainer>("%BottomLeftContainer");
 		_bottomRightContainer = GetNode<VBoxContainer>("%BottomRightContainer");
+
+		UpdateInterval = DefaultUpdateInterval;
 
 		RemoveAllChildren();
 		InitializeTimer();
