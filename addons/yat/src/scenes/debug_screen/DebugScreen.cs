@@ -15,6 +15,8 @@ public partial class DebugScreen : Control
 	[Export(PropertyHint.Range, "0.05, 5, 0.1")]
 	public float UpdateInterval { get; set; } = 0.5f;
 
+	public float DefaultUpdateInterval { get; private set; } = 0.5f;
+
 #nullable disable
 	private Timer _timer;
 	private VBoxContainer
@@ -64,6 +66,8 @@ public partial class DebugScreen : Control
 		_bottomLeftContainer = GetNode<VBoxContainer>("%BottomLeftContainer");
 		_bottomRightContainer = GetNode<VBoxContainer>("%BottomRightContainer");
 
+		UpdateInterval = DefaultUpdateInterval;
+
 		RemoveAllChildren();
 		InitializeTimer();
 	}
@@ -74,6 +78,12 @@ public partial class DebugScreen : Control
 		_timer.WaitTime = UpdateInterval;
 		_timer.Timeout += OnTimerTimeout;
 		_timer.Stop();
+	}
+
+	private void StartTimer()
+	{
+		_timer.WaitTime = UpdateInterval;
+		_timer.Start();
 	}
 
 	private VBoxContainer? GetContainer(EDebugScreenItemPosition position)
@@ -106,7 +116,7 @@ public partial class DebugScreen : Control
 			}
 		}
 
-		_timer.Start();
+		StartTimer();
 	}
 
 	public void RunSelected(params string[] titles)
@@ -139,7 +149,7 @@ public partial class DebugScreen : Control
 			}
 		}
 
-		_timer.Start();
+		StartTimer();
 	}
 
 	private static bool AddItemsToContainer(

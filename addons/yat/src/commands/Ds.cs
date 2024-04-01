@@ -11,12 +11,18 @@ namespace YAT.Commands;
 [Command("ds", "Displays items in the debug screen.", "[b]Usage[/b]: ds")]
 [Option("-h", "bool", "Displays this help message.")]
 [Option("-i", "string...", "Items to display.", new string[] { })]
+[Option("--interval", "float(0.05:5)", "Update interval.", 0f)]
 public sealed class Ds : ICommand
 {
 	public CommandResult Execute(CommandData data)
 	{
 		var h = (bool)data.Options["-h"];
 		var i = ((object[])data.Options["-i"]).Cast<string>().ToArray();
+		var interval = (float)data.Options["--interval"];
+
+		data.Yat.DebugScreen.UpdateInterval = interval == 0f
+			? data.Yat.DebugScreen.DefaultUpdateInterval
+			: interval;
 
 		if (h)
 		{
