@@ -7,7 +7,7 @@ using YAT.Types;
 
 [Extension("_CLASS_")]
 [Usage("_CLASS_")]
-[Description("Lorem ipsum dolor sit amet.")
+[Description("Lorem ipsum dolor sit amet.")]
 public sealed class _CLASS_ : IExtension
 {
 	public CommandResult Execute(CommandData data)
