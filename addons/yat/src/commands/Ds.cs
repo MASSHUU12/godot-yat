@@ -11,7 +11,7 @@ namespace YAT.Commands;
 [Command("ds", "Displays items in the debug screen.", "[b]Usage[/b]: ds")]
 [Option("-h", "bool", "Displays this help message.")]
 [Option("-i", "string...", "Items to display.", new string[] { })]
-[Option("--interval", "float(0.05,5)", "Update interval.", 0f)]
+[Option("--interval", "float(0.05:5)", "Update interval.", 0f)]
 public sealed class Ds : ICommand
 {
 	public CommandResult Execute(CommandData data)
