@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 -   YatEnable scene.
 -   YAT can be enabled when a specific CMD argument is passed to executable.
+-   '--interval' option to Ds command.
 
 ### Changed
 
@@ -15,6 +16,7 @@ All notable changes to this project will be documented in this file.
 -   Moved Yat Enable preferences to YatEnable scene.
 -   Reworked Yat Enable functionality.
 -   Updated the documentation for Yat Enable to reflect the latest changes.
+-   DebugScreen updates WaitTime every time it resets.
 
 ### Removed
 
