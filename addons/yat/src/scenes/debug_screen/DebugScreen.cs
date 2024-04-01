@@ -80,6 +80,12 @@ public partial class DebugScreen : Control
 		_timer.Stop();
 	}
 
+	private void StartTimer()
+	{
+		_timer.WaitTime = UpdateInterval;
+		_timer.Start();
+	}
+
 	private VBoxContainer? GetContainer(EDebugScreenItemPosition position)
 	{
 		return position switch
@@ -110,7 +116,7 @@ public partial class DebugScreen : Control
 			}
 		}
 
-		_timer.Start();
+		StartTimer();
 	}
 
 	public void RunSelected(params string[] titles)
@@ -143,7 +149,7 @@ public partial class DebugScreen : Control
 			}
 		}
 
-		_timer.Start();
+		StartTimer();
 	}
 
 	private static bool AddItemsToContainer(
