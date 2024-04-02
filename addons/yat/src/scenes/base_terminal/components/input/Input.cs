@@ -16,14 +16,9 @@ public partial class Input : LineEdit
 		_yat = GetNode<YAT>("/root/YAT");
 		_yat.YatReady += () =>
 		{
-			// This 'fixes' the issue where terminal toggle key is writing to the input
 			_yat.TerminalManager.TerminalOpened += () =>
 			{
-				Clear();
-
-				if (!Terminal.Current || Terminal.FullWindowDisplay.IsOpen) return;
-
-				GrabFocus();
+				if (Terminal.Current && !Terminal.FullWindowDisplay.IsOpen) GrabFocus();
 			};
 		};
 

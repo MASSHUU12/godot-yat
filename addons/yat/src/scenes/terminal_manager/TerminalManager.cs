@@ -42,6 +42,8 @@ public partial class TerminalManager : Node
 	public void OpenTerminal()
 	{
 		GameTerminal.Visible = true;
+		// 'Prevents' writing to the input when the terminal is toggled
+		_yat.CurrentTerminal.Input.Clear();
 
 		EmitSignal(SignalName.TerminalOpened);
 	}
