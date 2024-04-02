@@ -23,6 +23,11 @@ All notable changes to this project will be documented in this file.
 
 -   EYatEnableLocation.cs.
 
+### Fixed
+
+-   Closing and opening the terminal again deletes the displayed content.
+-   Terminal state toggle button could write to additional terminals running.
+
 ## [1.27.1-beta 2024-03-25]
 
 ### Added
