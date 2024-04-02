@@ -34,6 +34,8 @@ public partial class Input : LineEdit
 	{
 		if (Terminal.Locked || string.IsNullOrEmpty(input)) return;
 
+		input = CheckQuickCommands(input);
+
 		var command = Parser.ParseCommand(input);
 
 		if (command.Length == 0) return;
@@ -42,6 +44,16 @@ public partial class Input : LineEdit
 
 		Terminal.CommandManager.Run(command, Terminal);
 		Clear();
+	}
+
+	private string CheckQuickCommands(string input)
+	{
+		if (_yat.Commands.QuickCommands.Commands.TryGetValue(input, out string? value))
+		{
+			return value;
+		}
+
+		return input;
 	}
 
 	private void AddToTheHistory(string command)
