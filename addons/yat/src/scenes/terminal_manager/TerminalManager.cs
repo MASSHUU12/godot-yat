@@ -16,9 +16,14 @@ public partial class TerminalManager : Node
 
 	public override void _Ready()
 	{
-		_yat = GetNode<YAT>("/root/YAT");
-
 		GameTerminal = GD.Load<PackedScene>("uid://dsyqv187j7w76").Instantiate<GameTerminal>();
+
+		_yat = GetNode<YAT>("/root/YAT");
+		_yat.Ready += () =>
+		{
+			AddChild(GameTerminal);
+			GameTerminal.Visible = false;
+		};
 	}
 
 	public override void _UnhandledInput(InputEvent @event)
@@ -30,24 +35,20 @@ public partial class TerminalManager : Node
 	{
 		if (!_yat.YatEnable.YatEnabled) return;
 
-		if (GameTerminal.IsInsideTree()) CloseTerminal();
+		if (GameTerminal.Visible) CloseTerminal();
 		else OpenTerminal();
 	}
 
 	public void OpenTerminal()
 	{
-		if (GameTerminal.IsInsideTree()) return;
-
-		AddChild(GameTerminal);
+		GameTerminal.Visible = true;
 
 		EmitSignal(SignalName.TerminalOpened);
 	}
 
 	public void CloseTerminal()
 	{
-		if (!GameTerminal.IsInsideTree()) return;
-
-		RemoveChild(GameTerminal);
+		GameTerminal.Visible = false;
 
 		EmitSignal(SignalName.TerminalClosed);
 	}
