@@ -9,13 +9,14 @@ All notable changes to this project will be documented in this file.
 -   YatEnable scene.
 -   YAT can be enabled when a specific CMD argument is passed to executable.
 -   '--interval' option to Ds command.
+-   It's now possible to use Quick Commands w/o GUI.
 
 ### Changed
 
 -   The display of the contents of the 'list' command has been improved (#271).
 -   Moved Yat Enable preferences to YatEnable scene.
 -   Reworked Yat Enable functionality.
--   Updated the documentation for Yat Enable to reflect the latest changes.
+-   Updated the documentation to reflect the latest changes.
 -   DebugScreen updates WaitTime every time it resets.
 
 ### Removed
