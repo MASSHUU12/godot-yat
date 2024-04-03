@@ -9,8 +9,7 @@ namespace YAT.Commands;
 
 [Command(
 	"watch",
-	"Runs user-defined (not threaded) commands at regular intervals.",
-	"[b]Usage[/b]: watch <command> <interval (in seconds)> [args...]"
+	"Runs user-defined (not threaded) commands at regular intervals."
 )]
 [Threaded]
 [Argument("command", "string", "The command to run.")]

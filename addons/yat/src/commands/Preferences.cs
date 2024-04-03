@@ -6,7 +6,6 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("preferences", aliases: "prefs")]
-[Usage("prefs")]
 [Description("Creates a window with the available preferences.")]
 public sealed class Preferences : ICommand
 {

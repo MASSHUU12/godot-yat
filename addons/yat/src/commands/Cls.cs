@@ -4,7 +4,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("cls", "Clears the console.", "[b]Usage[/b]: cls", "clear")]
+[Command("cls", "Clears the console.", aliases: "clear")]
 public sealed class Cls : ICommand
 {
 	public CommandResult Execute(CommandData data)

@@ -7,7 +7,6 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("traceroute", aliases: "trace")]
-[Usage("traceroute [i]hostname[/i]")]
 [Description("Displays the route that packets take to reach the specified host.")]
 [Argument("hostname", "string", "The host to trace the route to.")]
 [Option("-t", "int(1:32767)", "The maximum time to wait for each reply, in milliseconds.", 10000)]

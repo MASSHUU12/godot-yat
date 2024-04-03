@@ -5,7 +5,6 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("lcr", "Shows the result of the last command.")]
-[Usage("lcr")]
 [Option("-l", "bool", "Also displays name of the result.")]
 public sealed class Lcr : ICommand
 {

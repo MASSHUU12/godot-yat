@@ -7,7 +7,6 @@ namespace YAT.Commands;
 
 [Command("forcegc", aliases: new[] { "fgc" })]
 [Description("Forces the garbage collector to run.")]
-[Usage("forcegc")]
 [Option("-g", "int(0:)", "The number of the oldest generation to be garbage collected.", 0)]
 [Option(
 	"-m",

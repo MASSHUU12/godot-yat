@@ -5,7 +5,6 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("echo")]
-[Usage("echo [i]text[/i]")]
 [Description("Displays the specified text.")]
 [Argument("message", "string", "The text to display.")]
 public sealed class Echo : ICommand

@@ -12,8 +12,7 @@ namespace YAT.Commands;
 	"view",
 	"Changes the rendering mode of the viewport.\n"
 	+ "You can use either the name of the mode or the integer value.\n"
-	+ "See: [url=https://docs.godotengine.org/en/stable/classes/class_renderingserver.html#class-renderingserver-method-set-debug-generate-wireframes]ViewportDebugDraw[/url].",
-	"[b]Usage[/b]: view [i]type[/i]\n\n"
+	+ "See: [url=https://docs.godotengine.org/en/stable/classes/class_renderingserver.html#class-renderingserver-method-set-debug-generate-wireframes]ViewportDebugDraw[/url]."
 )]
 [Argument("mode", "string|int(0:)", "The type of debug draw to use.")]
 public sealed class View : ICommand

@@ -8,7 +8,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("cowsay", "Make a cow say something.", "[b]Usage[/b]: cowsay [i]message[/i]")]
+[Command("cowsay", "Make a cow say something.")]
 [Argument("message", "string", "The message to make the cow say.")]
 [Option("-b", "bool", "Borg")]
 [Option("-d", "bool", "Dead")]

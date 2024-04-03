@@ -11,7 +11,6 @@ using static YAT.Helpers.OS;
 namespace YAT.Commands;
 
 [Command("ss", "Makes a screenshot.")]
-[Usage("ss")]
 [Option("-cp", "bool", "Copy the screenshot to the clipboard.")]
 [Option(
 	"-path",

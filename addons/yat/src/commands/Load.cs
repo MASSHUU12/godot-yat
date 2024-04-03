@@ -5,7 +5,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("load", "Loads specified object into the scene.", "[b]Usage[/b]: load [i]object_path[/i]")]
+[Command("load", "Loads specified object into the scene.")]
 [Argument("object_path", "string", "The object path to load.")]
 [Option("-absolute", "bool", "If true, the object will be loaded at the origin, otherwise relative positioning will be used.")]
 [Option("-x", "float", "The X position of the object.", 0f)]

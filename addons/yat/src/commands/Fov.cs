@@ -4,7 +4,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("fov", "Sets the field of view for the camera.", "[b]Usage[/b]: fov [i]fov[/i]")]
+[Command("fov", "Sets the field of view for the camera.")]
 [Argument("fov", "float(1:179)", "The field of view to set.")]
 public sealed class Fov : ICommand
 {

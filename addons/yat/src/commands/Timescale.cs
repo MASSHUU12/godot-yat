@@ -5,7 +5,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("timescale", "Sets the timescale.", "[b]Usage[/b]: timescale")]
+[Command("timescale", "Sets the timescale.")]
 [Option("-set", "float", "Sets the timescale to the specified number.", 1.0f)]
 public sealed class Timescale : ICommand
 {

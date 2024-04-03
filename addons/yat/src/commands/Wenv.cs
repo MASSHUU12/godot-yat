@@ -5,7 +5,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("wenv", "Manages the world environment.", "[b]Usage[/b]: wenv [i]action[/i]")]
+[Command("wenv", "Manages the world environment.")]
 [Argument("action", "remove|restore", "Removes or restores the world environment.")]
 public sealed class Wenv : ICommand
 {

@@ -8,7 +8,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("cat", "Prints content of a file.", "[b]Usage[/b]: cat [i]file[/i]")]
+[Command("cat", "Prints content of a file.")]
 [Argument("file", "string", "The file to print.")]
 [Option("-l", "int(1:99)", "Limits the number of lines to print.", -1)]
 [Option(

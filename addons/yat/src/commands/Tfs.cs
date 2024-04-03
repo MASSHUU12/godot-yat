@@ -6,7 +6,6 @@ using static Godot.DisplayServer;
 namespace YAT.Commands;
 
 [Command("tfs", "Toggles the full screen mode.")]
-[Usage("tfs")]
 [Option("-e", "bool", "Enables the exclusive full screen mode.")]
 public sealed class Tfs : ICommand
 {

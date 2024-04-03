@@ -5,7 +5,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("sr", "Set the screen resolution.", "sr [i]width[/i] [i]height[/i]")]
+[Command("sr", "Set the screen resolution.")]
 [Option("-w", "int(1:)", "The width of the screen resolution.", -1)]
 [Option("-h", "int(1:)", "The height of the screen resolution.", -1)]
 [Option("-s", "float(0:2)", "Resolution scale.", -1f)]

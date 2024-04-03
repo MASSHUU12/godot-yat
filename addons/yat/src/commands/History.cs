@@ -9,7 +9,6 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("history", aliases: "hist")]
-[Usage("history [i]action[/i]")]
 [Description("Manages the command history of the current session.")]
 [Argument("action", "clear|list|int(0:)", "The action to perform.")]
 public sealed class History : ICommand

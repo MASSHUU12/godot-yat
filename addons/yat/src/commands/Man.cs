@@ -8,7 +8,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("man", "Displays the manual for a command.", "[b]Usage[/b]: man [i]command_name[/i]")]
+[Command("man", "Displays the manual for a command.")]
 [Argument("command_name", "string", "The name of the command to display the manual for.")]
 [Option("-e", "bool", "Embed the manual in the terminal. Instead of opening in a new window.")]
 public sealed class Man : ICommand

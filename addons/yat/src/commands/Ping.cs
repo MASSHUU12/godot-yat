@@ -9,8 +9,7 @@ namespace YAT.Commands;
 
 [Command(
 	"ping",
-	"Sends ICMP (Internet Control Message Protocol) echo request to the server.",
-	"[b]Usage[/b]: ping [i]target[/i] [i]options[/i]"
+	"Sends ICMP (Internet Control Message Protocol) echo request to the server."
 )]
 [Threaded]
 [Argument("hostname", "string", "The host to trace the route to.")]

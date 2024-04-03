@@ -6,7 +6,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("set", "Sets a variable to a value.", "[b]Usage[/b]: set [i]variable[/i] [i]value[/i]")]
+[Command("set", "Sets a variable to a value.")]
 [Argument("variable", "string", "The name of the variable to set.")]
 [Argument("value", "string", "The value to set the variable to.")]
 public partial class Set : Extensible, ICommand

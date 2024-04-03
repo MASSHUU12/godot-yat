@@ -8,7 +8,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("ds", "Displays items in the debug screen.", "[b]Usage[/b]: ds")]
+[Command("ds", "Displays items in the debug screen.")]
 [Option("-h", "bool", "Displays this help message.")]
 [Option("-i", "string...", "Items to display.", new string[] { })]
 [Option("--interval", "float(0.05:5)", "Update interval.", 0f)]
