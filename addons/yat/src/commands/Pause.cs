@@ -4,7 +4,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("pause", "Toggles the game pause state.", "[b]Usage[/b]: pause")]
+[Command("pause", "Toggles the game pause state.")]
 public sealed class Pause : ICommand
 {
 	public CommandResult Execute(CommandData data)

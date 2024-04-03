@@ -5,7 +5,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("sys", "Runs a system command.", "[b]sys[/b] [i]command[/i]")]
+[Command("sys", "Runs a system command.")]
 [Argument(
 	"command",
 	"string",

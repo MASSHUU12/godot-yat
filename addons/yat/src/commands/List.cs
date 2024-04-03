@@ -9,7 +9,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("list", "List all available commands", "[b]Usage[/b]: list", "lc")]
+[Command("list", "List all available commands")]
 [Option("-f", "bool", "Flush the cache before listing commands.")]
 public sealed class List : ICommand
 {

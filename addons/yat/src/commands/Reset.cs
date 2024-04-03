@@ -6,8 +6,7 @@ namespace YAT.Commands;
 
 [Command(
 	"reset",
-	"Resets the terminal to its default position and/or size.",
-	"[b]reset[/b] [i]action[/i]"
+	"Resets the terminal to its default position and/or size."
 )]
 [Argument("action", "all|position|size", "The action to perform.")]
 public sealed class Reset : ICommand

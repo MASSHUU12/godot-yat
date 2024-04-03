@@ -4,7 +4,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("restart", "Restarts the level.", "[b]Usage[/b]: restart", "reboot")]
+[Command("restart", "Restarts the level.", aliases: "reboot")]
 public sealed class Restart : ICommand
 {
 	public CommandResult Execute(CommandData data)

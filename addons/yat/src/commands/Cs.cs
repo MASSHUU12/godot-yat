@@ -6,7 +6,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("cs", "Changes the scene.", "[b]Usage[/b]: cs [i]scene[/i]")]
+[Command("cs", "Changes the scene.")]
 [Argument("scene", "string", "The scene to change to.")]
 public partial class Cs : Node, ICommand
 {

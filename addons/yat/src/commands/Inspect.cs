@@ -9,7 +9,6 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("inspect", "Inspect selected object.", aliases: new[] { "ins" })]
-[Usage("inspect [i]object[/i]")]
 [Option("-ray", "bool", "Use RayCast to select an object.")]
 [Option("-all", "bool", "Inspect all properties. Some properties might not be displayed correctly.")]
 public sealed class Inspect : ICommand

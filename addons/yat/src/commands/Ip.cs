@@ -8,7 +8,6 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("ip")]
-[Usage("ip [i]action[/i]")]
 [Description("Displays information about the local network interfaces.")]
 [Argument("action", "addr", "The action to perform.")]
 public sealed class Ip : ICommand

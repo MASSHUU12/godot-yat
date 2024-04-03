@@ -6,7 +6,6 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("version", "Displays the current game version.")]
-[Usage("version")]
 public sealed class Version : ICommand
 {
 	private static readonly string _gameName, _gameVersion, _version;

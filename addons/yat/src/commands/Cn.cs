@@ -8,11 +8,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command(
-	"cn",
-	"Changes the selected node to the specified node path.",
-	"[b]Usage[/b]: cn [i]node_path[/i]"
-)]
+[Command("cn", "Changes the selected node to the specified node path.")]
 [Argument(
 	"node_path",
 	"string",

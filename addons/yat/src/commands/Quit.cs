@@ -5,7 +5,7 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("quit", "By default quits the game.", "[b]Usage[/b]: quit", "exit")]
+[Command("quit", "By default quits the game.", aliases: "exit")]
 [Option("-t", "bool", "Closes the terminal.")]
 public sealed class Quit : ICommand
 {

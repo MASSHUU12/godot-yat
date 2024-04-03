@@ -7,7 +7,6 @@ namespace YAT.Commands;
 
 [Command("quickcommands", aliases: "qc")]
 [Description("Manages Quick Commands.")]
-[Usage("qc [i]action[/i]")]
 [Argument("action", "add|remove|list", "The action to perform.")]
 [Option("-name", "string", "The name of the quick command.")]
 [Option("-command", "string", "The command to execute when the quick command is called.")]
