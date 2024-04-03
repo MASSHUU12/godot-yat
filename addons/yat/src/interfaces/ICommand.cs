@@ -42,6 +42,30 @@ public partial interface ICommand
 	public static CommandResult Ok(string message = "") =>
 		new(ECommandResult.Ok, message);
 
+	public virtual StringBuilder GenerateUsageInformation()
+	{
+		var usage = this.GetAttribute<UsageAttribute>()!;
+		var command = this.GetAttribute<CommandAttribute>()!;
+		var arguments = this.GetAttributes<ArgumentAttribute>();
+
+		string GetUsage()
+		{
+			if (command.Manual != string.Empty) return command.Manual;
+
+			if (usage is not null) return $"[b]Usage[/b]: {usage.Usage}";
+
+			return string.Format(
+				"[b]Usage[/b]: {0} {1}",
+				command.Name,
+				arguments?.Length > 0
+					? string.Join(' ', arguments.Select(arg => $"[i]{arg.Name}[/i]"))
+					: string.Empty
+			);
+		}
+
+		return new(GetUsage());
+	}
+
 	public virtual StringBuilder GenerateCommandManual()
 	{
 		CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this)!;
@@ -59,7 +83,7 @@ public partial interface ICommand
 			)
 		);
 		sb.AppendLine($"[p align=center]{description?.Description ?? command.Description}[/p]");
-		sb.AppendLine(usage is null ? command.Manual : $"\n[b]Usage[/b]: {usage?.Usage}");
+		sb.Append(GenerateUsageInformation());
 		sb.AppendLine("\n[b]Aliases[/b]:");
 		sb.AppendLine(command.Aliases.Length > 0
 				? string.Join("\n", command.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
