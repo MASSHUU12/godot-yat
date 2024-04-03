@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.28.0-beta 2024-04-03]
 
 ### Added
 
