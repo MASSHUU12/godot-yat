@@ -13,6 +13,8 @@ The `Command` attribute accepts the command `name`, and optionally its `descript
 For description and manual, you can also use `Description` and `Usage` attributes.
 The description and manual/usage have BBCode support.
 
+If you do not specify **manual** or **Usage** it'll be automatically generated based on arguments.
+
 The execution of the command begins in the `Execute` method.
 The `Execute` method accepts `CommandData`, which contains probably all the things your command could ever need, these are things like: reference to YAT and BaseTerminal, raw arguments & options, converted arguments & options, cancellation token and more.
 
