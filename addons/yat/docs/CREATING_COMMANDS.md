@@ -62,6 +62,7 @@ In the passed `CommandData` you can find the `CancellationToken` which indicates
 
 ### Overridable methods
 
+-   GenerateUsageInformation
 -   GenerateCommandManual
 -   GenerateArgumentsManual
 -   GenerateOptionsManual
