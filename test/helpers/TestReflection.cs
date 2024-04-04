@@ -3,6 +3,8 @@ using Godot;
 using YAT.Attributes;
 using YAT.Helpers;
 using Shouldly;
+using YAT.Commands;
+using YAT.Interfaces;
 
 namespace Test;
 
@@ -10,11 +12,15 @@ public class TestReflection : TestClass
 {
 	public TestReflection(Node testScene) : base(testScene) { }
 
+	private interface ITestInterface { }
+
 	[Command("test")]
 	[Argument("arg1", "string")]
 	[Argument("arg3", "string")]
 	[Argument("arg3", "string")]
 	private class TestClass { }
+
+	private class TestClassWithInterface : ITestInterface { }
 
 	[Test]
 	public static void TestGetAttribute_AttributePresent()
@@ -67,5 +73,17 @@ public class TestReflection : TestClass
 		var hasAttribute = Reflection.HasAttribute<OptionAttribute>(new TestClass());
 
 		hasAttribute.ShouldBeFalse();
+	}
+
+	[Test]
+	public static void TestHasInterface_InterfacePresent()
+	{
+		new Cls().HasInterface<ICommand>().ShouldBeTrue();
+	}
+
+	[Test]
+	public static void TestHasInterface_InterfaceAbsent()
+	{
+		new TestClass().HasInterface<ITestInterface>().ShouldBeFalse();
 	}
 }
