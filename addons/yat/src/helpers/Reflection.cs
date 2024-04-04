@@ -38,15 +38,11 @@ public static class Reflection
 
 	public static bool HasInterface<T>(this object obj) where T : notnull
 	{
-		if (obj is null) return false;
-
-		return obj.GetType().GetInterface(nameof(T)) is not null;
+		return obj.GetType().GetInterface(typeof(T).FullName ?? string.Empty, true) is not null;
 	}
 
 	public static bool HasInterface(Type type, StringName interfaceName)
 	{
-		if (type is null) return false;
-
-		return type.GetInterface(interfaceName) is not null;
+		return type.GetInterface(interfaceName, true) is not null;
 	}
 }

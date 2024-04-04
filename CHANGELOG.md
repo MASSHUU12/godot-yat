@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 -   Support for automatic usage info generation.
 
+### Fixed
+
+-   HasInterface correctly checks if interface is present.
+
 ## [1.28.0-beta 2024-04-03]
 
 ### Added
