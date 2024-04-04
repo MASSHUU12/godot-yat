@@ -17,29 +17,26 @@ public class TestReflection : TestClass
 	private class TestClass { }
 
 	[Test]
-	public void TestGetAttribute_AttributePresent()
+	public static void TestGetAttribute_AttributePresent()
 	{
-		var obj = new TestClass();
-		var attribute = Reflection.GetAttribute<CommandAttribute>(obj);
+		var attribute = Reflection.GetAttribute<CommandAttribute>(new TestClass());
 
 		attribute.ShouldNotBeNull();
 		attribute.Name.ShouldBe("test");
 	}
 
 	[Test]
-	public void TestGetAttribute_AttributeNotPresent()
+	public static void TestGetAttribute_AttributeNotPresent()
 	{
-		var obj = new TestClass();
-		var attribute = Reflection.GetAttribute<OptionAttribute>(obj);
+		var attribute = Reflection.GetAttribute<OptionAttribute>(new TestClass());
 
 		attribute.ShouldBeNull();
 	}
 
 	[Test]
-	public void TestGetAttribute_AttributesPresent()
+	public static void TestGetAttribute_AttributesPresent()
 	{
-		var obj = new TestClass();
-		var attributes = Reflection.GetAttributes<ArgumentAttribute>(obj);
+		var attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
 
 		attributes.ShouldNotBeNull();
 		attributes.Length.ShouldBe(3);
@@ -49,28 +46,25 @@ public class TestReflection : TestClass
 	}
 
 	[Test]
-	public void TestGetAttribute_AttributesNotPresent()
+	public static void TestGetAttribute_AttributesNotPresent()
 	{
-		var obj = new TestClass();
-		var attributes = Reflection.GetAttributes<OptionAttribute>(obj);
+		var attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
 
 		attributes.ShouldBeEmpty();
 	}
 
 	[Test]
-	public void TestHasAttribute_AttributePresent()
+	public static void TestHasAttribute_AttributePresent()
 	{
-		var obj = new TestClass();
-		var hasAttribute = Reflection.HasAttribute<CommandAttribute>(obj);
+		var hasAttribute = Reflection.HasAttribute<CommandAttribute>(new TestClass());
 
 		hasAttribute.ShouldBeTrue();
 	}
 
 	[Test]
-	public void TestHasAttribute_AttributeNotPresent()
+	public static void TestHasAttribute_AttributeNotPresent()
 	{
-		var obj = new TestClass();
-		var hasAttribute = Reflection.HasAttribute<OptionAttribute>(obj);
+		var hasAttribute = Reflection.HasAttribute<OptionAttribute>(new TestClass());
 
 		hasAttribute.ShouldBeFalse();
 	}
