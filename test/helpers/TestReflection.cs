@@ -6,9 +6,9 @@ using Shouldly;
 
 namespace Test;
 
-public class TestAttributeHelper : TestClass
+public class TestReflection : TestClass
 {
-	public TestAttributeHelper(Node testScene) : base(testScene) { }
+	public TestReflection(Node testScene) : base(testScene) { }
 
 	[Command("test")]
 	[Argument("arg1", "string")]
