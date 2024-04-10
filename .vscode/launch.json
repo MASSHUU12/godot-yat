@@ -53,32 +53,12 @@
 			"stopAtEntry": false
 		},
 		{
-			"name": "🧪 Debug Tests",
+			"name": "🧪 Run Tests",
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
 			"program": "${env:GODOT}",
-			"args": [
-				"res://test/Test.tscn",
-				// These command line flags are used by GoDotTest to run tests.
-				"--run-tests",
-				"--quit-on-finish"
-			],
-			"cwd": "${workspaceFolder}",
-			"stopAtEntry": false
-		},
-		{
-			"name": "🧪 Debug Current Test",
-			"type": "coreclr",
-			"request": "launch",
-			"preLaunchTask": "build",
-			"program": "${env:GODOT}",
-			"args": [
-				"res://test/Test.tscn",
-				// These command line flags are used by GoDotTest to run tests.
-				"--run-tests=${fileBasenameNoExtension}",
-				"--quit-on-finish"
-			],
+			"args": ["--headless", "--", "--confirma-quit", "--confirma-run"],
 			"cwd": "${workspaceFolder}",
 			"stopAtEntry": false
 		}

@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://baxebi0q3s62s"]
+
+[ext_resource type="PackedScene" uid="uid://cqbaquyf403ot" path="res://addons/confirma/src/scenes/test_runner/TestRunner.tscn" id="1_etj6j"]
+[ext_resource type="Script" path="res://addons/confirma/src/scenes/test_runner_editor/TestRunnerEditor.cs" id="2_y6emg"]
+
+[node name="TestRunnerEditor" instance=ExtResource("1_etj6j")]
+script = ExtResource("2_y6emg")

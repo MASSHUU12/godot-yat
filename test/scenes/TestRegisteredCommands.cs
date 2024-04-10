@@ -1,18 +1,16 @@
-using Chickensoft.GoDotTest;
-using Godot;
+using Confirma;
+using Confirma.Attributes;
 using YAT.Attributes;
+using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
-using Shouldly;
-using YAT.Enums;
 
-namespace Test;
+namespace YAT.Test;
 
-public class TestRegisteredCommands : TestClass
+[TestClass]
+public static class TestRegisteredCommands
 {
-	public TestRegisteredCommands(Node testScene) : base(testScene) { }
-
 	[Command("test")]
 	private class TestCommand : ICommand
 	{
@@ -30,12 +28,11 @@ public class TestRegisteredCommands : TestClass
 		public static CommandResult Execute(CommandData data) => ICommand.NotImplemented();
 	}
 
-	[Test]
 	public static void TestAddCommand()
 	{
-		RegisteredCommands.AddCommand(typeof(TestCommand)).ShouldBe(ECommandAdditionStatus.Success);
-		RegisteredCommands.AddCommand(typeof(TestCommand)).ShouldBe(ECommandAdditionStatus.ExistentCommand);
-		RegisteredCommands.AddCommand(typeof(TestCommandWithoutAttribute)).ShouldBe(ECommandAdditionStatus.MissingAttribute);
-		RegisteredCommands.AddCommand(typeof(TestCommandWithoutInterface)).ShouldBe(ECommandAdditionStatus.UnknownCommand);
+		RegisteredCommands.AddCommand(typeof(TestCommand)).ConfirmEqual(ECommandAdditionStatus.Success);
+		RegisteredCommands.AddCommand(typeof(TestCommand)).ConfirmEqual(ECommandAdditionStatus.ExistentCommand);
+		RegisteredCommands.AddCommand(typeof(TestCommandWithoutAttribute)).ConfirmEqual(ECommandAdditionStatus.MissingAttribute);
+		RegisteredCommands.AddCommand(typeof(TestCommandWithoutInterface)).ConfirmEqual(ECommandAdditionStatus.UnknownCommand);
 	}
 }

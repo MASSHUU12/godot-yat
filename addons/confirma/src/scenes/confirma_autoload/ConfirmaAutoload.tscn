@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dywj60fc0bxjt"]
+
+[ext_resource type="Script" path="res://addons/confirma/src/scenes/confirma_autoload/ConfirmaAutoload.cs" id="1_e3uuo"]
+
+[node name="ConfirmaAutoload" type="Node"]
+script = ExtResource("1_e3uuo")

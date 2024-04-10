@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqbaquyf403ot"]
+
+[ext_resource type="Script" path="res://addons/confirma/src/scenes/test_runner/TestRunner.cs" id="1_0kl5h"]
+[ext_resource type="Theme" uid="uid://cro8poiyqgqac" path="res://addons/confirma/src/scenes/test_runner/test_runner_theme.tres" id="2_0jt6n"]
+
+[node name="TestRunner" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0kl5h")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_0jt6n")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Output" type="RichTextLabel" parent="PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+text = "Lorem [b]ipsum[/b]"
+scroll_following = true
