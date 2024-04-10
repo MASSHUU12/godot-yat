@@ -1,17 +1,15 @@
-using Chickensoft.GoDotTest;
-using Godot;
+using Confirma;
+using Confirma.Attributes;
 using YAT.Attributes;
-using YAT.Helpers;
-using Shouldly;
 using YAT.Commands;
+using YAT.Helpers;
 using YAT.Interfaces;
 
-namespace Test;
+namespace YAT.Test;
 
-public class TestReflection : TestClass
+[TestClass]
+public static class TestReflection
 {
-	public TestReflection(Node testScene) : base(testScene) { }
-
 	private interface ITestInterface { }
 
 	[Command("test")]
@@ -22,68 +20,68 @@ public class TestReflection : TestClass
 
 	private class TestClassWithInterface : ITestInterface { }
 
-	[Test]
+	[TestCase]
 	public static void TestGetAttribute_AttributePresent()
 	{
 		var attribute = Reflection.GetAttribute<CommandAttribute>(new TestClass());
 
-		attribute.ShouldNotBeNull();
-		attribute.Name.ShouldBe("test");
+		attribute.ConfirmNotNull();
+		attribute?.Name.ConfirmEqual("test");
 	}
 
-	[Test]
+	[TestCase]
 	public static void TestGetAttribute_AttributeNotPresent()
 	{
 		var attribute = Reflection.GetAttribute<OptionAttribute>(new TestClass());
 
-		attribute.ShouldBeNull();
+		attribute.ConfirmNull();
 	}
 
-	[Test]
+	[TestCase]
 	public static void TestGetAttribute_AttributesPresent()
 	{
 		var attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
 
-		attributes.ShouldNotBeNull();
-		attributes.Length.ShouldBe(3);
-		attributes[0].Name.ToString().ShouldBe("arg1");
-		attributes[1].Name.ToString().ShouldBe("arg3");
-		attributes[2].Name.ToString().ShouldBe("arg3");
+		attributes.ConfirmNotNull();
+		attributes?.Length.ConfirmEqual(3);
+		attributes?[0].Name.ToString().ConfirmEqual("arg1");
+		attributes?[1].Name.ToString().ConfirmEqual("arg3");
+		attributes?[2].Name.ToString().ConfirmEqual("arg3");
 	}
 
-	[Test]
+	[TestCase]
 	public static void TestGetAttribute_AttributesNotPresent()
 	{
 		var attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
 
-		attributes.ShouldBeEmpty();
+		attributes?.ConfirmEmpty();
 	}
 
-	[Test]
+	[TestCase]
 	public static void TestHasAttribute_AttributePresent()
 	{
 		var hasAttribute = Reflection.HasAttribute<CommandAttribute>(new TestClass());
 
-		hasAttribute.ShouldBeTrue();
+		hasAttribute.ConfirmTrue();
 	}
 
-	[Test]
+	[TestCase]
 	public static void TestHasAttribute_AttributeNotPresent()
 	{
 		var hasAttribute = Reflection.HasAttribute<OptionAttribute>(new TestClass());
 
-		hasAttribute.ShouldBeFalse();
+		hasAttribute.ConfirmFalse();
 	}
 
-	[Test]
+	[TestCase]
 	public static void TestHasInterface_InterfacePresent()
 	{
-		new Cls().HasInterface<ICommand>().ShouldBeTrue();
+		new Cls().HasInterface<ICommand>().ConfirmTrue();
 	}
 
-	[Test]
+	[TestCase]
 	public static void TestHasInterface_InterfaceAbsent()
 	{
-		new TestClass().HasInterface<ITestInterface>().ShouldBeFalse();
+		new TestClass().HasInterface<ITestInterface>().ConfirmFalse();
 	}
 }
