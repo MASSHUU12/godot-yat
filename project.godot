@@ -27,4 +27,4 @@ project/assembly_name="godot-yat"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/confirma/addons/confirma/plugin.cfg", "res://addons/confirma/plugin.cfg", "res://addons/yat/plugin.cfg")
+enabled=PackedStringArray("res://addons/confirma/plugin.cfg", "res://addons/yat/plugin.cfg")
