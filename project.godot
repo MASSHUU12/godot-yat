@@ -21,6 +21,11 @@ config/icon="res://yat_icon.png"
 YAT="*res://addons/yat/src/YAT.tscn"
 Confirma="*res://addons/confirma/src/scenes/confirma_autoload/ConfirmaAutoload.tscn"
 
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
+
 [dotnet]
 
 project/assembly_name="godot-yat"
