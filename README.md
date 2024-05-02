@@ -1,7 +1,7 @@
 <div align="center">
-	<img src="./addons/yat/docs/assets/yat_icon_baner.png" />
-	<h3>YAT</h1>
-	<p>YAT is an addon that provides a customizable, in-game terminal for your project.</p>
+ <img src="./addons/yat/docs/assets/yat_icon_baner.png" />
+ <h3>YAT</h1>
+ <p>YAT is an addon that provides a customizable, in-game terminal for your project.</p>
 </div>
 
 > [!NOTE]
@@ -11,33 +11,31 @@ YAT stands for Yet Another Terminal. The goal of this project is to create a rea
 
 The second goal, which is particularly important to me, is to make YAT as open as possible to change, personalization, and expansion, so that everyone can customize it as much as possible for their own project.
 
-Of course, creating such a complex and ambitious project is extremely difficult (especially alone), so it will still be in beta for a long time to come.
-
 ## Prerequisites
 
--   [.NET SDK 7^](https://dotnet.microsoft.com/en-us/download)
--   [.NET enabled Godot 4.2^](https://godotengine.org/download)
--   C# 11^
+- [.NET SDK 7^](https://dotnet.microsoft.com/en-us/download)
+- [.NET enabled Godot 4.2^](https://godotengine.org/download)
+- C# 11^
 
 Make sure to update your [.csproj](./addons/yat/docs/USAGE.md).
-
-## Features
-
--   Over 35 built-in commands
--   Small size footprint (< 256 KB)
--   Custom commands (regular & threaded), extensions and windows
--   Automatic input validation (arguments, options)
--   Debug screen (FPS, CPU, GPU, etc.)
--   Access to the node tree (experimental)
--   Plugin customization
--   Quick Commands
--   Autocompletion
--   Script templates
--   Ability to restrict access to the plugin
 
 ## Showcase
 
 <video src="https://github.com/MASSHUU12/godot-yat/assets/61974579/fff0af36-ef62-4e1d-b3c7-ff680f30c100" controls title="YAT showcase video"></video>
+
+### Features
+
+- Over 35 built-in commands
+- Small size footprint (< 256 KB)
+- Custom commands (regular & threaded), extensions and windows
+- Automatic input validation (arguments, options)
+- Debug screen (FPS, CPU, GPU, etc.)
+- Access to the node tree (experimental)
+- Plugin customization
+- Quick Commands
+- Autocompletion
+- Script templates
+- Ability to restrict access to the plugin
 
 ## Documentation
 
