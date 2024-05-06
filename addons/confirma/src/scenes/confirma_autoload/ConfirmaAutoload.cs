@@ -1,30 +1,80 @@
-using System.Linq;
+using Confirma.Classes;
+using Confirma.Helpers;
+using Confirma.Types;
 using Godot;
 
 namespace Confirma.Scenes;
 
+[Tool]
 public partial class ConfirmaAutoload : Node
 {
-	public bool IsHeadless { get; private set; } = false;
-	public bool QuitAfterTests { get; private set; } = false;
-
-	private const string _testRunnerUID = "uid://cq76c14wl2ti3";
-	private const string _paramToRunTests = "--confirma-run";
-	private const string _paramQuitAfterTests = "--confirma-quit";
+	public TestsProps Props = new();
 
 	public override void _Ready()
 	{
-		if (!OS.GetCmdlineUserArgs().Contains(_paramToRunTests)) return;
-		if (OS.GetCmdlineUserArgs().Contains(_paramQuitAfterTests)) QuitAfterTests = true;
-		if (DisplayServer.GetName() == "headless") IsHeadless = true;
+		CheckArguments();
 
-		RunTests();
+		if (!Props.RunTests) return;
+
+		SetupGlobals();
+		ChangeScene();
 	}
 
-	private void RunTests()
+	private void SetupGlobals()
 	{
-		GetTree().CallDeferred("change_scene_to_file", _testRunnerUID);
+		Log.IsHeadless = Props.IsHeadless;
+		Global.Root = GetTree().Root;
+	}
 
-		if (QuitAfterTests) GetTree().Quit();
+	private void CheckArguments()
+	{
+		string[] args = OS.GetCmdlineUserArgs();
+
+		if (DisplayServer.GetName() == "headless") Props.IsHeadless = true;
+
+		foreach (var arg in args)
+		{
+			if (!Props.RunTests && arg.StartsWith("--confirma-run"))
+			{
+				Props.RunTests = true;
+
+				Props.ClassName = arg.Find('=') == -1
+					? string.Empty
+					: arg.Split('=')[1];
+
+				continue;
+			}
+
+			if (!Props.QuitAfterTests && arg == "--confirma-quit")
+			{
+				Props.QuitAfterTests = true;
+				continue;
+			}
+
+			if (!Props.ExitOnFail && arg == "--confirma-exit-on-failure")
+			{
+				Props.ExitOnFail = true;
+				continue;
+			}
+
+			if (!Props.IsVerbose && arg == "--confirma-verbose")
+			{
+				Props.IsVerbose = true;
+				continue;
+			}
+
+			if (!Props.DisableParallelization && arg == "--confirma-sequential")
+			{
+				Props.DisableParallelization = true;
+				continue;
+			}
+		}
+	}
+
+	private void ChangeScene()
+	{
+		GetTree().CallDeferred("change_scene_to_file", "uid://cq76c14wl2ti3");
+
+		if (Props.QuitAfterTests) GetTree().Quit();
 	}
 }

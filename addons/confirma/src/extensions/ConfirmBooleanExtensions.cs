@@ -1,4 +1,6 @@
-namespace Confirma;
+using Confirma.Exceptions;
+
+namespace Confirma.Extensions;
 
 public static class ConfirmBooleanExtensions
 {

@@ -1,12 +1,13 @@
 using System;
-using Confirma;
 using Confirma.Attributes;
 using Confirma.Classes;
+using Confirma.Extensions;
 using YAT.Classes;
 
 namespace YAT.Test;
 
 [TestClass]
+[Parallelizable]
 public static class TestParser
 {
 	[TestCase("", new string[] { })]

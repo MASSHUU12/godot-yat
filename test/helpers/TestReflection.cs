@@ -1,5 +1,5 @@
-using Confirma;
 using Confirma.Attributes;
+using Confirma.Extensions;
 using YAT.Attributes;
 using YAT.Commands;
 using YAT.Helpers;
@@ -8,6 +8,7 @@ using YAT.Interfaces;
 namespace YAT.Test;
 
 [TestClass]
+[Parallelizable]
 public static class TestReflection
 {
 	private interface ITestInterface { }

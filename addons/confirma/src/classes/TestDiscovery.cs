@@ -8,16 +8,16 @@ namespace Confirma.Classes;
 
 public class TestDiscovery
 {
-	public static IEnumerable<TestClass> DiscoverTestClasses(Assembly assembly)
+	public static IEnumerable<TestingClass> DiscoverTestClasses(Assembly assembly)
 	{
 		return Reflection.GetTestClassesFromAssembly(assembly)
-			.Select(testClass => new TestClass(testClass));
+			.Select(testClass => new TestingClass(testClass));
 	}
 
-	public static IEnumerable<TestMethod> DiscoverTestMethods(Type testClass)
+	public static IEnumerable<TestingMethod> DiscoverTestMethods(Type testClass)
 	{
 		return Reflection.GetTestMethodsFromType(testClass)
-			.Select(method => new TestMethod(method));
+			.Select(method => new TestingMethod(method));
 	}
 
 	public static IEnumerable<TestCase> DiscoverTestCases(MethodInfo method)

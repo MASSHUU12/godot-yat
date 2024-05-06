@@ -1,6 +1,6 @@
 using System;
-using Confirma;
 using Confirma.Attributes;
+using Confirma.Extensions;
 using YAT.Attributes;
 using YAT.Classes;
 using YAT.Interfaces;
@@ -9,6 +9,7 @@ using YAT.Types;
 namespace YAT.Test;
 
 [TestClass]
+[Parallelizable]
 public static class TestExtensible
 {
 	[Extension("test", "Test extension.", "Test extension manual.", "test_alias", "test_alias2")]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bl21wviqvff84"]
+[gd_scene load_steps=8 format=3 uid="uid://bl21wviqvff84"]
 
 [ext_resource type="Script" path="res://addons/confirma/src/scenes/test_bottom_panel/TestBottomPanel.cs" id="1_cnf8q"]
 [ext_resource type="PackedScene" uid="uid://baxebi0q3s62s" path="res://addons/confirma/src/scenes/test_runner_editor/TestRunnerEditor.tscn" id="2_80bgg"]
@@ -26,6 +26,8 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_swiyr"]
 
 [node name="TestBottomPanel" type="Control"]
 custom_minimum_size = Vector2(0, 256)
@@ -81,3 +83,16 @@ text = "Run All Tests"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Clear Output"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/HSplitContainer/MarginContainer/Menu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_swiyr")
+
+[node name="Options" type="VBoxContainer" parent="PanelContainer/HSplitContainer/MarginContainer/Menu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Verbose" type="CheckBox" parent="PanelContainer/HSplitContainer/MarginContainer/Menu/MarginContainer/VBoxContainer/Options"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Verbose"

@@ -1,11 +1,12 @@
-using Confirma;
 using Confirma.Attributes;
 using Confirma.Classes;
+using Confirma.Extensions;
 using YAT.Helpers;
 
 namespace YAT.Test;
 
 [TestClass]
+[Parallelizable]
 public class TestNumeric
 {
 	[TestCase(5, 0, 10, true)]
