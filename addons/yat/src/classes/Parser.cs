@@ -62,7 +62,7 @@ public static class Parser
 		return parsed.Min < parsed.Max;
 	}
 
-	private static bool TryParseTypeWithRange(string[] tokens, bool isArray, out CommandInputType parsed)
+	public static bool TryParseTypeWithRange(string[] tokens, bool isArray, out CommandInputType parsed)
 	{
 		static bool AllowedToHaveRange(string type)
 		{
@@ -75,8 +75,12 @@ public static class Parser
 
 		parsed = new();
 
-		bool isMaxPresent = tokens[1].EndsWith(':');
-		var minMax = tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries);
+		if (tokens.Length == 0) return false;
+
+		bool isMaxPresent = tokens.Length == 2 && tokens[1].EndsWith(':');
+		var minMax = tokens.Length == 2
+			? tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries)
+			: Array.Empty<string>();
 
 		if (!AllowedToHaveRange(tokens[0]) ||
 			minMax.Length > 2 || (isMaxPresent && minMax.Length == 0)
