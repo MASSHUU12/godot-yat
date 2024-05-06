@@ -46,10 +46,8 @@ public static class ReflectionTest
 			| BindingFlags.Public
 		);
 
-		GD.Print(events.Length, events);
-
 		events.ConfirmNotNull();
-		events.Length.ConfirmIsPositive(events.Length.ToString());
+		events.Length.ConfirmIsPositive();
 	}
 
 	[TestCase]
