@@ -8,7 +8,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public static class TestParser
+public static class ParserTest
 {
 	[TestCase("", new string[] { })]
 	[TestCase("test command", new string[] { "test", "command" })]

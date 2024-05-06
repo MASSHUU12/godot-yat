@@ -7,7 +7,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public class TestNumeric
+public class NumericTest
 {
 	[TestCase(5, 0, 10, true)]
 	[TestCase(0, 0, 10, true)]

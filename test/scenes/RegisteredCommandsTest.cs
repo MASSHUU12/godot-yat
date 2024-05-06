@@ -10,7 +10,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public static class TestRegisteredCommands
+public static class RegisteredCommandsTest
 {
 	[Command("test")]
 	private class TestCommand : ICommand

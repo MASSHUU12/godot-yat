@@ -7,7 +7,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public class TestScene
+public class SceneTest
 {
 	[TestCase("", 0, 0, 0)]
 	[TestCase("0, 32", 0, 32, 0)]

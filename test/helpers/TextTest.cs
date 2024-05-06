@@ -7,7 +7,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public static class TestText
+public static class TextTest
 {
 	[TestCase("Hello, world!", "Hello, world!")]
 	[TestCase("Hello, [b]world[/b]!", "Hello, [lb]b]world[lb]/b]!")]

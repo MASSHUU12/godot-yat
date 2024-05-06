@@ -6,7 +6,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public static class TestLruCache
+public static class LruCacheTest
 {
 	[TestCase(0, 1)]
 	[TestCase(1, 1)]

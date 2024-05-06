@@ -9,7 +9,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public static class TestReflection
+public static class ReflectionTest
 {
 	private interface ITestInterface { }
 

@@ -10,7 +10,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public static class TestExtensible
+public static class ExtensibleTest
 {
 	[Extension("test", "Test extension.", "Test extension manual.", "test_alias", "test_alias2")]
 	private class TestExtension : IExtension
