@@ -1,10 +1,11 @@
-using Confirma;
 using Confirma.Attributes;
+using Confirma.Extensions;
 using YAT.Classes;
 
 namespace YAT.Test;
 
 [TestClass]
+[Parallelizable]
 public static class TestLruCache
 {
 	[TestCase(0, 1)]

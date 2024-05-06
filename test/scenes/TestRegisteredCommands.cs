@@ -1,5 +1,5 @@
-using Confirma;
 using Confirma.Attributes;
+using Confirma.Extensions;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Interfaces;
@@ -9,6 +9,7 @@ using YAT.Types;
 namespace YAT.Test;
 
 [TestClass]
+[Parallelizable]
 public static class TestRegisteredCommands
 {
 	[Command("test")]

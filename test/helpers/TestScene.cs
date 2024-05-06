@@ -1,11 +1,12 @@
-using Confirma;
 using Confirma.Attributes;
 using Confirma.Classes;
+using Confirma.Extensions;
 using YAT.Helpers;
 
 namespace YAT.Test;
 
 [TestClass]
+[Parallelizable]
 public class TestScene
 {
 	[TestCase("", 0, 0, 0)]
