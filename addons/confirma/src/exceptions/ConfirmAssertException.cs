@@ -1,6 +1,6 @@
 using System;
 
-namespace Confirma;
+namespace Confirma.Exceptions;
 
 public class ConfirmAssertException : Exception
 {

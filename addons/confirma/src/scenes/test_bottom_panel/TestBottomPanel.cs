@@ -10,7 +10,9 @@ public partial class TestBottomPanel : Control
 #nullable disable
 	private Button _runAllTests;
 	private Button _clearOutput;
+	private CheckBox _verbose;
 	private TestRunnerEditor _testRunner;
+	private ConfirmaAutoload _autoload;
 #nullable restore
 
 	public override void _Ready()
@@ -21,7 +23,18 @@ public partial class TestBottomPanel : Control
 		_clearOutput = GetNode<Button>("%ClearOutput");
 		_clearOutput.Pressed += OnClearOutputPressed;
 
+		_verbose = GetNode<CheckBox>("%Verbose");
+
 		_testRunner = GetNode<TestRunnerEditor>("%TestRunnerEditor");
+
+		CallDeferred("LateInit");
+	}
+
+	private void LateInit()
+	{
+		_autoload = GetNode<ConfirmaAutoload>("/root/Confirma");
+
+		_verbose.Toggled += (bool on) => _autoload.Props.IsVerbose = on;
 	}
 
 	private void OnRunAllTestsPressed()

@@ -1,6 +1,8 @@
-namespace Confirma;
+using Confirma.Exceptions;
 
-public static class ConfirmNullExtension
+namespace Confirma.Extensions;
+
+public static class ConfirmNullExtensions
 {
 	public static void ConfirmNull(this object? obj, string? message = null)
 	{

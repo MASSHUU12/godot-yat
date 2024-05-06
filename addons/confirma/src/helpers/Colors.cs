@@ -2,38 +2,29 @@ using Godot;
 
 namespace Confirma.Helpers;
 
-public class Colors
+public static class Colors
 {
-	public Color Color { get; set; }
-	public bool Terminal { get; set; } = false;
-
 	public static readonly string Success = "#8eef97";
 	public static readonly string Warning = "#ffdd65";
 	public static readonly string Error = "#ff786b";
 
-	public Colors()
+	// Note: GD.PrintRich does not support hex color codes
+	// this is why we have to use different methods for terminal and Godot
+	public static string ColorText(string text, string color)
 	{
-		Color = new();
+		return Log.IsHeadless
+			? ToTerminal(text, new Color(color))
+			: ToGodot(text, new Color(color));
 	}
 
-	public Colors(Color color)
+	public static string ColorText(string text, Color color)
 	{
-		Color = color;
+		return Log.IsHeadless ? ToTerminal(text, color) : ToGodot(text, color);
 	}
 
-	public Colors(string colors)
+	public static string ToTerminal(string text, Color color)
 	{
-		Color = new(colors);
-	}
-
-	public Colors(bool terminal)
-	{
-		Terminal = terminal;
-	}
-
-	public string ToTerminal()
-	{
-		return $"\x1b[38;2;{Color.R * 0xFF};{Color.G * 0xFF};{Color.B * 0xFF}m";
+		return $"\x1b[38;2;{color.R * 0xFF};{color.G * 0xFF};{color.B * 0xFF}m{text}{TerminalReset()}";
 	}
 
 	public static string TerminalReset()
@@ -41,20 +32,8 @@ public class Colors
 		return "\x1b[0m";
 	}
 
-	public string ToTerminal(string text)
+	public static string ToGodot(string text, Color color)
 	{
-		return $"{ToTerminal()}{text}{TerminalReset()}";
-	}
-
-	public string Auto(string text, string color)
-	{
-		Color = new Color(color);
-
-		return Terminal ? ToTerminal(text) : ToGodot(text);
-	}
-
-	public string ToGodot(string text)
-	{
-		return $"[color=#{Color.ToHtml()}]{text}[/color]";
+		return $"[color=#{color.ToHtml()}]{text}[/color]";
 	}
 }

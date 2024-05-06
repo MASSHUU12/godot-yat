@@ -1,8 +1,9 @@
 using System;
+using Confirma.Exceptions;
 
-namespace Confirma;
+namespace Confirma.Extensions;
 
-public static class ConfirmArrayExtension
+public static class ConfirmArrayExtensions
 {
 	public static void ConfirmSize<T>(this T[] array, int expectedSize)
 	{

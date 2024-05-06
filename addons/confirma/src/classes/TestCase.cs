@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Confirma.Exceptions;
 
 namespace Confirma.Classes;
 
@@ -28,10 +29,7 @@ public class TestCase
 		{
 			throw new ConfirmAssertException(tie.InnerException?.Message ?? tie.Message);
 		}
-		catch (Exception e) when (e
-			is ArgumentException
-			or ArgumentNullException
-		)
+		catch (Exception e) when (e is ArgumentException or ArgumentNullException)
 		{
 			throw new ConfirmAssertException($"- Failed: Invalid test case parameters: {strParams}.");
 		}

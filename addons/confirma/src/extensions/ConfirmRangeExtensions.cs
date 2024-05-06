@@ -1,8 +1,9 @@
 using System;
+using Confirma.Exceptions;
 
-namespace Confirma;
+namespace Confirma.Extensions;
 
-public static class ConfirmRangeExtension
+public static class ConfirmRangeExtensions
 {
 	public static void ConfirmInRange<T>(this T actual, T min, T max, string? message = null)
 	where T : IComparable, IConvertible, IComparable<T>, IEquatable<T>
