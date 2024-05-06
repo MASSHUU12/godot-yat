@@ -9,55 +9,99 @@ namespace YAT.Test;
 [Parallelizable]
 public class NumericTest
 {
-	[TestCase(5, 0, 10, true)]
-	[TestCase(0, 0, 10, true)]
-	[TestCase(10, 0, 10, true)]
-	[TestCase(11, 0, 10, false)]
-	[TestCase(-1, 0, 10, false)]
-	public static void IsWithingRange_Int(int value, int min, int max, bool expected)
+	#region IsWithinRange
+	[TestCase(5, 0, 10)]
+	[TestCase(0, 0, 10)]
+	[TestCase(10, 0, 10)]
+	public static void IsWithinRange_WhenValueIsWithinRange(int value, int min, int max)
 	{
-		Numeric.IsWithinRange<int>(value, min, max).ConfirmEqual(expected);
+		Numeric.IsWithinRange<int>(value, min, max).ConfirmTrue();
 	}
 
-	[TestCase(5d, 0d, 10d, true)]
-	[TestCase(0d, 0d, 10d, true)]
-	[TestCase(10d, 0d, 10d, true)]
-	[TestCase(11d, 0d, 10d, false)]
-	[TestCase(-1d, 0d, 10d, false)]
-	public static void IsWithingRange_Double(double value, double min, double max, bool expected)
+	[TestCase(11, -5, 10)]
+	[TestCase(-1, 0, 9)]
+	[TestCase(5, 6, 11)]
+	public static void IsWithinRange_WhenValueIsNotWithinRange(int value, int min, int max)
 	{
-		Numeric.IsWithinRange<double>(value, min, max).ConfirmEqual(expected);
+		Numeric.IsWithinRange<int>(value, min, max).ConfirmFalse();
 	}
 
-	[TestCase("5", 5, true)]
-	[TestCase("-5", -5, true)]
-	[TestCase("5.0", -1, false)]
-	[TestCase("5.0f", -1, false)]
-	[TestCase("-5.0", -1, false)]
-	[TestCase("-5.0f", -1, false)]
-	[TestCase("5five", -1, false)]
-	[TestCase("five5", -1, false)]
-	public static void TryConvert_Int(string value, int expected, bool success)
+	[TestCase(5d, 0d, 10d)]
+	[TestCase(0d, 0d, 10d)]
+	[TestCase(10d, 0d, 10d)]
+	public static void IsWithinRange_WhenValueIsWithinRange(double value, double min, double max)
 	{
-		Numeric.TryConvert(value, out int result).ConfirmEqual(success);
-
-		if (success) result.ConfirmEqual(expected);
+		Numeric.IsWithinRange<double>(value, min, max).ConfirmTrue();
 	}
 
-	[TestCase("5.0", 5.0, true)]
-	[TestCase("-5.0", -5.0, true)]
-	[TestCase("5five", -1, false)]
-	[TestCase("5.0five", -1, false)]
-	[TestCase("-5.0dfive", -1, false)]
-	[TestCase("5.0f", -1, false)]
-	[TestCase("-5.0f", -1, false)]
-	[TestCase("5.0d", -1, false)]
-	public static void TryConvert_Double(string value, double expected, bool success)
+	[TestCase(11d, -5d, 10d)]
+	[TestCase(-1d, 0d, 9d)]
+	[TestCase(5d, 6d, 11d)]
+	public static void IsWithinRange_WhenValueIsNotWithinRange(double value, double min, double max)
 	{
-		Numeric.TryConvert(value, out double result).ConfirmEqual(success);
-
-		if (success) result.ConfirmEqual(expected);
+		Numeric.IsWithinRange<double>(value, min, max).ConfirmFalse();
 	}
+	#endregion
+
+	#region IsWithinRange_TE
+	[TestCase(5, 0f, 10f)]
+	[TestCase(0, 0f, 10f)]
+	[TestCase(10, 0f, 10f)]
+	public static void IsWithinRange_TE_WhenValueIsWithinRange(int value, float min, float max)
+	{
+		Numeric.IsWithinRange(value, min, max).ConfirmTrue();
+	}
+
+	[TestCase(11, -5f, 10f)]
+	[TestCase(-1, 0f, 9f)]
+	[TestCase(5, 6f, 11f)]
+	public static void IsWithinRange_TE_WhenValueIsNotWithinRange(int value, float min, float max)
+	{
+		Numeric.IsWithinRange(value, min, max).ConfirmFalse();
+	}
+	#endregion
+
+	#region TryConvert
+	[TestCase("5", 5)]
+	[TestCase("-5", -5)]
+	[TestCase("0", 0)]
+	public static void TryConvert_WhenValueIsValid_Int(string value, int expected)
+	{
+		Numeric.TryConvert(value, out int result).ConfirmTrue();
+		result.ConfirmEqual(expected);
+	}
+
+	[TestCase("5.0", 5.0)]
+	[TestCase("-5.0", -5.0)]
+	[TestCase("0.0", 0.0)]
+	public static void TryConvert_WhenValueIsValid_Double(string value, double expected)
+	{
+		Numeric.TryConvert(value, out double result).ConfirmTrue();
+		result.ConfirmEqual(expected);
+	}
+
+	[TestCase("5five")]
+	[TestCase("five5")]
+	[TestCase("5.0f")]
+	[TestCase("-5.0f")]
+	[TestCase("5.0d")]
+	[TestCase("-5.0d")]
+	public static void TryConvert_WhenValueIsInvalid_Int(string value)
+	{
+		Numeric.TryConvert(value, out int _).ConfirmFalse();
+	}
+
+	[TestCase("5.0five")]
+	[TestCase("5.0dfive")]
+	[TestCase("-5.0dfive")]
+	[TestCase("5.0f")]
+	[TestCase("-5.0f")]
+	[TestCase("5.0d")]
+	public static void TryConvert_WhenValueIsInvalid_Double(string value)
+	{
+		Numeric.TryConvert(value, out double _).ConfirmFalse();
+	}
+	#endregion
 
 	[TestCase(0, 2, "0 B")]
 	[TestCase(1, 2, "1 B")]
