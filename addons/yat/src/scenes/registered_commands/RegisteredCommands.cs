@@ -52,6 +52,9 @@ public partial class RegisteredCommands : Node
 			Registered[alias] = commandType;
 		}
 
+		// Prevent creating orphans
+		if (commandInstance is Node node) node.QueueFree();
+
 		return ECommandAdditionStatus.Success;
 	}
 
@@ -115,13 +118,13 @@ public partial class RegisteredCommands : Node
 			typeof(Ls),
 			typeof(Ip),
 			typeof(Cn),
-			typeof(Cs),
+			typeof(Cs), // !
 			typeof(Ds),
 			typeof(Ss),
 			typeof(Sr),
 			typeof(Cls),
 			typeof(Man),
-			typeof(Set),
+			typeof(Set), // !
 			typeof(Cat),
 			typeof(Sys),
 			typeof(Fov),
