@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Support for automatic usage info generation.
 - EPingStatus enum.
-- PlatformNotSupportedException is now handled in Networking.Ping.
+- PlatformNotSupportedException is now handled in Networking.Ping/GetTraceRoute.
 
 ### Changed
 

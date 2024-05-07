@@ -69,21 +69,26 @@ public static class Networking
 
 		options ??= new();
 
-		byte[] buffer = CreateBuffer(options.BufferSize);
-
 		using var ping = new Ping();
 
 		for (ushort ttl = 1; ttl <= options.TTL && !ct.IsCancellationRequested; ttl++)
 		{
-			PingOptions pOptions = new(ttl, true);
-			PingReply reply = ping.Send(hostname, options.Timeout, buffer, pOptions);
+			var status = Ping(hostname, out var reply, new NetworkingOptions
+			{
+				Timeout = options.Timeout,
+				TTL = ttl,
+				BufferSize = options.BufferSize,
+				DontFragment = options.DontFragment
+			});
+
+			if (status != EPingStatus.Success) break;
 
 			// Route has been found
-			if (reply.Status == IPStatus.Success || reply.Status == IPStatus.TtlExpired)
+			if (reply?.Status == IPStatus.Success || reply?.Status == IPStatus.TtlExpired)
 				yield return reply.Address;
 
 			// Route has not been found or the host is unreachable
-			if (reply.Status != IPStatus.TtlExpired && reply.Status != IPStatus.TimedOut)
+			if (reply?.Status != IPStatus.TtlExpired && reply?.Status != IPStatus.TimedOut)
 				break;
 		}
 	}
