@@ -84,6 +84,9 @@ public partial class CommandManager : Node
 		}
 
 		ExecuteCommand(data);
+
+		// Prevent creating orphans
+		if (command is Node node) node.QueueFree();
 	}
 
 	private void ExecuteCommand(CommandData data)

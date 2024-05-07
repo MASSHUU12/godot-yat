@@ -15,23 +15,6 @@
 				"showReuseMessage": false,
 				"clear": false
 			}
-		},
-		{
-			"label": "build-solutions",
-			"group": "test",
-			"command": "dotnet restore; ${env:GODOT} --headless --build-solutions --quit || exit 0",
-			"type": "shell",
-			"options": {
-				"cwd": "${workspaceFolder}"
-			},
-			"presentation": {
-				"echo": true,
-				"reveal": "silent",
-				"focus": false,
-				"panel": "shared",
-				"showReuseMessage": false,
-				"clear": false
-			}
 		}
 	]
 }
