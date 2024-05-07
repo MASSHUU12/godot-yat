@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 - HasInterface incorrectly checks if interface is present.
 - Registering/calling commands creates orphans when a command inherits from a Node.
+- OS.RunCommand is hanging when running on Linux.
 
 ## [1.28.0-beta 2024-04-03]
 
