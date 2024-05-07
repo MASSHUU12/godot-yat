@@ -63,18 +63,23 @@ public static class OS
 		{
 			process.Start();
 			process.StandardInput.WriteLine(command + ' ' + args);
+
 			process.StandardInput.Flush();
 			process.StandardInput.Close();
 
-			string outputString = process.StandardOutput.ReadToEnd();
-			string errorString = process.StandardError.ReadToEnd();
+			StringBuilder outputStandard = new();
+			StringBuilder outputError = new();
+
+			while (!process.HasExited && process.StandardOutput.Peek() > -1)
+				outputStandard.AppendLine(process.StandardOutput.ReadLine());
+
+			while (!process.HasExited && process.StandardError.Peek() > -1)
+				outputError.AppendLine(process.StandardError.ReadLine());
 
 			process.WaitForExit();
 
-			if (!string.IsNullOrEmpty(outputString))
-				output.AppendLine(outputString);
-			if (!string.IsNullOrEmpty(errorString))
-				output.AppendLine(errorString);
+			output.Append(outputStandard);
+			output.Append(outputError);
 		}
 		catch (Exception ex)
 		{
