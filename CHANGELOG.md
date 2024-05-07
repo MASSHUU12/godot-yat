@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - HasInterface correctly checks if interface is present.
+- Registering/calling commands creates orphans when a command inherits from a Node.
 
 ## [1.28.0-beta 2024-04-03]
 
