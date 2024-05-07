@@ -9,9 +9,18 @@ namespace YAT.Helpers;
 
 public static class Networking
 {
-	public static PingReply? Ping(string hostname, NetworkingOptions? options = null)
+	public enum EPingStatus
 	{
-		if (string.IsNullOrEmpty(hostname)) return null;
+		Success,
+		Unsupported,
+		Unknown
+	}
+
+	public static EPingStatus Ping(string hostname, out PingReply? reply, NetworkingOptions? options = null)
+	{
+		reply = null;
+
+		if (string.IsNullOrEmpty(hostname)) return EPingStatus.Unknown;
 
 		options ??= new();
 
@@ -21,12 +30,16 @@ public static class Networking
 
 		try
 		{
-			PingReply reply = ping.Send(hostname, options.Timeout, buffer, new()
+			reply = ping.Send(hostname, options.Timeout, buffer, new()
 			{
 				Ttl = options.TTL,
 				DontFragment = options.DontFragment
 			});
-			return reply;
+			return EPingStatus.Success;
+		}
+		catch (PlatformNotSupportedException)
+		{
+			return EPingStatus.Unsupported;
 		}
 		catch (Exception ex) when (ex
 			is PingException
@@ -34,7 +47,7 @@ public static class Networking
 			or ArgumentException
 		)
 		{
-			return null;
+			return EPingStatus.Unknown;
 		}
 		finally
 		{
