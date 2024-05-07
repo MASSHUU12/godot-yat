@@ -40,11 +40,17 @@ public sealed class Ping : ICommand
 
 		while ((maxPings == 0 || pings < maxPings) && !data.CancellationToken.IsCancellationRequested)
 		{
-			var reply = Networking.Ping(hostname, options);
+			var status = Networking.Ping(hostname, out var reply, options);
 
 			if (reply is null)
 			{
-				data.Terminal.Output.Print("Failed to ping the host.");
+				if (status == Networking.EPingStatus.Unsupported)
+				{
+					data.Terminal.Output.Error("The current platform does not support ICMP or access is denied.");
+					break;
+				}
+
+				data.Terminal.Output.Error("Failed to ping the host.");
 				break;
 			}
 
@@ -55,7 +61,7 @@ public sealed class Ping : ICommand
 				reply.RoundtripTime,
 				reply.Options?.Ttl
 			));
-			else data.Terminal.Output.Print($"Request timed out.");
+			else data.Terminal.Output.Error($"Request timed out.");
 
 			if (maxPings != 0) pings++;
 

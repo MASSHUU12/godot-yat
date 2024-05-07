@@ -7,6 +7,12 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Support for automatic usage info generation.
+- EPingStatus enum.
+- PlatformNotSupportedException is now handled in Networking.Ping.
+
+### Changed
+
+- Networking.Ping now returns EPingStatus and a reply is returned as out parameter.
 
 ### Fixed
 
