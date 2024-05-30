@@ -117,7 +117,7 @@ public partial class BaseTerminal : Control
 				Print("Command cancellation requested.", EPrintType.Warning);
 
 				CommandManager.Cts.Cancel();
-				CommandManager.Cts.Dispose();
+				// CommandManager.Cts.Dispose();
 				// CommandManager.Cts = null;
 			}
 		}

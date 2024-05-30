@@ -104,6 +104,8 @@ public partial class CommandManager : Node
 		var result = data.Command.Execute(data);
 		data.Terminal.Locked = false;
 
+		Cts.Dispose();
+
 		CallDeferredThreadGroup(
 			"emit_signal",
 			SignalName.CommandFinished,
