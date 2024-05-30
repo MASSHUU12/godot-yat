@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading;
 using YAT.Attributes;
 using YAT.Classes;
@@ -8,11 +7,11 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command(
-	"watch",
-	"Runs user-defined (not threaded) commands at regular intervals."
-)]
 [Threaded]
+[Command("watch")]
+[Description("Runs user-defined commands at regular intervals." +
+	"\nNote: Not threaded commands might not work as expected."
+)]
 [Argument("command", "string", "The command to run.")]
 [Option("--interval", "float(0.5:60)", "The interval at which to run the command.", 1f)]
 public sealed class Watch : ICommand
@@ -33,13 +32,6 @@ public sealed class Watch : ICommand
 		{
 			return ICommand.Failure(
 				"Cannot watch the watch command, exiting watch."
-			);
-		}
-
-		if (!type.CustomAttributes.Any(x => x.AttributeType == typeof(ThreadedAttribute)))
-		{
-			return ICommand.Failure(
-				$"Command '{type.Name}' is not threaded, exiting watch."
 			);
 		}
 
