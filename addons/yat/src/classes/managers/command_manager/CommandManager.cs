@@ -122,7 +122,7 @@ public partial class CommandManager : Node
 		new Task(() => ExecuteCommand(data), Cts.Token).Start();
 		await ToSignal(this, SignalName.CommandFinished);
 
-		data.Terminal.Output.Success("Command execution finished.");
+		data.Terminal.Output.Success($"Command {data.Command.GetType().Name} finished.");
 	}
 
 	private static void PrintCommandResult(CommandResult result, BaseTerminal terminal)
