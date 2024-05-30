@@ -42,16 +42,16 @@ public partial class CommandManager : Node
 		_yat = GetNode<YAT>("/root/YAT");
 	}
 
-	public void Run(string[] args, BaseTerminal terminal)
+	public bool Run(string[] args, BaseTerminal terminal)
 	{
-		if (args.Length == 0) return;
+		if (args.Length == 0) return false;
 
 		string commandName = args[0];
 
 		if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type? value))
 		{
 			terminal.Output.Error(Messages.UnknownCommand(commandName));
-			return;
+			return false;
 		}
 
 		ICommand command = (Activator.CreateInstance(value) as ICommand)!;
@@ -62,13 +62,13 @@ public partial class CommandManager : Node
 		{
 			if (!terminal.CommandValidator.ValidatePassedData<ArgumentAttribute>(
 				command, args[1..], out convertedArgs
-			)) return;
+			)) return false;
 
 			if (command.GetAttributes<OptionAttribute>() is not null)
 			{
 				if (!terminal.CommandValidator.ValidatePassedData<OptionAttribute>(
 					command, args[1..], out convertedOpts
-				)) return;
+				)) return false;
 			}
 		}
 
@@ -80,13 +80,15 @@ public partial class CommandManager : Node
 		if (command.GetAttribute<ThreadedAttribute>() is not null)
 		{
 			ExecuteThreadedCommand(data);
-			return;
+			return false;
 		}
 
 		ExecuteCommand(data);
 
 		// Prevent creating orphans
 		if (command is Node node) node.QueueFree();
+
+		return true;
 	}
 
 	private void ExecuteCommand(CommandData data)
