@@ -72,7 +72,12 @@ public partial class CommandManager : Node
 			}
 		}
 
-		EmitSignal(SignalName.CommandStarted, commandName, args);
+		CallDeferredThreadGroup(
+			"emit_signal",
+			SignalName.CommandStarted,
+			commandName,
+			args
+		);
 
 		Cts = new();
 		CommandData data = new(_yat, terminal, command, args, convertedArgs!, convertedOpts!, Cts.Token);
