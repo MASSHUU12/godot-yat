@@ -1,6 +1,7 @@
-using System;
+using System.Linq;
 using System.Threading;
 using YAT.Attributes;
+using YAT.Classes;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
@@ -13,29 +14,45 @@ namespace YAT.Commands;
 )]
 [Threaded]
 [Argument("command", "string", "The command to run.")]
-[Argument("interval", "float(0.5:60)", "The interval at which to run the command.")]
+[Option("--interval", "float(0.5:60)", "The interval at which to run the command.", 1f)]
 public sealed class Watch : ICommand
 {
-	private const uint SECONDS_MULTIPLIER = 1000;
-
 	public CommandResult Execute(CommandData data)
 	{
-		if (!RegisteredCommands.Registered.TryGetValue((string)data.Arguments["command"], out var type))
+		var parsed = Parser.ParseCommand((string)data.Arguments["command"]);
+		var commandName = parsed[0];
+
+		if (!RegisteredCommands.Registered.TryGetValue(commandName, out var type))
+		{
 			return ICommand.InvalidArguments(
-				$"Command '{data.Arguments["command"]}' not found, exiting watch."
+				$"Command '{commandName}' not found, exiting watch."
 			);
+		}
 
-		ICommand command = (ICommand)Activator.CreateInstance(type)!;
+		if (type.Name == nameof(Watch))
+		{
+			return ICommand.Failure(
+				"Cannot watch the watch command, exiting watch."
+			);
+		}
 
-		float interval = (float)data.Arguments["interval"] * SECONDS_MULTIPLIER;
-		CommandData newArgs = data with { RawData = data.RawData[2..] };
+		if (!type.CustomAttributes.Any(x => x.AttributeType == typeof(ThreadedAttribute)))
+		{
+			return ICommand.Failure(
+				$"Command '{type.Name}' is not threaded, exiting watch."
+			);
+		}
+
+		float interval = (float)data.Options["--interval"] * 1000;
 
 		while (!data.CancellationToken.IsCancellationRequested)
 		{
-			if (command.Execute(newArgs) != ICommand.Success())
+			if (!data.Terminal.CommandManager.Run(parsed, data.Terminal))
+			{
 				return ICommand.Failure(
 					$"Error executing command '{data.RawData[1]}', exiting watch."
 				);
+			}
 
 			Thread.Sleep((int)interval);
 		}
