@@ -1,0 +1,73 @@
+name: Bug report
+description: Create a report to help us improve
+labels: ["bug"]
+body:
+
+- type: markdown
+  attributes:
+    value: |
+       When reporting bugs, please follow the guidelines in this template.
+
+- type: textarea
+  attributes:
+    label: Describe the bug
+    description: |
+      A clear and concise description of what the bug is.
+      Please do not add code examples or error messages as screenshots.
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Steps to reproduce
+    description: |
+      Steps to reproduce the behavior:
+      1. Go to '...'
+      2. Click on '....'
+      3. Scroll down to '....'
+      4. See error
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Expected behavior
+    description: |
+      A clear and concise description of what you expected to happen.
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Additional information
+    description: |
+      - Specify the OS version, and when relevant hardware information.
+      - For issues that are likely OS-specific, please specify the CPU model and architecture.
+      - YAT version
+      - Godot version
+      - .NET version
+    placeholder: |
+      - OS: Fedora 40
+      - CPU: AMD Ryzen 7 7735U x64
+      - YAT: 1.28.0-beta
+      - Godot: 4.2.2
+      - .NET: 8.0.104
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Screenshots
+    description: |
+      If applicable, add screenshots to help explain your problem.
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
+    label: Additional context
+    description: |
+      Add here any other context about the issue, such as an example project where the problem occurs.
+  validations:
+    required: false
+    
