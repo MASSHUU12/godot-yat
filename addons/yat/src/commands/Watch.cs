@@ -35,14 +35,14 @@ public sealed class Watch : ICommand
 			);
 		}
 
-		float interval = (float)data.Options["--interval"] * 1000;
+		var interval = (float)data.Options["--interval"] * 1000;
 
 		while (!data.CancellationToken.IsCancellationRequested)
 		{
 			if (!data.Terminal.CommandManager.Run(parsed, data.Terminal))
 			{
 				return ICommand.Failure(
-					$"Error executing command '{data.RawData[1]}', exiting watch."
+					$"Error executing command '{commandName}', exiting watch."
 				);
 			}
 

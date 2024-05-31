@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 
 - Networking.Ping now returns EPingStatus and a reply is returned as out parameter.
 - The message displayed when threaded command execution ends now includes the command's name.
+- Disabled 'watch' command.
 
 ### Fixed
 

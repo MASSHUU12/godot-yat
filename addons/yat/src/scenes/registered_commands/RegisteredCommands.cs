@@ -118,13 +118,13 @@ public partial class RegisteredCommands : Node
 			typeof(Ls),
 			typeof(Ip),
 			typeof(Cn),
-			typeof(Cs), // !
+			typeof(Cs),
 			typeof(Ds),
 			typeof(Ss),
 			typeof(Sr),
 			typeof(Cls),
-			typeof(Man),
-			typeof(Set), // !
+			// typeof(Man),
+			typeof(Set),
 			typeof(Cat),
 			typeof(Sys),
 			typeof(Fov),
