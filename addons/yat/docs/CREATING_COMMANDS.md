@@ -1,6 +1,6 @@
 <div align="center">
-	<h3>Creating commands</h1>
-	<p>Here you can find information on creating new commands, extending existing commands, and adding them to YAT.</p>
+ <h3>Creating commands</h1>
+ <p>Here you can find information on creating new commands, extending existing commands, and adding them to YAT.</p>
 </div>
 
 <br />
@@ -34,15 +34,15 @@ using YAT.Types;
 
 namespace YAT.Commands;
 
-[Command("cls", "Clears the console.", "[b]Usage[/b]: cls", "clear")]
+[Command("cls", "Clears the console.", aliases: "clear")]
 public sealed class Cls : ICommand
 {
-	public CommandResult Execute(CommandData data)
-	{
-		data.Terminal.Clear();
+ public CommandResult Execute(CommandData data)
+ {
+  data.Terminal.Clear();
 
-		return ICommand.Success();
-	}
+  return ICommand.Success();
+ }
 }
 ```
 
@@ -62,19 +62,18 @@ In the passed `CommandData` you can find the `CancellationToken` which indicates
 
 ### Overridable methods
 
--   GenerateUsageInformation
--   GenerateCommandManual
--   GenerateArgumentsManual
--   GenerateOptionsManual
--   GenerateSignalsManual
+- GenerateUsageInformation
+- GenerateCommandManual
+- GenerateArgumentsManual
+- GenerateOptionsManual
+- GenerateSignalsManual
 
 ## Adding commands
 
-To add a command to the YAT all you have to do is call `AddCommand` method on `RegisteredCommands` instance:
+To add a command to the YAT all you have to do is call `AddCommand` method on `RegisteredCommands` class:
 
-```csharp
-var yat = GetNode<YAT>("/root/YAT");
-yat.Commands.AddCommand(typeof(Cls));
+```cs
+RegisteredCommands.AddCommand(typeof(Cls));
 ```
 
 ## Making commands extendable
@@ -84,7 +83,7 @@ It is possible to extend existing commands under several conditions:
 1. An existing command must inherit from the class `Extensible`.
 2. The command must call the `ExecuteExtension` with a specific extension as an argument. Example below.
 
-```csharp
+```cs
 public CommandResult Execute(CommandData data)
 {
    var extensions = GetCommandExtensions("command_name");
