@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- 'run' argument to 'qc' command.
+
 ## [1.29.0-beta 2024-05-31]
 
 ### Added
