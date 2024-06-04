@@ -1,9 +1,7 @@
 <div align="center">
-	<h3>Automatic input validation</h1>
-	<p>Here you will find information on how YAT can perform validation of arguments, and options for your commands automatically.</p>
+ <h3>Automatic input validation</h1>
+ <p>Here you will find information on how YAT can perform validation of arguments, and options for your commands automatically.</p>
 </div>
-
-<br />
 
 > If you want documentation to be created based on attributes,
 > but do not want validation you can use the `NoValidate` attribute.
@@ -22,11 +20,11 @@ The created requirement can consist of a single type, e.g., `int`, `float`. It c
 
 Supported data types:
 
--   string
--   int
--   float
--   bool
--   constant string (e.q., `yes`, `normal`, `wireframe` etc.)
+- string
+- int
+- float
+- bool
+- constant string (e.q., `yes`, `left`, `wireframe` etc.)
 
 Both `string`, `int` and `float` support defining the ranges they can take. In the case of `string` it is the minimum and maximum length of the string, in the case of `int` and `float` it is the minimum and maximum value.
 
@@ -35,12 +33,12 @@ The limit for ranges is `-3.4028235E+38` and `3.4028235E+38`.
 Example of a requirement with one type and a range of values:
 
 ```c
-int(5:15) -> The value passed can only be an integer in the range 5 -15.
+int(5:15) -> The value can be only an integer in the range 5-15.
 ```
 
 An example of a requirement with many possibilities:
 
-```
+```txt
 normal|unshaded|wireframe|int(0:30)
 ```
 
@@ -51,6 +49,7 @@ In this case, the transferred data can take either a numeric value from 0 to 30 
 The range is created in parentheses given after the type that supports the range. The minimum and maximum values must be separated by a colon `:`.
 
 One of the values may be omitted (the colon must still be present), in which case:
+
 - the minimum value is omitted: then it takes the value `-3.4028235E+38`,
 - maximum value is omitted: then it takes the value `3.4028235E+38`.
 
@@ -63,21 +62,21 @@ int(5:15) -> range is 5 - 15
 Example of a range of values with only maximum limit given:
 
 ```cs
-int(:15) -> range is -3.4028235E+38 - 15
+float(:15) -> range is -3.4028235E+38 - 15
 ```
 
 Example of a range of values with only minimum limit given:
 
 ```cs
-int(5:) -> range is 5 - 3.4028235E+38
+float(5:) -> range is 5 - 3.4028235E+38
 ```
 
 ### Arguments
 
-> The order of arguments matters.
-
 Arguments are required, if an argument is missing or data that does not meet the requirements is passed,
 validation will fail and the command will not run.
+
+When calling a command, the arguments must be given in the order in which they are defined.
 
 You can specify arguments using the `Argument` attribute:
 
@@ -94,10 +93,12 @@ The second argument has three possibilities, it can take `"left"`, `"right"` or 
 
 Options are **not** required, however, if an option is passed, but the data does not match requirements, validation will fail and the command will not run.
 
+The order of the passed options does not matter as long as they are passed after all the arguments.
+
 You can specify options using the `Option` attribute:
 
 ```cs
-[Option("-action", "move|jump", "Action to perform.")]
+[Option("--action", "move|jump", "Action to perform.")]
 [Option("-direction", "left|right|int(-1:1)", "Direction to move.")]
 ```
 
@@ -112,7 +113,7 @@ Options, unlike arguments, can also take an array of data of a given type, you j
 Example:
 
 ```cs
-[Option("-p", "int(1:99)...", "Lorem ipsum.", new int[] { 1 })]
+[Option("-p", "int(1:99)...", "Lorem ipsum.")]
 ```
 
 In this case, the transfer of data to the option is as follows:
@@ -123,10 +124,10 @@ some_command -p=5,2,32,47
 
 #### Default values
 
-Options also support `default values`, which will be assigned to them when the user does not pass an option when running the command. If the default value is not set, and the user does not use the option, then its value is set to `null` (`false` if type is bool):
+Options also support **default values**, which will be assigned to them when the user does not pass an option when running the command. If the default value is not set, and the user does not use the option, then its value is set to `null` (`false` if type is bool):
 
 ```cs
-[Option("-action", "move|jump", "Action to perform.", "move")]
+[Option("--action", "move|jump", "Action to perform.", "move")]
 ```
 
-In the example above, if the user does not use the `-action` option then it will default to `move`.
+In the example above, if the user does not use the `--action` option then it will default to `move`.
