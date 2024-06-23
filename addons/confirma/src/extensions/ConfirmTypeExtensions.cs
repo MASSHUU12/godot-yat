@@ -7,8 +7,9 @@ public static class ConfirmTypeExtensions
 {
 	public static void ConfirmType(this object? actual, Type expected, string? message = null)
 	{
-		if (actual?.GetType() != expected)
-			throw new ConfirmAssertException(message ?? $"Expected object to be of type {expected}.");
+		if (actual?.GetType() == expected) return;
+
+		throw new ConfirmAssertException(message ?? $"Expected object to be of type {expected}.");
 	}
 
 	public static T ConfirmType<T>(this object? actual, string? message = null)
@@ -19,8 +20,9 @@ public static class ConfirmTypeExtensions
 
 	public static void ConfirmNotType(this object? actual, Type expected, string? message = null)
 	{
-		if (actual?.GetType() == expected)
-			throw new ConfirmAssertException(message ?? $"Expected object to be not of type {expected}.");
+		if (actual?.GetType() != expected) return;
+
+		throw new ConfirmAssertException(message ?? $"Expected object to be not of type {expected}.");
 	}
 
 	public static void ConfirmNotType<T>(this object? actual, string? message = null)

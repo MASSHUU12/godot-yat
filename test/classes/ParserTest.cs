@@ -110,58 +110,59 @@ public static class ParserTest
 	}
 
 	// Valid range and type, no array
-	[TestCase(new string[] { "int", "0:10" }, "int", 0, 10, false, true)]
-	[TestCase(new string[] { "int", "5:10" }, "int", 5, 10, false, true)]
-	[TestCase(new string[] { "int", "-12:8" }, "int", -12, 8, false, true)]
-	[TestCase(new string[] { "float", "5:10" }, "float", 5, 10, false, true)]
-	[TestCase(new string[] { "int", "-12:-5" }, "int", -12, -5, false, true)]
-	[TestCase(new string[] { "string", "5:10" }, "string", 5, 10, false, true)]
-	[TestCase(new string[] { "float", "0.5:60" }, "float", 0.5f, 60, false, true)]
-	[TestCase(new string[] { "float", "0.5 : 60" }, "float", 0.5f, 60, false, true)]
-	[TestCase(new string[] { "float", "-0.5:60" }, "float", -0.5f, 60, false, true)]
-	[TestCase(new string[] { "int", ":10" }, "int", float.MinValue, 10, false, true)]
-	[TestCase(new string[] { "int", ":-5" }, "int", float.MinValue, -5, false, true)]
-	[TestCase(new string[] { "float", "5.5:10.5" }, "float", 5.5f, 10.5f, false, true)]
-	[TestCase(new string[] { "string", "5:" }, "string", 5, float.MaxValue, false, true)]
-	[TestCase(new string[] { "int", "" }, "int", float.MinValue, float.MaxValue, false, true)]
+	[TestCase("int", "0:10", "int", 0, 10, false, true)]
+	[TestCase("int", "5:10", "int", 5, 10, false, true)]
+	[TestCase("int", "-12:8", "int", -12, 8, false, true)]
+	[TestCase("float", "5:10", "float", 5, 10, false, true)]
+	[TestCase("int", "-12:-5", "int", -12, -5, false, true)]
+	[TestCase("string", "5:10", "string", 5, 10, false, true)]
+	[TestCase("float", "0.5:60", "float", 0.5f, 60, false, true)]
+	[TestCase("float", "0.5 : 60", "float", 0.5f, 60, false, true)]
+	[TestCase("float", "-0.5:60", "float", -0.5f, 60, false, true)]
+	[TestCase("int", ":10", "int", float.MinValue, 10, false, true)]
+	[TestCase("int", ":-5", "int", float.MinValue, -5, false, true)]
+	[TestCase("float", "5.5:10.5", "float", 5.5f, 10.5f, false, true)]
+	[TestCase("string", "5:", "string", 5, float.MaxValue, false, true)]
+	[TestCase("int", "", "int", float.MinValue, float.MaxValue, false, true)]
 	// Invalid range and valid type, no array
-	[TestCase(new string[] { "float", ":" }, "float", 0, 0, false, false)]
-	[TestCase(new string[] { "int", ":dxdx" }, "int", 0, 0, false, false)]
-	[TestCase(new string[] { "int", "sda:da" }, "int", 0, 0, false, false)]
-	[TestCase(new string[] { "float", " : " }, "float", 0, 0, false, false)]
-	[TestCase(new string[] { "string", "5:x" }, "string", 0, 0, false, false)]
-	[TestCase(new string[] { "string", "x:10" }, "string", 0, 0, false, false)]
-	[TestCase(new string[] { "string", "5::5" }, "string", 0, 0, false, false)]
-	[TestCase(new string[] { "string", "5:10:15" }, "string", 0, 0, false, false)]
+	[TestCase("float", ":", "float", 0, 0, false, false)]
+	[TestCase("int", ":dxdx", "int", 0, 0, false, false)]
+	[TestCase("int", "sda:da", "int", 0, 0, false, false)]
+	[TestCase("float", " : ", "float", 0, 0, false, false)]
+	[TestCase("string", "5:x", "string", 0, 0, false, false)]
+	[TestCase("string", "x:10", "string", 0, 0, false, false)]
+	[TestCase("string", "5::5", "string", 0, 0, false, false)]
+	[TestCase("string", "5:10:15", "string", 0, 0, false, false)]
 	// No range and valid type, no array
-	[TestCase(new string[] { "x" }, "x", float.MinValue, float.MaxValue, false, true)]
-	[TestCase(new string[] { "int" }, "int", float.MinValue, float.MaxValue, false, true)]
-	[TestCase(new string[] { "float" }, "float", float.MinValue, float.MaxValue, false, true)]
-	[TestCase(new string[] { "choice" }, "choice", float.MinValue, float.MaxValue, false, true)]
-	[TestCase(new string[] { "string" }, "string", float.MinValue, float.MaxValue, false, true)]
+	[TestCase("x", "", "x", float.MinValue, float.MaxValue, false, true)]
+	[TestCase("int", "", "int", float.MinValue, float.MaxValue, false, true)]
+	[TestCase("float", "", "float", float.MinValue, float.MaxValue, false, true)]
+	[TestCase("choice", "", "choice", float.MinValue, float.MaxValue, false, true)]
+	[TestCase("string", "", "string", float.MinValue, float.MaxValue, false, true)]
 	// Valid range, type not allowed to have range, no array
-	[TestCase(new string[] { "x", "5:10" }, "x", 0, 0, false, false)]
-	[TestCase(new string[] { "y", ":10" }, "choice", 0, 0, false, false)]
-	[TestCase(new string[] { "y", "-12:8" }, "choice", 0, 0, false, false)]
-	[TestCase(new string[] { "choice", "5:10" }, "choice", 0, 0, false, false)]
-	[TestCase(new string[] { "choice", "0:10" }, "choice", 0, 0, false, false)]
+	[TestCase("x", "5:10", "x", 0, 0, false, false)]
+	[TestCase("y", ":10", "choice", 0, 0, false, false)]
+	[TestCase("y", "-12:8", "choice", 0, 0, false, false)]
+	[TestCase("choice", "5:10", "choice", 0, 0, false, false)]
+	[TestCase("choice", "0:10", "choice", 0, 0, false, false)]
 	// Invalid range and no type, no array
-	[TestCase(new string[] { ":" }, "", 0, 0, false, false)]
-	[TestCase(new string[] { " : " }, "", 0, 0, false, false)]
+	[TestCase("", ":", "", 0, 0, false, false)]
+	[TestCase("", " : ", "", 0, 0, false, false)]
 	// No range and no type, no array
-	[TestCase(new string[] { }, "", 0, 0, false, false)]
-	[TestCase(new string[] { "" }, "", 0, 0, false, false)]
+	[TestCase("", "", "", 0, 0, false, false)]
+	[TestCase("", "", "", 0, 0, false, false)]
 	// Valid type and array, no range
-	[TestCase(new string[] { "int", "" }, "int", float.MinValue, float.MaxValue, true, true)]
-	[TestCase(new string[] { "float", "" }, "float", float.MinValue, float.MaxValue, true, true)]
-	[TestCase(new string[] { "string", "" }, "string", float.MinValue, float.MaxValue, true, true)]
-	[TestCase(new string[] { "choice", "" }, "choice", float.MinValue, float.MaxValue, true, true)]
+	[TestCase("int", "", "int", float.MinValue, float.MaxValue, true, true)]
+	[TestCase("float", "", "float", float.MinValue, float.MaxValue, true, true)]
+	[TestCase("string", "", "string", float.MinValue, float.MaxValue, true, true)]
+	[TestCase("choice", "", "choice", float.MinValue, float.MaxValue, true, true)]
 	// Valid range and type, array
-	[TestCase(new string[] { "float", "5:10" }, "float", 5, 10, true, true)]
-	[TestCase(new string[] { "float", "5.5:10.5" }, "float", 5.5f, 10.5f, true, true)]
-	[TestCase(new string[] { "float", ":60" }, "float", float.MinValue, 60, true, true)]
+	[TestCase("float", "5:10", "float", 5, 10, true, true)]
+	[TestCase("float", "5.5:10.5", "float", 5.5f, 10.5f, true, true)]
+	[TestCase("float", ":60", "float", float.MinValue, 60, true, true)]
 	public static void TryParseTypeWithRange(
-		string[] tokens,
+		string type,
+		string range,
 		string eType,
 		float eMin,
 		float eMax,
@@ -169,7 +170,7 @@ public static class ParserTest
 		bool isSuccess
 	)
 	{
-		Parser.TryParseTypeWithRange(tokens, isArray, out var result).ConfirmEqual(isSuccess);
+		Parser.TryParseTypeWithRange(type, range, isArray, out var result).ConfirmEqual(isSuccess);
 
 		if (!isSuccess) return;
 

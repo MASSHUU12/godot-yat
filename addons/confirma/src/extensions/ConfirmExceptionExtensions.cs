@@ -14,20 +14,17 @@ public static class ConfirmExceptionExtensions
 		}
 		catch (Exception ex)
 		{
-			if (ex.GetType() == e)
-			{
-				return;
-			}
+			if (ex.GetType() == e) return;
 
 			throw new ConfirmAssertException(
 				message
-				?? $"Expected exception of type {e.Name} but exception of type {ex.GetType().Name} was thrown."
+				?? $"Expected exception of type '{e.Name}' but exception of type '{ex.GetType().Name}' was thrown."
 			);
 		}
 
 		throw new ConfirmAssertException(
 			message
-			?? $"Expected exception of type {e.Name} but no exception was thrown."
+			?? $"Expected exception of type '{e.Name}' but no exception was thrown."
 		);
 	}
 
@@ -62,7 +59,7 @@ public static class ConfirmExceptionExtensions
 			{
 				throw new ConfirmAssertException(
 					message
-					?? $"Expected exception of type {e.Name} not to be thrown but it was."
+					?? $"Expected exception of type '{e.Name}' not to be thrown but it was."
 				);
 			}
 		}

@@ -25,49 +25,49 @@ public static class ConfirmIEnumerableExtensions
 	{
 		if (actual.Count() == expected) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected {expected} but was {actual.Count()}.");
+		throw new ConfirmAssertException(message ?? $"Expected count of {expected} but was {actual.Count()}.");
 	}
 
 	public static void ConfirmCountGreaterThan<T>(this IEnumerable<T> actual, int expected, string? message = null)
 	{
 		if (actual.Count() > expected) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected greater than {expected} but was {actual.Count()}.");
+		throw new ConfirmAssertException(message ?? $"Expected count to be greater than {expected} but was {actual.Count()}.");
 	}
 
 	public static void ConfirmCountLessThan<T>(this IEnumerable<T> actual, int expected, string? message = null)
 	{
 		if (actual.Count() < expected) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected less than {expected} but was {actual.Count()}.");
+		throw new ConfirmAssertException(message ?? $"Expected count to be less than {expected} but was {actual.Count()}.");
 	}
 
 	public static void ConfirmCountGreaterThanOrEqual<T>(this IEnumerable<T> actual, int expected, string? message = null)
 	{
 		if (actual.Count() >= expected) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected greater than or equal to {expected} but was {actual.Count()}.");
+		throw new ConfirmAssertException(message ?? $"Expected count to be greater than or equal to {expected} but was {actual.Count()}.");
 	}
 
 	public static void ConfirmCountLessThanOrEqual<T>(this IEnumerable<T> actual, int expected, string? message = null)
 	{
 		if (actual.Count() <= expected) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected less than or equal to {expected} but was {actual.Count()}.");
+		throw new ConfirmAssertException(message ?? $"Expected count to be less than or equal to {expected} but was {actual.Count()}.");
 	}
 
 	public static void ConfirmContains<T>(this IEnumerable<T> actual, T expected, string? message = null)
 	{
 		if (actual.Contains(expected)) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected to contain {expected} but did not.");
+		throw new ConfirmAssertException(message ?? $"Expected to contain '{expected}' but did not.");
 	}
 
 	public static void ConfirmNotContains<T>(this IEnumerable<T> actual, T expected, string? message = null)
 	{
 		if (!actual.Contains(expected)) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected not to contain {expected} but did.");
+		throw new ConfirmAssertException(message ?? $"Expected not to contain '{expected}' but did.");
 	}
 
 	public static void ConfirmAllMatch<T>(this IEnumerable<T> actual, Func<T, bool> predicate, string? message = null)

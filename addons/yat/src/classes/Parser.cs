@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using YAT.Helpers;
 using YAT.Types;
 
@@ -47,11 +48,11 @@ public static class Parser
 		// Get the min and max values if present
 		var tokens = type.Trim(')').Split('(', StringSplitOptions.RemoveEmptyEntries);
 
-		if (tokens.Length == 0) return false;
+		if (tokens.Length == 0 || tokens.Length > 2) return false;
 
 		if (tokens.Length > 1) // type with range
 		{
-			if (!TryParseTypeWithRange(tokens, isArray, out parsed))
+			if (!TryParseTypeWithRange(tokens[0], tokens[1], isArray, out parsed))
 				return false;
 		}
 		// Check if only range was passed
@@ -62,55 +63,56 @@ public static class Parser
 		return parsed.Min < parsed.Max;
 	}
 
-	public static bool TryParseTypeWithRange(string[] tokens, bool isArray, out CommandInputType parsed)
+	public static bool TryParseTypeWithRange(string type, string range, bool isArray, out CommandInputType parsed)
 	{
-		static bool AllowedToHaveRange(string type)
-		{
-			return type switch
-			{
-				"int" or "float" or "string" => true,
-				_ => false,
-			};
-		}
+		static bool AllowedToHaveRange(string type) =>
+			type is "int" or "float" or "string";
+
+		CommandInputType CreateOut(float min = float.MinValue, float max = float.MaxValue) =>
+			new(type, min, max, isArray);
 
 		parsed = new();
 
-		if (tokens.Length == 0) return false;
+		if (string.IsNullOrEmpty(type) || (!string.IsNullOrEmpty(range) && !AllowedToHaveRange(type)))
+			return false;
 
-		bool isMaxPresent = tokens.Length == 2 && tokens[1].EndsWith(':');
-		var minMax = tokens.Length == 2
-			? tokens[1].Split(':', StringSplitOptions.RemoveEmptyEntries)
-			: Array.Empty<string>();
+		// If range is missing
+		if (string.IsNullOrEmpty(range))
+		{
+			parsed = CreateOut();
 
-		if (!AllowedToHaveRange(tokens[0]) ||
-			minMax.Length > 2 || (isMaxPresent && minMax.Length == 0)
-		) return false;
+			return true;
+		}
 
+		ushort colonCount = (ushort)range.Count(c => c == ':');
+
+		if (colonCount > 1) return false;
+
+		bool maxPresent = !range.EndsWith(':');
+		var minMax = range.Split(':', StringSplitOptions.RemoveEmptyEntries);
+
+		// If range is invalid return
+		if (minMax.Length == 0 || minMax.Length > 2) return false;
+
+		// If only one value was passed (min or max)
 		if (minMax.Length == 1)
 		{
-			// If only min value is not present, set it to float.MinValue
-			if (!isMaxPresent)
-			{
-				if (minMax[0].TryConvert(out float max))
-					parsed = new(tokens[0], float.MinValue, max, isArray);
-				else return false;
-			}
-			else // If only max value is not present, set it to float.MaxValue
-			{
-				if (minMax[0].TryConvert(out float min))
-					parsed = new(tokens[0], min, float.MaxValue, isArray);
-				else return false;
-			}
-		}
-		else if (minMax.Length > 0)
-		{
-			if (minMax[0].TryConvert(out float min)
-				&& minMax[1].TryConvert(out float max)
-			) parsed = new(tokens[0], min, max, isArray);
-			else return false;
-		}
-		else parsed = new(tokens[0], float.MinValue, float.MaxValue, isArray);
+			if (!minMax[0].TryConvert(out float val)) return false;
 
-		return true;
+			parsed = maxPresent
+				? CreateOut(max: val)
+				: CreateOut(min: val);
+
+			return true;
+		}
+
+		// If both values were passed
+		if (minMax[0].TryConvert(out float min) && minMax[1].TryConvert(out float max))
+		{
+			parsed = CreateOut(min, max);
+			return true;
+		}
+
+		return false;
 	}
 }

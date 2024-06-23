@@ -27,11 +27,12 @@ public class TestingMethod
 
 		foreach (TestCase test in TestCases)
 		{
-			if (test.Method.GetCustomAttribute<IgnoreAttribute>() is IgnoreAttribute ignore)
+			var attr = test.Method.GetCustomAttribute<IgnoreAttribute>();
+			if (attr is not null && attr.IsIgnored())
 			{
 				testsIgnored++;
 
-				TestOutput.PrintOutput(Name, test.Params, Ignored, props.IsVerbose, ignore.Reason);
+				TestOutput.PrintOutput(Name, test.Params, Ignored, props.IsVerbose, attr.Reason);
 				continue;
 			}
 

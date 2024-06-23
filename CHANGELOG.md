@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 - 'run' argument to 'qc' command.
 
+### Fixed
+
+- Bugs in TryParseTypeWithRange (#285).
+
 ## [1.29.0-beta 2024-05-31]
 
 ### Added
