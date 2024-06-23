@@ -59,7 +59,9 @@ Not implemented.
 
 ### Ignore
 
-Ignore method during testing.
+Ignore class/method during testing.
+
+Can ignore always or only when ran from editor.
 
 ### SetUp
 

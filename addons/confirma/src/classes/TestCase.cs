@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Confirma.Exceptions;
+using Confirma.Helpers;
 
 namespace Confirma.Classes;
 
@@ -14,13 +15,11 @@ public class TestCase
 	{
 		Method = method;
 		Parameters = parameters;
-		Params = string.Join(", ", Parameters ?? Array.Empty<object>()); ;
+		Params = ArrayHelper.ToString(parameters);
 	}
 
 	public void Run()
 	{
-		var strParams = string.Join(", ", Parameters ?? Array.Empty<object>());
-
 		try
 		{
 			Method.Invoke(null, Parameters);
@@ -31,7 +30,7 @@ public class TestCase
 		}
 		catch (Exception e) when (e is ArgumentException or ArgumentNullException)
 		{
-			throw new ConfirmAssertException($"- Failed: Invalid test case parameters: {strParams}.");
+			throw new ConfirmAssertException($"- Failed: Invalid test case parameters: {Params}.");
 		}
 		catch (Exception e)
 		{

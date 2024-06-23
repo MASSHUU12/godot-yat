@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using Confirma.Exceptions;
 
 namespace Confirma.Extensions;
@@ -11,7 +10,7 @@ public static class ConfirmAttributeExtensions
 	{
 		if (actual.IsDefined(expected, false)) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected to be decorated with {expected.Name} but was not.");
+		throw new ConfirmAssertException(message ?? $"Expected '{actual.Name}' to be decorated with '{expected.Name}' but was not.");
 	}
 
 	public static void ConfirmIsDecoratedWith<T>(this Type actual, string? message = null)
@@ -26,7 +25,7 @@ public static class ConfirmAttributeExtensions
 	{
 		if (!actual.IsDefined(expected, false)) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected to not be decorated with {expected.Name} but was.");
+		throw new ConfirmAssertException(message ?? $"Expected '{actual.Name}' to not be decorated with '{expected.Name}' but was.");
 	}
 
 	public static void ConfirmIsNotDecoratedWith<T>(this Type actual, string? message = null)

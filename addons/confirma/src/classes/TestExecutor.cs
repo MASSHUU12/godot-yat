@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -52,15 +53,24 @@ public static class TestExecutor
 		_props.ResetStats();
 
 		if (_props.DisableParallelization)
-			foreach (var testClass in testClasses) ExecuteSingleClass(testClass);
+			foreach (var testClass in testClasses) ExecuteSingleClass(testClass, _props.Result);
 		else
 		{
 			var (parallelTestClasses, sequentialTestClasses) = ClassifyTests(testClasses);
+			var results = new ConcurrentBag<TestResult>();
 
-			parallelTestClasses.AsParallel().ForAll(ExecuteSingleClass);
+			parallelTestClasses.AsParallel().ForAll(testClass =>
+			{
+				var localResult = new TestResult();
+				ExecuteSingleClass(testClass, localResult);
+				results.Add(localResult);
+			});
 
 			foreach (var testClass in sequentialTestClasses)
-				ExecuteSingleClass(testClass);
+				ExecuteSingleClass(testClass, _props.Result);
+
+			// Aggregate results
+			foreach (var result in results) _props.Result += result;
 		}
 
 		PrintSummary(testClasses.Count(), startTimeStamp);
@@ -69,32 +79,32 @@ public static class TestExecutor
 	private static (IEnumerable<TestingClass>, IEnumerable<TestingClass>) ClassifyTests(IEnumerable<TestingClass> tests)
 	{
 		return (
-		  Reflection.GetParallelTestClasses(tests),
-		  Reflection.GetSequentialTestClasses(tests)
+		  TestDiscovery.GetParallelTestClasses(tests),
+		  TestDiscovery.GetSequentialTestClasses(tests)
 		);
 	}
 
-	private static void ExecuteSingleClass(TestingClass testClass)
+	private static void ExecuteSingleClass(TestingClass testClass, TestResult result)
 	{
-		lock (_lock)
+		Log.Print($"> {testClass.Type.Name}...");
+
+		var attr = testClass.Type.GetCustomAttribute<IgnoreAttribute>();
+		if (attr is not null && attr.IsIgnored())
 		{
-			Log.Print($"> {testClass.Type.Name}...");
+			_props.Result.TestsIgnored += (uint)testClass.TestMethods.Sum(m => m.TestCases.Count());
 
-			if (testClass.Type.GetCustomAttribute<IgnoreAttribute>() is IgnoreAttribute ignore)
-			{
-				_props.Result.TestsIgnored += (uint)testClass.TestMethods.Sum(m => m.TestCases.Count());
+			Log.PrintWarning($" ignored.\n");
 
-				Log.PrintWarning($" ignored.\n");
-				if (ignore.Reason is not null) Log.PrintWarning($"- {ignore.Reason}\n");
-				return;
-			}
+			if (string.IsNullOrEmpty(attr.Reason)) return;
 
-			Log.PrintLine();
-
-			var classResult = testClass.Run(_props);
-
-			_props.Result += classResult;
+			Log.PrintWarning($"- {attr.Reason}\n");
 		}
+
+		Log.PrintLine();
+
+		var classResult = testClass.Run(_props);
+
+		result += classResult;
 	}
 
 	private static void PrintSummary(int count, DateTime startTimeStamp)

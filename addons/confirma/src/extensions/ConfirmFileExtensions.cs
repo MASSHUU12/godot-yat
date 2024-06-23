@@ -38,14 +38,14 @@ public static class ConfirmFileExtensions
 	{
 		if (File.ReadAllText(path).Contains(content)) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected file to contain: {content}");
+		throw new ConfirmAssertException(message ?? $"Expected file to contain: '{content}' but it did not.");
 	}
 
 	public static void ConfirmFileDoesNotContain(this StringName path, string content, string? message = null)
 	{
 		if (!File.ReadAllText(path).Contains(content)) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected file to not contain: {content}");
+		throw new ConfirmAssertException(message ?? $"Expected file to not contain: '{content}' but it did.");
 	}
 
 	public static void ConfirmFileHasLength(this StringName path, long length, string? message = null)
@@ -66,13 +66,13 @@ public static class ConfirmFileExtensions
 	{
 		if ((new FileInfo(path).Attributes & attributes) == attributes) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected file to have attributes: {attributes}");
+		throw new ConfirmAssertException(message ?? $"Expected file to have attributes: '{attributes}' but did not.");
 	}
 
 	public static void ConfirmFileDoesNotHaveAttributes(this StringName path, FileAttributes attributes, string? message = null)
 	{
 		if ((new FileInfo(path).Attributes & attributes) != attributes) return;
 
-		throw new ConfirmAssertException(message ?? $"Expected file to not have attributes: {attributes}");
+		throw new ConfirmAssertException(message ?? $"Expected file to not have attributes: '{attributes}' but did.");
 	}
 }
