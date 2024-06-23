@@ -79,51 +79,55 @@ public static class Parser
 
 		if (string.IsNullOrEmpty(type)) return false;
 
-		// If range is specified
-		if (!string.IsNullOrEmpty(range))
+		// If range is missing
+		if (string.IsNullOrEmpty(range))
 		{
-			if (!AllowedToHaveRange(type)) return false;
+			parsed = CreateOut();
 
-			bool maxPresent = range.EndsWith(':');
-			var minMax = range.Split(':', StringSplitOptions.RemoveEmptyEntries);
-
-			// If range is invalid return
-			if (minMax.Length > 2 || (maxPresent && minMax.Length == 0)) return false;
-
-			// If only one value was passed (min or max)
-			if (minMax.Length == 1)
-			{
-				if (maxPresent)
-				{
-					if (minMax[0].TryConvert(out float val))
-					{
-						parsed = CreateOut(max: val);
-					}
-					else return false;
-				}
-				else
-				{
-					if (minMax[0].TryConvert(out float val))
-					{
-						parsed = CreateOut(min: val);
-					}
-					else return false;
-				}
-
-				return true;
-			}
-
-			if (minMax[0].TryConvert(out float min) && minMax[1].TryConvert(out float max))
-			{
-				parsed = CreateOut(min, max);
-				return true;
-			}
-			else return false;
+			return true;
 		}
 
-		// If range is missing
-		parsed = CreateOut();
+		if (!AllowedToHaveRange(type)) return false;
 
-		return true;
+		ushort colonCount = (ushort)range.Count(c => c == ':');
+
+		if (colonCount > 1) return false;
+
+		bool maxPresent = !range.EndsWith(':');
+		var minMax = range.Split(':', StringSplitOptions.RemoveEmptyEntries);
+
+		// If range is invalid return
+		if (minMax.Length == 0 || minMax.Length > 2) return false;
+
+		// If only one value was passed (min or max)
+		if (minMax.Length == 1)
+		{
+			if (maxPresent)
+			{
+				if (minMax[0].TryConvert(out float val))
+				{
+					parsed = CreateOut(max: val);
+				}
+				else return false;
+			}
+			else
+			{
+				if (minMax[0].TryConvert(out float val))
+				{
+					parsed = CreateOut(min: val);
+				}
+				else return false;
+			}
+
+			return true;
+		}
+
+		if (minMax[0].TryConvert(out float min) && minMax[1].TryConvert(out float max))
+		{
+			parsed = CreateOut(min, max);
+			return true;
+		}
+
+		return false;
 	}
 }
