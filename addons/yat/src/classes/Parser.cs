@@ -66,18 +66,15 @@ public static class Parser
 	public static bool TryParseTypeWithRange(string type, string range, bool isArray, out CommandInputType parsed)
 	{
 		static bool AllowedToHaveRange(string type) =>
-			type switch
-			{
-				"int" or "float" or "string" => true,
-				_ => false,
-			};
+			type is "int" or "float" or "string";
 
 		CommandInputType CreateOut(float min = float.MinValue, float max = float.MaxValue) =>
 			new(type, min, max, isArray);
 
 		parsed = new();
 
-		if (string.IsNullOrEmpty(type)) return false;
+		if (string.IsNullOrEmpty(type) || (!string.IsNullOrEmpty(range) && !AllowedToHaveRange(type)))
+			return false;
 
 		// If range is missing
 		if (string.IsNullOrEmpty(range))
@@ -86,8 +83,6 @@ public static class Parser
 
 			return true;
 		}
-
-		if (!AllowedToHaveRange(type)) return false;
 
 		ushort colonCount = (ushort)range.Count(c => c == ':');
 
@@ -102,26 +97,16 @@ public static class Parser
 		// If only one value was passed (min or max)
 		if (minMax.Length == 1)
 		{
-			if (maxPresent)
-			{
-				if (minMax[0].TryConvert(out float val))
-				{
-					parsed = CreateOut(max: val);
-				}
-				else return false;
-			}
-			else
-			{
-				if (minMax[0].TryConvert(out float val))
-				{
-					parsed = CreateOut(min: val);
-				}
-				else return false;
-			}
+			if (!minMax[0].TryConvert(out float val)) return false;
+
+			parsed = maxPresent
+				? CreateOut(max: val)
+				: CreateOut(min: val);
 
 			return true;
 		}
 
+		// If both values were passed
 		if (minMax[0].TryConvert(out float min) && minMax[1].TryConvert(out float max))
 		{
 			parsed = CreateOut(min, max);
