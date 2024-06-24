@@ -4,6 +4,7 @@ using System.Linq;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Types;
+using static YAT.Enums.ECommandInputType;
 
 namespace YAT.Classes;
 
@@ -40,7 +41,7 @@ public static class Parser
 	{
 		parsed = ECommandInputType.Void;
 
-		if (Enum.TryParse(typeof(ECommandInputType), type, true, out var result))
+		if (System.Enum.TryParse(typeof(ECommandInputType), type, true, out var result))
 		{
 			parsed = (ECommandInputType)result;
 			return true;
@@ -49,45 +50,46 @@ public static class Parser
 		return false;
 	}
 
-	public static bool TryParseCommandInputType(string type, out CommandInputType parsed)
+	public static bool TryParseCommandInputType(string stringToParse, out CommandType parsed)
 	{
 		parsed = new();
-		type = type.Trim();
+		stringToParse = stringToParse.Trim();
 
-		if (string.IsNullOrEmpty(type)) return false;
+		if (string.IsNullOrEmpty(stringToParse)) return false;
 
-		bool isArray = type.EndsWith("...");
-		if (isArray) type = type[..^3].Trim();
+		bool isArray = stringToParse.EndsWith("...");
+		if (isArray) stringToParse = stringToParse[..^3].Trim();
 
 		// Get the min and max values if present
-		var tokens = type.Trim(')').Split('(', StringSplitOptions.RemoveEmptyEntries);
+		var tokens = stringToParse.Trim(')').Split('(', StringSplitOptions.RemoveEmptyEntries);
 
 		if (tokens.Length == 0 || tokens.Length > 2) return false;
 
-		if (tokens.Length > 1) // type with range
-		{
-			if (!TryParseTypeWithRange(tokens[0], tokens[1], isArray, out parsed))
-				return false;
-		}
-		// Check if only range was passed
-		else if (!tokens[0].Contains(':'))
-			parsed = new(tokens[0], float.MinValue, float.MaxValue, isArray);
-		else return false;
+		if (!TryParseStringTypeToEnum(tokens[0], out var enumType)) return false;
 
-		return parsed.Min < parsed.Max;
+		if (tokens.Length > 1) // Type with range
+		{
+			if (!TryParseTypeWithRange(enumType, tokens[1], isArray, out var result))
+				return false;
+
+			parsed = result;
+		}
+		else parsed = new(enumType, isArray);
+
+		return true;
 	}
 
-	public static bool TryParseTypeWithRange(string type, string range, bool isArray, out CommandInputType parsed)
+	public static bool TryParseTypeWithRange(ECommandInputType type, string range, bool isArray, out CommandTypeRanged parsed)
 	{
-		static bool AllowedToHaveRange(string type) =>
-			type is "int" or "float" or "string";
+		static bool AllowedToHaveRange(ECommandInputType type) =>
+			type is Int or Float or ECommandInputType.String;
 
-		CommandInputType CreateOut(float min = float.MinValue, float max = float.MaxValue) =>
-			new(type, min, max, isArray);
+		CommandTypeRanged CreateOut(float min = float.MinValue, float max = float.MaxValue) =>
+			new(type, isArray, min, max);
 
 		parsed = new();
 
-		if (string.IsNullOrEmpty(type) || (!string.IsNullOrEmpty(range) && !AllowedToHaveRange(type)))
+		if (!string.IsNullOrEmpty(range) && !AllowedToHaveRange(type))
 			return false;
 
 		// If range is missing
@@ -117,14 +119,14 @@ public static class Parser
 				? CreateOut(max: val)
 				: CreateOut(min: val);
 
-			return true;
+			return parsed.Min >= float.MinValue && parsed.Max <= float.MaxValue;
 		}
 
 		// If both values were passed
 		if (minMax[0].TryConvert(out float min) && minMax[1].TryConvert(out float max))
 		{
 			parsed = CreateOut(min, max);
-			return true;
+			return min < max;
 		}
 
 		return false;

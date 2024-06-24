@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Godot;
 using YAT.Classes;
 using YAT.Helpers;
-using YAT.Types;
 
 namespace YAT.Attributes;
 
@@ -11,7 +10,7 @@ namespace YAT.Attributes;
 public class CommandInputAttribute : Attribute
 {
 	public StringName Name { get; private set; }
-	public List<CommandInputType> Types { get; private set; } = new();
+	public List<CommandType> Types { get; private set; } = new();
 	public string Description { get; private set; }
 
 	public CommandInputAttribute(StringName name, string type, string description = "")
