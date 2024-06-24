@@ -4,7 +4,7 @@ using Confirma.Classes;
 using Confirma.Extensions;
 using YAT.Classes;
 using YAT.Enums;
-using YAT.Types;
+using static YAT.Enums.ECommandInputType;
 
 namespace YAT.Test;
 
@@ -38,62 +38,62 @@ public static class ParserTest
 	}
 
 	// Valid range and type, no array
-	[TestCase("int(0:10)", "int", 0, 10, false, true)]
-	[TestCase("int(5:10)", "int", 5, 10, false, true)]
-	[TestCase("int(-12:8)", "int", -12, 8, false, true)]
-	[TestCase("float(5:10)", "float", 5, 10, false, true)]
-	[TestCase("int(-12:-5)", "int", -12, -5, false, true)]
-	[TestCase("string(5:10)", "string", 5, 10, false, true)]
-	[TestCase("float(0.5:60)", "float", 0.5f, 60, false, true)]
-	[TestCase("float(0.5 : 60)", "float", 0.5f, 60, false, true)]
-	[TestCase("float(-0.5:60)", "float", -0.5f, 60, false, true)]
-	[TestCase("int(:10)", "int", float.MinValue, 10, false, true)]
-	[TestCase("int(:-5)", "int", float.MinValue, -5, false, true)]
-	[TestCase("float(5.5:10.5)", "float", 5.5f, 10.5f, false, true)]
-	[TestCase("string(5:)", "string", 5, float.MaxValue, false, true)]
-	[TestCase("int()", "int", float.MinValue, float.MaxValue, false, true)]
+	[TestCase("int(0:10)", Int, 0, 10, false, true)]
+	[TestCase("int(5:10)", Int, 5, 10, false, true)]
+	[TestCase("int(-12:8)", Int, -12, 8, false, true)]
+	[TestCase("float(5:10)", Float, 5, 10, false, true)]
+	[TestCase("int(-12:-5)", Int, -12, -5, false, true)]
+	[TestCase("string(5:10)", ECommandInputType.String, 5, 10, false, true)]
+	[TestCase("float(0.5:60)", Float, 0.5f, 60, false, true)]
+	[TestCase("float(0.5 : 60)", Float, 0.5f, 60, false, true)]
+	[TestCase("float(-0.5:60)", Float, -0.5f, 60, false, true)]
+	[TestCase("int(:10)", Int, float.MinValue, 10, false, true)]
+	[TestCase("int(:-5)", Int, float.MinValue, -5, false, true)]
+	[TestCase("float(5.5:10.5)", Float, 5.5f, 10.5f, false, true)]
+	[TestCase("string(5:)", ECommandInputType.String, 5, float.MaxValue, false, true)]
+	[TestCase("int()", Int, float.MinValue, float.MaxValue, false, true)]
 	// Invalid range and valid type, no array
-	[TestCase("int(10:5)", "int", 0, 0, false, false)]
-	[TestCase("float(:)", "float", 0, 0, false, false)]
-	[TestCase("int(:dxdx)", "int", 0, 0, false, false)]
-	[TestCase("int(sda:da)", "int", 0, 0, false, false)]
-	[TestCase("float( : )", "float", 0, 0, false, false)]
-	[TestCase("string(5:x)", "string", 0, 0, false, false)]
-	[TestCase("string(x:10)", "string", 0, 0, false, false)]
-	[TestCase("string(5::5)", "string", 0, 0, false, false)]
-	[TestCase("string(5:10:15)", "string", 0, 0, false, false)]
+	[TestCase("int(10:5)", Int, 0, 0, false, false)]
+	[TestCase("float(:)", Float, 0, 0, false, false)]
+	[TestCase("int(:dxdx)", Int, 0, 0, false, false)]
+	[TestCase("int(sda:da)", Int, 0, 0, false, false)]
+	[TestCase("float( : )", Float, 0, 0, false, false)]
+	[TestCase("string(5:x)", ECommandInputType.String, 0, 0, false, false)]
+	[TestCase("string(x:10)", ECommandInputType.String, 0, 0, false, false)]
+	[TestCase("string(5::5)", ECommandInputType.String, 0, 0, false, false)]
+	[TestCase("string(5:10:15)", ECommandInputType.String, 0, 0, false, false)]
 	// No range and valid type, no array
-	[TestCase("x", "x", float.MinValue, float.MaxValue, false, true)]
-	[TestCase("int", "int", float.MinValue, float.MaxValue, false, true)]
-	[TestCase("float", "float", float.MinValue, float.MaxValue, false, true)]
-	[TestCase("choice", "choice", float.MinValue, float.MaxValue, false, true)]
-	[TestCase("string", "string", float.MinValue, float.MaxValue, false, true)]
+	[TestCase("x", Constant, 0, 0, false, true)]
+	[TestCase("int", Int, 0, 0, false, true)]
+	[TestCase("float", Float, 0, 0, false, true)]
+	[TestCase("choice", Constant, 0, 0, false, true)]
+	[TestCase("string", ECommandInputType.String, 0, 0, false, true)]
 	// Valid range, type not allowed to have range, no array
-	[TestCase("x(5:10)", "x", 0, 0, false, false)]
-	[TestCase("y(:10)", "choice", 0, 0, false, false)]
-	[TestCase("y(-12:8)", "choice", 0, 0, false, false)]
-	[TestCase("choice(5:10)", "choice", 0, 0, false, false)]
-	[TestCase("choice(0:10)", "choice", 0, 0, false, false)]
+	[TestCase("x(5:10)", ECommandInputType.Void, 0, 0, false, false)]
+	[TestCase("y(:10)", ECommandInputType.Void, 0, 0, false, false)]
+	[TestCase("y(-12:8)", ECommandInputType.Void, 0, 0, false, false)]
+	[TestCase("choice(5:10)", ECommandInputType.Void, 0, 0, false, false)]
+	[TestCase("choice(0:10)", ECommandInputType.Void, 0, 0, false, false)]
 	// Invalid range and no type, no array
-	[TestCase("()", "", 0, 0, false, false)]
-	[TestCase("(:)", "", 0, 0, false, false)]
-	[TestCase("( : )", "", 0, 0, false, false)]
+	[TestCase("()", ECommandInputType.Void, 0, 0, false, false)]
+	[TestCase("(:)", ECommandInputType.Void, 0, 0, false, false)]
+	[TestCase("( : )", ECommandInputType.Void, 0, 0, false, false)]
 	// No range and no type, no array
-	[TestCase("", "", 0, 0, false, false)]
+	[TestCase("", ECommandInputType.Void, 0, 0, false, false)]
 	// Valid type and array, no range
-	[TestCase("int...", "int", float.MinValue, float.MaxValue, true, true)]
-	[TestCase("float...", "float", float.MinValue, float.MaxValue, true, true)]
-	[TestCase("string...", "string", float.MinValue, float.MaxValue, true, true)]
-	[TestCase("choice...", "choice", float.MinValue, float.MaxValue, true, true)]
+	[TestCase("int...", Int, float.MinValue, float.MaxValue, true, true)]
+	[TestCase("float...", Float, float.MinValue, float.MaxValue, true, true)]
+	[TestCase("string...", ECommandInputType.String, float.MinValue, float.MaxValue, true, true)]
+	[TestCase("choice...", Constant, 0, 0, true, true)]
 	// Valid range and type, array
-	[TestCase("float(5:10)...", "float", 5, 10, true, true)]
-	[TestCase("float(5.5:10.5)...", "float", 5.5f, 10.5f, true, true)]
-	[TestCase("float(:60)...", "float", float.MinValue, 60, true, true)]
+	[TestCase("float(5:10)...", Float, 5, 10, true, true)]
+	[TestCase("float(5.5:10.5)...", Float, 5.5f, 10.5f, true, true)]
+	[TestCase("float(:60)...", Float, float.MinValue, 60, true, true)]
 	// No range and no type, array
-	[TestCase("...", "", float.MinValue, float.MaxValue, true, false)]
+	[TestCase("...", ECommandInputType.Void, 0, 0, true, false)]
 	public static void TryParseCommandInputType(
 		string type,
-		string eType,
+		ECommandInputType eType,
 		float min,
 		float max,
 		bool isArray,
@@ -104,67 +104,56 @@ public static class ParserTest
 
 		if (!isSuccess) return;
 
-		result.Type.ToString().ConfirmEqual(eType);
-		result.Min.ConfirmEqual(min);
-		result.Max.ConfirmEqual(max);
+		result.Type.ConfirmEqual(eType);
 		result.IsArray.ConfirmEqual(isArray);
+
+		if (result is CommandTypeRanged res)
+		{
+			res.Min.ConfirmEqual(min);
+			res.Max.ConfirmEqual(max);
+		}
 	}
 
 	// Valid range and type, no array
-	[TestCase("int", "0:10", "int", 0, 10, false, true)]
-	[TestCase("int", "5:10", "int", 5, 10, false, true)]
-	[TestCase("int", "-12:8", "int", -12, 8, false, true)]
-	[TestCase("float", "5:10", "float", 5, 10, false, true)]
-	[TestCase("int", "-12:-5", "int", -12, -5, false, true)]
-	[TestCase("string", "5:10", "string", 5, 10, false, true)]
-	[TestCase("float", "0.5:60", "float", 0.5f, 60, false, true)]
-	[TestCase("float", "0.5 : 60", "float", 0.5f, 60, false, true)]
-	[TestCase("float", "-0.5:60", "float", -0.5f, 60, false, true)]
-	[TestCase("int", ":10", "int", float.MinValue, 10, false, true)]
-	[TestCase("int", ":-5", "int", float.MinValue, -5, false, true)]
-	[TestCase("float", "5.5:10.5", "float", 5.5f, 10.5f, false, true)]
-	[TestCase("string", "5:", "string", 5, float.MaxValue, false, true)]
-	[TestCase("int", "", "int", float.MinValue, float.MaxValue, false, true)]
+	[TestCase(Int, "0:10", Int, 0, 10, false, true)]
+	[TestCase(Int, "5:10", Int, 5, 10, false, true)]
+	[TestCase(Int, "-12:8", Int, -12, 8, false, true)]
+	[TestCase(Float, "5:10", Float, 5, 10, false, true)]
+	[TestCase(Int, "-12:-5", Int, -12, -5, false, true)]
+	[TestCase(ECommandInputType.String, "5:10", ECommandInputType.String, 5, 10, false, true)]
+	[TestCase(Float, "0.5:60", Float, 0.5f, 60, false, true)]
+	[TestCase(Float, "0.5 : 60", Float, 0.5f, 60, false, true)]
+	[TestCase(Float, "-0.5:60", Float, -0.5f, 60, false, true)]
+	[TestCase(Int, ":10", Int, float.MinValue, 10, false, true)]
+	[TestCase(Int, ":-5", Int, float.MinValue, -5, false, true)]
+	[TestCase(Float, "5.5:10.5", Float, 5.5f, 10.5f, false, true)]
+	[TestCase(ECommandInputType.String, "5:", ECommandInputType.String, 5, float.MaxValue, false, true)]
+	[TestCase(Int, "", Int, float.MinValue, float.MaxValue, false, true)]
 	// Invalid range and valid type, no array
-	[TestCase("float", ":", "float", 0, 0, false, false)]
-	[TestCase("int", ":dxdx", "int", 0, 0, false, false)]
-	[TestCase("int", "sda:da", "int", 0, 0, false, false)]
-	[TestCase("float", " : ", "float", 0, 0, false, false)]
-	[TestCase("string", "5:x", "string", 0, 0, false, false)]
-	[TestCase("string", "x:10", "string", 0, 0, false, false)]
-	[TestCase("string", "5::5", "string", 0, 0, false, false)]
-	[TestCase("string", "5:10:15", "string", 0, 0, false, false)]
+	[TestCase(Float, ":", Float, 0, 0, false, false)]
+	[TestCase(Int, ":dxdx", Int, 0, 0, false, false)]
+	[TestCase(Int, "sda:da", Int, 0, 0, false, false)]
+	[TestCase(Float, " : ", Float, 0, 0, false, false)]
+	[TestCase(ECommandInputType.String, "5:x", ECommandInputType.String, 0, 0, false, false)]
+	[TestCase(ECommandInputType.String, "x:10", ECommandInputType.String, 0, 0, false, false)]
+	[TestCase(ECommandInputType.String, "5::5", ECommandInputType.String, 0, 0, false, false)]
+	[TestCase(ECommandInputType.String, "5:10:15", ECommandInputType.String, 0, 0, false, false)]
 	// No range and valid type, no array
-	[TestCase("x", "", "x", float.MinValue, float.MaxValue, false, true)]
-	[TestCase("int", "", "int", float.MinValue, float.MaxValue, false, true)]
-	[TestCase("float", "", "float", float.MinValue, float.MaxValue, false, true)]
-	[TestCase("choice", "", "choice", float.MinValue, float.MaxValue, false, true)]
-	[TestCase("string", "", "string", float.MinValue, float.MaxValue, false, true)]
-	// Valid range, type not allowed to have range, no array
-	[TestCase("x", "5:10", "x", 0, 0, false, false)]
-	[TestCase("y", ":10", "choice", 0, 0, false, false)]
-	[TestCase("y", "-12:8", "choice", 0, 0, false, false)]
-	[TestCase("choice", "5:10", "choice", 0, 0, false, false)]
-	[TestCase("choice", "0:10", "choice", 0, 0, false, false)]
-	// Invalid range and no type, no array
-	[TestCase("", ":", "", 0, 0, false, false)]
-	[TestCase("", " : ", "", 0, 0, false, false)]
-	// No range and no type, no array
-	[TestCase("", "", "", 0, 0, false, false)]
-	[TestCase("", "", "", 0, 0, false, false)]
+	[TestCase(Int, "", Int, float.MinValue, float.MaxValue, false, true)]
+	[TestCase(Float, "", Float, float.MinValue, float.MaxValue, false, true)]
+	[TestCase(ECommandInputType.String, "", ECommandInputType.String, float.MinValue, float.MaxValue, false, true)]
 	// Valid type and array, no range
-	[TestCase("int", "", "int", float.MinValue, float.MaxValue, true, true)]
-	[TestCase("float", "", "float", float.MinValue, float.MaxValue, true, true)]
-	[TestCase("string", "", "string", float.MinValue, float.MaxValue, true, true)]
-	[TestCase("choice", "", "choice", float.MinValue, float.MaxValue, true, true)]
+	[TestCase(Int, "", Int, float.MinValue, float.MaxValue, true, true)]
+	[TestCase(Float, "", Float, float.MinValue, float.MaxValue, true, true)]
+	[TestCase(ECommandInputType.String, "", ECommandInputType.String, float.MinValue, float.MaxValue, true, true)]
 	// Valid range and type, array
-	[TestCase("float", "5:10", "float", 5, 10, true, true)]
-	[TestCase("float", "5.5:10.5", "float", 5.5f, 10.5f, true, true)]
-	[TestCase("float", ":60", "float", float.MinValue, 60, true, true)]
+	[TestCase(Float, "5:10", Float, 5, 10, true, true)]
+	[TestCase(Float, "5.5:10.5", Float, 5.5f, 10.5f, true, true)]
+	[TestCase(Float, ":60", Float, float.MinValue, 60, true, true)]
 	public static void TryParseTypeWithRange(
-		string type,
+		ECommandInputType type,
 		string range,
-		string eType,
+		ECommandInputType eType,
 		float eMin,
 		float eMax,
 		bool isArray,
@@ -175,7 +164,7 @@ public static class ParserTest
 
 		if (!isSuccess) return;
 
-		result.Type.ToString().ConfirmEqual(eType);
+		result.Type.ConfirmEqual(eType);
 		result.Min.ConfirmEqual(eMin);
 		result.Max.ConfirmEqual(eMax);
 		result.IsArray.ConfirmEqual(isArray);
@@ -183,7 +172,7 @@ public static class ParserTest
 
 	[TestCase("Void", ECommandInputType.Void, true)]
 	[TestCase("void", ECommandInputType.Void, true)]
-	[TestCase("int", ECommandInputType.Int, true)]
+	[TestCase("int", Int, true)]
 	[TestCase("enum?", ECommandInputType.Void, false)]
 	public static void TryParseStringTypeToEnum(string type, ECommandInputType expected, bool shouldBeSuccess)
 	{
