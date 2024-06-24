@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAT.Enums;
 using YAT.Helpers;
 using YAT.Types;
 
@@ -33,6 +34,19 @@ public static class Parser
 		if (tokens.Length >= 1) for (int i = 1; i < tokens.Length; i++) args.Add(tokens[i][..^1]);
 
 		return (parts[0], args.ToArray());
+	}
+
+	public static bool TryParseStringTypeToEnum(string type, out ECommandInputType parsed)
+	{
+		parsed = ECommandInputType.Void;
+
+		if (Enum.TryParse(typeof(ECommandInputType), type, true, out var result))
+		{
+			parsed = (ECommandInputType)result;
+			return true;
+		}
+
+		return false;
 	}
 
 	public static bool TryParseCommandInputType(string type, out CommandInputType parsed)

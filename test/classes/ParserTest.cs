@@ -3,6 +3,7 @@ using Confirma.Attributes;
 using Confirma.Classes;
 using Confirma.Extensions;
 using YAT.Classes;
+using YAT.Enums;
 using YAT.Types;
 
 namespace YAT.Test;
@@ -178,5 +179,17 @@ public static class ParserTest
 		result.Min.ConfirmEqual(eMin);
 		result.Max.ConfirmEqual(eMax);
 		result.IsArray.ConfirmEqual(isArray);
+	}
+
+	[TestCase("Void", ECommandInputType.Void, true)]
+	[TestCase("void", ECommandInputType.Void, true)]
+	[TestCase("int", ECommandInputType.Int, true)]
+	[TestCase("enum?", ECommandInputType.Void, false)]
+	public static void TryParseStringTypeToEnum(string type, ECommandInputType expected, bool shouldBeSuccess)
+	{
+		var isSuccess = Parser.TryParseStringTypeToEnum(type, out var result);
+
+		isSuccess.ConfirmEqual(shouldBeSuccess);
+		result.ConfirmEqual(expected);
 	}
 }
