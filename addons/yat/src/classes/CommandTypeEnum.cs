@@ -7,8 +7,8 @@ public class CommandTypeEnum : CommandType
 {
 	public Dictionary<string, int> Values { get; private set; }
 
-	public CommandTypeEnum(ECommandInputType type, bool isArray, Dictionary<string, int> values)
-	: base(type, isArray)
+	public CommandTypeEnum(string name, ECommandInputType type, bool isArray, Dictionary<string, int> values)
+	: base(name, type, isArray)
 	{
 		Values = values;
 	}

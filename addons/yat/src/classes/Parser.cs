@@ -67,7 +67,7 @@ public static class Parser
 
 		if ((!TryParseStringTypeToEnum(tokens[0], out var enumType) || enumType == Constant) && tokens.Length == 1)
 		{
-			parsed = new(Constant, isArray);
+			parsed = new(tokens[0], Constant, isArray);
 			return true;
 		}
 
@@ -78,7 +78,7 @@ public static class Parser
 
 			parsed = result;
 		}
-		else parsed = new(enumType, isArray);
+		else parsed = new(tokens[0], enumType, isArray);
 
 		return true;
 	}
@@ -89,7 +89,7 @@ public static class Parser
 			type is Int or Float or ECommandInputType.String;
 
 		CommandTypeRanged CreateOut(float min = float.MinValue, float max = float.MaxValue) =>
-			new(type, isArray, min, max);
+			new(nameof(type), type, isArray, min, max); // TODO: Give actual name
 
 		parsed = new();
 
