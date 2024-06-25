@@ -65,7 +65,11 @@ public static class Parser
 
 		if (tokens.Length == 0 || tokens.Length > 2) return false;
 
-		if (!TryParseStringTypeToEnum(tokens[0], out var enumType)) return false;
+		if ((!TryParseStringTypeToEnum(tokens[0], out var enumType) || enumType == Constant) && tokens.Length == 1)
+		{
+			parsed = new(Constant, isArray);
+			return true;
+		}
 
 		if (tokens.Length > 1) // Type with range
 		{
