@@ -1,13 +1,12 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using YAT.Attributes;
+using YAT.Classes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Types;
 
 namespace YAT.Scenes;
 
@@ -34,8 +33,6 @@ public partial class CommandValidator : Node
 		Type argType = typeof(ArgumentAttribute);
 		Type optType = typeof(OptionAttribute);
 
-		Debug.Assert(type == argType || type == optType);
-
 		CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>()!;
 
 		_commandName = commandAttribute.Name;
@@ -47,7 +44,7 @@ public partial class CommandValidator : Node
 			return false;
 		}
 
-		T[] dataAttrArr = command.GetType().GetCustomAttributes(type, false) as T[] ?? Array.Empty<T>();
+		var dataAttrArr = command.GetType().GetCustomAttributes(type, false) as T[] ?? Array.Empty<T>();
 
 		if (type == argType)
 		{
@@ -116,7 +113,7 @@ public partial class CommandValidator : Node
 			}
 
 			if (log && index == argument.Types.Count - 1)
-				PrintErr(status, argument.Name, argument.Types, converted, type.Min, type.Max);
+				PrintErr(status, argument, type, converted);
 			index++;
 		}
 
@@ -130,7 +127,7 @@ public partial class CommandValidator : Node
 	)
 	{
 		var lookup = option.Types.ToLookup(t => t.Type);
-		bool isBool = lookup.Contains("bool");
+		bool isBool = lookup.Contains(ECommandInputType.Bool);
 
 		foreach (var passedOpt in passedOpts)
 		{
@@ -185,7 +182,7 @@ public partial class CommandValidator : Node
 
 						if (st != EStringConversionResult.Success)
 						{
-							PrintErr(st, option.Name, option.Types, convertedLValue, type.Min, type.Max);
+							PrintErr(st, option, type, convertedLValue);
 							return false;
 						}
 
@@ -206,7 +203,7 @@ public partial class CommandValidator : Node
 
 				if (status != EStringConversionResult.Success)
 				{
-					PrintErr(status, option.Name, option.Types, converted, type.Min, type.Max);
+					PrintErr(status, option, type, converted);
 
 					return false;
 				}
@@ -225,14 +222,23 @@ public partial class CommandValidator : Node
 	}
 
 	private static EStringConversionResult TryConvertStringToType(
-		string value, CommandInputType type, out object? result
+		string value, CommandType type, out object? result
 	)
 	{
-		var t = (string)type.Type;
+		var t = type.Type;
 		result = null;
 
-		if (t.StartsWith("int", "float"))
+		if (type is CommandTypeRanged ranged)
 		{
+			if (t == ECommandInputType.String)
+			{
+				if (ranged.Min != ranged.Max && !Numeric.IsWithinRange(value.Length, ranged.Min, ranged.Max)
+				) return EStringConversionResult.OutOfRange;
+
+				result = value;
+				return EStringConversionResult.Success;
+			}
+
 			var status = TryConvertNumeric(value, type, out var r);
 			result = r;
 
@@ -241,48 +247,34 @@ public partial class CommandValidator : Node
 				: EStringConversionResult.OutOfRange;
 		}
 
-		if (t == "string")
-		{
-			if (type.Min != type.Max && !Numeric.IsWithinRange(((string)value).Length, type.Min, type.Max)
-			) return EStringConversionResult.OutOfRange;
-
-			result = value;
-			return EStringConversionResult.Success;
-		}
-
-		if (t == value)
-		{
-			result = value;
-			return EStringConversionResult.Success;
-		}
-
-		return EStringConversionResult.Invalid;
+		result = value;
+		return EStringConversionResult.Success;
 	}
 
-	private static bool TryConvertNumeric(StringName value, CommandInputType type, out object? result)
+	private static bool TryConvertNumeric(StringName value, CommandType type, out object? result)
 	{
 		result = null;
 
-		if (type.Type == "int")
+		if (type is not CommandTypeRanged ranged) return false;
+
+		if (ranged.Type == ECommandInputType.Int)
 		{
 			if (!Numeric.TryConvert(value, out int r)) return false;
 
 			result = r;
 
-			if (type.Min != type.Max) return Numeric.IsWithinRange(
-				r, type.Min, type.Max
-			);
+			if (ranged.Min != ranged.Max)
+				return Numeric.IsWithinRange(r, ranged.Min, ranged.Max);
 		}
 
-		if (type.Type == "float")
+		if (ranged.Type == ECommandInputType.Float)
 		{
 			if (!Numeric.TryConvert(value, out float r)) return false;
 
 			result = r;
 
-			if (type.Min != type.Max) return Numeric.IsWithinRange<float, float>(
-				r, type.Min, type.Max
-			);
+			if (ranged.Min != ranged.Max)
+				return Numeric.IsWithinRange<float, float>(r, ranged.Min, ranged.Max);
 		}
 
 		return true;
@@ -290,9 +282,9 @@ public partial class CommandValidator : Node
 
 	private void PrintErr(
 		EStringConversionResult status,
-		StringName argumentName,
-		List<CommandInputType> types,
-		object? value, float min, float max
+		CommandInputAttribute commandInput,
+		CommandType commandType,
+		object? value
 	)
 	{
 		switch (status)
@@ -301,14 +293,21 @@ public partial class CommandValidator : Node
 				Terminal.Output.Error(Messages.InvalidArgument(
 						_commandName,
 						value?.ToString() ?? string.Empty,
-						string.Join(", ", types.Select(t => t.Type)
+						string.Join(", ", commandInput.Types.Select(t => t.Type)
 					)
 				));
 				break;
 			case EStringConversionResult.OutOfRange:
-				Terminal.Output.Error(Messages.ArgumentValueOutOfRange(
-					_commandName, argumentName, min, max
-				));
+				if (commandType is not CommandTypeRanged ranged)
+				{
+					GD.PrintErr($"{commandType.GetType().Name} is not CommandTypeRanged");
+				}
+				else
+				{
+					Terminal.Output.Error(Messages.ArgumentValueOutOfRange(
+						_commandName, commandInput.Name, ranged.Min, ranged.Max
+					));
+				}
 				break;
 		}
 	}

@@ -6,7 +6,7 @@ public enum ECommandInputType
 	Int,
 	Float,
 	String,
-	Boolean,
+	Bool,
 	Constant,
 	Enum
 }
