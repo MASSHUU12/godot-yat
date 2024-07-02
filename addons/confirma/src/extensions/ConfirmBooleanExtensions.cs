@@ -4,16 +4,16 @@ namespace Confirma.Extensions;
 
 public static class ConfirmBooleanExtensions
 {
-	public static void ConfirmTrue(this bool actual, string? message = null)
+	public static bool ConfirmTrue(this bool actual, string? message = null)
 	{
-		if (actual) return;
+		if (actual) return actual;
 
 		throw new ConfirmAssertException(message ?? "Expected true but was false.");
 	}
 
-	public static void ConfirmFalse(this bool actual, string? message = null)
+	public static bool ConfirmFalse(this bool actual, string? message = null)
 	{
-		if (!actual) return;
+		if (!actual) return actual;
 
 		throw new ConfirmAssertException(message ?? "Expected false but was true.");
 	}

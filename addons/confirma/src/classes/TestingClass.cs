@@ -45,6 +45,7 @@ public class TestingClass
 			passed += methodResult.TestsPassed;
 			failed += methodResult.TestsFailed;
 			ignored += methodResult.TestsIgnored;
+			warnings += methodResult.Warnings;
 		}
 
 		warnings += RunLifecycleMethod("AfterAll");

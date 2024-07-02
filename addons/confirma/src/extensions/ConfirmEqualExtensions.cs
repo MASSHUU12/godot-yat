@@ -5,33 +5,49 @@ namespace Confirma.Extensions;
 
 public static class ConfirmEqualExtensions
 {
-	public static void ConfirmEqual<T>(this T? actual, T? expected, string? message = null)
+	public static T? ConfirmEqual<T>(this T? actual, T? expected, string? message = null)
 	{
 		if (!(actual?.Equals(expected)) ?? false)
 		{
-			throw new ConfirmAssertException(message ?? $"Expected '{expected}' but was '{actual}'.");
+			throw new ConfirmAssertException(
+				message ??
+				$"Expected '{expected}' but got '{actual}'."
+			);
 		}
+
+		return actual;
 	}
 
-	public static void ConfirmEqual<T>(this T?[] actual, T?[] expected, string? message = null)
+	public static T?[] ConfirmEqual<T>(this T?[] actual, T?[] expected, string? message = null)
 	{
-		if (actual.SequenceEqual(expected)) return;
+		if (actual.SequenceEqual(expected)) return actual;
 
-		throw new ConfirmAssertException(message ?? $"Expected '{expected}' but was '{actual}'.");
+		throw new ConfirmAssertException(
+			message ??
+			$"Expected '{string.Join(", ", expected)}' but got '{string.Join(", ", actual)}'."
+		);
 	}
 
-	public static void ConfirmNotEqual<T>(this T? actual, T? expected, string? message = null)
+	public static T? ConfirmNotEqual<T>(this T? actual, T? expected, string? message = null)
 	{
 		if (actual?.Equals(expected) ?? false)
 		{
-			throw new ConfirmAssertException(message ?? $"Expected not '{expected}' but was '{actual}'.");
+			throw new ConfirmAssertException(
+				message ??
+				$"Expected not '{expected}' but got '{actual}'."
+			);
 		}
+
+		return actual;
 	}
 
-	public static void ConfirmNotEqual<T>(this T?[] actual, T?[] expected, string? message = null)
+	public static T?[] ConfirmNotEqual<T>(this T?[] actual, T?[] expected, string? message = null)
 	{
-		if (!actual.SequenceEqual(expected)) return;
+		if (!actual.SequenceEqual(expected)) return actual;
 
-		throw new ConfirmAssertException(message ?? $"Expected not '{expected}' but was '{actual}'.");
+		throw new ConfirmAssertException(
+			message ??
+			$"Expected not '{string.Join(", ", expected)}' but got '{string.Join(", ", actual)}'."
+		);
 	}
 }

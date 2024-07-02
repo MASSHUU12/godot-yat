@@ -1,5 +1,5 @@
 <div align="center">
- <!-- <img src="./addons/confirma/docs/assets/confirma_icon_baner.png" /> -->
+ <img height=128 src="./docs/resources/icon.svg" />
  <h3>Confirma</h1>
  <p>A lightweight and intuitive unit testing tool for the Godot game engine.</p>
 </div>
@@ -15,12 +15,13 @@
 
 ## Overview
 
-![Confirma](https://github.com/MASSHUU12/godot-confirma/assets/61974579/e453e5f7-36a4-4623-9c83-4ddd66cd849c)
+![Confirma](https://github.com/MASSHUU12/godot-confirma/assets/61974579/47d2a6b1-113b-4142-8441-244e14f894b8)
 
 ### Features
 
 - Writing and executing tests in C#
 - Custom assertion library
+- Extensions for Random class
 - Independent of Godot editor (but can be accessed from Godot)
 - Simple syntax for writing tests
 - Parametrized tests

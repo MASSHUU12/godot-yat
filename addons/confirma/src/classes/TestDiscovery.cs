@@ -38,20 +38,16 @@ public class TestDiscovery
 			.Select(testClass => new TestingClass(testClass));
 	}
 
-	public static IEnumerable<TestCaseAttribute> GetTestCasesFromMethod(MethodInfo method)
+	public static IEnumerable<Attribute> GetTestCasesFromMethod(MethodInfo method)
 	{
-		return method.GetCustomAttributes<TestCaseAttribute>();
+		return method.GetCustomAttributes().Where(
+			attribute => attribute is TestCaseAttribute or RepeatAttribute
+		);
 	}
 
 	public static IEnumerable<TestingMethod> DiscoverTestMethods(Type testClass)
 	{
 		return GetTestMethodsFromType(testClass)
 			.Select(method => new TestingMethod(method));
-	}
-
-	public static IEnumerable<TestCase> DiscoverTestCases(MethodInfo method)
-	{
-		return GetTestCasesFromMethod(method)
-			.Select(testCase => new TestCase(method, testCase.Parameters));
 	}
 }

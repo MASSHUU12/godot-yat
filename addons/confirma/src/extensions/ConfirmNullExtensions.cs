@@ -4,17 +4,17 @@ namespace Confirma.Extensions;
 
 public static class ConfirmNullExtensions
 {
-	public static void ConfirmNull(this object? obj, string? message = null)
+	public static object? ConfirmNull(this object? obj, string? message = null)
 	{
-		if (obj is null) return;
+		if (obj is null) return obj;
 
-		throw new ConfirmAssertException(message ?? "Expected object to be null but it was not.");
+		throw new ConfirmAssertException(message ?? $"Expected null, but got {obj}.");
 	}
 
-	public static void ConfirmNotNull(this object? obj, string? message = null)
+	public static object? ConfirmNotNull(this object? obj, string? message = null)
 	{
-		if (obj is not null) return;
+		if (obj is not null) return obj;
 
-		throw new ConfirmAssertException(message ?? "Expected object to be not null but it was.");
+		throw new ConfirmAssertException(message ?? "Expected a non-null value.");
 	}
 }

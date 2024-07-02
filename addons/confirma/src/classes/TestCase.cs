@@ -7,15 +7,17 @@ namespace Confirma.Classes;
 
 public class TestCase
 {
-	public MethodInfo Method { get; }
-	public object?[]? Parameters { get; }
-	public string Params { get; }
+	public MethodInfo Method { get; init; }
+	public object?[]? Parameters { get; init; }
+	public string Params { get; init; }
+	public ushort Repeat { get; init; }
 
-	public TestCase(MethodInfo method, object?[]? parameters)
+	public TestCase(MethodInfo method, object?[]? parameters, ushort repeat)
 	{
 		Method = method;
 		Parameters = parameters;
 		Params = ArrayHelper.ToString(parameters);
+		Repeat = repeat;
 	}
 
 	public void Run()

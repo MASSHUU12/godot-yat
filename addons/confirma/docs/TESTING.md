@@ -8,24 +8,22 @@ Each class that contains tests must be labelled with the `TestClass` attribute.
 
 Each method, however, must be tagged with the `TestCase` attribute.
 
-Example test class:
+Chaining assertions is allowed, so something like this is possible:
 
 ```cs
 using Confirma.Attributes;
-using Confirma.Exceptions;
 using Confirma.Extensions;
-
-namespace Confirma.Tests;
 
 [TestClass]
 [Parallelizable]
-public static class ConfirmBooleanTest
+public static class TestSomething
 {
- [TestCase]
- public static void ConfirmTrue_WhenTrue()
- {
-  true.ConfirmTrue();
- }
+    [TestCase]
+    public static void Something()
+    {
+        5.ConfirmInRange(0, 15)
+        .ConfirmNotEqual(7);
+    }
 }
 ```
 
@@ -37,12 +35,12 @@ Access to the scene tree is enabled by the static `Global` class. It provides th
 
 ### TestClass
 
-The `TestClass` attribute is used to identify the classes in which the tests are located.
+The TestClass attribute is used to identify the classes in which the tests are located.
 It is required, Confirma ignores all classes that do not have this attribute.
 
 ### TestCase
 
-The `TestCase` attribute is used to mark the methods that perform the tests.
+The TestCase attribute is used to mark the methods that perform the tests.
 It also accepts arguments, which allows parameterized tests.
 
 ### AfterAll
@@ -71,10 +69,6 @@ Runs before every test method in the class.
 
 Runs after every test method in the class.
 
-### Timeout
-
-Not implemented.
-
 ### TestName
 
 Used to display a different name for the test than the method name.
@@ -82,3 +76,8 @@ Used to display a different name for the test than the method name.
 ### Parallelizable
 
 Allows to run all the tests included in the class on separate CPU cores.
+
+### Repeat
+
+The Repeat attribute allows you to run a particular TestCase several times.
+Repeat refers to the next TestCase, so the order in which the attributes are defined matters.
