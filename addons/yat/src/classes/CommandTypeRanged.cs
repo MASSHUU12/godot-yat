@@ -12,6 +12,7 @@ public class CommandTypeRanged : CommandType
     {
         Min = min;
         Max = max;
+        TypeDefinition = GenerateTypeDefinition();
     }
 
     public CommandTypeRanged() : base() { }
