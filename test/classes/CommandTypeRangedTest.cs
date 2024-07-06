@@ -9,18 +9,18 @@ namespace YAT.Test;
 [Parallelizable]
 public static class CommandTypeRangedTest
 {
-	[TestCase("", 0f, 0f, "(0:0)")]
-	[TestCase("range", float.MinValue, 5.5f, "range(:5.5)")]
-	[TestCase("number", -69f, float.MaxValue, "number(-69:)")]
-	public static void TestGetTypeDefinition(
-		string name,
-		float min,
-		float max,
-		string expectedDefinition
-	)
-	{
-		CommandTypeRanged commandType = new(name, Void, false, min, max);
+    [TestCase("", 0f, 0f, "(0:0)")]
+    [TestCase("range", float.MinValue, 5.5f, "range(:5.5)")]
+    [TestCase("number", -69f, float.MaxValue, "number(-69:)")]
+    public static void TestGetTypeDefinition(
+        string name,
+        float min,
+        float max,
+        string expectedDefinition
+    )
+    {
+        CommandTypeRanged commandType = new(name, Void, false, min, max);
 
-		commandType.GetTypeDefinition().ConfirmEqual(expectedDefinition);
-	}
+        commandType.TypeDefinition.ConfirmEqual(expectedDefinition);
+    }
 }
