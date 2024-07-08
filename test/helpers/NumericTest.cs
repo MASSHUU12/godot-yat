@@ -18,6 +18,12 @@ public class NumericTest
         Numeric.IsWithinRange<int>(value, min, max).ConfirmTrue();
     }
 
+    [TestCase(9, float.MinValue, float.MaxValue)]
+    public static void IsWithinRange_Int_Float_WithinRange(int value, float min, float max)
+    {
+        Numeric.IsWithinRange(value, min, max).ConfirmTrue();
+    }
+
     [TestCase(11, -5, 10)]
     [TestCase(-1, 0, 9)]
     [TestCase(5, 6, 11)]
