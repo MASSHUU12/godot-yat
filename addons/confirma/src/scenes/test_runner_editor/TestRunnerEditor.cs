@@ -7,22 +7,22 @@ namespace Confirma.Scenes;
 [Tool]
 public partial class TestRunnerEditor : TestRunner
 {
-	public override void _Ready()
-	{
-		CallDeferred("LateInit");
-	}
+    public override void _Ready()
+    {
+        CallDeferred("LateInit");
+    }
 
-	private void LateInit()
-	{
-		base._Ready();
+    private void LateInit()
+    {
+        base._Ready();
 
-		ClearOutput();
-	}
+        ClearOutput();
+    }
 
-	public void ClearOutput()
-	{
-		_output.Clear();
-	}
+    public void ClearOutput()
+    {
+        _output.Clear();
+    }
 }
 
 #endif

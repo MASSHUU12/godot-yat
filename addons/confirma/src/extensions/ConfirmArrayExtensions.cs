@@ -5,44 +5,44 @@ namespace Confirma.Extensions;
 
 public static class ConfirmArrayExtensions
 {
-	public static T[] ConfirmSize<T>(this T[] array, int expectedSize, string? message = null)
-	{
-		if (array.Length == expectedSize) return array;
+    public static T[] ConfirmSize<T>(this T[] array, int expectedSize, string? message = null)
+    {
+        if (array.Length == expectedSize) return array;
 
-		throw new ConfirmAssertException(
-			message ??
-			$"Array size is {array.Length}, but expected {expectedSize}."
-		);
-	}
+        throw new ConfirmAssertException(
+            message ??
+            $"Array size is {array.Length}, but expected {expectedSize}."
+        );
+    }
 
-	public static T[] ConfirmEmpty<T>(this T[] array, string? message = null)
-	{
-		if (array.Length == 0) return array;
+    public static T[] ConfirmEmpty<T>(this T[] array, string? message = null)
+    {
+        if (array.Length == 0) return array;
 
-		throw new ConfirmAssertException(message ?? "Array is not empty.");
-	}
+        throw new ConfirmAssertException(message ?? "Array is not empty.");
+    }
 
-	public static T[] ConfirmNotEmpty<T>(this T[] array, string? message = null)
-	{
-		if (array.Length > 0) return array;
+    public static T[] ConfirmNotEmpty<T>(this T[] array, string? message = null)
+    {
+        if (array.Length > 0) return array;
 
-		throw new ConfirmAssertException(message ?? "Array is empty.");
-	}
+        throw new ConfirmAssertException(message ?? "Array is empty.");
+    }
 
-	public static T[] ConfirmContains<T>(this T[] array, T expected, string? message = null)
-	{
-		if (Array.IndexOf(array, expected) != -1) return array;
+    public static T[] ConfirmContains<T>(this T[] array, T expected, string? message = null)
+    {
+        if (Array.IndexOf(array, expected) != -1) return array;
 
-		throw new ConfirmAssertException(
-			message ??
-			$"Array does not contain '{expected}'."
-		);
-	}
+        throw new ConfirmAssertException(
+            message ??
+            $"Array does not contain '{expected}'."
+        );
+    }
 
-	public static T[] ConfirmNotContains<T>(this T[] array, T expected, string? message = null)
-	{
-		if (Array.IndexOf(array, expected) == -1) return array;
+    public static T[] ConfirmNotContains<T>(this T[] array, T expected, string? message = null)
+    {
+        if (Array.IndexOf(array, expected) == -1) return array;
 
-		throw new ConfirmAssertException(message ?? $"Array contains '{expected}'.");
-	}
+        throw new ConfirmAssertException(message ?? $"Array contains '{expected}'.");
+    }
 }

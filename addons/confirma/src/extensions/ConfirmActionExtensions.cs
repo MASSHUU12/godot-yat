@@ -5,34 +5,34 @@ namespace Confirma.Extensions;
 
 public static class ConfirmActionExtensions
 {
-	public static Action ConfirmCompletesWithin(this Action action, TimeSpan timeSpan, string? message = null)
-	{
-		var task = System.Threading.Tasks.Task.Run(action);
-		if (!task.Wait(timeSpan))
-		{
-			throw new ConfirmAssertException(
-				message ??
-				$"Action did not complete within {timeSpan.TotalMilliseconds} ms."
-			);
-		}
+    public static Action ConfirmCompletesWithin(this Action action, TimeSpan timeSpan, string? message = null)
+    {
+        var task = System.Threading.Tasks.Task.Run(action);
+        if (!task.Wait(timeSpan))
+        {
+            throw new ConfirmAssertException(
+                message ??
+                $"Action did not complete within {timeSpan.TotalMilliseconds} ms."
+            );
+        }
 
-		return action;
-	}
+        return action;
+    }
 
-	public static Action ConfirmDoesNotCompleteWithin(this Action action, TimeSpan timeSpan, string? message = null)
-	{
-		try
-		{
-			ConfirmCompletesWithin(action, timeSpan, message);
-		}
-		catch (ConfirmAssertException)
-		{
-			return action;
-		}
+    public static Action ConfirmDoesNotCompleteWithin(this Action action, TimeSpan timeSpan, string? message = null)
+    {
+        try
+        {
+            ConfirmCompletesWithin(action, timeSpan, message);
+        }
+        catch (ConfirmAssertException)
+        {
+            return action;
+        }
 
-		throw new ConfirmAssertException(
-			message ??
-			$"Action completed within {timeSpan.TotalMilliseconds} ms, but it should not have."
-		);
-	}
+        throw new ConfirmAssertException(
+            message ??
+            $"Action completed within {timeSpan.TotalMilliseconds} ms, but it should not have."
+        );
+    }
 }
