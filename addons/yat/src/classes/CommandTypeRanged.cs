@@ -15,6 +15,12 @@ public class CommandTypeRanged : CommandType
         TypeDefinition = GenerateTypeDefinition();
     }
 
+    public CommandTypeRanged(string name, ECommandInputType type, bool isArray)
+    : base(name, type, isArray)
+    {
+        TypeDefinition = GenerateTypeDefinition();
+    }
+
     public CommandTypeRanged() : base() { }
 
     protected override string GenerateTypeDefinition()
