@@ -159,6 +159,8 @@ public static class Parser
     {
         result = null;
 
+        if (string.IsNullOrEmpty(value)) return EStringConversionResult.Invalid;
+
         ECommandInputType type = commandType.Type;
 
         if (type == ECommandInputType.Void)

@@ -93,21 +93,22 @@ public static class CommandValidatorTest
     [TestCase]
     public static void ValidateCommandArgument_IntRanged_OutsideOfRange()
     {
-        var (min, max) = (_rg.Next(32), _rg.Next(32, 64));
+        var (min, max) = (_rg.Next(16, 32), _rg.Next(32, 64));
         var argument = new ArgumentAttribute(
             _rg.NextString(4, 12),
             $"int({min}:{max})"
         );
+        var generated = (_rg.NextBool()
+                ? _rg.Next(-(min * 2), min - 1)
+                : _rg.Next(max + 1, max * 2)
+            ).ToString();
 
         _validator.ValidateCommandArgument(
             argument,
             new(),
-            (_rg.NextBool()
-                ? _rg.Next(-(min * 2), min)
-                : _rg.Next(max, max * 2)
-            ).ToString(),
+            generated,
             false
-        ).ConfirmFalse();
+        ).ConfirmFalse($"Expected {generated} to be outside of {min}-{max}.");
     }
     #endregion
 
@@ -153,10 +154,8 @@ public static class CommandValidatorTest
         _validator.ValidateCommandArgument(
             argument,
             new(),
-            (_rg.NextBool()
-                ? _rg.NextDouble(-(min * 2), min)
-                : _rg.NextDouble(max, max * 2)
-            ).ToString(), false
+            _rg.NextDouble(min, max).ToString(),
+            false
         ).ConfirmTrue();
     }
 
