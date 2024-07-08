@@ -4,6 +4,7 @@ using Confirma.Classes;
 using Confirma.Extensions;
 using YAT.Classes;
 using YAT.Enums;
+using YAT.Helpers;
 using static YAT.Enums.ECommandInputType;
 
 namespace YAT.Test;
@@ -65,11 +66,11 @@ public static class ParserTest
     [TestCase("string(5::5)", ECommandInputType.String, 0, 0, false, false)]
     [TestCase("string(5:10:15)", ECommandInputType.String, 0, 0, false, false)]
     // No range and valid type, no array
-    [TestCase("x", Constant, 0, 0, false, true)]
-    [TestCase("int", Int, 0, 0, false, true)]
-    [TestCase("float", Float, 0, 0, false, true)]
-    [TestCase("choice", Constant, 0, 0, false, true)]
-    [TestCase("string", ECommandInputType.String, 0, 0, false, true)]
+    [TestCase("x", Constant, float.MinValue, float.MaxValue, false, true)]
+    [TestCase("int", Int, float.MinValue, float.MaxValue, false, true)]
+    [TestCase("float", Float, float.MinValue, float.MaxValue, false, true)]
+    [TestCase("choice", Constant, float.MinValue, float.MaxValue, false, true)]
+    [TestCase("string", ECommandInputType.String, float.MinValue, float.MaxValue, false, true)]
     // Valid range, type not allowed to have range, no array
     [TestCase("x(5:10)", ECommandInputType.Void, 0, 0, false, false)]
     [TestCase("y(:10)", ECommandInputType.Void, 0, 0, false, false)]
@@ -109,11 +110,11 @@ public static class ParserTest
         result.Type.ConfirmEqual(eType);
         result.IsArray.ConfirmEqual(isArray);
 
-        if (result is CommandTypeRanged res)
-        {
-            res.Min.ConfirmEqual(min);
-            res.Max.ConfirmEqual(max);
-        }
+        if (!((int)result.Type).IsWithinRange<int>(1, 3)) return;
+
+        var r = result.ConfirmType<CommandTypeRanged>();
+        r.Min.ConfirmEqual(min);
+        r.Max.ConfirmEqual(max);
     }
 
     // Valid range and type, no array

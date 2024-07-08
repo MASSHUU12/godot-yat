@@ -55,6 +55,9 @@ public static class Parser
         parsed = new();
         stringToParse = stringToParse.Trim();
 
+        static bool AllowedToHaveRange(ECommandInputType type) =>
+            type is Int or Float or ECommandInputType.String;
+
         if (string.IsNullOrEmpty(stringToParse)) return false;
 
         bool isArray = stringToParse.EndsWith("...");
@@ -71,19 +74,33 @@ public static class Parser
             return true;
         }
 
-        if (tokens.Length > 1) // Type with range
-        {
-            if (!TryParseTypeWithRange(enumType, tokens[1], isArray, out var result))
-                return false;
+        if (enumType == ECommandInputType.Void) return false;
 
-            parsed = result;
+        if (AllowedToHaveRange(enumType))
+        {
+            if (tokens.Length > 1) // Type with range
+            {
+                if (!TryParseTypeWithRange(enumType, tokens[1], isArray, out var result))
+                    return false;
+
+                parsed = result;
+            }
+            else
+            {
+                parsed = new CommandTypeRanged(tokens[0], enumType, isArray);
+            }
         }
         else parsed = new(tokens[0], enumType, isArray);
 
         return true;
     }
 
-    public static bool TryParseTypeWithRange(ECommandInputType type, string range, bool isArray, out CommandTypeRanged parsed)
+    public static bool TryParseTypeWithRange(
+        ECommandInputType type,
+        string range,
+        bool isArray,
+        out CommandTypeRanged parsed
+    )
     {
         static bool AllowedToHaveRange(ECommandInputType type) =>
             type is Int or Float or ECommandInputType.String;
