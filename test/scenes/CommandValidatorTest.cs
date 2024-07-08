@@ -254,13 +254,12 @@ public static class CommandValidatorTest
     }
     #endregion
 
-    [Repeat(5)]
-    [TestCase]
-    [Confirma.Attributes.Ignore]
-    public static void ValidateCommandArgument_ValidEnum()
-    {
-        // TODO
-    }
+    // [Repeat(5)]
+    // [TestCase]
+    // public static void ValidateCommandArgument_ValidEnum()
+    // {
+    // TODO
+    // }
 
     [AfterAll]
     public static void AfterAll()
