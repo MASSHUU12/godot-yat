@@ -6,7 +6,6 @@ namespace YAT.Commands;
 
 [Command("echo")]
 [Description("Displays the specified text.")]
-[Argument("test", "enum(A:1,B:2)")]
 [Argument("message", "string", "The text to display.")]
 public sealed class Echo : ICommand
 {
