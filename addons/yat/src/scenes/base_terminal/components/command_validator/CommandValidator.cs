@@ -233,8 +233,8 @@ public partial class CommandValidator : Node
             case EStringConversionResult.Invalid:
                 Terminal.Output.Error(Messages.InvalidArgument(
                         _commandName,
-                        value?.ToString() ?? string.Empty,
-                        string.Join(", ", commandInput.Types.Select(t => t.Type)
+                        value?.ToString() ?? commandInput.Name,
+                        string.Join(", ", commandInput.Types.Select(t => t.TypeDefinition)
                     )
                 ));
                 break;
