@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 - Reworked type system.
 - Updated documentation for automatic input validation.
+- Changed indentation to spaces.
 
 ### Fixed
 

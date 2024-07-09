@@ -9,10 +9,10 @@ namespace YAT.Commands;
 [Option("-set", "float", "Sets the timescale to the specified number.", 1.0f)]
 public sealed class Timescale : ICommand
 {
-	public CommandResult Execute(CommandData data)
-	{
-		Engine.TimeScale = (float)data.Options["-set"];
+    public CommandResult Execute(CommandData data)
+    {
+        Engine.TimeScale = (float)data.Options["-set"];
 
-		return ICommand.Success();
-	}
+        return ICommand.Success();
+    }
 }

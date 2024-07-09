@@ -10,31 +10,31 @@ namespace YAT.Commands;
 public sealed class Preferences : ICommand
 {
 #nullable disable
-	private static Scenes.Preferences _windowInstance;
+    private static Scenes.Preferences _windowInstance;
 #nullable restore
-	private static readonly PackedScene _prefsWindow = GD.Load<PackedScene>(
-		"uid://ca2i4r24ny7y3"
-	);
+    private static readonly PackedScene _prefsWindow = GD.Load<PackedScene>(
+        "uid://ca2i4r24ny7y3"
+    );
 
-	public CommandResult Execute(CommandData data)
-	{
-		var instanceValid = GodotObject.IsInstanceValid(_windowInstance);
+    public CommandResult Execute(CommandData data)
+    {
+        var instanceValid = GodotObject.IsInstanceValid(_windowInstance);
 
-		if (instanceValid)
-		{
-			CloseWindow();
-			return ICommand.Success();
-		}
+        if (instanceValid)
+        {
+            CloseWindow();
+            return ICommand.Success();
+        }
 
-		_windowInstance = _prefsWindow.Instantiate<Scenes.Preferences>();
-		data.Yat.Windows.AddChild(_windowInstance);
+        _windowInstance = _prefsWindow.Instantiate<Scenes.Preferences>();
+        data.Yat.Windows.AddChild(_windowInstance);
 
-		return ICommand.Success();
-	}
+        return ICommand.Success();
+    }
 
-	private static void CloseWindow()
-	{
-		_windowInstance.QueueFree();
-		_windowInstance = null;
-	}
+    private static void CloseWindow()
+    {
+        _windowInstance.QueueFree();
+        _windowInstance = null;
+    }
 }

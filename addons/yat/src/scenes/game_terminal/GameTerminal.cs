@@ -8,58 +8,58 @@ namespace YAT.Scenes;
 public partial class GameTerminal : YatWindow
 {
 #nullable disable
-	public BaseTerminal CurrentTerminal { get; private set; }
-	public TerminalSwitcher TerminalSwitcher { get; private set; }
+    public BaseTerminal CurrentTerminal { get; private set; }
+    public TerminalSwitcher TerminalSwitcher { get; private set; }
 #nullable restore
 
-	public override void _Ready()
-	{
-		base._Ready();
+    public override void _Ready()
+    {
+        base._Ready();
 
-		TerminalSwitcher = GetNode<TerminalSwitcher>("%TerminalSwitcher");
+        TerminalSwitcher = GetNode<TerminalSwitcher>("%TerminalSwitcher");
 
-		CurrentTerminal = TerminalSwitcher.CurrentTerminal;
-		CurrentTerminal.TitleChangeRequested += title => Title = title;
-		CurrentTerminal.PositionResetRequested += ResetPosition;
-		CurrentTerminal.SizeResetRequested += () => Size = InitialSize;
+        CurrentTerminal = TerminalSwitcher.CurrentTerminal;
+        CurrentTerminal.TitleChangeRequested += title => Title = title;
+        CurrentTerminal.PositionResetRequested += ResetPosition;
+        CurrentTerminal.SizeResetRequested += () => Size = InitialSize;
 
-		CloseRequested += _yat.TerminalManager.CloseTerminal;
+        CloseRequested += _yat.TerminalManager.CloseTerminal;
 
 #if GODOT4_3_OR_GREATER
-		ContextMenu.AddSubmenuNodeItem(
-			"QuickCommands",
-			GetNode<QuickCommandsContext>("ContextMenu/QuickCommandsContext")
-		);
+        ContextMenu.AddSubmenuNodeItem(
+            "QuickCommands",
+            GetNode<QuickCommandsContext>("ContextMenu/QuickCommandsContext")
+        );
 #else
 		ContextMenu.AddSubmenuItem("QuickCommands", "QuickCommandsContext");
 #endif
-		ContextMenu.AddItem("Preferences", 1);
-		ContextMenu.IdPressed += ContextMenuItemSelected;
+        ContextMenu.AddItem("Preferences", 1);
+        ContextMenu.IdPressed += ContextMenuItemSelected;
 
-		MoveToCenter();
-	}
+        MoveToCenter();
+    }
 
-	private void ContextMenuItemSelected(long id)
-	{
-		if (id == 1)
-		{
-			var prefs = new Commands.Preferences();
-			prefs.Execute(new(
-				_yat, CurrentTerminal, prefs, Array.Empty<string>(), new(), new(), default
-			));
-		}
-	}
+    private void ContextMenuItemSelected(long id)
+    {
+        if (id == 1)
+        {
+            var prefs = new Commands.Preferences();
+            prefs.Execute(new(
+                _yat, CurrentTerminal, prefs, Array.Empty<string>(), new(), new(), default
+            ));
+        }
+    }
 
-	public override void _Input(InputEvent @event)
-	{
-		if (@event.IsActionPressed(Keybindings.TerminalToggle))
-			CallDeferred("emit_signal", SignalName.CloseRequested);
-	}
+    public override void _Input(InputEvent @event)
+    {
+        if (@event.IsActionPressed(Keybindings.TerminalToggle))
+            CallDeferred("emit_signal", SignalName.CloseRequested);
+    }
 
-	private new void UpdateOptions(YatPreferences prefs)
-	{
-		Size = new(prefs.DefaultWidth, prefs.DefaultHeight);
+    private new void UpdateOptions(YatPreferences prefs)
+    {
+        Size = new(prefs.DefaultWidth, prefs.DefaultHeight);
 
-		base.UpdateOptions(prefs);
-	}
+        base.UpdateOptions(prefs);
+    }
 }

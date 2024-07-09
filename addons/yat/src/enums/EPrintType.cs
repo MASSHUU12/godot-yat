@@ -2,8 +2,8 @@ namespace YAT.Enums;
 
 public enum EPrintType
 {
-	Normal,
-	Error,
-	Warning,
-	Success
+    Normal,
+    Error,
+    Warning,
+    Success
 }

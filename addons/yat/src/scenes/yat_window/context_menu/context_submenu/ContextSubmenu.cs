@@ -4,8 +4,8 @@ namespace YAT.Scenes;
 
 public partial class ContextSubmenu : PopupMenu
 {
-	public override void _Ready()
-	{
-		Hide();
-	}
+    public override void _Ready()
+    {
+        Hide();
+    }
 }

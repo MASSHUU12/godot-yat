@@ -8,8 +8,8 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command(
-	"ping",
-	"Sends ICMP (Internet Control Message Protocol) echo request to the server."
+    "ping",
+    "Sends ICMP (Internet Control Message Protocol) echo request to the server."
 )]
 [Threaded]
 [Argument("hostname", "string", "The host to trace the route to.")]
@@ -21,53 +21,53 @@ namespace YAT.Commands;
 [Option("-limit", "int(1:255)", "The maximum number of pings to send.", 0)]
 public sealed class Ping : ICommand
 {
-	public CommandResult Execute(CommandData data)
-	{
-		var hostname = (string)data.Arguments["hostname"];
-		var maxPings = (int)data.Options["-limit"];
-		var options = new NetworkingOptions
-		{
-			Timeout = (ushort)(int)data.Options["-t"],
-			TTL = (ushort)(int)data.Options["-ttl"],
-			BufferSize = (ushort)(int)data.Options["-b"],
-			DontFragment = !(bool)data.Options["-f"],
-			Delay = (ushort)((int)data.Options["-delay"] * 1000),
-		};
+    public CommandResult Execute(CommandData data)
+    {
+        var hostname = (string)data.Arguments["hostname"];
+        var maxPings = (int)data.Options["-limit"];
+        var options = new NetworkingOptions
+        {
+            Timeout = (ushort)(int)data.Options["-t"],
+            TTL = (ushort)(int)data.Options["-ttl"],
+            BufferSize = (ushort)(int)data.Options["-b"],
+            DontFragment = !(bool)data.Options["-f"],
+            Delay = (ushort)((int)data.Options["-delay"] * 1000),
+        };
 
-		uint pings = 0;
+        uint pings = 0;
 
-		data.Terminal.Output.Print($"Pinging {hostname}...");
+        data.Terminal.Output.Print($"Pinging {hostname}...");
 
-		while ((maxPings == 0 || pings < maxPings) && !data.CancellationToken.IsCancellationRequested)
-		{
-			var status = Networking.Ping(hostname, out var reply, options);
+        while ((maxPings == 0 || pings < maxPings) && !data.CancellationToken.IsCancellationRequested)
+        {
+            var status = Networking.Ping(hostname, out var reply, options);
 
-			if (reply is null)
-			{
-				if (status == Networking.EPingStatus.Unsupported)
-				{
-					data.Terminal.Output.Error("The current platform does not support ICMP or access is denied.");
-					break;
-				}
+            if (reply is null)
+            {
+                if (status == Networking.EPingStatus.Unsupported)
+                {
+                    data.Terminal.Output.Error("The current platform does not support ICMP or access is denied.");
+                    break;
+                }
 
-				data.Terminal.Output.Error("Failed to ping the host.");
-				break;
-			}
+                data.Terminal.Output.Error("Failed to ping the host.");
+                break;
+            }
 
-			if (reply.Status == IPStatus.Success) data.Terminal.Print(string.Format(
-				"Reply from {0}: bytes={1} time={2}ms TTL={3}",
-				reply.Address,
-				reply.Buffer.Length,
-				reply.RoundtripTime,
-				reply.Options?.Ttl
-			));
-			else data.Terminal.Output.Error($"Request timed out.");
+            if (reply.Status == IPStatus.Success) data.Terminal.Print(string.Format(
+                "Reply from {0}: bytes={1} time={2}ms TTL={3}",
+                reply.Address,
+                reply.Buffer.Length,
+                reply.RoundtripTime,
+                reply.Options?.Ttl
+            ));
+            else data.Terminal.Output.Error($"Request timed out.");
 
-			if (maxPings != 0) pings++;
+            if (maxPings != 0) pings++;
 
-			Thread.Sleep(options.Delay);
-		}
+            Thread.Sleep(options.Delay);
+        }
 
-		return ICommand.Success();
-	}
+        return ICommand.Success();
+    }
 }

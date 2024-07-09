@@ -16,24 +16,24 @@ namespace YAT.Commands;
 [Threaded]
 public sealed class TraceRoute : ICommand
 {
-	public CommandResult Execute(CommandData data)
-	{
-		var hostname = (string)data.Arguments["hostname"];
-		var options = new NetworkingOptions
-		{
-			Timeout = (ushort)(int)data.Options["-t"],
-			TTL = (ushort)(int)data.Options["-ttl"],
-			BufferSize = (ushort)(int)data.Options["-b"],
-			DontFragment = !(bool)data.Options["-f"]
-		};
+    public CommandResult Execute(CommandData data)
+    {
+        var hostname = (string)data.Arguments["hostname"];
+        var options = new NetworkingOptions
+        {
+            Timeout = (ushort)(int)data.Options["-t"],
+            TTL = (ushort)(int)data.Options["-ttl"],
+            BufferSize = (ushort)(int)data.Options["-b"],
+            DontFragment = !(bool)data.Options["-f"]
+        };
 
-		data.Terminal.Output.Print($"Tracing route to {hostname}...");
+        data.Terminal.Output.Print($"Tracing route to {hostname}...");
 
-		var addresses = Networking.GetTraceRoute(hostname, options, data.CancellationToken);
-		var result = new StringBuilder();
+        var addresses = Networking.GetTraceRoute(hostname, options, data.CancellationToken);
+        var result = new StringBuilder();
 
-		foreach (var address in addresses) result.AppendLine(address?.ToString());
+        foreach (var address in addresses) result.AppendLine(address?.ToString());
 
-		return ICommand.Ok(result.ToString());
-	}
+        return ICommand.Ok(result.ToString());
+    }
 }

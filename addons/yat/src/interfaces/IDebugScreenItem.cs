@@ -2,5 +2,5 @@ namespace YAT.Interfaces;
 
 public interface IDebugScreenItem
 {
-	public void Update();
+    public void Update();
 }

@@ -6,60 +6,60 @@ namespace YAT.Scenes;
 public partial class Input : LineEdit
 {
 #nullable disable
-	[Export] public BaseTerminal Terminal { get; set; }
+    [Export] public BaseTerminal Terminal { get; set; }
 
-	private YAT _yat;
+    private YAT _yat;
 #nullable restore
 
-	public override void _Ready()
-	{
-		_yat = GetNode<YAT>("/root/YAT");
-		_yat.YatReady += () =>
-		{
-			_yat.TerminalManager.TerminalOpened += () =>
-			{
-				if (Terminal.Current && !Terminal.FullWindowDisplay.IsOpen) GrabFocus();
-			};
-		};
+    public override void _Ready()
+    {
+        _yat = GetNode<YAT>("/root/YAT");
+        _yat.YatReady += () =>
+        {
+            _yat.TerminalManager.TerminalOpened += () =>
+            {
+                if (Terminal.Current && !Terminal.FullWindowDisplay.IsOpen) GrabFocus();
+            };
+        };
 
-		TextSubmitted += OnTextSubmitted;
-	}
+        TextSubmitted += OnTextSubmitted;
+    }
 
-	private void OnTextSubmitted(string input)
-	{
-		if (Terminal.Locked || string.IsNullOrEmpty(input)) return;
+    private void OnTextSubmitted(string input)
+    {
+        if (Terminal.Locked || string.IsNullOrEmpty(input)) return;
 
-		input = CheckQuickCommands(input);
+        input = CheckQuickCommands(input);
 
-		var command = Parser.ParseCommand(input);
+        var command = Parser.ParseCommand(input);
 
-		if (command.Length == 0) return;
+        if (command.Length == 0) return;
 
-		AddToTheHistory(input);
+        AddToTheHistory(input);
 
-		Terminal.CommandManager.Run(command, Terminal);
-		Clear();
-	}
+        Terminal.CommandManager.Run(command, Terminal);
+        Clear();
+    }
 
-	private string CheckQuickCommands(string input)
-	{
-		if (_yat.Commands.QuickCommands.Commands.TryGetValue(input, out string? value))
-		{
-			return value;
-		}
+    private string CheckQuickCommands(string input)
+    {
+        if (_yat.Commands.QuickCommands.Commands.TryGetValue(input, out string? value))
+        {
+            return value;
+        }
 
-		return input;
-	}
+        return input;
+    }
 
-	private void AddToTheHistory(string command)
-	{
-		Terminal.HistoryNode = null;
-		Terminal.History.AddLast(command);
-		if (Terminal.History.Count > _yat.PreferencesManager.Preferences.HistoryLimit) Terminal.History.RemoveFirst();
-	}
+    private void AddToTheHistory(string command)
+    {
+        Terminal.HistoryNode = null;
+        Terminal.History.AddLast(command);
+        if (Terminal.History.Count > _yat.PreferencesManager.Preferences.HistoryLimit) Terminal.History.RemoveFirst();
+    }
 
-	public void MoveCaretToEnd()
-	{
-		CaretColumn = Text.Length;
-	}
+    public void MoveCaretToEnd()
+    {
+        CaretColumn = Text.Length;
+    }
 }

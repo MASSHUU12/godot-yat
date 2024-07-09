@@ -2,6 +2,6 @@ namespace YAT.Enums;
 
 public enum EMethodStatus
 {
-	Success,
-	Failed
+    Success,
+    Failed
 }

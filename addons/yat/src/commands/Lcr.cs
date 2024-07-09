@@ -8,12 +8,12 @@ namespace YAT.Commands;
 [Option("-l", "bool", "Also displays name of the result.")]
 public sealed class Lcr : ICommand
 {
-	public CommandResult Execute(CommandData data)
-	{
-		return ICommand.Ok(
-			(bool)data.Options["-l"]
-				? $"{data.Terminal.LastCommandResult} ({(int)data.Terminal.LastCommandResult})"
-				: ((int)data.Terminal.LastCommandResult).ToString()
-		);
-	}
+    public CommandResult Execute(CommandData data)
+    {
+        return ICommand.Ok(
+            (bool)data.Options["-l"]
+                ? $"{data.Terminal.LastCommandResult} ({(int)data.Terminal.LastCommandResult})"
+                : ((int)data.Terminal.LastCommandResult).ToString()
+        );
+    }
 }

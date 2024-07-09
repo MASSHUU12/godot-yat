@@ -10,31 +10,31 @@ namespace YAT.Commands;
 public sealed class Quit : ICommand
 {
 #nullable disable
-	private YAT _yat;
-	private BaseTerminal _terminal;
+    private YAT _yat;
+    private BaseTerminal _terminal;
 #nullable restore
 
-	public CommandResult Execute(CommandData data)
-	{
-		var t = (bool)data.Options["-t"];
+    public CommandResult Execute(CommandData data)
+    {
+        var t = (bool)data.Options["-t"];
 
-		_yat = data.Yat;
-		_terminal = data.Terminal;
+        _yat = data.Yat;
+        _terminal = data.Terminal;
 
-		if (t) CloseTerminal();
-		else QuitTheGame();
+        if (t) CloseTerminal();
+        else QuitTheGame();
 
-		return ICommand.Success();
-	}
+        return ICommand.Success();
+    }
 
-	private void CloseTerminal()
-	{
-		_yat.CallDeferred("CloseTerminal");
-	}
+    private void CloseTerminal()
+    {
+        _yat.CallDeferred("CloseTerminal");
+    }
 
-	private void QuitTheGame()
-	{
-		_terminal.Print("Quitting...");
-		_yat.GetTree().Quit();
-	}
+    private void QuitTheGame()
+    {
+        _terminal.Print("Quitting...");
+        _yat.GetTree().Quit();
+    }
 }

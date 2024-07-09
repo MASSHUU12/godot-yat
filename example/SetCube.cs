@@ -7,26 +7,26 @@ using YAT.Types;
 public sealed class SetCube : IExtension
 {
 #nullable disable
-	public static MeshInstance3D Cube { get; set; }
+    public static MeshInstance3D Cube { get; set; }
 #nullable restore
 
-	public CommandResult Execute(CommandData data)
-	{
-		if (data.RawData.Length < 2) return ICommand.InvalidArguments("Invalid arguments.");
+    public CommandResult Execute(CommandData data)
+    {
+        if (data.RawData.Length < 2) return ICommand.InvalidArguments("Invalid arguments.");
 
-		try
-		{
-			Color color = new(data.RawData[1]);
-			Cube.MaterialOverride = new StandardMaterial3D
-			{
-				AlbedoColor = color
-			};
-		}
-		catch (System.Exception)
-		{
-			return ICommand.Failure("Invalid color.");
-		}
+        try
+        {
+            Color color = new(data.RawData[1]);
+            Cube.MaterialOverride = new StandardMaterial3D
+            {
+                AlbedoColor = color
+            };
+        }
+        catch (System.Exception)
+        {
+            return ICommand.Failure("Invalid color.");
+        }
 
-		return ICommand.Success();
-	}
+        return ICommand.Success();
+    }
 }

@@ -13,121 +13,121 @@ namespace YAT.Test;
 [Parallelizable]
 public static class ReflectionTest
 {
-	private static Button? _button = null;
+    private static Button? _button = null;
 
-	private interface ITestInterface { }
+    private interface ITestInterface { }
 
-	[Command("test")]
-	[Argument("arg1", "string")]
-	[Argument("arg3", "string")]
-	[Argument("arg3", "string")]
-	private class TestClass { }
+    [Command("test")]
+    [Argument("arg1", "string")]
+    [Argument("arg3", "string")]
+    [Argument("arg3", "string")]
+    private class TestClass { }
 
-	private class TestClassWithInterface : ITestInterface { }
+    private class TestClassWithInterface : ITestInterface { }
 
-	[SetUp]
-	public static void SetUp()
-	{
-		_button = new();
-	}
+    [SetUp]
+    public static void SetUp()
+    {
+        _button = new();
+    }
 
-	[TearDown]
-	public static void TearDown()
-	{
-		_button!.QueueFree();
-	}
+    [TearDown]
+    public static void TearDown()
+    {
+        _button!.QueueFree();
+    }
 
-	#region GetEvents
-	[TestCase]
-	public static void GetEvents_EventsPresent()
-	{
-		var events = _button!.GetEvents(
-			BindingFlags.Instance
-			| BindingFlags.Public
-		);
+    #region GetEvents
+    [TestCase]
+    public static void GetEvents_EventsPresent()
+    {
+        var events = _button!.GetEvents(
+            BindingFlags.Instance
+            | BindingFlags.Public
+        );
 
-		events.ConfirmNotNull();
-		events.Length.ConfirmIsPositive();
-	}
+        events.ConfirmNotNull();
+        events.Length.ConfirmIsPositive();
+    }
 
-	[TestCase]
-	public static void GetEvents_NoEvents()
-	{
-		var events = Reflection.GetEvents(new TestClass());
+    [TestCase]
+    public static void GetEvents_NoEvents()
+    {
+        var events = Reflection.GetEvents(new TestClass());
 
-		events.ConfirmNotNull();
-		events.Length.ConfirmEqual(0);
-	}
-	#endregion
+        events.ConfirmNotNull();
+        events.Length.ConfirmEqual(0);
+    }
+    #endregion
 
-	#region GetAttribute
-	[TestCase]
-	public static void GetAttribute_AttributePresent()
-	{
-		var attribute = Reflection.GetAttribute<CommandAttribute>(new TestClass());
+    #region GetAttribute
+    [TestCase]
+    public static void GetAttribute_AttributePresent()
+    {
+        var attribute = Reflection.GetAttribute<CommandAttribute>(new TestClass());
 
-		attribute.ConfirmNotNull();
-		attribute?.Name.ConfirmEqual("test");
-	}
+        attribute.ConfirmNotNull();
+        attribute?.Name.ConfirmEqual("test");
+    }
 
-	[TestCase]
-	public static void GetAttribute_AttributeNotPresent()
-	{
-		var attribute = Reflection.GetAttribute<OptionAttribute>(new TestClass());
+    [TestCase]
+    public static void GetAttribute_AttributeNotPresent()
+    {
+        var attribute = Reflection.GetAttribute<OptionAttribute>(new TestClass());
 
-		attribute.ConfirmNull();
-	}
+        attribute.ConfirmNull();
+    }
 
-	[TestCase]
-	public static void GetAttribute_AttributesPresent()
-	{
-		var attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
+    [TestCase]
+    public static void GetAttribute_AttributesPresent()
+    {
+        var attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
 
-		attributes.ConfirmNotNull();
-		attributes?.Length.ConfirmEqual(3);
-		attributes?[0].Name.ToString().ConfirmEqual("arg1");
-		attributes?[1].Name.ToString().ConfirmEqual("arg3");
-		attributes?[2].Name.ToString().ConfirmEqual("arg3");
-	}
+        attributes.ConfirmNotNull();
+        attributes?.Length.ConfirmEqual(3);
+        attributes?[0].Name.ToString().ConfirmEqual("arg1");
+        attributes?[1].Name.ToString().ConfirmEqual("arg3");
+        attributes?[2].Name.ToString().ConfirmEqual("arg3");
+    }
 
-	[TestCase]
-	public static void GetAttribute_AttributesNotPresent()
-	{
-		var attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
+    [TestCase]
+    public static void GetAttribute_AttributesNotPresent()
+    {
+        var attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
 
-		attributes?.ConfirmEmpty();
-	}
-	#endregion
+        attributes?.ConfirmEmpty();
+    }
+    #endregion
 
-	#region HasAttribute
-	[TestCase]
-	public static void HasAttribute_AttributePresent()
-	{
-		var hasAttribute = Reflection.HasAttribute<CommandAttribute>(new TestClass());
+    #region HasAttribute
+    [TestCase]
+    public static void HasAttribute_AttributePresent()
+    {
+        var hasAttribute = Reflection.HasAttribute<CommandAttribute>(new TestClass());
 
-		hasAttribute.ConfirmTrue();
-	}
+        hasAttribute.ConfirmTrue();
+    }
 
-	[TestCase]
-	public static void HasAttribute_AttributeNotPresent()
-	{
-		var hasAttribute = Reflection.HasAttribute<OptionAttribute>(new TestClass());
+    [TestCase]
+    public static void HasAttribute_AttributeNotPresent()
+    {
+        var hasAttribute = Reflection.HasAttribute<OptionAttribute>(new TestClass());
 
-		hasAttribute.ConfirmFalse();
-	}
-	#endregion
+        hasAttribute.ConfirmFalse();
+    }
+    #endregion
 
-	#region HasInterface
-	[TestCase]
-	public static void HasInterface_InterfacePresent()
-	{
-		new Cls().HasInterface<ICommand>().ConfirmTrue();
-	}
+    #region HasInterface
+    [TestCase]
+    public static void HasInterface_InterfacePresent()
+    {
+        new Cls().HasInterface<ICommand>().ConfirmTrue();
+    }
 
-	[TestCase]
-	public static void HasInterface_InterfaceNotPresent()
-	{
-		new TestClass().HasInterface<ITestInterface>().ConfirmFalse();
-	}
-	#endregion
+    [TestCase]
+    public static void HasInterface_InterfaceNotPresent()
+    {
+        new TestClass().HasInterface<ITestInterface>().ConfirmFalse();
+    }
+    #endregion
 }

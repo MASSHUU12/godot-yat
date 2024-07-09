@@ -21,19 +21,19 @@ namespace YAT.Commands;
 public sealed class Cowsay : ICommand
 {
 #nullable disable
-	private BaseTerminal _terminal;
+    private BaseTerminal _terminal;
 #nullable restore
 
-	public CommandResult Execute(CommandData data)
-	{
-		char eye = 'o';
-		char tongue = ' ';
+    public CommandResult Execute(CommandData data)
+    {
+        char eye = 'o';
+        char tongue = ' ';
 
-		_terminal = data.Terminal;
+        _terminal = data.Terminal;
 
-		var eyes = new Dictionary<string, char>
-			{
-				{ "-b", '=' }, // Borg
+        var eyes = new Dictionary<string, char>
+            {
+                { "-b", '=' }, // Borg
 				{ "-d", 'x' }, // Dead
 				{ "-g", '$' }, // Greedy
 				{ "-p", '@' }, // Paranoid
@@ -43,64 +43,64 @@ public sealed class Cowsay : ICommand
 				{ "-y", '.' }  // Youthful
 			};
 
-		var tongues = new Dictionary<string, char>
-			{
-				{ "-d", 'U' },
-				{ "-s", 'U' },
-			};
+        var tongues = new Dictionary<string, char>
+            {
+                { "-d", 'U' },
+                { "-s", 'U' },
+            };
 
-		foreach (var (key, value) in eyes)
-		{
-			if (!(bool)data.Options[key]) continue;
+        foreach (var (key, value) in eyes)
+        {
+            if (!(bool)data.Options[key]) continue;
 
-			eye = value;
-			if (tongues.ContainsKey(key)) tongue = tongues[key];
+            eye = value;
+            if (tongues.ContainsKey(key)) tongue = tongues[key];
 
-			break;
-		}
+            break;
+        }
 
-		PrintCow(data.RawData[1], eye, tongue);
+        PrintCow(data.RawData[1], eye, tongue);
 
-		return ICommand.Success();
-	}
+        return ICommand.Success();
+    }
 
-	private static string GenerateSpeechBubble(string text)
-	{
-		string[] lines = text.Split('\n');
-		int maxLineLength = lines.Max(line => line.Length);
-		int bubbleWidth = maxLineLength + 4;
+    private static string GenerateSpeechBubble(string text)
+    {
+        string[] lines = text.Split('\n');
+        int maxLineLength = lines.Max(line => line.Length);
+        int bubbleWidth = maxLineLength + 4;
 
-		string topLine = "  " + new string('_', bubbleWidth + 2);
-		string bottomLine = "  " + new string('-', (int)(bubbleWidth * 1.5));
+        string topLine = "  " + new string('_', bubbleWidth + 2);
+        string bottomLine = "  " + new string('-', (int)(bubbleWidth * 1.5));
 
-		StringBuilder middleLines = new();
-		foreach (string line in lines)
-		{
-			int padding = maxLineLength - line.Length;
-			string paddedLine = "< " + line + new string(' ', padding) + " >\n";
-			middleLines.Append(paddedLine);
-		}
+        StringBuilder middleLines = new();
+        foreach (string line in lines)
+        {
+            int padding = maxLineLength - line.Length;
+            string paddedLine = "< " + line + new string(' ', padding) + " >\n";
+            middleLines.Append(paddedLine);
+        }
 
-		return topLine + '\n' + middleLines.ToString() + bottomLine;
-	}
+        return topLine + '\n' + middleLines.ToString() + bottomLine;
+    }
 
-	private void PrintCow(string message, char eye, char tongue)
-	{
-		var eyes = $"{eye}{eye}";
-		var bubble = GenerateSpeechBubble(message);
-		var padding = string.Empty.PadRight(bubble.Length >> 2);
-		var cow = new[]
-		{
-				$"{padding} \\   ^__^",
-				$"{padding}  \\  ({eyes})\\_______",
-				$"{padding}     (__)\\       )\\/\\",
-				$"{padding}       {tongue} ||----w |",
-				$"{padding}         ||     ||"
-			};
+    private void PrintCow(string message, char eye, char tongue)
+    {
+        var eyes = $"{eye}{eye}";
+        var bubble = GenerateSpeechBubble(message);
+        var padding = string.Empty.PadRight(bubble.Length >> 2);
+        var cow = new[]
+        {
+                $"{padding} \\   ^__^",
+                $"{padding}  \\  ({eyes})\\_______",
+                $"{padding}     (__)\\       )\\/\\",
+                $"{padding}       {tongue} ||----w |",
+                $"{padding}         ||     ||"
+            };
 
-		StringBuilder sb = new();
-		sb.AppendLine(string.Join('\n', bubble));
-		sb.AppendLine(string.Join('\n', cow));
-		_terminal.Print(sb.ToString());
-	}
+        StringBuilder sb = new();
+        sb.AppendLine(string.Join('\n', bubble));
+        sb.AppendLine(string.Join('\n', cow));
+        _terminal.Print(sb.ToString());
+    }
 }

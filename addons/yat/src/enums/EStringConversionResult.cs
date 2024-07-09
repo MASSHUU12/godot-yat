@@ -2,7 +2,7 @@ namespace YAT.Enums;
 
 public enum EStringConversionResult
 {
-	Success,
-	Invalid,
-	OutOfRange
+    Success,
+    Invalid,
+    OutOfRange
 }

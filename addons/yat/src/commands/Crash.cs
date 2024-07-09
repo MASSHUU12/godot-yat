@@ -9,12 +9,12 @@ namespace YAT.Commands;
 [Option("-message", "string", "The message to when crashing.", ":c")]
 public sealed class Crash : ICommand
 {
-	public CommandResult Execute(CommandData data)
-	{
-		var message = (string)data.Options["-message"];
+    public CommandResult Execute(CommandData data)
+    {
+        var message = (string)data.Options["-message"];
 
-		OS.Crash(message);
+        OS.Crash(message);
 
-		return ICommand.Success();
-	}
+        return ICommand.Success();
+    }
 }

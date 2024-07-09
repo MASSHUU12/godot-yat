@@ -11,108 +11,108 @@ namespace YAT.Classes;
 
 public partial class Extensible : Node
 {
-	protected static Dictionary<StringName, Dictionary<StringName, Type>> Extensions { get; set; } = new();
+    protected static Dictionary<StringName, Dictionary<StringName, Type>> Extensions { get; set; } = new();
 
-	public static bool RegisterExtension(StringName commandName, Type extension)
-	{
-		if (string.IsNullOrEmpty(commandName) ||
-			!Reflection.HasInterface(extension, nameof(IExtension))
-		) return false;
+    public static bool RegisterExtension(StringName commandName, Type extension)
+    {
+        if (string.IsNullOrEmpty(commandName) ||
+            !Reflection.HasInterface(extension, nameof(IExtension))
+        ) return false;
 
-		var instance = Activator.CreateInstance(extension) as IExtension;
+        var instance = Activator.CreateInstance(extension) as IExtension;
 
-		if (Reflection.GetAttribute<ExtensionAttribute>(instance!)
-			is not ExtensionAttribute attribute
-		) return false;
+        if (Reflection.GetAttribute<ExtensionAttribute>(instance!)
+            is not ExtensionAttribute attribute
+        ) return false;
 
-		// Check if dictionary have entry for the command
-		// if entry exists, check if the entry contains the extension
-		if (!Extensions.TryGetValue(commandName, out var extensions))
-			Extensions.Add(commandName, new Dictionary<StringName, Type>());
-		else if (extensions.ContainsKey(commandName)) return false;
+        // Check if dictionary have entry for the command
+        // if entry exists, check if the entry contains the extension
+        if (!Extensions.TryGetValue(commandName, out var extensions))
+            Extensions.Add(commandName, new Dictionary<StringName, Type>());
+        else if (extensions.ContainsKey(commandName)) return false;
 
-		if (Extensions[commandName].ContainsKey(attribute.Name)) return false;
+        if (Extensions[commandName].ContainsKey(attribute.Name)) return false;
 
-		Extensions[commandName].Add(attribute.Name, extension);
+        Extensions[commandName].Add(attribute.Name, extension);
 
-		foreach (StringName alias in attribute.Aliases)
-		{
-			if (Extensions[commandName].ContainsKey(alias)) return false;
-			Extensions[commandName].Add(alias, extension);
-		}
+        foreach (StringName alias in attribute.Aliases)
+        {
+            if (Extensions[commandName].ContainsKey(alias)) return false;
+            Extensions[commandName].Add(alias, extension);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public static bool UnregisterExtension(StringName commandName, Type extension)
-	{
-		if (string.IsNullOrEmpty(commandName) ||
-			!Reflection.HasInterface(extension, nameof(IExtension))
-		) return false;
+    public static bool UnregisterExtension(StringName commandName, Type extension)
+    {
+        if (string.IsNullOrEmpty(commandName) ||
+            !Reflection.HasInterface(extension, nameof(IExtension))
+        ) return false;
 
-		if (Reflection.GetAttribute<ExtensionAttribute>(extension)
-			is not ExtensionAttribute attribute
-		) return false;
+        if (Reflection.GetAttribute<ExtensionAttribute>(extension)
+            is not ExtensionAttribute attribute
+        ) return false;
 
-		if (!Extensions.TryGetValue(commandName, out var extensions))
-			return false;
+        if (!Extensions.TryGetValue(commandName, out var extensions))
+            return false;
 
-		if (!extensions.ContainsKey(attribute.Name)) return false;
+        if (!extensions.ContainsKey(attribute.Name)) return false;
 
-		extensions.Remove(attribute.Name);
+        extensions.Remove(attribute.Name);
 
-		foreach (StringName alias in attribute.Aliases)
-		{
-			if (!extensions.ContainsKey(alias)) return false;
+        foreach (StringName alias in attribute.Aliases)
+        {
+            if (!extensions.ContainsKey(alias)) return false;
 
-			extensions.Remove(alias);
-		}
+            extensions.Remove(alias);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public virtual CommandResult ExecuteExtension(Type extension, CommandData args)
-	{
-		if (!Reflection.HasInterface(extension, nameof(IExtension)))
-			return ICommand.InvalidCommand();
+    public virtual CommandResult ExecuteExtension(Type extension, CommandData args)
+    {
+        if (!Reflection.HasInterface(extension, nameof(IExtension)))
+            return ICommand.InvalidCommand();
 
-		return (Activator.CreateInstance(extension) as IExtension)!.Execute(args);
-	}
+        return (Activator.CreateInstance(extension) as IExtension)!.Execute(args);
+    }
 
-	public virtual StringBuilder GenerateExtensionsManual()
-	{
-		StringBuilder sb = new();
-		var commandName = Reflection.GetAttribute<CommandAttribute>(this)?.Name ?? string.Empty;
+    public virtual StringBuilder GenerateExtensionsManual()
+    {
+        StringBuilder sb = new();
+        var commandName = Reflection.GetAttribute<CommandAttribute>(this)?.Name ?? string.Empty;
 
-		if (!Extensions.TryGetValue(commandName, out var value))
-		{
-			sb.AppendLine("\nThis command does not have any extensions.");
-			return sb;
-		}
+        if (!Extensions.TryGetValue(commandName, out var value))
+        {
+            sb.AppendLine("\nThis command does not have any extensions.");
+            return sb;
+        }
 
-		sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
+        sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
 
-		if (Extensions.Count == 0)
-		{
-			sb.AppendLine("\nThis command does not have any extensions.");
-			return sb;
-		}
+        if (Extensions.Count == 0)
+        {
+            sb.AppendLine("\nThis command does not have any extensions.");
+            return sb;
+        }
 
-		foreach (var extension in value)
-		{
-			var extensionInstance = Activator.CreateInstance(extension.Value) as IExtension;
-			sb.Append(extensionInstance!.GenerateExtensionManual());
-		}
+        foreach (var extension in value)
+        {
+            var extensionInstance = Activator.CreateInstance(extension.Value) as IExtension;
+            sb.Append(extensionInstance!.GenerateExtensionManual());
+        }
 
-		return sb;
-	}
+        return sb;
+    }
 
-	public static Dictionary<StringName, Type>? GetCommandExtensions(StringName commandName)
-	{
-		if (string.IsNullOrEmpty(commandName)) return null;
+    public static Dictionary<StringName, Type>? GetCommandExtensions(StringName commandName)
+    {
+        if (string.IsNullOrEmpty(commandName)) return null;
 
-		if (!Extensions.TryGetValue(commandName, out var extensions)) return null;
+        if (!Extensions.TryGetValue(commandName, out var extensions)) return null;
 
-		return extensions;
-	}
+        return extensions;
+    }
 }

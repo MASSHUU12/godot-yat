@@ -2,9 +2,9 @@ namespace YAT.Enums;
 
 public enum EInputType
 {
-	String,
-	Bool,
-	Int,
-	Float,
-	Color
+    String,
+    Bool,
+    Int,
+    Float,
+    Color
 }

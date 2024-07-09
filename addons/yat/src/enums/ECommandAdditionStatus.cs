@@ -2,8 +2,8 @@ namespace YAT.Enums;
 
 public enum ECommandAdditionStatus
 {
-	Success,
-	UnknownCommand,
-	MissingAttribute,
-	ExistentCommand
+    Success,
+    UnknownCommand,
+    MissingAttribute,
+    ExistentCommand
 }
