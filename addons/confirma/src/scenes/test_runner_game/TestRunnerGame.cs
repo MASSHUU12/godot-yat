@@ -2,17 +2,17 @@ namespace Confirma.Scenes;
 
 public partial class TestRunnerGame : TestRunner
 {
-	public override void _Ready()
-	{
-		base._Ready();
+    public override void _Ready()
+    {
+        base._Ready();
 
-		RunIfRoot();
-	}
+        RunIfRoot();
+    }
 
-	private void RunIfRoot()
-	{
-		if (GetTree().CurrentScene != this) return;
+    private void RunIfRoot()
+    {
+        if (GetTree().CurrentScene != this) return;
 
-		RunAllTests(_autoload.Props.ClassName);
-	}
+        RunAllTests(_autoload.Props.ClassName);
+    }
 }

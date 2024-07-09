@@ -5,33 +5,39 @@ namespace Confirma.Extensions;
 
 public static class ConfirmAttributeExtensions
 {
-	#region ConfirmIsDecoratedWith
-	public static void ConfirmIsDecoratedWith(this Type actual, Type expected, string? message = null)
-	{
-		if (actual.IsDefined(expected, false)) return;
+    #region ConfirmIsDecoratedWith
+    public static Type ConfirmIsDecoratedWith(this Type actual, Type expected, string? message = null)
+    {
+        if (actual.IsDefined(expected, false)) return actual;
 
-		throw new ConfirmAssertException(message ?? $"Expected '{actual.Name}' to be decorated with '{expected.Name}' but was not.");
-	}
+        throw new ConfirmAssertException(
+            message ??
+            $"{actual.Name} is not decorated with {expected.Name}."
+        );
+    }
 
-	public static void ConfirmIsDecoratedWith<T>(this Type actual, string? message = null)
-		where T : Attribute
-	{
-		ConfirmIsDecoratedWith(actual, typeof(T), message);
-	}
-	#endregion
+    public static Type ConfirmIsDecoratedWith<T>(this Type actual, string? message = null)
+        where T : Attribute
+    {
+        return ConfirmIsDecoratedWith(actual, typeof(T), message);
+    }
+    #endregion
 
-	#region ConfirmIsNotDecoratedWith
-	public static void ConfirmIsNotDecoratedWith(this Type actual, Type expected, string? message = null)
-	{
-		if (!actual.IsDefined(expected, false)) return;
+    #region ConfirmIsNotDecoratedWith
+    public static Type ConfirmIsNotDecoratedWith(this Type actual, Type expected, string? message = null)
+    {
+        if (!actual.IsDefined(expected, false)) return actual;
 
-		throw new ConfirmAssertException(message ?? $"Expected '{actual.Name}' to not be decorated with '{expected.Name}' but was.");
-	}
+        throw new ConfirmAssertException(
+            message ??
+            $"{actual.Name} is decorated with {expected.Name}."
+        );
+    }
 
-	public static void ConfirmIsNotDecoratedWith<T>(this Type actual, string? message = null)
-		where T : Attribute
-	{
-		ConfirmIsNotDecoratedWith(actual, typeof(T), message);
-	}
-	#endregion
+    public static Type ConfirmIsNotDecoratedWith<T>(this Type actual, string? message = null)
+        where T : Attribute
+    {
+        return ConfirmIsNotDecoratedWith(actual, typeof(T), message);
+    }
+    #endregion
 }

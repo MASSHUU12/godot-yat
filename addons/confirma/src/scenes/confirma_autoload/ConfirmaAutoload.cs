@@ -8,73 +8,73 @@ namespace Confirma.Scenes;
 [Tool]
 public partial class ConfirmaAutoload : Node
 {
-	public TestsProps Props = new();
+    public TestsProps Props = new();
 
-	public override void _Ready()
-	{
-		CheckArguments();
+    public override void _Ready()
+    {
+        CheckArguments();
 
-		if (!Props.RunTests) return;
+        if (!Props.RunTests) return;
 
-		SetupGlobals();
-		ChangeScene();
-	}
+        SetupGlobals();
+        ChangeScene();
+    }
 
-	private void SetupGlobals()
-	{
-		Log.IsHeadless = Props.IsHeadless;
-		Global.Root = GetTree().Root;
-	}
+    private void SetupGlobals()
+    {
+        Log.IsHeadless = Props.IsHeadless;
+        Global.Root = GetTree().Root;
+    }
 
-	private void CheckArguments()
-	{
-		string[] args = OS.GetCmdlineUserArgs();
+    private void CheckArguments()
+    {
+        string[] args = OS.GetCmdlineUserArgs();
 
-		if (DisplayServer.GetName() == "headless") Props.IsHeadless = true;
+        if (DisplayServer.GetName() == "headless") Props.IsHeadless = true;
 
-		foreach (var arg in args)
-		{
-			if (!Props.RunTests && arg.StartsWith("--confirma-run"))
-			{
-				Props.RunTests = true;
+        foreach (var arg in args)
+        {
+            if (!Props.RunTests && arg.StartsWith("--confirma-run"))
+            {
+                Props.RunTests = true;
 
-				Props.ClassName = arg.Find('=') == -1
-					? string.Empty
-					: arg.Split('=')[1];
+                Props.ClassName = arg.Find('=') == -1
+                    ? string.Empty
+                    : arg.Split('=')[1];
 
-				continue;
-			}
+                continue;
+            }
 
-			if (!Props.QuitAfterTests && arg == "--confirma-quit")
-			{
-				Props.QuitAfterTests = true;
-				continue;
-			}
+            if (!Props.QuitAfterTests && arg == "--confirma-quit")
+            {
+                Props.QuitAfterTests = true;
+                continue;
+            }
 
-			if (!Props.ExitOnFail && arg == "--confirma-exit-on-failure")
-			{
-				Props.ExitOnFail = true;
-				continue;
-			}
+            if (!Props.ExitOnFail && arg == "--confirma-exit-on-failure")
+            {
+                Props.ExitOnFail = true;
+                continue;
+            }
 
-			if (!Props.IsVerbose && arg == "--confirma-verbose")
-			{
-				Props.IsVerbose = true;
-				continue;
-			}
+            if (!Props.IsVerbose && arg == "--confirma-verbose")
+            {
+                Props.IsVerbose = true;
+                continue;
+            }
 
-			if (!Props.DisableParallelization && arg == "--confirma-sequential")
-			{
-				Props.DisableParallelization = true;
-				continue;
-			}
-		}
-	}
+            if (!Props.DisableParallelization && arg == "--confirma-sequential")
+            {
+                Props.DisableParallelization = true;
+                continue;
+            }
+        }
+    }
 
-	private void ChangeScene()
-	{
-		GetTree().CallDeferred("change_scene_to_file", "uid://cq76c14wl2ti3");
+    private void ChangeScene()
+    {
+        GetTree().CallDeferred("change_scene_to_file", "uid://cq76c14wl2ti3");
 
-		if (Props.QuitAfterTests) GetTree().Quit();
-	}
+        if (Props.QuitAfterTests) GetTree().Quit();
+    }
 }
