@@ -7,6 +7,12 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - 'run' argument to 'qc' command.
+- 'enum' type.
+
+### Changed
+
+- Reworked type system.
+- Updated documentation for automatic input validation.
 
 ### Fixed
 
