@@ -76,6 +76,20 @@ public static class Parser
 
         if (enumType == ECommandInputType.Void) return false;
 
+        if (enumType == ECommandInputType.Enum)
+        {
+            if (tokens.Length < 2) return false;
+
+            if (!TryParseEnumType(tokens[1].Split(','), isArray, out var result))
+            {
+                return false;
+            }
+
+            parsed = result!;
+
+            return true;
+        }
+
         if (AllowedToHaveRange(enumType))
         {
             if (tokens.Length > 1) // Type with range
@@ -91,6 +105,35 @@ public static class Parser
             }
         }
         else parsed = new(tokens[0], enumType, isArray);
+
+        return true;
+    }
+
+    public static bool TryParseEnumType(
+        IEnumerable<string> tokens,
+        bool isArray,
+        out CommandTypeEnum? parsed
+    )
+    {
+        Dictionary<string, int> result = new();
+
+        parsed = null;
+
+        foreach (var token in tokens)
+        {
+            var parts = token.Split(
+                ':',
+                StringSplitOptions.RemoveEmptyEntries
+                | StringSplitOptions.TrimEntries
+            );
+
+            if (parts.Length != 2) return false;
+            if (!int.TryParse(parts[1], out var value)) return false;
+
+            result.Add(parts[0], value);
+        }
+
+        parsed = new("Lorem", isArray, result); // TODO: Give actual name
 
         return true;
     }
@@ -216,6 +259,17 @@ public static class Parser
         if (type == Constant && value == commandType.Name)
         {
             result = value;
+            return EStringConversionResult.Success;
+        }
+
+        if (type == ECommandInputType.Enum && commandType is CommandTypeEnum ce)
+        {
+            if (!ce.Values.TryGetValue(value, out int v))
+            {
+                return EStringConversionResult.Invalid;
+            }
+
+            result = v;
             return EStringConversionResult.Success;
         }
 

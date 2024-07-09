@@ -117,6 +117,63 @@ public static class ParserTest
         r.Max.ConfirmEqual(max);
     }
 
+    #region TryParseCommandInputType_Enum
+    [TestCase("enum(A:1,B:2,C:3)", new string[] { "A", "B", "C" }, new int[] { 1, 2, 3 })]
+    [TestCase("enum(d:1,E:2,f:3)", new string[] { "d", "E", "f" }, new int[] { 1, 2, 3 })]
+    [TestCase("enum(G:-5,H:13,I:3)", new string[] { "G", "H", "I" }, new int[] { -5, 13, 3 })]
+    public static void TryParseCommandInputType_Enum_Valid(
+        string typeDefinition,
+        string[] expectedKeys,
+        int[] expectedValues
+    )
+    {
+        Parser.TryParseCommandInputType(typeDefinition, out var result).ConfirmTrue();
+
+        result.Type.ConfirmEqual(ECommandInputType.Enum);
+        result.IsArray.ConfirmFalse();
+        var e = result.ConfirmType<CommandTypeEnum>();
+        e.Values.Keys.ConfirmElementsAreEquivalent(expectedKeys);
+        e.Values.Values.ConfirmElementsAreEquivalent(expectedValues);
+    }
+    #endregion
+
+    #region TryParseEnumType
+    [TestCase(
+        new string[] { "A:1", "B:2", "C:3" },
+        new string[] { "A", "B", "C" },
+        new int[] { 1, 2, 3 }
+    )]
+    [TestCase(
+        new string[] { "d:1", "E:2", "f:3" },
+        new string[] { "d", "E", "f" },
+        new int[] { 1, 2, 3 }
+    )]
+    [TestCase(
+        new string[] { "G:-5", "H:13", "I:3" },
+        new string[] { "G", "H", "I" },
+        new int[] { -5, 13, 3 }
+    )]
+    public static void TryParseEnumType_Valid(
+        string[] tokens,
+        string[] expectedKeys,
+        int[] expectedValues
+    )
+    {
+        Parser.TryParseEnumType(tokens, false, out var result).ConfirmTrue();
+
+        var r = result.ConfirmNotNull().ConfirmType<CommandTypeEnum>();
+        r.Values.Keys.ConfirmElementsAreEquivalent(expectedKeys);
+        r.Values.Values.ConfirmElementsAreEquivalent(expectedValues);
+    }
+
+    [TestCase(new string[] { "A:1", "B::2" }, 0)]
+    public static void TryParseEnumType_InvalidDefinition(string[] tokens, int _)
+    {
+        Parser.TryParseEnumType(tokens, false, out var result).ConfirmFalse();
+        result.ConfirmNull();
+    }
+    #endregion
+
     // Valid range and type, no array
     [TestCase(Int, "0:10", Int, 0, 10, false, true)]
     [TestCase(Int, "5:10", Int, 5, 10, false, true)]
@@ -177,6 +234,7 @@ public static class ParserTest
     [TestCase("void", ECommandInputType.Void, true)]
     [TestCase("int", Int, true)]
     [TestCase("enum?", ECommandInputType.Void, false)]
+    [TestCase("enum", ECommandInputType.Enum, true)]
     public static void TryParseStringTypeToEnum(string type, ECommandInputType expected, bool shouldBeSuccess)
     {
         var isSuccess = Parser.TryParseStringTypeToEnum(type, out var result);
