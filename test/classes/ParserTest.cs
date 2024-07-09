@@ -118,9 +118,21 @@ public static class ParserTest
     }
 
     #region TryParseCommandInputType_Enum
-    [TestCase("enum(A:1,B:2,C:3)", new string[] { "A", "B", "C" }, new int[] { 1, 2, 3 })]
-    [TestCase("enum(d:1,E:2,f:3)", new string[] { "d", "E", "f" }, new int[] { 1, 2, 3 })]
-    [TestCase("enum(G:-5,H:13,I:3)", new string[] { "G", "H", "I" }, new int[] { -5, 13, 3 })]
+    [TestCase(
+        "enum(A:1,B:2,C:3)",
+        new string[] { "A", "B", "C" },
+        new int[] { 1, 2, 3 }
+    )]
+    [TestCase(
+        "enum(d:1,E:2,f:3)",
+        new string[] { "d", "E", "f" },
+        new int[] { 1, 2, 3 }
+    )]
+    [TestCase(
+        "enum(G: -5, H:13, I : 3)",
+        new string[] { "G", "H", "I" },
+        new int[] { -5, 13, 3 }
+    )]
     public static void TryParseCommandInputType_Enum_Valid(
         string typeDefinition,
         string[] expectedKeys,
@@ -134,6 +146,18 @@ public static class ParserTest
         var e = result.ConfirmType<CommandTypeEnum>();
         e.Values.Keys.ConfirmElementsAreEquivalent(expectedKeys);
         e.Values.Values.ConfirmElementsAreEquivalent(expectedValues);
+    }
+
+    [TestCase("enum")]
+    [TestCase("enum()")]
+    [TestCase("enum(A)")]
+    [TestCase("enum(A,)")]
+    [TestCase("enum(A:1, B:: 2)")]
+    [TestCase("enum(A:1, B:: B)")]
+    [TestCase("enum(A:1, B:: C)")]
+    public static void TryParseCommandInputType_Enum_Invalid(string typeDefinition)
+    {
+        Parser.TryParseCommandInputType(typeDefinition, out var _).ConfirmFalse();
     }
     #endregion
 
@@ -167,6 +191,12 @@ public static class ParserTest
     }
 
     [TestCase(new string[] { "A:1", "B::2" }, 0)]
+    [TestCase(new string[] { "A:A" }, 0)]
+    [TestCase(new string[] { ":A" }, 0)]
+    [TestCase(new string[] { "1:A" }, 0)]
+    [TestCase(new string[] { "A:" }, 0)]
+    [TestCase(new string[] { ":" }, 0)]
+    [TestCase(new string[] { }, 0)]
     public static void TryParseEnumType_InvalidDefinition(string[] tokens, int _)
     {
         Parser.TryParseEnumType(tokens, false, out var result).ConfirmFalse();

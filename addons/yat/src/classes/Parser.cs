@@ -119,13 +119,11 @@ public static class Parser
 
         parsed = null;
 
+        if (!tokens.Any()) return false;
+
         foreach (var token in tokens)
         {
-            var parts = token.Split(
-                ':',
-                StringSplitOptions.RemoveEmptyEntries
-                | StringSplitOptions.TrimEntries
-            );
+            var parts = token.Split(':', StringSplitOptions.TrimEntries);
 
             if (parts.Length != 2) return false;
             if (!int.TryParse(parts[1], out var value)) return false;
