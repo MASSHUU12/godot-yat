@@ -53,9 +53,7 @@ public partial class Input : LineEdit
 
     private void AddToTheHistory(string command)
     {
-        Terminal.HistoryNode = null;
-        Terminal.History.AddLast(command);
-        if (Terminal.History.Count > _yat.PreferencesManager.Preferences.HistoryLimit) Terminal.History.RemoveFirst();
+        Terminal.HistoryComponent.Add(command);
     }
 
     public void MoveCaretToEnd()

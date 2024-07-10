@@ -15,11 +15,13 @@ public sealed class History : ICommand
 {
 #nullable disable
     private BaseTerminal _terminal;
+    private HistoryComponent _historyComponent;
 #nullable restore
 
     public CommandResult Execute(CommandData data)
     {
         _terminal = data.Terminal;
+        _historyComponent = _terminal.HistoryComponent;
 
         switch (data.Arguments["action"])
         {
@@ -36,16 +38,16 @@ public sealed class History : ICommand
 
     private CommandResult ClearHistory()
     {
-        _terminal.History.Clear();
+        _historyComponent.History.Clear();
         return ICommand.Success("History cleared.");
     }
 
     private CommandResult ExecuteFromHistory(int index)
     {
-        if (index < 0 || index >= _terminal.History.Count)
+        if (index < 0 || index >= _historyComponent.History.Count)
             return ICommand.Failure($"Invalid index: {index}");
 
-        var command = _terminal.History.ElementAt(index);
+        var command = _historyComponent.History.ElementAt(index);
         if (command.StartsWith("history", "hist")) return ICommand.InvalidCommand(
             "Cannot execute history command from history."
         );
@@ -64,7 +66,7 @@ public sealed class History : ICommand
         sb.AppendLine("Terminal history:");
 
         ushort i = 0;
-        foreach (string command in _terminal.History)
+        foreach (string command in _historyComponent.History)
             sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
 
         return ICommand.Ok(sb.ToString());

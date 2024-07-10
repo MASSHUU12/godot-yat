@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Godot;
 using YAT.Classes.Managers;
 using YAT.Enums;
@@ -27,10 +26,8 @@ public partial class BaseTerminal : Control
     public CommandManager CommandManager { get; private set; }
     public CommandValidator CommandValidator { get; private set; }
     public FullWindowDisplay FullWindowDisplay { get; private set; }
+    public HistoryComponent HistoryComponent { get; private set; }
     public ECommandResult LastCommandResult { get; set; } = ECommandResult.Unavailable;
-
-    public readonly LinkedList<string> History = new();
-    public LinkedListNode<string> HistoryNode = null;
 
     private YAT _yat;
     private Label _promptLabel;
@@ -65,6 +62,8 @@ public partial class BaseTerminal : Control
         Input = GetNode<Input>("%Input");
         CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
 
+        HistoryComponent = GetNode<HistoryComponent>("Components/HistoryComponent");
+
         _promptLabel = GetNode<Label>("%PromptLabel");
         _content = GetNode<PanelContainer>("PanelContainer");
         _selectedNodeLabel = GetNode<Label>("%SelectedNodePath");
@@ -82,33 +81,16 @@ public partial class BaseTerminal : Control
         {
             if (@event.IsActionPressed(Keybindings.TerminalHistoryPrevious))
             {
-                if (HistoryNode is null && History.Count > 0)
+                if (HistoryComponent.MovePrevious() is not null)
                 {
-                    HistoryNode = History.Last;
-                    Input.Text = HistoryNode!.Value;
+                    Input.Text = HistoryComponent.CurrentNode!.Value;
                 }
-                else if (HistoryNode?.Previous is not null)
-                {
-                    HistoryNode = HistoryNode.Previous;
-                    Input.Text = HistoryNode.Value;
-                }
-
                 Input.CallDeferred(nameof(Input.MoveCaretToEnd));
             }
 
             if (@event.IsActionPressed(Keybindings.TerminalHistoryNext))
             {
-                if (HistoryNode is not null && HistoryNode.Next is not null)
-                {
-                    HistoryNode = HistoryNode.Next;
-                    Input.Text = HistoryNode.Value;
-                }
-                else
-                {
-                    HistoryNode = null;
-                    Input.Text = string.Empty;
-                }
-
+                Input.Text = HistoryComponent.MoveNext()?.Value ?? string.Empty;
                 Input.CallDeferred(nameof(Input.MoveCaretToEnd));
             }
 

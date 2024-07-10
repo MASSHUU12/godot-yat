@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dfig0yknmx6b7"]
+[gd_scene load_steps=16 format=3 uid="uid://dfig0yknmx6b7"]
 
 [ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.cs" id="1_gwi3k"]
 [ext_resource type="Theme" uid="uid://csssl8ua88ca4" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_theme.tres" id="1_mdg7i"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cm6kd53al1tcc" path="res://addons/yat/src/scenes/base_terminal/components/full_window_display/FullWindowDisplay.tscn" id="8_c4hfa"]
 [ext_resource type="PackedScene" uid="uid://x1dyt4bknu3x" path="res://addons/yat/src/scenes/base_terminal/components/command_validator/CommandValidator.tscn" id="10_isg4j"]
 [ext_resource type="PackedScene" uid="uid://3gcpwd2vlow" path="res://addons/yat/src/classes/managers/command_manager/CommandManager.tscn" id="11_623me"]
+[ext_resource type="PackedScene" uid="uid://bwxwmhplic873" path="res://addons/yat/src/scenes/base_terminal/components/history_component/HistoryComponent.tscn" id="13_hsrx0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow6fw"]
 bg_color = Color(0.0823529, 0.0980392, 0.121569, 0.752941)
@@ -102,3 +103,5 @@ CommandInfo = NodePath("../../PanelContainer/VBoxContainer/InputInfo/CommandInfo
 Terminal = NodePath("../..")
 
 [node name="CommandManager" parent="Components" instance=ExtResource("11_623me")]
+
+[node name="HistoryComponent" parent="Components" instance=ExtResource("13_hsrx0")]
