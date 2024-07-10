@@ -29,19 +29,18 @@ public partial class Input : LineEdit
     {
         if (Terminal.Locked || string.IsNullOrEmpty(input)) return;
 
-        input = CheckQuickCommands(input);
+        input = GetQuickCommand(input);
 
         var command = Parser.ParseCommand(input);
 
         if (command.Length == 0) return;
 
-        AddToTheHistory(input);
-
+        Terminal.HistoryComponent.Add(input);
         Terminal.CommandManager.Run(command, Terminal);
         Clear();
     }
 
-    private string CheckQuickCommands(string input)
+    private string GetQuickCommand(string input)
     {
         if (_yat.Commands.QuickCommands.Commands.TryGetValue(input, out string? value))
         {
@@ -49,11 +48,6 @@ public partial class Input : LineEdit
         }
 
         return input;
-    }
-
-    private void AddToTheHistory(string command)
-    {
-        Terminal.HistoryComponent.Add(command);
     }
 
     public void MoveCaretToEnd()
