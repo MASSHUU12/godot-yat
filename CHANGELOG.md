@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 - Reworked type system.
 - Updated documentation for automatic input validation.
 - Changed indentation to spaces.
+- CommandInputAttribute throws ArgumentException/ArgumentNullException
+  when passed type definition is invalid.
 
 ### Fixed
 

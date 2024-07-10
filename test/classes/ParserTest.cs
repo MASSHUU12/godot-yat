@@ -227,6 +227,7 @@ public static class ParserTest
     [TestCase(ECommandInputType.String, "5:x", ECommandInputType.String, 0, 0, false, false)]
     [TestCase(ECommandInputType.String, "x:10", ECommandInputType.String, 0, 0, false, false)]
     [TestCase(ECommandInputType.String, "5::5", ECommandInputType.String, 0, 0, false, false)]
+    [TestCase(ECommandInputType.String, "-5:15", ECommandInputType.String, 0, 0, false, false)]
     [TestCase(ECommandInputType.String, "5:10:15", ECommandInputType.String, 0, 0, false, false)]
     // No range and valid type, no array
     [TestCase(Int, "", Int, float.MinValue, float.MaxValue, false, true)]
