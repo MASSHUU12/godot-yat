@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - 'run' argument to 'qc' command.
 - 'enum' type.
+- HistoryComponent
 
 ### Changed
 
@@ -16,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Changed indentation to spaces.
 - CommandInputAttribute throws ArgumentException/ArgumentNullException
   when passed type definition is invalid.
+- Improved terminal history.
 
 ### Fixed
 
