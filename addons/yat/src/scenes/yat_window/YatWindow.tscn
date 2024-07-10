@@ -31,3 +31,4 @@ theme = SubResource("Theme_tk4rv")
 
 [node name="ContextMenu" parent="." instance=ExtResource("3_u6so0")]
 visible = false
+unfocusable = true
