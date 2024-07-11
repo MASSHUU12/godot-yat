@@ -2,18 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.30.0-beta 2024-07-11]
 
 ### Added
 
 - 'run' argument to 'qc' command.
 - 'enum' type.
-- HistoryComponent
+- HistoryComponent.
 
 ### Changed
 
 - Reworked type system.
-- Updated documentation for automatic input validation.
+- Updated documentation.
 - Changed indentation to spaces.
 - CommandInputAttribute throws ArgumentException/ArgumentNullException
   when passed type definition is invalid.

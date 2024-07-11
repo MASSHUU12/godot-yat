@@ -3,7 +3,7 @@
  <p>Quick Commands are user-defined command prompts.</p>
 </div>
 
-> Quick Commands are saved in user://yat_qc.tres
+> Quick Commands are saved in **user://yat_qc.tres**
 
 ### Managing Quick Commands
 

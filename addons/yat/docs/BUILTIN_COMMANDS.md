@@ -1,11 +1,11 @@
 <div align="center">
-	<h3>Builtin commands</h1>
-	<p>Here you can find information about builtin commands.</p>
+ <h3>Builtin commands</h1>
+ <p>Here you can find information about builtin commands.</p>
 </div>
 
 > [!NOTE]
 > To disable the built-in command, just comment it out in the [RegisteredCommands](../src/scenes/registered_commands/RegisteredCommands.cs) file in the `RegisterBuiltinCommands` method.
-
+>
 > More information about each command can be found in their manuals.
 
 | Command       | Alias  | Description                                                                      |
@@ -20,7 +20,6 @@
 | list          | lc     | List all available commands.                                                     |
 | view          | N/A    | Changes the rendering mode of the viewport.                                      |
 | set           | N/A    | Sets a variable to a value. Does nothing by default, requires adding extensions. |
-| watch         | N/A    | Runs user-defined (not threaded) commands at regular intervals.                  |
 | history       | hist   | Manages the command history of the current session.                              |
 | cat           | N/A    | Prints content of a file.                                                        |
 | cowsay        | N/A    | Make a cow say something.                                                        |
@@ -49,3 +48,5 @@
 | tfs           | N/A    | Toggles the full screen mode.                                                    |
 | sr            | N/A    | Set the screen resolution.                                                       |
 | lcr           | N/A    | Shows the result of the last command.                                            |
+
+<!-- | watch         | N/A    | Runs user-defined (not threaded) commands at regular intervals.                  | -->

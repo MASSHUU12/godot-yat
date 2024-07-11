@@ -9,21 +9,21 @@
 
 To create a command, you need to create C# file and implement `ICommand` interface with `Command` attribute.
 
-The `Command` attribute accepts the command `name`, and optionally its `description`, `manual` and `aliases`.
+The `Command` attribute accepts the command **name**, and optionally its **description**, **manual** and **aliases**.
 For description and manual, you can also use `Description` and `Usage` attributes.
 The description and manual/usage have BBCode support.
 
 If you do not specify **manual** or **Usage** it'll be automatically generated based on arguments.
 
-The execution of the command begins in the `Execute` method.
-The `Execute` method accepts `CommandData`, which contains probably all the things your command could ever need, these are things like: reference to YAT and BaseTerminal, raw arguments & options, converted arguments & options, cancellation token and more.
+The execution of the command begins in the **Execute** method.
+The **Execute** method accepts **CommandData**, which contains probably all the things your command could ever need, these are things like: reference to YAT and BaseTerminal, raw arguments & options, converted arguments & options, cancellation token and more.
 
-Each created command, at the end of its operation, must return a status and an optional message with which it finished. You can create it yourself, or use one of the static methods of the ICommand interface, such as Success(), or Failure().
+Each created command, at the end of its operation, must return a status and an optional message with which it finished. You can create it yourself, or use one of the static methods of the `ICommand` interface, such as **Success()**, or **Failure()**.
 
 > [!NOTE]
 > Each time a command is called, a new instance of it is created.
 >
-> If you want to maintain state between instances, for example, use static variables.
+> If you want to maintain state between instances, you can use static variables.
 
 As an example, let's look at Cls command:
 
@@ -52,13 +52,13 @@ public sealed class Cls : ICommand
 > Using engine features via a command running on a separate thread can be problematic.
 >
 > Fortunately, rather most errors can be circumvented by using:
-> CallDeferred, CallThreadSafe or CallDeferredThreadGroup.
+> **CallDeferred**, **CallThreadSafe** or **CallDeferredThreadGroup**.
 
 Creating a command that runs on a separate thread looks very similar to creating a regular command.
 
 Therefore, first create a regular command and then add a `Threaded` attribute to it, which allows it to run on a separate thread.
 
-In the passed `CommandData` you can find the `CancellationToken` which indicates when the command was asked to terminate prematurely.
+In the passed **CommandData** you can find the **CancellationToken** which indicates when the command was asked to terminate prematurely.
 
 ### Overridable methods
 
