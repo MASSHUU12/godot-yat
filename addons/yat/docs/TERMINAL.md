@@ -1,6 +1,6 @@
 <div align="center">
-	<h3>Terminal</h1>
-	<p>Here you will find information on the operation of the terminal.</p>
+ <h3>Terminal</h1>
+ <p>Here you will find information on the operation of the terminal.</p>
 </div>
 
 ### Aborting the command
@@ -9,13 +9,13 @@
 >
 > Whether and when the command terminates depends on the command and whether it respects the request.
 
-Interrupting a command is possible only if it runs on a `separate thread` (and if its work does not end in a fraction of a second).
+Interrupting a command is possible only if it runs on a **separate thread** (and if its work does not end in a fraction of a second).
 
-To terminate the command you must use the keybinding `yat_terminal_interrupt`.
+To terminate the command you must use the keybinding **yat_terminal_interrupt**.
 
 ### Context menu
 
-YAT uses the keybinding `yat_context_menu` to launch the context menu.
+YAT uses the keybinding **yat_context_menu** to launch the context menu.
 
 ### Signals
 
