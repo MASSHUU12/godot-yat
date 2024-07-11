@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Godot;
 using YAT.Attributes;
+using YAT.Classes.Managers;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Resources;
@@ -58,7 +59,7 @@ public partial class Preferences : YatWindow
     private void SavePreferences()
     {
         UpdatePreferences();
-        var status = _yat.PreferencesManager.Save();
+        bool status = _yat.PreferencesManager.Save();
 
         _yat.CurrentTerminal.Print(
             status
@@ -72,7 +73,7 @@ public partial class Preferences : YatWindow
 
     private void LoadPreferences()
     {
-        var status = _yat.PreferencesManager.Load();
+        bool status = _yat.PreferencesManager.Load();
 
         _yat.CurrentTerminal.Print(
             status
@@ -88,14 +89,14 @@ public partial class Preferences : YatWindow
     {
         CallOnEveryPreference((InputContainer container) =>
         {
-            var manager = _yat.PreferencesManager;
+            PreferencesManager manager = _yat.PreferencesManager;
             manager.Preferences.Set(container.Text, container.GetValue());
 
             return true;
         });
 
         _yat.CurrentTerminal.Print("Preferences updated successfully.", EPrintType.Success);
-        _yat.PreferencesManager.EmitSignal(
+        _ = _yat.PreferencesManager.EmitSignal(
             nameof(_yat.PreferencesManager.PreferencesUpdated),
             _yat.PreferencesManager.Preferences
         );
@@ -113,10 +114,15 @@ public partial class Preferences : YatWindow
 
     private void CallOnEveryPreference(Func<InputContainer, bool> func)
     {
-        foreach (var key in _groups.Keys)
+        foreach (StringName key in _groups.Keys)
         {
-            foreach (var child in _groups[key].Container.GetChildren())
-                if (child is InputContainer container) func(container);
+            foreach (Node? child in _groups[key].Container.GetChildren())
+            {
+                if (child is InputContainer container)
+                {
+                    _ = func(container);
+                }
+            }
         }
     }
 
@@ -129,7 +135,10 @@ public partial class Preferences : YatWindow
 
         foreach (var propertyInfo in properties)
         {
-            if (GetAttribute<IgnoreAttribute>(propertyInfo) is not null) continue;
+            if (GetAttribute<IgnoreAttribute>(propertyInfo) is not null)
+            {
+                continue;
+            }
 
             var exportGroup = GetAttribute<ExportGroupAttribute>(propertyInfo);
             var exportSubgroup = GetAttribute<ExportSubgroupAttribute>(propertyInfo);
@@ -149,7 +158,10 @@ public partial class Preferences : YatWindow
                 CreateSection(currentSubgroup.Name, currentGroup!.Name);
             }
 
-            if (currentGroup is null && currentSubgroup is null) continue;
+            if (currentGroup is null && currentSubgroup is null)
+            {
+                continue;
+            }
 
             CreateInputContainer(currentGroup!.Name, propertyInfo);
         }
@@ -169,15 +181,15 @@ public partial class Preferences : YatWindow
 
     private void CreateInputContainer(StringName groupName, Godot.Collections.Dictionary info)
     {
-        var propertyType = ((Variant.Type)(int)info["type"]).ToString();
+        string propertyType = ((Variant.Type)(int)info["type"]).ToString();
         StringName name = info.TryGetValue("name", out var n)
             ? (StringName)n
             : string.Empty;
-        var inputType = (EInputType)(Enum.TryParse(typeof(EInputType), propertyType, out var parsedType)
+        EInputType inputType = (EInputType)(Enum.TryParse(typeof(EInputType), propertyType, out var parsedType)
             ? parsedType
             : EInputType.String
         );
-        var hint = info.TryGetValue("hint", out var h)
+        PropertyHint hint = info.TryGetValue("hint", out var h)
             ? (PropertyHint)(short)h
             : PropertyHint.None;
         var (min, max, _) = hint == PropertyHint.Range
@@ -185,9 +197,11 @@ public partial class Preferences : YatWindow
             : (0, float.MaxValue, 0);
 
         if (string.IsNullOrEmpty(name) || _groups.ContainsKey(name) || propertyType == "Nil")
+        {
             return;
+        }
 
-        var inputContainer = _inputContainer.Instantiate<InputContainer>();
+        InputContainer inputContainer = _inputContainer.Instantiate<InputContainer>();
 
         inputContainer.Name = name;
         inputContainer.Text = name;
@@ -202,7 +216,7 @@ public partial class Preferences : YatWindow
 
     private void CreateTab(StringName name)
     {
-        var tab = _preferencesTab.Instantiate<PreferencesTab>();
+        PreferencesTab tab = _preferencesTab.Instantiate<PreferencesTab>();
 
         tab.Name = name;
 
@@ -213,10 +227,12 @@ public partial class Preferences : YatWindow
 
     private static T? GetAttribute<T>(Godot.Collections.Dictionary propertyInfo) where T : Attribute
     {
-        if (!propertyInfo.TryGetValue("name", out var name)) return null;
+        if (!propertyInfo.TryGetValue("name", out var name))
+        {
+            return null;
+        }
 
-        var type = typeof(YatPreferences);
-        var property = type.GetProperty((string)name);
+        PropertyInfo? property = typeof(YatPreferences).GetProperty((string)name);
 
         return property?.GetCustomAttribute<T>();
     }

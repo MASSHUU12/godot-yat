@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
@@ -26,7 +27,7 @@ public partial class LookingAtInfo : PanelContainer, IDebugScreenItem
 
     public void Update()
     {
-        var result = World.RayCast(_yat.GetViewport(), RAY_LENGTH);
+        Dictionary? result = World.RayCast(_yat.GetViewport(), RAY_LENGTH);
 
         if (result is null)
         {

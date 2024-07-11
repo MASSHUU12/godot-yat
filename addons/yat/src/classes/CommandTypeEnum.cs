@@ -24,7 +24,7 @@ public class CommandTypeEnum : CommandType
         {
             var item = enumerator.Current;
 
-            ss.Append(
+            _ = ss.Append(
                 (ss.Length == 0 ? string.Empty : ", ") +
                 $"{item.Key}({item.Value})"
             );

@@ -16,16 +16,24 @@ public sealed class Wenv : ICommand
     public CommandResult Execute(CommandData data)
     {
         var action = (string)data.Arguments["action"];
-        var world = data.Yat.GetTree().Root.World3D;
+        World3D world = data.Yat.GetTree().Root.World3D;
 
-        if (action == "remove") return RemoveEnvironment(world);
-        return RestoreEnvironment(world);
+        return action == "remove"
+            ? RemoveEnvironment(world)
+            : RestoreEnvironment(world);
     }
 
     private static CommandResult RestoreEnvironment(World3D world)
     {
-        if (world is null) return ICommand.Failure("No world to restore environment to.");
-        if (_world3DEnvironment is null) return ICommand.Failure("No environment to restore.");
+        if (world is null)
+        {
+            return ICommand.Failure("No world to restore environment to.");
+        }
+
+        if (_world3DEnvironment is null)
+        {
+            return ICommand.Failure("No environment to restore.");
+        }
 
         world.Environment = _world3DEnvironment;
         _world3DEnvironment = null;
@@ -35,10 +43,17 @@ public sealed class Wenv : ICommand
 
     private static CommandResult RemoveEnvironment(World3D world)
     {
-        var env = world?.Environment;
+        Environment? env = world?.Environment;
 
-        if (world is null) return ICommand.Failure("No world to remove environment from.");
-        if (env is null) return ICommand.Failure("No environment to remove.");
+        if (world is null)
+        {
+            return ICommand.Failure("No world to remove environment from.");
+        }
+
+        if (env is null)
+        {
+            return ICommand.Failure("No environment to remove.");
+        }
 
         _world3DEnvironment = env;
         world.Environment = null;

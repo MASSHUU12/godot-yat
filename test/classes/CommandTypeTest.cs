@@ -22,6 +22,6 @@ public static class CommandTypeTest
         string expectedDefinition
     )
     {
-        new CommandType(name, type, isArray).TypeDefinition.ConfirmEqual(expectedDefinition);
+        _ = new CommandType(name, type, isArray).TypeDefinition.ConfirmEqual(expectedDefinition);
     }
 }

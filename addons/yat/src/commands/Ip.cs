@@ -1,5 +1,6 @@
 using System.Text;
 using Godot;
+using Godot.Collections;
 using YAT.Attributes;
 using YAT.Interfaces;
 using YAT.Scenes;
@@ -16,7 +17,10 @@ public sealed class Ip : ICommand
     {
         var action = (string)data.Arguments["action"];
 
-        if (action == "addr") PrintLocalInterfaces(data.Terminal);
+        if (action == "addr")
+        {
+            PrintLocalInterfaces(data.Terminal);
+        }
 
         return ICommand.Success();
     }
@@ -32,15 +36,17 @@ public sealed class Ip : ICommand
             return;
         }
 
-        foreach (var iface in interfaces)
+        foreach (Dictionary? iface in interfaces)
         {
-            sb.AppendLine($"[b]{iface["index"]}[/b]: {iface["friendly"]} ({iface["name"]})");
-            sb.AppendLine("Addresses:");
+            _ = sb.AppendLine($"[b]{iface["index"]}[/b]: {iface["friendly"]} ({iface["name"]})");
+            _ = sb.AppendLine("Addresses:");
 
-            foreach (var addr in iface["addresses"].AsStringArray())
-                sb.AppendLine($"\t{addr}");
+            foreach (string addr in iface["addresses"].AsStringArray())
+            {
+                _ = sb.AppendLine($"\t{addr}");
+            }
 
-            sb.AppendLine();
+            _ = sb.AppendLine();
         }
 
         terminal.Print(sb.ToString());

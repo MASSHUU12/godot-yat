@@ -21,15 +21,21 @@ public sealed class Quit : ICommand
         _yat = data.Yat;
         _terminal = data.Terminal;
 
-        if (t) CloseTerminal();
-        else QuitTheGame();
+        if (t)
+        {
+            CloseTerminal();
+        }
+        else
+        {
+            QuitTheGame();
+        }
 
         return ICommand.Success();
     }
 
     private void CloseTerminal()
     {
-        _yat.CallDeferred("CloseTerminal");
+        _ = _yat.CallDeferred("CloseTerminal");
     }
 
     private void QuitTheGame()

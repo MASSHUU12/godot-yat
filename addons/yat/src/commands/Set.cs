@@ -1,4 +1,3 @@
-using System;
 using YAT.Attributes;
 using YAT.Classes;
 using YAT.Interfaces;
@@ -15,11 +14,13 @@ public partial class Set : Extensible, ICommand
     {
         var extensions = GetCommandExtensions("set");
 
-        if (extensions is null) return ICommand.Failure("No extensions found.");
+        if (extensions is null)
+        {
+            return ICommand.Failure("No extensions found.");
+        }
 
-        if (extensions.TryGetValue((string)data.Arguments["variable"], out var extension))
-            return ExecuteExtension(extension, data with { RawData = data.RawData[1..] });
-
-        return ICommand.Failure("Variable not found.");
+        return extensions.TryGetValue((string)data.Arguments["variable"], out var extension)
+            ? ExecuteExtension(extension, data with { RawData = data.RawData[1..] })
+            : ICommand.Failure("Variable not found.");
     }
 }

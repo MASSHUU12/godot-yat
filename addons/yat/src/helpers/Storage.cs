@@ -19,8 +19,8 @@ public static class Storage
 
     public static T? LoadResource<T>(string path) where T : Resource
     {
-        if (!ResourceLoader.Exists(path, nameof(T))) return null;
-
-        return ResourceLoader.Load<T>(path);
+        return !ResourceLoader.Exists(path, nameof(T))
+            ? null
+            : ResourceLoader.Load<T>(path);
     }
 }

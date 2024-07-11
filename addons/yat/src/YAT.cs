@@ -32,12 +32,9 @@ public partial class YAT : Node
         TerminalManager.GameTerminal.Ready += () =>
         {
             TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminalChanged +=
-            (BaseTerminal terminal) =>
-            {
-                CurrentTerminal = terminal;
-            };
+            (BaseTerminal terminal) => CurrentTerminal = terminal;
 
-            EmitSignal(SignalName.YatReady);
+            _ = EmitSignal(SignalName.YatReady);
         };
 
         Keybindings.LoadDefaultActions();

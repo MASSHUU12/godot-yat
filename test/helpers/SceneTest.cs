@@ -7,7 +7,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public class SceneTest
+public static class SceneTest
 {
     [TestCase("", 0, 0, 0)]
     [TestCase("0, 32", 0, 32, 0)]
@@ -18,8 +18,8 @@ public class SceneTest
     {
         var (actualMin, actualMax, actualStep) = Scene.GetRangeFromHint(hint);
 
-        min.ConfirmEqual(actualMin);
-        max.ConfirmEqual(actualMax);
-        step.ConfirmEqual(actualStep);
+        _ = min.ConfirmEqual(actualMin);
+        _ = max.ConfirmEqual(actualMax);
+        _ = step.ConfirmEqual(actualStep);
     }
 }

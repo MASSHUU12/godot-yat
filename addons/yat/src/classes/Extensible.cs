@@ -17,27 +17,45 @@ public partial class Extensible : Node
     {
         if (string.IsNullOrEmpty(commandName) ||
             !Reflection.HasInterface(extension, nameof(IExtension))
-        ) return false;
+        )
+        {
+            return false;
+        }
 
         var instance = Activator.CreateInstance(extension) as IExtension;
 
         if (Reflection.GetAttribute<ExtensionAttribute>(instance!)
             is not ExtensionAttribute attribute
-        ) return false;
+        )
+        {
+            return false;
+        }
 
         // Check if dictionary have entry for the command
         // if entry exists, check if the entry contains the extension
         if (!Extensions.TryGetValue(commandName, out var extensions))
+        {
             Extensions.Add(commandName, new Dictionary<StringName, Type>());
-        else if (extensions.ContainsKey(commandName)) return false;
+        }
+        else if (extensions.ContainsKey(commandName))
+        {
+            return false;
+        }
 
-        if (Extensions[commandName].ContainsKey(attribute.Name)) return false;
+        if (Extensions[commandName].ContainsKey(attribute.Name))
+        {
+            return false;
+        }
 
         Extensions[commandName].Add(attribute.Name, extension);
 
         foreach (StringName alias in attribute.Aliases)
         {
-            if (Extensions[commandName].ContainsKey(alias)) return false;
+            if (Extensions[commandName].ContainsKey(alias))
+            {
+                return false;
+            }
+
             Extensions[commandName].Add(alias, extension);
         }
 
@@ -48,24 +66,38 @@ public partial class Extensible : Node
     {
         if (string.IsNullOrEmpty(commandName) ||
             !Reflection.HasInterface(extension, nameof(IExtension))
-        ) return false;
+        )
+        {
+            return false;
+        }
 
-        if (Reflection.GetAttribute<ExtensionAttribute>(extension)
+        if (extension.GetAttribute<ExtensionAttribute>()
             is not ExtensionAttribute attribute
-        ) return false;
+        )
+        {
+            return false;
+        }
 
         if (!Extensions.TryGetValue(commandName, out var extensions))
+        {
             return false;
+        }
 
-        if (!extensions.ContainsKey(attribute.Name)) return false;
+        if (!extensions.ContainsKey(attribute.Name))
+        {
+            return false;
+        }
 
-        extensions.Remove(attribute.Name);
+        _ = extensions.Remove(attribute.Name);
 
         foreach (StringName alias in attribute.Aliases)
         {
-            if (!extensions.ContainsKey(alias)) return false;
+            if (!extensions.ContainsKey(alias))
+            {
+                return false;
+            }
 
-            extensions.Remove(alias);
+            _ = extensions.Remove(alias);
         }
 
         return true;
@@ -73,10 +105,9 @@ public partial class Extensible : Node
 
     public virtual CommandResult ExecuteExtension(Type extension, CommandData args)
     {
-        if (!Reflection.HasInterface(extension, nameof(IExtension)))
-            return ICommand.InvalidCommand();
-
-        return (Activator.CreateInstance(extension) as IExtension)!.Execute(args);
+        return !Reflection.HasInterface(extension, nameof(IExtension))
+            ? ICommand.InvalidCommand()
+            : (Activator.CreateInstance(extension) as IExtension)!.Execute(args);
     }
 
     public virtual StringBuilder GenerateExtensionsManual()
@@ -86,22 +117,22 @@ public partial class Extensible : Node
 
         if (!Extensions.TryGetValue(commandName, out var value))
         {
-            sb.AppendLine("\nThis command does not have any extensions.");
+            _ = sb.AppendLine("\nThis command does not have any extensions.");
             return sb;
         }
 
-        sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
+        _ = sb.AppendLine("[p align=center][font_size=22]Extensions[/font_size][/p]");
 
         if (Extensions.Count == 0)
         {
-            sb.AppendLine("\nThis command does not have any extensions.");
+            _ = sb.AppendLine("\nThis command does not have any extensions.");
             return sb;
         }
 
         foreach (var extension in value)
         {
-            var extensionInstance = Activator.CreateInstance(extension.Value) as IExtension;
-            sb.Append(extensionInstance!.GenerateExtensionManual());
+            IExtension? extensionInstance = Activator.CreateInstance(extension.Value) as IExtension;
+            _ = sb.Append(extensionInstance!.GenerateExtensionManual());
         }
 
         return sb;
@@ -109,10 +140,13 @@ public partial class Extensible : Node
 
     public static Dictionary<StringName, Type>? GetCommandExtensions(StringName commandName)
     {
-        if (string.IsNullOrEmpty(commandName)) return null;
+        if (string.IsNullOrEmpty(commandName))
+        {
+            return null;
+        }
 
-        if (!Extensions.TryGetValue(commandName, out var extensions)) return null;
-
-        return extensions;
+        return !Extensions.TryGetValue(commandName, out var extensions)
+            ? null
+            : extensions;
     }
 }

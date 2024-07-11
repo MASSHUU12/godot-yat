@@ -21,44 +21,58 @@ public partial class Cs : Node, ICommand
     {
         var scene = (string)data.Arguments["scene"];
 
-        if (!CheckSceneExistence(scene)) return ICommand.Failure(
-            $"Scene '{scene}' does not exist."
-        );
+        if (!CheckSceneExistence(scene))
+        {
+            return ICommand.Failure(
+                $"Scene '{scene}' does not exist."
+            );
+        }
 
         EmitSceneAboutToChange(data.Yat, scene);
 
-        if (!ChangeScene(scene, data.Yat)) return ICommand.Failure(
-            $"Failed to change scene to '{scene}'."
-        );
+        if (!ChangeScene(scene, data.Yat))
+        {
+            return ICommand.Failure(
+                $"Failed to change scene to '{scene}'."
+            );
+        }
 
-        EmitSignal(SignalName.SceneChanged, scene);
+        _ = EmitSignal(SignalName.SceneChanged, scene);
 
         return ICommand.Success($"Changed scene to '{scene}'.");
     }
 
     private bool CheckSceneExistence(string scene)
     {
-        var sceneExists = ResourceLoader.Exists(scene, typeof(PackedScene).Name);
-        if (!sceneExists) EmitSignal(
-            SignalName.SceneChangeFailed,
-            scene,
-            (short)ESceneChangeFailureReason.DoesNotExist
-        );
+        var sceneExists = ResourceLoader.Exists(scene, nameof(PackedScene));
+
+        if (!sceneExists)
+        {
+            _ = EmitSignal(
+                SignalName.SceneChangeFailed,
+                scene,
+                (short)ESceneChangeFailureReason.DoesNotExist
+            );
+        }
+
         return sceneExists;
     }
 
     private void EmitSceneAboutToChange(YAT yat, string scene)
     {
         var oldPath = yat.GetTree().CurrentScene.SceneFilePath;
-        EmitSignal(SignalName.SceneAboutToChange, oldPath, scene);
+        _ = EmitSignal(SignalName.SceneAboutToChange, oldPath, scene);
     }
 
     private bool ChangeScene(string scene, YAT yat)
     {
         var error = yat.GetTree().ChangeSceneToFile(scene);
-        if (error == Error.Ok) return true;
+        if (error == Error.Ok)
+        {
+            return true;
+        }
 
-        EmitSignal(SignalName.SceneChangeFailed, scene, (short)(
+        _ = EmitSignal(SignalName.SceneChangeFailed, scene, (short)(
             error == Error.CantOpen
             ? ESceneChangeFailureReason.CantOpen
             : ESceneChangeFailureReason.CantInstantiate

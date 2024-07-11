@@ -56,8 +56,8 @@ public partial class BaseTerminal : Control
         SelectedNode.CurrentNodeChanged += OnCurrentNodeChanged;
 
         FullWindowDisplay = GetNode<FullWindowDisplay>("FullWindowDisplay");
-        FullWindowDisplay.Opened += () => { Input.ReleaseFocus(); };
-        FullWindowDisplay.Closed += () => { Input.CallDeferred("grab_focus"); };
+        FullWindowDisplay.Opened += () => Input.ReleaseFocus();
+        FullWindowDisplay.Closed += () => Input.CallDeferred("grab_focus");
 
         Input = GetNode<Input>("%Input");
         CommandValidator = GetNode<CommandValidator>("Components/CommandValidator");
@@ -85,13 +85,13 @@ public partial class BaseTerminal : Control
                 {
                     Input.Text = HistoryComponent.CurrentNode!.Value;
                 }
-                Input.CallDeferred(nameof(Input.MoveCaretToEnd));
+                _ = Input.CallDeferred(nameof(Input.MoveCaretToEnd));
             }
 
             if (@event.IsActionPressed(Keybindings.TerminalHistoryNext))
             {
                 Input.Text = HistoryComponent.MoveNext()?.Value ?? string.Empty;
-                Input.CallDeferred(nameof(Input.MoveCaretToEnd));
+                _ = Input.CallDeferred(nameof(Input.MoveCaretToEnd));
             }
 
             if (@event.IsActionPressed(Keybindings.TerminalInterrupt) && Locked)
@@ -122,7 +122,7 @@ public partial class BaseTerminal : Control
 
     private void OnCurrentNodeChanged(Node node)
     {
-        var path = node?.GetPath() ?? string.Empty;
+        NodePath path = node?.GetPath() ?? string.Empty;
 
         _selectedNodeLabel.TooltipText = path;
         _selectedNodeLabel.Text = Text.ShortenPath(path, 32);
@@ -135,7 +135,7 @@ public partial class BaseTerminal : Control
     /// <param name="type">The type of print to use (e.g. error, warning, success, normal).</param>
     public void Print(string text, EPrintType type = EPrintType.Normal)
     {
-        var color = type switch
+        Color color = type switch
         {
             EPrintType.Error => _yat.PreferencesManager.Preferences.ErrorColor,
             EPrintType.Warning => _yat.PreferencesManager.Preferences.WarningColor,
@@ -145,11 +145,11 @@ public partial class BaseTerminal : Control
         };
 
         // Using CallDeferred to avoid issues when running this method in a separate thread.
-        Output.CallDeferred("push_color", color);
+        _ = Output.CallDeferred("push_color", color);
         // Paragraph is needed because newline characters are breaking formatting.
-        Output.CallDeferred("push_paragraph", (ushort)HorizontalAlignment.Left);
-        Output.CallDeferred("append_text", text);
-        Output.CallDeferred("pop_all");
+        _ = Output.CallDeferred("push_paragraph", (ushort)HorizontalAlignment.Left);
+        _ = Output.CallDeferred("append_text", text);
+        _ = Output.CallDeferred("pop_all");
     }
 
     public void Print<T>(T text, EPrintType type = EPrintType.Normal)
@@ -163,5 +163,8 @@ public partial class BaseTerminal : Control
         Print(text.ToString() ?? string.Empty, type);
     }
 
-    public void Clear() => Output.Clear();
+    public void Clear()
+    {
+        Output.Clear();
+    }
 }

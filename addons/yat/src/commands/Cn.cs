@@ -40,14 +40,20 @@ public sealed class Cn : ICommand
         _yat = data.Yat;
         _terminal = data.Terminal;
 
-        if (Text.StartsWith(path, TREE_SHALLOW_SEARCH_PREFIX, TREE_DEEP_SEARCH_PREFIX))
+        if (path.StartsWith(TREE_SHALLOW_SEARCH_PREFIX, TREE_DEEP_SEARCH_PREFIX))
+        {
             result = ChangeSelectedNode(GetNodeFromSearch(path));
-        else if (path.StartsWith(RAY_CAST_PREFIX)) result = ChangeSelectedNode(GetRayCastedNodePath(path));
-        else result = ChangeSelectedNode(path);
+        }
+        else
+        {
+            result = path.StartsWith(RAY_CAST_PREFIX)
+                ? ChangeSelectedNode(GetRayCastedNodePath(path))
+                : ChangeSelectedNode(path);
+        }
 
-        if (!result) return ICommand.Failure($"Invalid node path: {path}");
-
-        return ICommand.Success();
+        return !result
+            ? ICommand.Failure($"Invalid node path: {path}")
+            : ICommand.Success();
     }
 
     private NodePath? GetNodeFromSearch(string path)
@@ -56,7 +62,10 @@ public sealed class Cn : ICommand
             ? World.SearchNode(_terminal.SelectedNode.Current, path[2..])
             : World.SearchNode(_yat.GetTree().Root, path[1..]);
 
-        if (result is not null) return result.GetPath();
+        if (result is not null)
+        {
+            return result.GetPath();
+        }
 
         _terminal.Print("No node found.", EPrintType.Error);
         return null;
@@ -79,14 +88,14 @@ public sealed class Cn : ICommand
 
     private static float GetRayLength(string path)
     {
-        return Numeric.TryConvert(path[1..], out float rayLength)
+        return path[1..].TryConvert(out float rayLength)
             ? rayLength
             : DEFAULT_RAY_LENGTH;
     }
 
     private bool ChangeSelectedNode(NodePath? path)
     {
-        if (path is null) return false;
-        return _terminal.SelectedNode.ChangeSelectedNode(path);
+        return path is not null
+            && _terminal.SelectedNode.ChangeSelectedNode(path);
     }
 }

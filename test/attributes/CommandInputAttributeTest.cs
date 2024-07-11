@@ -23,19 +23,19 @@ public static class CommandInputAttributeTest
 
         CommandInputAttribute attribute = new(name, type, description);
 
-        attribute.Name.ConfirmEqual(name);
-        attribute.Description.ConfirmEqual(description);
-        attribute.Types.ConfirmCount(1);
+        _ = attribute.Name.ConfirmEqual(name);
+        _ = attribute.Description.ConfirmEqual(description);
+        _ = attribute.Types.ConfirmCount(1);
     }
 
     [TestCase]
     public static void Constructor_TypeIsNull_ThrowsArgumentNullException()
     {
-        string name = "TestName";
-        string description = "TestDescription";
-        string? type = null;
+        const string name = "TestName";
+        const string description = "TestDescription";
+        const string? type = null;
 
-        Confirm.Throws<ArgumentNullException>(
+        _ = Confirm.Throws<ArgumentNullException>(
             () => _ = new CommandInputAttribute(name, type!, description)
         );
     }
@@ -43,11 +43,11 @@ public static class CommandInputAttributeTest
     [TestCase]
     public static void Constructor_TypeIsEmptyString_ThrowsArgumentNullException()
     {
-        string name = "TestName";
-        string description = "TestDescription";
+        const string name = "TestName";
+        const string description = "TestDescription";
         string type = string.Empty;
 
-        Confirm.Throws<ArgumentNullException>(
+        _ = Confirm.Throws<ArgumentNullException>(
             () => _ = new CommandInputAttribute(name, type, description)
         );
     }
@@ -55,14 +55,14 @@ public static class CommandInputAttributeTest
     [TestCase]
     public static void Constructor_TypesAreValid_ParsesCorrectly()
     {
-        string name = "TestName";
-        string description = "TestDescription";
-        string type = "TestType1|TestType2";
+        const string name = "TestName";
+        const string description = "TestDescription";
+        const string type = "TestType1|TestType2";
 
         CommandInputAttribute attribute = new(name, type, description);
 
-        attribute.Types.ConfirmCount(2);
-        attribute.Types.ConfirmAllMatch((item) => item.Type == ECommandInputType.Constant);
+        _ = attribute.Types.ConfirmCount(2);
+        _ = attribute.Types.ConfirmAllMatch((item) => item.Type == ECommandInputType.Constant);
     }
 
     [TestCase("string(:ddd)")]
@@ -72,10 +72,10 @@ public static class CommandInputAttributeTest
     [TestCase("string(5:-15)")]
     public static void Constructor_TypeIsInvalid_ThrowsArgumentException(string type)
     {
-        string name = "TestName";
-        string description = "TestDescription";
+        const string name = "TestName";
+        const string description = "TestDescription";
 
-        Confirm.Throws<ArgumentException>(
+        _ = Confirm.Throws<ArgumentException>(
             () => _ = new CommandInputAttribute(name, type, description)
         );
     }
@@ -83,10 +83,10 @@ public static class CommandInputAttributeTest
     [TestCase()]
     public static void Constructor_TypeIsVoid_ThrowsArgumentException()
     {
-        string name = "TestName";
-        string description = "TestDescription";
+        const string name = "TestName";
+        const string description = "TestDescription";
 
-        Confirm.Throws<ArgumentException>(
+        _ = Confirm.Throws<ArgumentException>(
             () => _ = new CommandInputAttribute(name, "void", description)
         );
     }

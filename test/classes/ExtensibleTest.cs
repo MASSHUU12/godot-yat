@@ -15,12 +15,18 @@ public static class ExtensibleTest
     [Extension("test", "Test extension.", "Test extension manual.", "test_alias", "test_alias2")]
     private class TestExtension : IExtension
     {
-        public CommandResult Execute(CommandData data) => ICommand.NotImplemented();
+        public CommandResult Execute(CommandData data)
+        {
+            return ICommand.NotImplemented();
+        }
     }
 
     private class TestExtensionWithoutAttribute : IExtension
     {
-        public CommandResult Execute(CommandData data) => ICommand.NotImplemented();
+        public CommandResult Execute(CommandData data)
+        {
+            return ICommand.NotImplemented();
+        }
     }
 
     [TestCase("test_command", typeof(TestExtension), true)]
@@ -28,20 +34,19 @@ public static class ExtensibleTest
     [TestCase("test_command", typeof(TestExtensionWithoutAttribute), false)]
     public static void TestRegisterExtension(string commandName, Type extensionType, bool expected)
     {
-        Extensible.RegisterExtension(commandName, extensionType).ConfirmEqual(expected);
+        _ = Extensible.RegisterExtension(commandName, extensionType).ConfirmEqual(expected);
     }
 
     public static void TestUnregisterExtensionExtensionPresent()
     {
-        Extensible.RegisterExtension("test_command", typeof(TestExtension));
-
-        Extensible.UnregisterExtension("test_command", typeof(TestExtension)).ConfirmTrue();
+        _ = Extensible.RegisterExtension("test_command", typeof(TestExtension));
+        _ = Extensible.UnregisterExtension("test_command", typeof(TestExtension)).ConfirmTrue();
     }
 
     [TestCase("test_command", typeof(TestExtension), false)]
     [TestCase("test_command", typeof(TestExtensionWithoutAttribute), false)]
     public static void TestUnregisterExtension(string commandName, Type extensionType, bool expected)
     {
-        Extensible.UnregisterExtension(commandName, extensionType).ConfirmEqual(expected);
+        _ = Extensible.UnregisterExtension(commandName, extensionType).ConfirmEqual(expected);
     }
 }

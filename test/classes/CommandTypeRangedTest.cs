@@ -21,6 +21,6 @@ public static class CommandTypeRangedTest
     {
         CommandTypeRanged commandType = new(name, Void, false, min, max);
 
-        commandType.TypeDefinition.ConfirmEqual(expectedDefinition);
+        _ = commandType.TypeDefinition.ConfirmEqual(expectedDefinition);
     }
 }

@@ -74,9 +74,12 @@ public partial class YatWindow : Window
             IsWindowMoving = true;
             _windowMoveTimer = 0f;
             _previousPosition = Position;
-            EmitSignal(SignalName.WindowMoved, Position);
+            _ = EmitSignal(SignalName.WindowMoved, Position);
         }
-        else IsWindowMoving = false;
+        else
+        {
+            IsWindowMoving = false;
+        }
     }
 
     private void OnWindowInput(InputEvent @event)
@@ -85,7 +88,10 @@ public partial class YatWindow : Window
         {
             ContextMenu.ShowNextToMouse();
         }
-        else ContextMenu.Hide();
+        else
+        {
+            ContextMenu.Hide();
+        }
     }
 
     private void OnWindowMoved(Vector2 position)
@@ -103,15 +109,15 @@ public partial class YatWindow : Window
 
     private (float, float) CalculateLimits(Rect2 rect)
     {
-        var limitX = rect.Size.X - Size.X - ViewportEdgeOffset;
-        var limitY = rect.Size.Y - Size.Y - ViewportEdgeOffset;
+        float limitX = rect.Size.X - Size.X - ViewportEdgeOffset;
+        float limitY = rect.Size.Y - Size.Y - ViewportEdgeOffset;
 
         return ((int)limitX, (int)limitY);
     }
 
     private void OnViewportSizeChanged()
     {
-        var viewportSize = (Vector2I)_viewport.GetVisibleRect().Size;
+        Vector2I viewportSize = (Vector2I)_viewport.GetVisibleRect().Size;
 
         MaxSize = MaxSize with
         {
@@ -139,6 +145,8 @@ public partial class YatWindow : Window
             case EWindowPosition.Center:
                 MoveToTheCenter();
                 break;
+            default:
+                break;
         }
     }
 
@@ -149,9 +157,9 @@ public partial class YatWindow : Window
 
     protected void MoveTopRight(uint offset)
     {
-        var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
-        var bottomLeft = viewportRect.Position + viewportRect.Size;
-        var rect = GetVisibleRect();
+        Rect2 viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
+        Vector2 bottomLeft = viewportRect.Position + viewportRect.Size;
+        Rect2 rect = GetVisibleRect();
 
         Position = new(
             (int)(bottomLeft.X - rect.Size.X - offset),
@@ -161,9 +169,9 @@ public partial class YatWindow : Window
 
     protected void MoveBottomRight(uint offset)
     {
-        var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
-        var topRight = viewportRect.Position + viewportRect.Size;
-        var rect = GetVisibleRect();
+        Rect2 viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
+        Vector2 topRight = viewportRect.Position + viewportRect.Size;
+        Rect2 rect = GetVisibleRect();
 
         Position = new(
             (int)(topRight.X - rect.Size.X - offset),
@@ -173,9 +181,9 @@ public partial class YatWindow : Window
 
     protected void MoveBottomLeft(uint offset)
     {
-        var viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
-        var bottomLeft = viewportRect.Position + viewportRect.Size;
-        var rect = GetVisibleRect();
+        Rect2 viewportRect = GetTree().Root.GetViewport().GetVisibleRect();
+        Vector2 bottomLeft = viewportRect.Position + viewportRect.Size;
+        Rect2 rect = GetVisibleRect();
 
         Position = new(
             (int)offset,
@@ -193,7 +201,7 @@ public partial class YatWindow : Window
         AddThemeFontSizeOverride("title_font_size", prefs.BaseFontSize);
         AddThemeFontOverride("title_font", prefs.BaseFont);
 
-        var theme = _content.Theme;
+        Theme theme = _content.Theme;
         theme.DefaultFont = prefs.BaseFont;
         theme.DefaultFontSize = prefs.BaseFontSize;
         _content.Theme = theme;

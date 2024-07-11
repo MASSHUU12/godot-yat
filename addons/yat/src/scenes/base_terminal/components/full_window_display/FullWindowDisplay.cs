@@ -23,7 +23,9 @@ public partial class FullWindowDisplay : Control
     public override void _Input(InputEvent @event)
     {
         if (@event.IsActionPressed(Keybindings.TerminalCloseFullWindowDisplay))
+        {
             Close();
+        }
     }
 
     public void Open(string text)
@@ -31,25 +33,30 @@ public partial class FullWindowDisplay : Control
         GenerateHelp();
 
         MainDisplay.Clear();
-        MainDisplay.CallDeferred("append_text", text);
+        _ = MainDisplay.CallDeferred("append_text", text);
         Visible = true;
 
-        EmitSignal(SignalName.Opened);
+        _ = EmitSignal(SignalName.Opened);
     }
 
     public void Close()
     {
-        if (!Visible) return;
+        if (!Visible)
+        {
+            return;
+        }
 
         MainDisplay.Clear();
         Visible = false;
 
-        EmitSignal(SignalName.Closed);
+        _ = EmitSignal(SignalName.Closed);
     }
 
     private void GenerateHelp()
     {
-        var closeKey = InputMap.ActionGetEvents(Keybindings.TerminalCloseFullWindowDisplay)[0];
+        InputEvent closeKey = InputMap.ActionGetEvents(
+            Keybindings.TerminalCloseFullWindowDisplay
+        )[0];
 
         _helpLabel.Text = $"{closeKey.AsText()} - Close";
     }

@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
@@ -21,13 +22,13 @@ public partial class MemoryInfoItem : PanelContainer, IDebugScreenItem
 
     public void Update()
     {
-        var mem = Godot.OS.GetMemoryInfo();
-        var physical = mem["physical"];
-        var free = mem["free"];
-        var stack = mem["stack"];
-        var vram = Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed);
+        Dictionary mem = Godot.OS.GetMemoryInfo();
+        Variant physical = mem["physical"];
+        Variant free = mem["free"];
+        Variant stack = mem["stack"];
+        double vram = Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed);
 
-        var freePercent = (float)free / (float)physical * 100f;
+        float freePercent = (float)free / (float)physical * 100f;
 
         _label.Clear();
         _label.AppendText(

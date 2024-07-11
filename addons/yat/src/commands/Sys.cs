@@ -1,3 +1,4 @@
+using System.Text;
 using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
@@ -22,10 +23,16 @@ public sealed class Sys : ICommand
         var commandName = command.Split(' ')[0];
         var commandArgs = command[commandName.Length..].Trim() ?? string.Empty;
 
-        var result = OS.RunCommand(commandName, out var status, program, commandArgs);
+        StringBuilder result = OS.RunCommand(commandName, out var status, program, commandArgs);
 
-        if (status == OS.ExecutionResult.Success) data.Terminal.Output.Print(result.ToString());
-        else data.Terminal.Output.Error(result.ToString());
+        if (status == OS.ExecutionResult.Success)
+        {
+            data.Terminal.Output.Print(result.ToString());
+        }
+        else
+        {
+            data.Terminal.Output.Error(result.ToString());
+        }
 
         return ICommand.Success();
     }

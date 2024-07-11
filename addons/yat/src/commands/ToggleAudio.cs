@@ -21,23 +21,30 @@ public sealed class ToggleAudio : ICommand
             return ICommand.Success();
         }
 
-        if (id != -1 && !ToggleById(id)) return ICommand.InvalidArguments("Invalid audio bus ID.");
+        if (id != -1 && !ToggleById(id))
+        {
+            return ICommand.InvalidArguments("Invalid audio bus ID.");
+        }
 
-        if (!string.IsNullOrEmpty(name) && !ToggleByName(name))
-            return ICommand.InvalidArguments("Invalid audio bus name.");
-
-        return ICommand.Success();
+        return !string.IsNullOrEmpty(name) && !ToggleByName(name)
+            ? ICommand.InvalidArguments("Invalid audio bus name.")
+            : ICommand.Success();
     }
 
     private static void ToggleAll()
     {
-        for (var i = 0; i < AudioServer.BusCount; i++)
+        for (int i = 0; i < AudioServer.BusCount; i++)
+        {
             AudioServer.SetBusMute(i, !AudioServer.IsBusMute(i));
+        }
     }
 
     private static bool ToggleById(int id)
     {
-        if (id < 0 || id >= AudioServer.BusCount) return false;
+        if (id < 0 || id >= AudioServer.BusCount)
+        {
+            return false;
+        }
 
         AudioServer.SetBusMute(id, !AudioServer.IsBusMute(id));
 
@@ -46,9 +53,12 @@ public sealed class ToggleAudio : ICommand
 
     private static bool ToggleByName(string name)
     {
-        var id = AudioServer.GetBusIndex(name);
+        int id = AudioServer.GetBusIndex(name);
 
-        if (id == -1) return false;
+        if (id == -1)
+        {
+            return false;
+        }
 
         AudioServer.SetBusMute(id, !AudioServer.IsBusMute(id));
 

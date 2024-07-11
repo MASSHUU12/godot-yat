@@ -25,7 +25,7 @@ public partial class GpuInfoItem : PanelContainer, IDebugScreenItem
 
     public void Update()
     {
-        var monitorSize = DisplayServer.ScreenGetSize(
+        Vector2I monitorSize = DisplayServer.ScreenGetSize(
             DisplayServer.WindowGetCurrentScreen()
         );
 

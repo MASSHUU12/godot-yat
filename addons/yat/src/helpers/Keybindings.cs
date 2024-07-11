@@ -46,9 +46,12 @@ public static class Keybindings
 
     public static void LoadDefaultActions()
     {
-        foreach (var action in _defaultActions)
+        foreach (Tuple<StringName, InputEvent> action in _defaultActions)
         {
-            if (InputMap.HasAction(action.Item1)) continue;
+            if (InputMap.HasAction(action.Item1))
+            {
+                continue;
+            }
 
             InputMap.AddAction(action.Item1);
             InputMap.ActionAddEvent(action.Item1, action.Item2);

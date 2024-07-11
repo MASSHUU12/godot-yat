@@ -20,13 +20,16 @@ public static class Networking
     {
         reply = null;
 
-        if (string.IsNullOrEmpty(hostname)) return EPingStatus.Unknown;
+        if (string.IsNullOrEmpty(hostname))
+        {
+            return EPingStatus.Unknown;
+        }
 
         options ??= new();
 
         byte[] buffer = CreateBuffer(options.BufferSize);
 
-        using var ping = new Ping();
+        using Ping ping = new();
 
         try
         {
@@ -59,21 +62,27 @@ public static class Networking
     /// Returns a list of IP addresses that a packet would take to reach the specified host. <br />
     /// Inspired by https://stackoverflow.com/questions/142614/traceroute-and-ping-in-c-sharp/45565253#45565253
     /// </summary>
+    /// <param name="hostname"></param>
+    /// <param name="options"></param>
+    /// <param name="ct"></param>
     public static IEnumerable<IPAddress?> GetTraceRoute(
         string hostname,
         NetworkingOptions? options = null,
         CancellationToken ct = default
     )
     {
-        if (string.IsNullOrEmpty(hostname)) yield return null;
+        if (string.IsNullOrEmpty(hostname))
+        {
+            yield return null;
+        }
 
         options ??= new();
 
-        using var ping = new Ping();
+        using Ping ping = new();
 
         for (ushort ttl = 1; ttl <= options.TTL && !ct.IsCancellationRequested; ttl++)
         {
-            var status = Ping(hostname, out var reply, new NetworkingOptions
+            EPingStatus status = Ping(hostname, out var reply, new NetworkingOptions
             {
                 Timeout = options.Timeout,
                 TTL = ttl,
@@ -81,15 +90,22 @@ public static class Networking
                 DontFragment = options.DontFragment
             });
 
-            if (status != EPingStatus.Success) break;
+            if (status != EPingStatus.Success)
+            {
+                break;
+            }
 
             // Route has been found
-            if (reply?.Status == IPStatus.Success || reply?.Status == IPStatus.TtlExpired)
+            if (reply?.Status is IPStatus.Success or IPStatus.TtlExpired)
+            {
                 yield return reply.Address;
+            }
 
             // Route has not been found or the host is unreachable
-            if (reply?.Status != IPStatus.TtlExpired && reply?.Status != IPStatus.TimedOut)
+            if (reply?.Status is not IPStatus.TtlExpired and not IPStatus.TimedOut)
+            {
                 break;
+            }
         }
     }
 

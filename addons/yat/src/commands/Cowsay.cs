@@ -51,10 +51,16 @@ public sealed class Cowsay : ICommand
 
         foreach (var (key, value) in eyes)
         {
-            if (!(bool)data.Options[key]) continue;
+            if (!(bool)data.Options[key])
+            {
+                continue;
+            }
 
             eye = value;
-            if (tongues.ContainsKey(key)) tongue = tongues[key];
+            if (tongues.ContainsKey(key))
+            {
+                tongue = tongues[key];
+            }
 
             break;
         }
@@ -78,7 +84,7 @@ public sealed class Cowsay : ICommand
         {
             int padding = maxLineLength - line.Length;
             string paddedLine = "< " + line + new string(' ', padding) + " >\n";
-            middleLines.Append(paddedLine);
+            _ = middleLines.Append(paddedLine);
         }
 
         return topLine + '\n' + middleLines.ToString() + bottomLine;
@@ -99,8 +105,8 @@ public sealed class Cowsay : ICommand
             };
 
         StringBuilder sb = new();
-        sb.AppendLine(string.Join('\n', bubble));
-        sb.AppendLine(string.Join('\n', cow));
+        _ = sb.AppendJoin('\n', bubble).AppendLine();
+        _ = sb.AppendJoin('\n', cow).AppendLine();
         _terminal.Print(sb.ToString());
     }
 }

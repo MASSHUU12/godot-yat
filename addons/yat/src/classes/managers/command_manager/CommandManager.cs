@@ -44,7 +44,10 @@ public partial class CommandManager : Node
 
     public bool Run(string[] args, BaseTerminal terminal)
     {
-        if (args.Length == 0) return false;
+        if (args.Length == 0)
+        {
+            return false;
+        }
 
         string commandName = args[0];
 
@@ -62,17 +65,21 @@ public partial class CommandManager : Node
         {
             if (!terminal.CommandValidator.ValidatePassedData<ArgumentAttribute>(
                 command, args[1..], out convertedArgs
-            )) return false;
-
-            if (command.GetAttributes<OptionAttribute>() is not null)
+            ))
             {
-                if (!terminal.CommandValidator.ValidatePassedData<OptionAttribute>(
+                return false;
+            }
+
+            if (command.GetAttributes<OptionAttribute>() is not null
+                && !terminal.CommandValidator.ValidatePassedData<OptionAttribute>(
                     command, args[1..], out convertedOpts
-                )) return false;
+                ))
+            {
+                return false;
             }
         }
 
-        CallDeferredThreadGroup(
+        _ = CallDeferredThreadGroup(
             "emit_signal",
             SignalName.CommandStarted,
             commandName,
@@ -91,7 +98,10 @@ public partial class CommandManager : Node
         ExecuteCommand(data);
 
         // Prevent creating orphans
-        if (command is Node node) node.QueueFree();
+        if (command is Node node)
+        {
+            node.QueueFree();
+        }
 
         return true;
     }
@@ -101,12 +111,12 @@ public partial class CommandManager : Node
         string commandName = data.RawData[0];
 
         data.Terminal.Locked = true;
-        var result = data.Command.Execute(data);
+        CommandResult result = data.Command.Execute(data);
         data.Terminal.Locked = false;
 
         Cts.Dispose();
 
-        CallDeferredThreadGroup(
+        _ = CallDeferredThreadGroup(
             "emit_signal",
             SignalName.CommandFinished,
             commandName,
@@ -122,14 +132,17 @@ public partial class CommandManager : Node
     private async void ExecuteThreadedCommand(CommandData data)
     {
         new Task(() => ExecuteCommand(data), Cts.Token).Start();
-        await ToSignal(this, SignalName.CommandFinished);
+        _ = await ToSignal(this, SignalName.CommandFinished);
 
         data.Terminal.Output.Success($"Command {data.Command.GetType().Name} finished.");
     }
 
     private static void PrintCommandResult(CommandResult result, BaseTerminal terminal)
     {
-        if (string.IsNullOrEmpty(result.Message)) return;
+        if (string.IsNullOrEmpty(result.Message))
+        {
+            return;
+        }
 
         if (result.Result == ECommandResult.Success)
         {

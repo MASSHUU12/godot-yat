@@ -28,15 +28,27 @@ public partial class TerminalManager : Node
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (@event.IsActionPressed(Keybindings.TerminalToggle)) ToggleTerminal();
+        if (@event.IsActionPressed(Keybindings.TerminalToggle))
+        {
+            ToggleTerminal();
+        }
     }
 
     public void ToggleTerminal()
     {
-        if (!_yat.YatEnable.YatEnabled) return;
+        if (!_yat.YatEnable.YatEnabled)
+        {
+            return;
+        }
 
-        if (GameTerminal.Visible) CloseTerminal();
-        else OpenTerminal();
+        if (GameTerminal.Visible)
+        {
+            CloseTerminal();
+        }
+        else
+        {
+            OpenTerminal();
+        }
     }
 
     public void OpenTerminal()
@@ -45,13 +57,13 @@ public partial class TerminalManager : Node
         // 'Prevents' writing to the input when the terminal is toggled
         _yat.CurrentTerminal.Input.Clear();
 
-        EmitSignal(SignalName.TerminalOpened);
+        _ = EmitSignal(SignalName.TerminalOpened);
     }
 
     public void CloseTerminal()
     {
         GameTerminal.Visible = false;
 
-        EmitSignal(SignalName.TerminalClosed);
+        _ = EmitSignal(SignalName.TerminalClosed);
     }
 }

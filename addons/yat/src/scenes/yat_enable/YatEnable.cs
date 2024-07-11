@@ -15,27 +15,39 @@ public partial class YatEnable : Node
 
     public override void _Ready()
     {
-        if (YatEnableAction == 0) return;
+        if (YatEnableAction == 0)
+        {
+            return;
+        }
 
         if ((YatEnableAction & 0b0001) == 1)
         {
             YatEnabled = FileAccess.FileExists("user://" + FileName);
 
-            if (YatEnabled) return;
+            if (YatEnabled)
+            {
+                return;
+            }
         }
 
         if ((YatEnableAction & 0b0010) == 2)
         {
             YatEnabled = FileAccess.FileExists("res://" + FileName);
 
-            if (YatEnabled) return;
+            if (YatEnabled)
+            {
+                return;
+            }
         }
 
         if ((YatEnableAction & 0b0100) == 4)
         {
             YatEnabled = OS.GetCmdlineUserArgs().Contains(ArgumentName);
 
-            if (YatEnabled) return;
+            if (YatEnabled)
+            {
+                return;
+            }
         }
 
         YatEnabled = false;

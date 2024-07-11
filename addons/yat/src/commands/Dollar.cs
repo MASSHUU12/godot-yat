@@ -22,7 +22,9 @@ public sealed class Dollar : ICommand
         _terminal = data.Terminal;
 
         if (!ValidateInputData(data.RawData[1], out var methods))
+        {
             return ICommand.Failure("Invalid method.");
+        }
 
         return MethodChaining(methods)
             ? ICommand.Success()
@@ -31,15 +33,18 @@ public sealed class Dollar : ICommand
 
     private void EmitStatus(string methods, Variant result, EMethodStatus status)
     {
-        _terminal.EmitSignal(nameof(_terminal.MethodCalled), methods, result, (ushort)status);
+        _ = _terminal.EmitSignal(
+            nameof(_terminal.MethodCalled),
+            methods,
+            result,
+            (ushort)status
+        );
     }
 
     private bool CallMethod(Node node, string method, out Variant result, params Variant[] args)
     {
         result = new();
-        var validationResult = node.ValidateMethod(method);
-
-        switch (validationResult)
+        switch (node.ValidateMethod(method))
         {
             case MethodValidationResult.InvalidInstance:
                 _terminal.Output.Error(Messages.DisposedNode);
@@ -49,6 +54,10 @@ public sealed class Dollar : ICommand
                 _terminal.Output.Error(Messages.InvalidMethod(method));
                 EmitStatus(method, result, EMethodStatus.Failed);
                 return false;
+            case MethodValidationResult.Success:
+                break;
+            default:
+                break;
         }
 
         result = args.Length == 0
@@ -64,25 +73,31 @@ public sealed class Dollar : ICommand
     {
         Variant result = new();
 
-        foreach (var method in methods)
+        foreach (string method in methods)
         {
-            var (name, args) = Parser.ParseMethod(method);
+            (string name, string[] args) = Parser.ParseMethod(method);
 
             if (result.As<Node>() is { })
             {
-                var status = args.Length == 0
+                bool status = args.Length == 0
                     ? CallMethod((Node)result, name, out result)
                     : CallMethod((Node)result, name, out result, args);
 
-                if (!status) return false;
+                if (!status)
+                {
+                    return false;
+                }
             }
             else
             {
-                var status = args.Length == 0
+                bool status = args.Length == 0
                     ? CallMethod(_terminal.SelectedNode.Current, name, out result)
                     : CallMethod(_terminal.SelectedNode.Current, name, out result, args);
 
-                if (!status) return false;
+                if (!status)
+                {
+                    return false;
+                }
             }
 
             _terminal.Print(result.ToString());
@@ -95,6 +110,6 @@ public sealed class Dollar : ICommand
     {
         methods = Text.SplitClean(input, ".");
 
-        return !(methods.Length == 0);
+        return methods.Length != 0;
     }
 }

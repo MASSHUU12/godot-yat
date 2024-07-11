@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - CommandInputAttribute throws ArgumentException/ArgumentNullException
   when passed type definition is invalid.
 - Improved terminal history.
+- Minor refactoring and optimizations.
 
 ### Fixed
 

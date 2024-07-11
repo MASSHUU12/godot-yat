@@ -29,17 +29,20 @@ public partial class Autocompletion : Node
 
     public override void _Input(InputEvent @event)
     {
-        if (!_input.HasFocus()) return;
+        if (!_input.HasFocus())
+        {
+            return;
+        }
 
         if (@event.IsActionPressed(Keybindings.TerminalAutocompletionPrevious))
         {
             Autocomplete(false);
-            _input.CallDeferred("grab_focus"); // Prevent toggling the input focus
+            _ = _input.CallDeferred("grab_focus"); // Prevent toggling the input focus
         }
         else if (@event.IsActionPressed(Keybindings.TerminalAutocompletionNext))
         {
             Autocomplete();
-            _input.CallDeferred("grab_focus"); // Prevent toggling the input focus
+            _ = _input.CallDeferred("grab_focus"); // Prevent toggling the input focus
         }
     }
 
@@ -47,8 +50,15 @@ public partial class Autocompletion : Node
     {
         if (suggestions.Count > 0 && (_input.Text == cachedInput || suggestions.Contains(_input.Text)))
         {
-            if (next) UseNextSuggestion();
-            else UsePreviousSuggestion();
+            if (next)
+            {
+                UseNextSuggestion();
+            }
+            else
+            {
+                UsePreviousSuggestion();
+            }
+
             return;
         }
 
@@ -56,13 +66,16 @@ public partial class Autocompletion : Node
         suggestions = new();
         currentSuggestion = null;
 
-        var tokens = Text.SanitizeText(_input.Text);
+        string[] tokens = Text.SanitizeText(_input.Text);
 
         if (tokens.Length == 1)
         {
             suggestions = GenerateCommandSuggestions(tokens[0]);
 
-            if (suggestions.Count > 0) UseNextSuggestion();
+            if (suggestions.Count > 0)
+            {
+                UseNextSuggestion();
+            }
 
             return;
         }
@@ -70,7 +83,10 @@ public partial class Autocompletion : Node
 
     private void UseNextSuggestion()
     {
-        if (suggestions.Count == 0) return;
+        if (suggestions.Count == 0)
+        {
+            return;
+        }
 
         currentSuggestion = currentSuggestion?.Next ?? suggestions.First;
         _input.Text = currentSuggestion?.Value ?? string.Empty;
@@ -82,7 +98,10 @@ public partial class Autocompletion : Node
 
     private void UsePreviousSuggestion()
     {
-        if (suggestions.Count == 0) return;
+        if (suggestions.Count == 0)
+        {
+            return;
+        }
 
         currentSuggestion = currentSuggestion?.Previous ?? suggestions.Last;
         _input.Text = currentSuggestion?.Value ?? string.Empty;
@@ -94,7 +113,7 @@ public partial class Autocompletion : Node
 
     private static LinkedList<string> GenerateCommandSuggestions(string token)
     {
-        var listSuggestions = RegisteredCommands.Registered
+        List<string>? listSuggestions = RegisteredCommands.Registered
             ?.Where(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name?.StartsWith(token) == true)
             ?.Select(x => x.Value.GetCustomAttribute<CommandAttribute>()?.Name ?? string.Empty)
             ?.Where(name => !string.IsNullOrEmpty(name))

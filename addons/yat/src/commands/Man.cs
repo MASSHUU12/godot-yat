@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using YAT.Attributes;
 using YAT.Classes;
 using YAT.Helpers;
@@ -21,30 +22,47 @@ public sealed class Man : ICommand
         var embed = (bool)data.Options["-e"];
 
         if (!RegisteredCommands.Registered.TryGetValue(commandName, out var value))
+        {
             return ICommand.InvalidCommand(Messages.UnknownCommand(commandName));
+        }
 
         ICommand command = (ICommand)Activator.CreateInstance(value)!;
 
         // Check if the command manual is already in the cache.
         if (cache.Get(commandName) is string manual)
         {
-            if (embed) data.Terminal.Print(manual);
-            else data.Terminal.FullWindowDisplay.Open(manual);
+            if (embed)
+            {
+                data.Terminal.Print(manual);
+            }
+            else
+            {
+                data.Terminal.FullWindowDisplay.Open(manual);
+            }
+
             return ICommand.Success();
         }
 
-        var bManual = command.GenerateCommandManual();
-        bManual.Append(command.GenerateArgumentsManual());
-        bManual.Append(command.GenerateOptionsManual());
-        bManual.Append(command.GenerateSignalsManual());
+        StringBuilder bManual = command.GenerateCommandManual();
+        _ = bManual.Append(command.GenerateArgumentsManual())
+            .Append(command.GenerateOptionsManual())
+            .Append(command.GenerateSignalsManual());
 
         if (command is Extensible extensible)
-            bManual.Append(extensible.GenerateExtensionsManual());
+        {
+            _ = bManual.Append(extensible.GenerateExtensionsManual());
+        }
 
         cache.Add(commandName, bManual.ToString());
 
-        if (embed) data.Terminal.Print(bManual);
-        else data.Terminal.FullWindowDisplay.Open(bManual.ToString());
+        if (embed)
+        {
+            data.Terminal.Print(bManual);
+        }
+        else
+        {
+            data.Terminal.FullWindowDisplay.Open(bManual.ToString());
+        }
 
         return ICommand.Success();
     }

@@ -32,28 +32,40 @@ public partial class RegisteredCommands : Node
 
     public static ECommandAdditionStatus AddCommand(Type commandType)
     {
-        var commandInstance = Activator.CreateInstance(commandType);
+        object? commandInstance = Activator.CreateInstance(commandType);
 
         if (commandInstance is not ICommand command)
+        {
             return ECommandAdditionStatus.UnknownCommand;
+        }
 
-        if (Reflection.GetAttribute<CommandAttribute>(command)
+        if (command.GetAttribute<CommandAttribute>()
             is not CommandAttribute attribute)
+        {
             return ECommandAdditionStatus.MissingAttribute;
+        }
 
         if (Registered.ContainsKey(attribute.Name))
+        {
             return ECommandAdditionStatus.ExistentCommand;
+        }
 
         Registered[attribute.Name] = commandType;
         foreach (string alias in attribute.Aliases)
         {
-            if (Registered.ContainsKey(alias)) return ECommandAdditionStatus.ExistentCommand;
+            if (Registered.ContainsKey(alias))
+            {
+                return ECommandAdditionStatus.ExistentCommand;
+            }
 
             Registered[alias] = commandType;
         }
 
         // Prevent creating orphans
-        if (commandInstance is Node node) node.QueueFree();
+        if (commandInstance is Node node)
+        {
+            node.QueueFree();
+        }
 
         return ECommandAdditionStatus.Success;
     }
@@ -63,7 +75,9 @@ public partial class RegisteredCommands : Node
         var results = new ECommandAdditionStatus[commands.Length];
 
         for (int i = 0; i < commands.Length; i++)
+        {
             results[i] = AddCommand(commands[i]);
+        }
 
         return results;
     }
@@ -72,30 +86,34 @@ public partial class RegisteredCommands : Node
     {
         if (QuickCommands.Commands.ContainsKey(name) ||
             QuickCommands.Commands.Count >= MAX_QUICK_COMMANDS
-        ) return false;
+        )
+        {
+            return false;
+        }
 
         QuickCommands.Commands.Add(name, command);
 
-        var status = Storage.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
+        bool status = Storage.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
 
-        GetQuickCommands();
-
-        EmitSignal(SignalName.QuickCommandsChanged);
+        _ = GetQuickCommands();
+        _ = EmitSignal(SignalName.QuickCommandsChanged);
 
         return status;
     }
 
     public bool RemoveQuickCommand(string name)
     {
-        if (!QuickCommands.Commands.ContainsKey(name)) return false;
+        if (!QuickCommands.Commands.ContainsKey(name))
+        {
+            return false;
+        }
 
-        QuickCommands.Commands.Remove(name);
+        _ = QuickCommands.Commands.Remove(name);
 
-        var status = Storage.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
+        bool status = Storage.SaveResource(QuickCommands, QUICK_COMMANDS_PATH);
 
-        GetQuickCommands();
-
-        EmitSignal(SignalName.QuickCommandsChanged);
+        _ = GetQuickCommands();
+        _ = EmitSignal(SignalName.QuickCommandsChanged);
 
         return status;
     }
@@ -107,7 +125,10 @@ public partial class RegisteredCommands : Node
     {
         var qc = Storage.LoadResource<Resources.QuickCommands>(QUICK_COMMANDS_PATH);
 
-        if (qc is not null) QuickCommands = qc;
+        if (qc is not null)
+        {
+            QuickCommands = qc;
+        }
 
         return qc is not null;
     }
@@ -172,6 +193,8 @@ public partial class RegisteredCommands : Node
                     break;
                 case ECommandAdditionStatus.ExistentCommand:
                     _yat.CurrentTerminal.Output.Error($"Command {results[i]} already exists.");
+                    break;
+                case ECommandAdditionStatus.Success:
                     break;
                 default:
                     break;

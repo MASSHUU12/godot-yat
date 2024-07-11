@@ -10,7 +10,7 @@ public sealed class Restart : ICommand
     public CommandResult Execute(CommandData data)
     {
         data.Terminal.Print($"Restarting {data.Yat.GetTree().CurrentScene.Name}...");
-        data.Yat.GetTree().ReloadCurrentScene();
+        _ = data.Yat.GetTree().ReloadCurrentScene();
 
         return ICommand.Success();
     }

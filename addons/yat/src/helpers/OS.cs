@@ -39,13 +39,16 @@ public static class OS
 
         if (Platform == OperatingSystem.Unknown)
         {
-            output.AppendLine("Cannot run command, unknown platform.");
+            _ = output.AppendLine("Cannot run command, unknown platform.");
             result = ExecutionResult.UnknownPlatform;
 
             return output;
         }
 
-        if (string.IsNullOrEmpty(program)) program = DefaultTerminal;
+        if (string.IsNullOrEmpty(program))
+        {
+            program = DefaultTerminal;
+        }
 
         ProcessStartInfo startInfo = new()
         {
@@ -61,7 +64,7 @@ public static class OS
 
         try
         {
-            process.Start();
+            _ = process.Start();
             process.StandardInput.WriteLine(command + ' ' + args);
 
             process.StandardInput.Flush();
@@ -71,19 +74,23 @@ public static class OS
             StringBuilder outputError = new();
 
             while (!process.HasExited && process.StandardOutput.Peek() > -1)
-                outputStandard.AppendLine(process.StandardOutput.ReadLine());
+            {
+                _ = outputStandard.AppendLine(process.StandardOutput.ReadLine());
+            }
 
             while (!process.HasExited && process.StandardError.Peek() > -1)
-                outputError.AppendLine(process.StandardError.ReadLine());
+            {
+                _ = outputError.AppendLine(process.StandardError.ReadLine());
+            }
 
             process.WaitForExit();
 
-            output.Append(outputStandard);
-            output.Append(outputError);
+            _ = output.Append(outputStandard);
+            _ = output.Append(outputError);
         }
         catch (Exception ex)
         {
-            output.AppendLine($"Error executing command: {ex.Message}");
+            _ = output.AppendLine($"Error executing command: {ex.Message}");
             result = ExecutionResult.ErrorExecuting;
 
             return output;
@@ -110,6 +117,7 @@ public static class OS
             OperatingSystem.Windows => "cmd.exe",
             OperatingSystem.Linux => "/bin/bash",
             OperatingSystem.OSX => "/bin/bash",
+            OperatingSystem.Unknown => throw new NotImplementedException(),
             _ => string.Empty
         };
     }

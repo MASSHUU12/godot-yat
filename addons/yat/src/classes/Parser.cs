@@ -22,17 +22,31 @@ public static class Parser
         string[] tokens = Text.SanitizeText(method);
         List<string> args = new();
 
-        if (tokens.Length == 0) return (string.Empty, Array.Empty<string>());
+        if (tokens.Length == 0)
+        {
+            return (string.Empty, Array.Empty<string>());
+        }
 
-        var parts = (tokens.Length <= 1 ? tokens[^1] : tokens[0]).Split('(', 2,
-            StringSplitOptions.RemoveEmptyEntries |
-            StringSplitOptions.TrimEntries
-        );
+        string[] parts = (tokens.Length <= 1 ? tokens[^1] : tokens[0])
+            .Split(
+                '(',
+                2,
+                StringSplitOptions.RemoveEmptyEntries
+                | StringSplitOptions.TrimEntries
+            );
 
         if (parts.Length > 1 && !string.IsNullOrEmpty(parts[1][..^1]))
+        {
             args.Add(parts[1][..^1]);
+        }
 
-        if (tokens.Length >= 1) for (int i = 1; i < tokens.Length; i++) args.Add(tokens[i][..^1]);
+        if (tokens.Length >= 1)
+        {
+            for (int i = 1; i < tokens.Length; i++)
+            {
+                args.Add(tokens[i][..^1]);
+            }
+        }
 
         return (parts[0], args.ToArray());
     }
@@ -55,18 +69,29 @@ public static class Parser
         parsed = new();
         stringToParse = stringToParse.Trim();
 
-        static bool AllowedToHaveRange(ECommandInputType type) =>
-            type is Int or Float or ECommandInputType.String;
+        static bool AllowedToHaveRange(ECommandInputType type)
+        {
+            return type is Int or Float or ECommandInputType.String;
+        }
 
-        if (string.IsNullOrEmpty(stringToParse)) return false;
+        if (string.IsNullOrEmpty(stringToParse))
+        {
+            return false;
+        }
 
         bool isArray = stringToParse.EndsWith("...");
-        if (isArray) stringToParse = stringToParse[..^3].Trim();
+        if (isArray)
+        {
+            stringToParse = stringToParse[..^3].Trim();
+        }
 
         // Get the min and max values if present
         var tokens = stringToParse.Trim(')').Split('(', StringSplitOptions.RemoveEmptyEntries);
 
-        if (tokens.Length == 0 || tokens.Length > 2) return false;
+        if (tokens.Length is 0 or > 2)
+        {
+            return false;
+        }
 
         if ((!TryParseStringTypeToEnum(tokens[0], out var enumType) || enumType == Constant) && tokens.Length == 1)
         {
@@ -74,11 +99,17 @@ public static class Parser
             return true;
         }
 
-        if (enumType == ECommandInputType.Void) return false;
+        if (enumType == ECommandInputType.Void)
+        {
+            return false;
+        }
 
         if (enumType == ECommandInputType.Enum)
         {
-            if (tokens.Length < 2) return false;
+            if (tokens.Length < 2)
+            {
+                return false;
+            }
 
             if (!TryParseEnumType(tokens[1].Split(','), isArray, out var result))
             {
@@ -95,7 +126,9 @@ public static class Parser
             if (tokens.Length > 1) // Type with range
             {
                 if (!TryParseTypeWithRange(enumType, tokens[1], isArray, out var result))
+                {
                     return false;
+                }
 
                 parsed = result;
             }
@@ -104,7 +137,10 @@ public static class Parser
                 parsed = new CommandTypeRanged(tokens[0], enumType, isArray);
             }
         }
-        else parsed = new(tokens[0], enumType, isArray);
+        else
+        {
+            parsed = new(tokens[0], enumType, isArray);
+        }
 
         return true;
     }
@@ -119,14 +155,24 @@ public static class Parser
 
         parsed = null;
 
-        if (!tokens.Any()) return false;
-
-        foreach (var token in tokens)
+        if (!tokens.Any())
         {
-            var parts = token.Split(':', StringSplitOptions.TrimEntries);
+            return false;
+        }
 
-            if (parts.Length != 2) return false;
-            if (!int.TryParse(parts[1], out var value)) return false;
+        foreach (string token in tokens)
+        {
+            string[] parts = token.Split(':', StringSplitOptions.TrimEntries);
+
+            if (parts.Length != 2)
+            {
+                return false;
+            }
+
+            if (!int.TryParse(parts[1], out var value))
+            {
+                return false;
+            }
 
             result.Add(parts[0], value);
         }
@@ -143,16 +189,22 @@ public static class Parser
         out CommandTypeRanged parsed
     )
     {
-        static bool AllowedToHaveRange(ECommandInputType type) =>
-            type is Int or Float or ECommandInputType.String;
+        static bool AllowedToHaveRange(ECommandInputType type)
+        {
+            return type is Int or Float or ECommandInputType.String;
+        }
 
-        CommandTypeRanged CreateOut(float min = float.MinValue, float max = float.MaxValue) =>
-            new(nameof(type), type, isArray, min, max); // TODO: Give actual name
+        CommandTypeRanged CreateOut(float min = float.MinValue, float max = float.MaxValue)
+        {
+            return new(nameof(type), type, isArray, min, max); // TODO: Give actual name
+        }
 
         parsed = new();
 
         if (!string.IsNullOrEmpty(range) && !AllowedToHaveRange(type))
+        {
             return false;
+        }
 
         // If range is missing
         if (string.IsNullOrEmpty(range))
@@ -164,18 +216,27 @@ public static class Parser
 
         ushort colonCount = (ushort)range.Count(c => c == ':');
 
-        if (colonCount > 1) return false;
+        if (colonCount > 1)
+        {
+            return false;
+        }
 
         bool maxPresent = !range.EndsWith(':');
         var minMax = range.Split(':', StringSplitOptions.RemoveEmptyEntries);
 
         // If range is invalid return
-        if (minMax.Length == 0 || minMax.Length > 2) return false;
+        if (minMax.Length is 0 or > 2)
+        {
+            return false;
+        }
 
         // If only one value was passed (min or max)
         if (minMax.Length == 1)
         {
-            if (!minMax[0].TryConvert(out float val)) return false;
+            if (!minMax[0].TryConvert(out float val))
+            {
+                return false;
+            }
 
             parsed = maxPresent
                 ? CreateOut(max: val)
@@ -200,12 +261,17 @@ public static class Parser
     {
         result = null;
 
-        if (string.IsNullOrEmpty(value)) return EStringConversionResult.Invalid;
+        if (string.IsNullOrEmpty(value))
+        {
+            return EStringConversionResult.Invalid;
+        }
 
         ECommandInputType type = commandType.Type;
 
         if (type == ECommandInputType.Void)
+        {
             return EStringConversionResult.Invalid;
+        }
 
         if (commandType is CommandTypeRanged ranged)
         {
@@ -223,10 +289,14 @@ public static class Parser
             if (type == Int)
             {
                 if (!value.TryConvert(out int r))
+                {
                     return EStringConversionResult.Invalid;
+                }
 
                 if (!Numeric.IsWithinRange(r, ranged.Min, ranged.Max))
+                {
                     return EStringConversionResult.OutOfRange;
+                }
 
                 result = r;
                 return EStringConversionResult.Success;
@@ -235,10 +305,14 @@ public static class Parser
             if (type == Float)
             {
                 if (!value.TryConvert(out float r))
+                {
                     return EStringConversionResult.Invalid;
+                }
 
                 if (!r.IsWithinRange<float>(ranged.Min, ranged.Max))
+                {
                     return EStringConversionResult.OutOfRange;
+                }
 
                 result = r;
                 return EStringConversionResult.Success;
@@ -248,7 +322,9 @@ public static class Parser
         if (type == Bool)
         {
             if (!bool.TryParse(value, out bool r))
+            {
                 return EStringConversionResult.Invalid;
+            }
 
             result = r;
             return EStringConversionResult.Success;

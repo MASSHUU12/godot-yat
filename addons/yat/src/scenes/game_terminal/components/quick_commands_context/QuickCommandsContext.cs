@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using YAT.Helpers;
 
 namespace YAT.Scenes;
@@ -25,20 +26,27 @@ public partial class QuickCommandsContext : ContextSubmenu
 
     private void GetQuickCommands()
     {
-        _yat.Commands.GetQuickCommands();
+        _ = _yat.Commands.GetQuickCommands();
         Clear();
 
-        foreach (var qc in _yat.Commands.QuickCommands.Commands) AddItem(qc.Key);
+        foreach (KeyValuePair<string, string> qc in _yat.Commands.QuickCommands.Commands)
+        {
+            AddItem(qc.Key);
+        }
     }
 
     private void OnQuickCommandsPressed(long id)
     {
-        var key = GetItemText((int)id);
+        string key = GetItemText((int)id);
 
-        if (!_yat.Commands.QuickCommands.Commands.TryGetValue(key, out var command)) return;
+        if (!_yat.Commands.QuickCommands.Commands.TryGetValue(key, out var command))
+        {
+            return;
+        }
 
-        _terminalSwitcher.CurrentTerminal.CommandManager.Run(
-            Text.SanitizeText(command), _terminalSwitcher.CurrentTerminal
+        _ = _terminalSwitcher.CurrentTerminal.CommandManager.Run(
+            Text.SanitizeText(command),
+            _terminalSwitcher.CurrentTerminal
         );
     }
 }

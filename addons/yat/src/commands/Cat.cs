@@ -53,7 +53,7 @@ public sealed class Cat : ICommand
 
         for (lineCount = 1; !file.EofReached() && (lineLimit <= 0 || lineCount <= lineLimit); ++lineCount)
         {
-            output.AppendLine(file.GetLine());
+            _ = output.AppendLine(file.GetLine());
         }
 
         return (output, lineCount);
@@ -65,7 +65,10 @@ public sealed class Cat : ICommand
         {
             _terminal.Print(content);
 
-            if (!limitReached) return;
+            if (!limitReached)
+            {
+                return;
+            }
 
             _terminal.Print($"Line limit of {limit} reached.", EPrintType.Warning);
             return;
@@ -74,7 +77,10 @@ public sealed class Cat : ICommand
         _terminal.FullWindowDisplay.Open(string.Empty);
         _display.AppendText(content.ToString());
 
-        if (!limitReached) return;
+        if (!limitReached)
+        {
+            return;
+        }
 
         _display.PushColor(_yat.PreferencesManager.Preferences.WarningColor);
         _display.AppendText($"Line limit of {limit} reached.");

@@ -38,12 +38,21 @@ public sealed class Ss : ICommand
         _yat = data.Yat;
         _terminal = data.Terminal;
 
-        if (!keepOpen) data.Yat.TerminalManager.CloseTerminal();
-
-        RenderingServer.Singleton.Connect("frame_post_draw", Callable.From(() =>
+        if (!keepOpen)
         {
-            if (cp) SaveScreenshotToClipboard(data.Yat.GetViewport(), extension);
-            else SaveScreenshot(data.Yat.GetViewport(), path, name, extension);
+            data.Yat.TerminalManager.CloseTerminal();
+        }
+
+        _ = RenderingServer.Singleton.Connect("frame_post_draw", Callable.From(() =>
+        {
+            if (cp)
+            {
+                SaveScreenshotToClipboard(data.Yat.GetViewport(), extension);
+            }
+            else
+            {
+                SaveScreenshot(data.Yat.GetViewport(), path, name, extension);
+            }
 
             data.Yat.TerminalManager.OpenTerminal();
         }), (uint)ConnectFlags.OneShot);
@@ -53,8 +62,8 @@ public sealed class Ss : ICommand
 
     private void SaveScreenshot(Viewport viewport, string path, string name, string extension)
     {
-        var image = viewport.GetTexture().GetImage();
-        var fileName = path + name + extension;
+        Image image = viewport.GetTexture().GetImage();
+        string fileName = path + name + extension;
 
         Error err = Error.Ok;
         switch (extension)
@@ -71,15 +80,23 @@ public sealed class Ss : ICommand
             case "webp":
                 err = image.SaveWebp(fileName);
                 break;
+            default:
+                break;
         }
 
-        if (err != Error.Ok) _terminal.Output.Error($"Error saving the {fileName}");
-        else _terminal.Output.Success($"Screenshot saved to {fileName}");
+        if (err != Error.Ok)
+        {
+            _terminal.Output.Error($"Error saving the {fileName}");
+        }
+        else
+        {
+            _terminal.Output.Success($"Screenshot saved to {fileName}");
+        }
     }
 
     private void SaveScreenshotToClipboard(Viewport viewport, string extension)
     {
-        var image = viewport.GetTexture().GetImage();
+        Image image = viewport.GetTexture().GetImage();
 
         byte[] buffer = Array.Empty<byte>();
         switch (extension)
@@ -96,12 +113,19 @@ public sealed class Ss : ICommand
             case "webp":
                 buffer = image.SaveWebpToBuffer();
                 break;
+            default:
+                break;
         }
 
-        var result = Clipboard.SetImageData(buffer);
+        ExecutionResult result = Clipboard.SetImageData(buffer);
 
         if (result != ExecutionResult.Success)
+        {
             _terminal.Output.Error("Error saving the screenshot to the clipboard.");
-        else _terminal.Output.Success("Screenshot saved to the clipboard.");
+        }
+        else
+        {
+            _terminal.Output.Success("Screenshot saved to the clipboard.");
+        }
     }
 }

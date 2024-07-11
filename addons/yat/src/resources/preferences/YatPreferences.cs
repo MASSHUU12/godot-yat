@@ -20,7 +20,7 @@ public partial class YatPreferences : Resource
     [Export(PropertyHint.Range, "1, 64, 0")] public ushort FontSize { get; set; } = 16;
     [Export] public int DefaultWidth { get; set; } = 728;
     [Export] public int DefaultHeight { get; set; } = 384;
-    #endregion
+    #endregion Terminal
 
     #region Window
     [ExportGroup("Window")]
@@ -29,7 +29,7 @@ public partial class YatPreferences : Resource
     [Ignore]
     [Export]
     public Font BaseFont { get; set; } = ThemeDB.FallbackFont;
-    #endregion
+    #endregion Window
 
     #region Colors
     [ExportGroup("Colors")]
@@ -40,5 +40,5 @@ public partial class YatPreferences : Resource
     [Export] public Color ErrorColor { get; set; } = new("ff786b"); // #ff7866
     [Export] public Color WarningColor { get; set; } = new("ffdd65"); // #ffdd65
     [Export] public Color SuccessColor { get; set; } = new("a5ff8a"); // #a5ff8a
-    #endregion
+    #endregion Colors
 }

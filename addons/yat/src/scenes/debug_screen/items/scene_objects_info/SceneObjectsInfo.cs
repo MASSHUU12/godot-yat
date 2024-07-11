@@ -18,10 +18,10 @@ public partial class SceneObjectsInfo : PanelContainer, IDebugScreenItem
 
     public void Update()
     {
-        var objects = Performance.GetMonitor(Performance.Monitor.ObjectCount);
-        var nodes = Performance.GetMonitor(Performance.Monitor.ObjectNodeCount);
-        var orphans = Performance.GetMonitor(Performance.Monitor.ObjectOrphanNodeCount);
-        var resources = Performance.GetMonitor(Performance.Monitor.ObjectResourceCount);
+        double objects = Performance.GetMonitor(Performance.Monitor.ObjectCount);
+        double nodes = Performance.GetMonitor(Performance.Monitor.ObjectNodeCount);
+        double orphans = Performance.GetMonitor(Performance.Monitor.ObjectOrphanNodeCount);
+        double resources = Performance.GetMonitor(Performance.Monitor.ObjectResourceCount);
 
         _label.Text = string.Format("Objects: {0}\nResources: {1}\nNodes: {2}\nOrphans: {3}",
             objects,

@@ -30,11 +30,17 @@ public static class Numeric
     {
         output = fallback;
 
-        if (string.IsNullOrEmpty(input)) return false;
+        if (string.IsNullOrEmpty(input))
+        {
+            return false;
+        }
 
-        var converter = TypeDescriptor.GetConverter(typeof(T));
+        TypeConverter? converter = TypeDescriptor.GetConverter(typeof(T));
 
-        if (converter is null || !converter.CanConvertFrom(typeof(string))) return false;
+        if (converter?.CanConvertFrom(typeof(string)) != true)
+        {
+            return false;
+        }
 
         try
         {
@@ -61,13 +67,22 @@ public static class Numeric
         const int byteConversion = 1024;
         double bytes = fileSize;
 
-        if (bytes < byteConversion) return $"{bytes} B";
+        if (bytes < byteConversion)
+        {
+            return $"{bytes} B";
+        }
 
         double kilobytes = bytes / byteConversion;
-        if (kilobytes < byteConversion) return $"{kilobytes.ToString($"F{precision}")} KiB";
+        if (kilobytes < byteConversion)
+        {
+            return $"{kilobytes.ToString($"F{precision}")} KiB";
+        }
 
         double megabytes = kilobytes / byteConversion;
-        if (megabytes < byteConversion) return $"{megabytes.ToString($"F{precision}")} MiB";
+        if (megabytes < byteConversion)
+        {
+            return $"{megabytes.ToString($"F{precision}")} MiB";
+        }
 
         double gigabytes = megabytes / byteConversion;
 

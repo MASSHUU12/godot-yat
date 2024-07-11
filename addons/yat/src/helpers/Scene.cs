@@ -20,7 +20,7 @@ public static class Scene
             return false;
         }
 
-        var children = node.GetChildren();
+        Array<Node> children = node.GetChildren();
 
         if (children.Count == 0)
         {
@@ -30,12 +30,12 @@ public static class Scene
         }
 
         StringBuilder sb = new();
-        sb.AppendLine($"Found {children.Count} children of '{node.Name}' node:");
+        _ = sb.AppendLine($"Found {children.Count} children of '{node.Name}' node:");
 
         foreach (Node child in children)
         {
-            sb.Append($"[{child.Name}] ({child.GetType().Name}) - {child.GetPath()}");
-            sb.AppendLine();
+            _ = sb.Append($"[{child.Name}] ({child.GetType().Name}) - {child.GetPath()}");
+            _ = sb.AppendLine();
         }
 
         terminal.Print(sb);
@@ -52,38 +52,45 @@ public static class Scene
     /// <returns>The retrieved Node if it is a valid instance; otherwise, null.</returns>
     public static Node? GetFromPathOrDefault(string path, Node defaultNode, out string newPath)
     {
-        Node node = (path == "." || path == "./")
+        Node node = (path is "." or "./")
             ? defaultNode
             : defaultNode.GetNodeOrNull(path);
 
-        var temp = node?.GetPath();
-        newPath = temp is null ? path : temp;
+        NodePath? temp = node?.GetPath();
+        newPath = (string?)temp ?? path;
 
-        if (GodotObject.IsInstanceValid(node)) return node;
-
-        return null;
+        return GodotObject.IsInstanceValid(node) ? node : null;
     }
 
     public static IEnumerator<Dictionary>? GetNodeMethods(Node node)
     {
-        if (!GodotObject.IsInstanceValid(node)) return null;
-
-        return node.GetMethodList().GetEnumerator();
+        return !GodotObject.IsInstanceValid(node)
+            ? (IEnumerator<Dictionary>?)null
+            : node.GetMethodList().GetEnumerator();
     }
 
     public static bool TryFindNodeMethodInfo(Node node, string methodName, out NodeMethodInfo info)
     {
         info = default;
 
-        if (!GodotObject.IsInstanceValid(node)) return false;
+        if (!GodotObject.IsInstanceValid(node))
+        {
+            return false;
+        }
 
-        var method = GetNodeMethods(node);
+        IEnumerator<Dictionary>? method = GetNodeMethods(node);
 
-        if (method is null) return false;
+        if (method is null)
+        {
+            return false;
+        }
 
         while (method.MoveNext())
         {
-            if (!method.Current.TryGetValue("name", out var value) || (string)value != methodName) continue;
+            if (!method.Current.TryGetValue("name", out var value) || (string)value != methodName)
+            {
+                continue;
+            }
 
             info = GetNodeMethodInfo(method.Current);
 
@@ -95,19 +102,19 @@ public static class Scene
 
     public static NodeMethodInfo GetNodeMethodInfo(Dictionary method)
     {
-        var name = method.TryGetValue("name", out var value)
+        StringName name = method.TryGetValue("name", out var value)
             ? value.AsStringName()
             : (StringName)string.Empty;
         var arguments = method.TryGetValue("args", out var args)
             ? args.AsGodotArray<Godot.Collections.Dictionary<string, Variant>>()
             : new Array<Godot.Collections.Dictionary<string, Variant>>();
-        var defaultArguments = method.TryGetValue("default_args", out Variant defaultArgs)
+        Variant defaultArguments = method.TryGetValue("default_args", out Variant defaultArgs)
             ? defaultArgs
             : new Array<Variant>();
-        var flags = method.TryGetValue("flags", out var f)
+        MethodFlags flags = method.TryGetValue("flags", out var f)
             ? (MethodFlags)(int)f
             : MethodFlags.Default;
-        var id = method.TryGetValue("id", out var i) ? (int)i : 0;
+        int id = method.TryGetValue("id", out var i) ? (int)i : 0;
         var @return = method.TryGetValue("return", out var r)
             ? r.AsGodotDictionary<string, Variant>()
             : new Godot.Collections.Dictionary<string, Variant>();
@@ -124,10 +131,14 @@ public static class Scene
 
     public static MethodValidationResult ValidateMethod(this Node node, StringName method)
     {
-        if (!GodotObject.IsInstanceValid(node)) return MethodValidationResult.InvalidInstance;
-        if (node.HasMethod(method)) return MethodValidationResult.Success;
+        if (!GodotObject.IsInstanceValid(node))
+        {
+            return MethodValidationResult.InvalidInstance;
+        }
 
-        return MethodValidationResult.InvalidMethod;
+        return node.HasMethod(method)
+            ? MethodValidationResult.Success
+            : MethodValidationResult.InvalidMethod;
     }
 
     public static Variant CallMethod(this Node node, StringName method, params Variant[] args)
@@ -137,14 +148,21 @@ public static class Scene
 
     public static (float, float, float) GetRangeFromHint(string hint)
     {
-        var range = hint.Split(',');
+        string[] range = hint.Split(',');
 
-        if (range.Length <= 1) return (0, 0, 0);
-        if (range.Length == 2) return (range[0].ToFloat(), range[1].ToFloat(), 0);
+        if (range.Length <= 1)
+        {
+            return (0, 0, 0);
+        }
 
-        var min = range[0].ToFloat();
-        var max = range[1].ToFloat();
-        var step = range[2].ToFloat();
+        if (range.Length == 2)
+        {
+            return (range[0].ToFloat(), range[1].ToFloat(), 0);
+        }
+
+        float min = range[0].ToFloat();
+        float max = range[1].ToFloat();
+        float step = range[2].ToFloat();
 
         return (min, max, step);
     }

@@ -44,7 +44,7 @@ public partial class CommandValidator : Node
             return false;
         }
 
-        var dataAttrArr = command.GetType().GetCustomAttributes(type, false) as T[] ?? Array.Empty<T>();
+        T[] dataAttrArr = command.GetType().GetCustomAttributes(type, false) as T[] ?? Array.Empty<T>();
 
         if (type == argType)
         {
@@ -61,9 +61,11 @@ public partial class CommandValidator : Node
             );
         }
         else if (type == optType)
+        {
             return ValidateCommandOptions(
-                data, passedData, (dataAttrArr as OptionAttribute[])!
-            );
+                    data, passedData, (dataAttrArr as OptionAttribute[])!
+                );
+        }
 
         return false;
     }
@@ -75,8 +77,13 @@ public partial class CommandValidator : Node
     )
     {
         for (int i = 0; i < arguments.Length; i++)
+        {
             if (!ValidateCommandArgument(arguments[i], validatedArgs, passedArgs[i]))
+            {
                 return false;
+            }
+        }
+
         return true;
     }
 
@@ -86,9 +93,13 @@ public partial class CommandValidator : Node
         OptionAttribute[] options
     )
     {
-        foreach (var opt in options) if (
-            !ValidateCommandOption(opt, validatedOpts, passedOpts)
-        ) return false;
+        foreach (OptionAttribute opt in options)
+        {
+            if (!ValidateCommandOption(opt, validatedOpts, passedOpts))
+            {
+                return false;
+            }
+        }
 
         return true;
     }
@@ -102,9 +113,9 @@ public partial class CommandValidator : Node
     {
         int index = 0;
 
-        foreach (var type in argument.Types)
+        foreach (CommandType type in argument.Types)
         {
-            var status = Parser.TryConvertStringToType(passedArg, type, out var converted);
+            EStringConversionResult status = Parser.TryConvertStringToType(passedArg, type, out var converted);
 
             if (status == EStringConversionResult.Success)
             {
@@ -113,7 +124,10 @@ public partial class CommandValidator : Node
             }
 
             if (log && index == argument.Types.Count - 1)
+            {
                 PrintErr(status, argument, type, converted);
+            }
+
             index++;
         }
 
@@ -126,12 +140,15 @@ public partial class CommandValidator : Node
         string[] passedOpts
     )
     {
-        var lookup = option.Types.ToLookup(t => t.Type);
+        ILookup<ECommandInputType, CommandType> lookup = option.Types.ToLookup(t => t.Type);
         bool isBool = lookup.Contains(ECommandInputType.Bool);
 
-        foreach (var passedOpt in passedOpts)
+        foreach (string passedOpt in passedOpts)
         {
-            if (!passedOpt.StartsWith(option.Name)) continue;
+            if (!passedOpt.StartsWith(option.Name))
+            {
+                continue;
+            }
 
             string[] tokens = passedOpt.Split('=', 2);
             if (isBool && tokens.Length == 1)
@@ -160,7 +177,7 @@ public partial class CommandValidator : Node
 
             string value = tokens[1];
 
-            foreach (var type in option.Types)
+            foreach (CommandType type in option.Types)
             {
                 if (type.IsArray)
                 {
@@ -176,9 +193,13 @@ public partial class CommandValidator : Node
 
                     List<object?> convertedL = new();
 
-                    foreach (var v in values)
+                    foreach (string v in values)
                     {
-                        var st = Parser.TryConvertStringToType(v, type, out var convertedLValue);
+                        EStringConversionResult st = Parser.TryConvertStringToType(
+                            v,
+                            type,
+                            out var convertedLValue
+                        );
 
                         if (st != EStringConversionResult.Success)
                         {
@@ -199,7 +220,11 @@ public partial class CommandValidator : Node
                     return false;
                 }
 
-                var status = Parser.TryConvertStringToType(value, type, out var converted);
+                EStringConversionResult status = Parser.TryConvertStringToType(
+                    value,
+                    type,
+                    out var converted
+                );
 
                 if (status != EStringConversionResult.Success)
                 {
@@ -249,6 +274,10 @@ public partial class CommandValidator : Node
                         _commandName, commandInput.Name, ranged.Min, ranged.Max
                     ));
                 }
+                break;
+            case EStringConversionResult.Success:
+                break;
+            default:
                 break;
         }
     }

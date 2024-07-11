@@ -30,7 +30,7 @@ public partial class InputContainer : PanelContainer
         _label.Visible = InputType != EInputType.Bool;
         _label.Text = Text;
 
-        _spinBox.Visible = InputType == EInputType.Float || InputType == EInputType.Int;
+        _spinBox.Visible = InputType is EInputType.Float or EInputType.Int;
         _spinBox.MinValue = MinValue;
         _spinBox.MaxValue = MaxValue;
 
@@ -73,6 +73,8 @@ public partial class InputContainer : PanelContainer
                 break;
             case EInputType.Color:
                 _colorPickerButton.Color = (Color)value;
+                break;
+            default:
                 break;
         }
     }

@@ -12,15 +12,15 @@ public static class CommandTypeEnumTest
     [TestCase]
     public static void GenerateTypeDefinition_ReturnsCorrectString()
     {
-        var values = new Dictionary<string, int>
-            {
+        Dictionary<string, int> values = new()
+        {
                 { "Value1", 1 },
                 { "Value2", 2 },
                 { "Value3", 3 }
             };
 
-        var commandTypeEnum = new CommandTypeEnum("MyEnum", false, values);
+        CommandTypeEnum commandTypeEnum = new("MyEnum", false, values);
 
-        commandTypeEnum.TypeDefinition.ConfirmEqual("Value1(1), Value2(2), Value3(3)");
+        _ = commandTypeEnum.TypeDefinition.ConfirmEqual("Value1(1), Value2(2), Value3(3)");
     }
 }

@@ -18,9 +18,9 @@ public static class CommandValidatorTest
     [TestCase]
     public static void ValidateCommandArgument_String_Valid()
     {
-        var argument = new ArgumentAttribute(_rg.NextString(4, 12), "string");
+        ArgumentAttribute argument = new(_rg.NextString(4, 12), "string");
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextString(8, 12),
@@ -31,25 +31,25 @@ public static class CommandValidatorTest
     [TestCase]
     public static void ValidateCommandArgument_String_Invalid()
     {
-        var argument = new ArgumentAttribute(_rg.NextString(4, 12), "string");
+        ArgumentAttribute argument = new(_rg.NextString(4, 12), "string");
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             string.Empty,
             false
         ).ConfirmFalse("Empty string should be invalid.");
     }
-    #endregion
+    #endregion ValidateCommandArgument_String
 
     #region ValidateCommandArgument_Int
     [Repeat(5)]
     [TestCase]
     public static void ValidateCommandArgument_Int_Valid()
     {
-        var argument = new ArgumentAttribute(_rg.NextString(4, 12), "int");
+        ArgumentAttribute argument = new(_rg.NextString(4, 12), "int");
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.Next(-256, 256).ToString(),
@@ -61,9 +61,9 @@ public static class CommandValidatorTest
     [TestCase]
     public static void ValidateCommandArgument_Int_PassedString()
     {
-        var argument = new ArgumentAttribute(_rg.NextString(4, 12), "int");
+        ArgumentAttribute argument = new(_rg.NextString(4, 12), "int");
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextString(),
@@ -76,12 +76,12 @@ public static class CommandValidatorTest
     public static void ValidateCommandArgument_IntRanged_Valid()
     {
         var (min, max) = (_rg.Next(32), _rg.Next(32, 64));
-        var argument = new ArgumentAttribute(
+        ArgumentAttribute argument = new(
             _rg.NextString(4, 12),
             $"int({min}:{max})"
         );
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.Next(min, max).ToString(),
@@ -94,32 +94,31 @@ public static class CommandValidatorTest
     public static void ValidateCommandArgument_IntRanged_OutsideOfRange()
     {
         var (min, max) = (_rg.Next(16, 32), _rg.Next(32, 64));
-        var argument = new ArgumentAttribute(
+        ArgumentAttribute argument = new(
             _rg.NextString(4, 12),
             $"int({min}:{max})"
         );
-        var generated = (_rg.NextBool()
-                ? _rg.Next(-(min * 2), min - 1)
-                : _rg.Next(max + 1, max * 2)
-            ).ToString();
+        string generated = (_rg.NextBool()
+            ? _rg.Next(-(min * 2), min - 1)
+            : _rg.Next(max + 1, max * 2)).ToString();
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             generated,
             false
         ).ConfirmFalse($"Expected {generated} to be outside of {min}-{max}.");
     }
-    #endregion
+    #endregion ValidateCommandArgument_Int
 
     #region ValidateCommandArgument_Float
     [Repeat(5)]
     [TestCase]
     public static void ValidateCommandArgument_Float_Valid()
     {
-        var argument = new ArgumentAttribute(_rg.NextString(4, 12), "float");
+        ArgumentAttribute argument = new(_rg.NextString(4, 12), "float");
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextDouble(-256, 256).ToString(),
@@ -131,9 +130,9 @@ public static class CommandValidatorTest
     [TestCase]
     public static void ValidateCommandArgument_Float_PassedString()
     {
-        var argument = new ArgumentAttribute(_rg.NextString(4, 12), "float");
+        ArgumentAttribute argument = new(_rg.NextString(4, 12), "float");
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextString(),
@@ -146,12 +145,12 @@ public static class CommandValidatorTest
     public static void ValidateCommandArgument_FloatRanged_Valid()
     {
         var (min, max) = (_rg.NextDouble(0, 32), _rg.NextDouble(32, 64));
-        var argument = new ArgumentAttribute(
+        ArgumentAttribute argument = new(
             _rg.NextString(4, 12),
             $"float({min}:{max})"
         );
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextDouble(min, max).ToString(),
@@ -164,28 +163,28 @@ public static class CommandValidatorTest
     public static void ValidateCommandArgument_FloatRanged_OutsideOfRange()
     {
         var (min, max) = (_rg.NextDouble(0, 32), _rg.NextDouble(32, 64));
-        var argument = new ArgumentAttribute(
+        ArgumentAttribute argument = new(
             _rg.NextString(4, 12),
             $"float({min}:{max})"
         );
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextDouble(min, max).ToString(),
             false
         ).ConfirmTrue();
     }
-    #endregion
+    #endregion ValidateCommandArgument_Float
 
     #region ValidateCommandArgument_Bool
     [Repeat(2)]
     [TestCase]
     public static void ValidateCommandArgument_Bool_Valid()
     {
-        var argument = new ArgumentAttribute(_rg.NextString(4, 12), "bool");
+        ArgumentAttribute argument = new(_rg.NextString(4, 12), "bool");
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextBool().ToString(),
@@ -196,16 +195,16 @@ public static class CommandValidatorTest
     [TestCase]
     public static void ValidateCommandArgument_Bool_PassedString()
     {
-        var argument = new ArgumentAttribute(_rg.NextString(4, 12), "bool");
+        ArgumentAttribute argument = new(_rg.NextString(4, 12), "bool");
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextString(),
             false
         ).ConfirmFalse("String is not a valid bool.");
     }
-    #endregion
+    #endregion ValidateCommandArgument_Bool
 
     #region ValidateCommandArgument_Constant
     [Repeat(5)]
@@ -217,12 +216,12 @@ public static class CommandValidatorTest
             _rg.NextString(4, 12),
             _rg.NextString(4, 12)
         };
-        var argument = new ArgumentAttribute(
+        ArgumentAttribute argument = new(
             _rg.NextString(4, 12),
             string.Join('|', args)
         );
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextElement(args),
@@ -239,19 +238,19 @@ public static class CommandValidatorTest
             _rg.NextString(4, 12),
             _rg.NextString(4, 12)
         };
-        var argument = new ArgumentAttribute(
+        ArgumentAttribute argument = new(
             _rg.NextString(4, 12),
             string.Join('|', args)
         );
 
-        _validator.ValidateCommandArgument(
+        _ = _validator.ValidateCommandArgument(
             argument,
             new(),
             _rg.NextString(13, 16),
             false
         ).ConfirmFalse();
     }
-    #endregion
+    #endregion ValidateCommandArgument_Constant
 
     // [Repeat(5)]
     // [TestCase]

@@ -16,7 +16,7 @@ public static class TextTest
     [TestCase("[b]Hello, [b]world[/b]![/b]", "[lb]b]Hello, [lb]b]world[lb]/b]![lb]/b]")]
     public static void EscapeBBCode(string text, string expected)
     {
-        Text.EscapeBBCode(text).ConfirmEqual(expected);
+        _ = Text.EscapeBBCode(text).ConfirmEqual(expected);
     }
 
     [TestCase("Hello, world!", "[b]Hello, world![/b]")]
@@ -26,7 +26,7 @@ public static class TextTest
     [TestCase("[b]Hello, [b]world[/b]![/b]", "[b][b]Hello, [b]world[/b]![/b][/b]")]
     public static void MakeBold(string text, string expected)
     {
-        Text.MakeBold(text).ConfirmEqual(expected);
+        _ = Text.MakeBold(text).ConfirmEqual(expected);
     }
 
     [TestCase("Hello, world!", new string[] { "Hello,", "world!" })]
@@ -37,7 +37,7 @@ public static class TextTest
     [TestCase("  Hello,  world!    ", new string[] { "Hello,", "world!" })]
     public static void SanitizeText(string text, string[] expected)
     {
-        Text.SanitizeText(text).ConfirmEqual(expected);
+        _ = Text.SanitizeText(text).ConfirmEqual(expected);
     }
 
     [TestCase(new string[] { "Hello,", "world!" }, new string[] { "Hello,", "world!" })]
@@ -48,7 +48,7 @@ public static class TextTest
     [TestCase(new string[] { "qc", "add", "-name='John", "\"Doe'" }, new string[] { "qc", "add", "-name=John \"Doe" })]
     public static void ConcatenateSentence(string[] strings, string[] expected)
     {
-        Text.ConcatenateSentence(strings).ConfirmEqual(expected);
+        _ = Text.ConcatenateSentence(strings).ConfirmEqual(expected);
     }
 
     [TestCase("Hello, world!", true, new char[] { 'H', 'H', 'H' })]
@@ -59,7 +59,7 @@ public static class TextTest
     [TestCase("Hello, world!", false, new char[] { 'o', 'o' })]
     public static void StartsWith(string text, bool expected, char[] chars)
     {
-        Text.StartsWith(text, chars).ConfirmEqual(expected);
+        _ = text.StartsWith(chars).ConfirmEqual(expected);
     }
 
     [TestCase("Hello, world!", true, new char[] { '!', '!', '!' })]
@@ -69,7 +69,7 @@ public static class TextTest
     [TestCase("Hello, world!", true, new char[] { 'w', '!' })]
     public static void EndsWith(string text, bool expected, char[] chars)
     {
-        Text.EndsWith(text, chars).ConfirmEqual(expected);
+        _ = text.EndsWith(chars).ConfirmEqual(expected);
     }
 
     [TestCase("Hello!", "", new string[] { "Hello!" })]
@@ -79,7 +79,7 @@ public static class TextTest
     [TestCase("Hello, World!", ", ", new string[] { "Hello", "World!" })]
     public static void SplitClean(string text, string separator, string[] expected)
     {
-        Text.SplitClean(text, separator).ConfirmEqual(expected);
+        _ = Text.SplitClean(text, separator).ConfirmEqual(expected);
     }
 
     [TestCase("", 16u, "...")]
@@ -89,6 +89,6 @@ public static class TextTest
     [TestCase("res://example/main_menu/MainMenu.tscn", 128u, "res://example/main_menu/MainMenu.tscn")]
     public static void ShortenPath(string path, uint length, string expected)
     {
-        Text.ShortenPath(path, (ushort)length).ConfirmEqual(expected);
+        _ = Text.ShortenPath(path, (ushort)length).ConfirmEqual(expected);
     }
 }

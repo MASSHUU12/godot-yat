@@ -15,11 +15,21 @@ public sealed class Version : ICommand
         _gameName = ProjectSettings.GetSetting("application/config/name").ToString();
         _gameVersion = ProjectSettings.GetSetting("application/config/version").ToString();
 
-        if (string.IsNullOrEmpty(_gameName)) _gameName = "Your Awesome Game";
-        if (string.IsNullOrEmpty(_gameVersion)) _gameVersion = "v0.0.0";
+        if (string.IsNullOrEmpty(_gameName))
+        {
+            _gameName = "Your Awesome Game";
+        }
+
+        if (string.IsNullOrEmpty(_gameVersion))
+        {
+            _gameVersion = "v0.0.0";
+        }
 
         _version = $"{_gameName} {_gameVersion}";
     }
 
-    public CommandResult Execute(CommandData data) => ICommand.Ok(_version);
+    public CommandResult Execute(CommandData data)
+    {
+        return ICommand.Ok(_version);
+    }
 }

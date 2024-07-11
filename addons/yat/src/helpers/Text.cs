@@ -75,14 +75,21 @@ public static class Text
                 while (!EndsWith(strings[i], '"', '\'') && i < strings.Length)
                 {
                     i++;
-                    if (i >= strings.Length) break;
+                    if (i >= strings.Length)
+                    {
+                        break;
+                    }
+
                     sentence += $" {strings[i]}";
                 }
 
                 sentence = i >= strings.Length ? sentence : sentence[..^1];
                 modifiedStrings.Add(sentence);
             }
-            else modifiedStrings.Add(token);
+            else
+            {
+                modifiedStrings.Add(token);
+            }
         }
 
         return modifiedStrings.ToArray();
@@ -126,14 +133,24 @@ public static class Text
     }
 
     /// <summary>
-    /// Shortens a file path to the specified length.
-    ///
-    /// Adapted from https://stackoverflow.com/a/32664181
+    /// <para>Shortens a file path to the specified length.</para>
+    /// <para>Adapted from https://stackoverflow.com/a/32664181</para>
     /// </summary>
+    /// <param name="path"></param>
+    /// <param name="maxLength"></param>
+    /// <param name="ellipsisChar"></param>
+    /// <param name="splitChar"></param>
     public static string ShortenPath(string path, ushort maxLength, string ellipsisChar = "...", string splitChar = "/")
     {
-        if (string.IsNullOrEmpty(path) || maxLength <= ellipsisChar.Length) return ellipsisChar;
-        if (path.Length <= maxLength) return path;
+        if (string.IsNullOrEmpty(path) || maxLength <= ellipsisChar.Length)
+        {
+            return ellipsisChar;
+        }
+
+        if (path.Length <= maxLength)
+        {
+            return path;
+        }
 
         string[] parts = path.Split(splitChar);
 

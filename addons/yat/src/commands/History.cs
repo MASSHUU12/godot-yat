@@ -23,17 +23,14 @@ public sealed class History : ICommand
         _terminal = data.Terminal;
         _historyComponent = _terminal.HistoryComponent;
 
-        switch (data.Arguments["action"])
+        return data.Arguments["action"] switch
         {
-            case "clear":
-                return ClearHistory();
-            case "list":
-                return ShowHistory();
-            default:
-                if (int.TryParse(data.RawData[1], out int index))
-                    return ExecuteFromHistory(index);
-                else return ICommand.Failure($"Invalid action: {data.RawData[1]}");
-        }
+            "clear" => ClearHistory(),
+            "list" => ShowHistory(),
+            _ => int.TryParse(data.RawData[1], out int index)
+                ? ExecuteFromHistory(index)
+                : ICommand.Failure($"Invalid action: {data.RawData[1]}"),
+        };
     }
 
     private CommandResult ClearHistory()
@@ -45,17 +42,22 @@ public sealed class History : ICommand
     private CommandResult ExecuteFromHistory(int index)
     {
         if (index < 0 || index >= _historyComponent.History.Count)
+        {
             return ICommand.Failure($"Invalid index: {index}");
+        }
 
-        var command = _historyComponent.History.ElementAt(index);
-        if (command.StartsWith("history", "hist")) return ICommand.InvalidCommand(
-            "Cannot execute history command from history."
-        );
+        string command = _historyComponent.History.ElementAt(index);
+        if (command.StartsWith("history", "hist"))
+        {
+            return ICommand.InvalidCommand(
+                "Cannot execute history command from history."
+            );
+        }
 
         _terminal.Print(
             $"Executing command at index {index}: {Text.EscapeBBCode(command)}"
         );
-        _terminal.CommandManager.Run(Text.SanitizeText(command), _terminal);
+        _ = _terminal.CommandManager.Run(Text.SanitizeText(command), _terminal);
 
         return ICommand.Success();
     }
@@ -63,11 +65,13 @@ public sealed class History : ICommand
     private CommandResult ShowHistory()
     {
         StringBuilder sb = new();
-        sb.AppendLine("Terminal history:");
+        _ = sb.AppendLine("Terminal history:");
 
         ushort i = 0;
         foreach (string command in _historyComponent.History)
-            sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
+        {
+            _ = sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
+        }
 
         return ICommand.Ok(sb.ToString());
     }

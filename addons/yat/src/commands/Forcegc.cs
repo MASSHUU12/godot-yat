@@ -26,7 +26,11 @@ public sealed class Forcegc : ICommand
         var compact = (bool)data.Options["-c"];
 
         if (gen > GC.MaxGeneration)
-            return ICommand.Failure($"The generation number must be between 0 and {GC.MaxGeneration}.");
+        {
+            return ICommand.Failure(
+                $"The generation number must be between 0 and {GC.MaxGeneration}."
+            );
+        }
 
         GC.Collect(
             mode == GCCollectionMode.Aggressive

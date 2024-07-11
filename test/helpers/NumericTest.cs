@@ -7,7 +7,7 @@ namespace YAT.Test;
 
 [TestClass]
 [Parallelizable]
-public class NumericTest
+public static class NumericTest
 {
     #region IsWithinRange
     [TestCase(5, 0, 10)]
@@ -15,13 +15,13 @@ public class NumericTest
     [TestCase(10, 0, 10)]
     public static void IsWithinRange_WhenValueIsWithinRange(int value, int min, int max)
     {
-        Numeric.IsWithinRange<int>(value, min, max).ConfirmTrue();
+        _ = value.IsWithinRange<int>(min, max).ConfirmTrue();
     }
 
     [TestCase(9, float.MinValue, float.MaxValue)]
     public static void IsWithinRange_Int_Float_WithinRange(int value, float min, float max)
     {
-        Numeric.IsWithinRange(value, min, max).ConfirmTrue();
+        _ = Numeric.IsWithinRange(value, min, max).ConfirmTrue();
     }
 
     [TestCase(11, -5, 10)]
@@ -29,7 +29,7 @@ public class NumericTest
     [TestCase(5, 6, 11)]
     public static void IsWithinRange_WhenValueIsNotWithinRange(int value, int min, int max)
     {
-        Numeric.IsWithinRange<int>(value, min, max).ConfirmFalse();
+        _ = value.IsWithinRange<int>(min, max).ConfirmFalse();
     }
 
     [TestCase(5d, 0d, 10d)]
@@ -37,7 +37,7 @@ public class NumericTest
     [TestCase(10d, 0d, 10d)]
     public static void IsWithinRange_WhenValueIsWithinRange(double value, double min, double max)
     {
-        Numeric.IsWithinRange<double>(value, min, max).ConfirmTrue();
+        _ = value.IsWithinRange<double>(min, max).ConfirmTrue();
     }
 
     [TestCase(11d, -5d, 10d)]
@@ -45,9 +45,9 @@ public class NumericTest
     [TestCase(5d, 6d, 11d)]
     public static void IsWithinRange_WhenValueIsNotWithinRange(double value, double min, double max)
     {
-        Numeric.IsWithinRange<double>(value, min, max).ConfirmFalse();
+        _ = value.IsWithinRange<double>(min, max).ConfirmFalse();
     }
-    #endregion
+    #endregion IsWithinRange
 
     #region IsWithinRange_TE
     [TestCase(5, 0f, 10f)]
@@ -55,7 +55,7 @@ public class NumericTest
     [TestCase(10, 0f, 10f)]
     public static void IsWithinRange_TE_WhenValueIsWithinRange(int value, float min, float max)
     {
-        Numeric.IsWithinRange(value, min, max).ConfirmTrue();
+        _ = Numeric.IsWithinRange(value, min, max).ConfirmTrue();
     }
 
     [TestCase(11, -5f, 10f)]
@@ -63,9 +63,9 @@ public class NumericTest
     [TestCase(5, 6f, 11f)]
     public static void IsWithinRange_TE_WhenValueIsNotWithinRange(int value, float min, float max)
     {
-        Numeric.IsWithinRange(value, min, max).ConfirmFalse();
+        _ = Numeric.IsWithinRange(value, min, max).ConfirmFalse();
     }
-    #endregion
+    #endregion IsWithinRange_TE
 
     #region TryConvert
     [TestCase("5", 5)]
@@ -73,8 +73,8 @@ public class NumericTest
     [TestCase("0", 0)]
     public static void TryConvert_WhenValueIsValid_Int(string value, int expected)
     {
-        Numeric.TryConvert(value, out int result).ConfirmTrue();
-        result.ConfirmEqual(expected);
+        _ = value.TryConvert(out int result).ConfirmTrue();
+        _ = result.ConfirmEqual(expected);
     }
 
     [TestCase("5.0", 5.0)]
@@ -82,8 +82,8 @@ public class NumericTest
     [TestCase("0.0", 0.0)]
     public static void TryConvert_WhenValueIsValid_Double(string value, double expected)
     {
-        Numeric.TryConvert(value, out double result).ConfirmTrue();
-        result.ConfirmEqual(expected);
+        _ = value.TryConvert(out double result).ConfirmTrue();
+        _ = result.ConfirmEqual(expected);
     }
 
     [TestCase("5five")]
@@ -94,7 +94,7 @@ public class NumericTest
     [TestCase("-5.0d")]
     public static void TryConvert_WhenValueIsInvalid_Int(string value)
     {
-        Numeric.TryConvert(value, out int _).ConfirmFalse();
+        _ = value.TryConvert(out int _).ConfirmFalse();
     }
 
     [TestCase("5.0five")]
@@ -105,9 +105,9 @@ public class NumericTest
     [TestCase("5.0d")]
     public static void TryConvert_WhenValueIsInvalid_Double(string value)
     {
-        Numeric.TryConvert(value, out double _).ConfirmFalse();
+        _ = value.TryConvert(out double _).ConfirmFalse();
     }
-    #endregion
+    #endregion TryConvert
 
     [TestCase(0, 2, "0 B")]
     [TestCase(1, 2, "1 B")]
@@ -120,6 +120,6 @@ public class NumericTest
     [TestCase(2137420969, 6, "1.990628 GiB")]
     public static void SizeToString(long size, int precision, string expected)
     {
-        Numeric.SizeToString(size, precision).ConfirmEqual(expected);
+        _ = Numeric.SizeToString(size, precision).ConfirmEqual(expected);
     }
 }

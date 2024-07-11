@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using YAT.Attributes;
 using YAT.Helpers;
@@ -19,7 +21,7 @@ public sealed class TraceRoute : ICommand
     public CommandResult Execute(CommandData data)
     {
         var hostname = (string)data.Arguments["hostname"];
-        var options = new NetworkingOptions
+        NetworkingOptions options = new()
         {
             Timeout = (ushort)(int)data.Options["-t"],
             TTL = (ushort)(int)data.Options["-ttl"],
@@ -29,10 +31,17 @@ public sealed class TraceRoute : ICommand
 
         data.Terminal.Output.Print($"Tracing route to {hostname}...");
 
-        var addresses = Networking.GetTraceRoute(hostname, options, data.CancellationToken);
-        var result = new StringBuilder();
+        IEnumerable<IPAddress?> addresses = Networking.GetTraceRoute(
+            hostname,
+            options,
+            data.CancellationToken
+        );
+        StringBuilder result = new();
 
-        foreach (var address in addresses) result.AppendLine(address?.ToString());
+        foreach (IPAddress? address in addresses)
+        {
+            _ = result.AppendLine(address?.ToString());
+        }
 
         return ICommand.Ok(result.ToString());
     }

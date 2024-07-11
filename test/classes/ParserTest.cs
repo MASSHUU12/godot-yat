@@ -24,7 +24,7 @@ public static class ParserTest
     [TestCase("echo \"Hello, World\"", new string[] { "echo", "Hello, World" })]
     public static void ParseCommand(string command, string[] expected)
     {
-        Parser.ParseCommand(command).ConfirmEqual(expected);
+        _ = Parser.ParseCommand(command).ConfirmEqual(expected);
     }
 
     [TestCase("", "", "")]
@@ -35,9 +35,9 @@ public static class ParserTest
     [TestCase("testMethod(arg1, arg2, arg3)", "testMethod", "arg1, arg2, arg3")]
     public static void ParseMethod(string method, string expectedName, string expectedArgs)
     {
-        var result = Parser.ParseMethod(method);
-        result.Item1.ConfirmEqual(expectedName);
-        result.Item2.ConfirmEqual(expectedArgs.Split(", ", StringSplitOptions.RemoveEmptyEntries));
+        (string, string[]) result = Parser.ParseMethod(method);
+        _ = result.Item1.ConfirmEqual(expectedName);
+        _ = result.Item2.ConfirmEqual(expectedArgs.Split(", ", StringSplitOptions.RemoveEmptyEntries));
     }
 
     // Valid range and type, no array
@@ -103,18 +103,24 @@ public static class ParserTest
         bool isSuccess
     )
     {
-        Parser.TryParseCommandInputType(type, out var result).ConfirmEqual(isSuccess);
+        _ = Parser.TryParseCommandInputType(type, out var result).ConfirmEqual(isSuccess);
 
-        if (!isSuccess) return;
+        if (!isSuccess)
+        {
+            return;
+        }
 
-        result.Type.ConfirmEqual(eType);
-        result.IsArray.ConfirmEqual(isArray);
+        _ = result.Type.ConfirmEqual(eType);
+        _ = result.IsArray.ConfirmEqual(isArray);
 
-        if (!((int)result.Type).IsWithinRange<int>(1, 3)) return;
+        if (!((int)result.Type).IsWithinRange<int>(1, 3))
+        {
+            return;
+        }
 
-        var r = result.ConfirmType<CommandTypeRanged>();
-        r.Min.ConfirmEqual(min);
-        r.Max.ConfirmEqual(max);
+        CommandTypeRanged r = result.ConfirmType<CommandTypeRanged>();
+        _ = r.Min.ConfirmEqual(min);
+        _ = r.Max.ConfirmEqual(max);
     }
 
     #region TryParseCommandInputType_Enum
@@ -139,13 +145,14 @@ public static class ParserTest
         int[] expectedValues
     )
     {
-        Parser.TryParseCommandInputType(typeDefinition, out var result).ConfirmTrue();
+        _ = Parser.TryParseCommandInputType(typeDefinition, out var result).ConfirmTrue();
 
-        result.Type.ConfirmEqual(ECommandInputType.Enum);
-        result.IsArray.ConfirmFalse();
-        var e = result.ConfirmType<CommandTypeEnum>();
-        e.Values.Keys.ConfirmElementsAreEquivalent(expectedKeys);
-        e.Values.Values.ConfirmElementsAreEquivalent(expectedValues);
+        _ = result.Type.ConfirmEqual(ECommandInputType.Enum);
+        _ = result.IsArray.ConfirmFalse();
+
+        CommandTypeEnum e = result.ConfirmType<CommandTypeEnum>();
+        _ = e.Values.Keys.ConfirmElementsAreEquivalent(expectedKeys);
+        _ = e.Values.Values.ConfirmElementsAreEquivalent(expectedValues);
     }
 
     [TestCase("enum")]
@@ -157,9 +164,9 @@ public static class ParserTest
     [TestCase("enum(A:1, B:: C)")]
     public static void TryParseCommandInputType_Enum_Invalid(string typeDefinition)
     {
-        Parser.TryParseCommandInputType(typeDefinition, out var _).ConfirmFalse();
+        _ = Parser.TryParseCommandInputType(typeDefinition, out _).ConfirmFalse();
     }
-    #endregion
+    #endregion TryParseCommandInputType_Enum
 
     #region TryParseEnumType
     [TestCase(
@@ -183,11 +190,11 @@ public static class ParserTest
         int[] expectedValues
     )
     {
-        Parser.TryParseEnumType(tokens, false, out var result).ConfirmTrue();
+        _ = Parser.TryParseEnumType(tokens, false, out var result).ConfirmTrue();
 
-        var r = result.ConfirmNotNull().ConfirmType<CommandTypeEnum>();
-        r.Values.Keys.ConfirmElementsAreEquivalent(expectedKeys);
-        r.Values.Values.ConfirmElementsAreEquivalent(expectedValues);
+        CommandTypeEnum r = result.ConfirmNotNull().ConfirmType<CommandTypeEnum>();
+        _ = r.Values.Keys.ConfirmElementsAreEquivalent(expectedKeys);
+        _ = r.Values.Values.ConfirmElementsAreEquivalent(expectedValues);
     }
 
     [TestCase(new string[] { "A:1", "B::2" }, 0)]
@@ -202,7 +209,7 @@ public static class ParserTest
         Parser.TryParseEnumType(tokens, false, out var result).ConfirmFalse();
         result.ConfirmNull();
     }
-    #endregion
+    #endregion TryParseEnumType
 
     // Valid range and type, no array
     [TestCase(Int, "0:10", Int, 0, 10, false, true)]
@@ -251,14 +258,17 @@ public static class ParserTest
         bool isSuccess
     )
     {
-        Parser.TryParseTypeWithRange(type, range, isArray, out var result).ConfirmEqual(isSuccess);
+        _ = Parser.TryParseTypeWithRange(type, range, isArray, out var result).ConfirmEqual(isSuccess);
 
-        if (!isSuccess) return;
+        if (!isSuccess)
+        {
+            return;
+        }
 
-        result.Type.ConfirmEqual(eType);
-        result.Min.ConfirmEqual(eMin);
-        result.Max.ConfirmEqual(eMax);
-        result.IsArray.ConfirmEqual(isArray);
+        _ = result.Type.ConfirmEqual(eType);
+        _ = result.Min.ConfirmEqual(eMin);
+        _ = result.Max.ConfirmEqual(eMax);
+        _ = result.IsArray.ConfirmEqual(isArray);
     }
 
     [TestCase("Void", ECommandInputType.Void, true)]
@@ -268,10 +278,10 @@ public static class ParserTest
     [TestCase("enum", ECommandInputType.Enum, true)]
     public static void TryParseStringTypeToEnum(string type, ECommandInputType expected, bool shouldBeSuccess)
     {
-        var isSuccess = Parser.TryParseStringTypeToEnum(type, out var result);
+        bool isSuccess = Parser.TryParseStringTypeToEnum(type, out var result);
 
-        isSuccess.ConfirmEqual(shouldBeSuccess);
-        result.ConfirmEqual(expected);
+        _ = isSuccess.ConfirmEqual(shouldBeSuccess);
+        _ = result.ConfirmEqual(expected);
     }
 
     #region TryConvertStringToType_String
@@ -279,9 +289,9 @@ public static class ParserTest
     [TestCase]
     public static void TryConvertStringToType_String_Valid()
     {
-        var str = _rg.NextString(8, 12);
+        string str = _rg.NextString(8, 12);
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             str,
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -290,7 +300,7 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Success);
-        result.ConfirmType<string>().ConfirmEqual(str);
+        _ = result.ConfirmType<string>().ConfirmEqual(str);
     }
 
     [Repeat(5)]
@@ -298,9 +308,9 @@ public static class ParserTest
     public static void TryConvertStringToType_String_InRange()
     {
         var (min, max) = (_rg.Next(16, 32), _rg.Next(32, 64));
-        var str = _rg.NextString(min, max);
+        string str = _rg.NextString(min, max);
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             str,
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -311,7 +321,7 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Success);
-        result.ConfirmType<string>().ConfirmHasLength(str.Length);
+        _ = result.ConfirmType<string>().ConfirmHasLength(str.Length);
     }
 
     [Repeat(5)]
@@ -319,11 +329,11 @@ public static class ParserTest
     public static void TryConvertStringToType_String_OutOfRange()
     {
         var (min, max) = (_rg.Next(16, 32), _rg.Next(32, 64));
-        var str = _rg.NextBool()
+        string str = _rg.NextBool()
             ? _rg.NextString(1, min)
             : _rg.NextString(max + 1, max * 2);
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             str,
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -334,18 +344,18 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.OutOfRange);
-        result.ConfirmNull();
+        _ = result.ConfirmNull();
     }
-    #endregion
+    #endregion TryConvertStringToType_String
 
     #region TryConvertStringToType_Int
     [Repeat(5)]
     [TestCase]
     public static void TryConvertStringToType_Int_Valid()
     {
-        var num = (int)_rg.NextDouble(float.MinValue, float.MaxValue);
+        int num = (int)_rg.NextDouble(float.MinValue, float.MaxValue);
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             num.ToString(),
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -354,14 +364,14 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Success);
-        result.ConfirmType<int>().ConfirmEqual(num);
+        _ = result.ConfirmType<int>().ConfirmEqual(num);
     }
 
     [Repeat(5)]
     [TestCase]
     public static void TryConvertStringToType_Int_Invalid()
     {
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             _rg.NextString(8, 12),
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -370,7 +380,7 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Invalid);
-        result.ConfirmNull();
+        _ = result.ConfirmNull();
     }
 
     [Repeat(5)]
@@ -380,7 +390,7 @@ public static class ParserTest
         var (min, max) = (_rg.Next(16, 32), _rg.Next(32, 64));
         int num = _rg.Next(min, max);
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             num.ToString(),
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -394,7 +404,7 @@ public static class ParserTest
             EStringConversionResult.Success,
             $"{num} was outside of {min}-{max}"
         );
-        result.ConfirmType<int>().ConfirmEqual(num);
+        _ = result.ConfirmType<int>().ConfirmEqual(num);
     }
 
     [Repeat(5)]
@@ -406,7 +416,7 @@ public static class ParserTest
             ? _rg.Next(1, min)
             : _rg.Next(max + 1, max * 2);
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             num.ToString(),
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -417,18 +427,18 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.OutOfRange);
-        result.ConfirmNull();
+        _ = result.ConfirmNull();
     }
-    #endregion
+    #endregion TryConvertStringToType_Int
 
     #region TryConvertStringToType_Float
     [Repeat(5)]
     [TestCase]
     public static void TryConvertStringToType_Float_Valid()
     {
-        var num = (float)_rg.NextDouble(float.MinValue, float.MaxValue);
+        float num = (float)_rg.NextDouble(float.MinValue, float.MaxValue);
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             num.ToString(),
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -437,14 +447,14 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Success);
-        result.ConfirmType<float>().ConfirmEqual(num);
+        _ = result.ConfirmType<float>().ConfirmEqual(num);
     }
 
     [Repeat(5)]
     [TestCase]
     public static void TryConvertStringToType_Float_Invalid()
     {
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             _rg.NextString(8, 12),
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -453,7 +463,7 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Invalid);
-        result.ConfirmNull();
+        _ = result.ConfirmNull();
     }
 
     [Repeat(5)]
@@ -461,9 +471,9 @@ public static class ParserTest
     public static void TryConvertStringToType_Float_InRange()
     {
         var (min, max) = (_rg.NextDouble(16, 32), _rg.NextDouble(32, 64));
-        var num = (float)_rg.NextDouble(min, max);
+        float num = (float)_rg.NextDouble(min, max);
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             num.ToString(),
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -477,7 +487,7 @@ public static class ParserTest
             EStringConversionResult.Success,
             $"{num} was outside of {min}-{max}"
         );
-        result.ConfirmType<float>().ConfirmEqual(num);
+        _ = result.ConfirmType<float>().ConfirmEqual(num);
     }
 
     [Repeat(5)]
@@ -485,11 +495,11 @@ public static class ParserTest
     public static void TryConvertStringToType_Float_OutsideOfRange()
     {
         var (min, max) = (_rg.NextDouble(16, 32), _rg.NextDouble(32, 64));
-        var num = (float)(_rg.NextBool()
+        float num = (float)(_rg.NextBool()
             ? _rg.NextDouble(1, min)
             : _rg.NextDouble(max + 1, max * 2));
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             num.ToString(),
             new CommandTypeRanged(
                 _rg.NextString(8, 12),
@@ -500,16 +510,16 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.OutOfRange);
-        result.ConfirmNull();
+        _ = result.ConfirmNull();
     }
-    #endregion
+    #endregion TryConvertStringToType_Float
 
     #region TryConvertStringToType_Bool
     [TestCase(true)]
     [TestCase(false)]
     public static void TryConvertStringToType_Bool_Valid(bool boolean)
     {
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             boolean.ToString(),
             new(
                 _rg.NextString(8, 12),
@@ -518,14 +528,14 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Success);
-        result.ConfirmType<bool>().ConfirmEqual(boolean);
+        _ = result.ConfirmType<bool>().ConfirmEqual(boolean);
     }
 
     [Repeat(5)]
     [TestCase]
     public static void TryConvertStringToType_Bool_Invalid()
     {
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             _rg.NextString(8, 12),
             new(
                 _rg.NextString(8, 12),
@@ -534,18 +544,18 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Invalid);
-        result.ConfirmNull();
+        _ = result.ConfirmNull();
     }
-    #endregion
+    #endregion TryConvertStringToType_Bool
 
     #region TryConvertStringToType_Constant
     [Repeat(5)]
     [TestCase]
     public static void TryConvertStringToType_Constant_Valid()
     {
-        var constant = _rg.NextString(8, 12);
+        string constant = _rg.NextString(8, 12);
 
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             constant,
             new(
                 constant,
@@ -554,14 +564,14 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Success);
-        result.ConfirmType<string>().ConfirmEqual(constant);
+        _ = result.ConfirmType<string>().ConfirmEqual(constant);
     }
 
     [Repeat(5)]
     [TestCase]
     public static void TryConvertStringToType_Constant_Invalid()
     {
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             _rg.NextString(8, 12),
             new(
                 _rg.NextString(8, 12),
@@ -570,14 +580,14 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Invalid);
-        result.ConfirmNull();
+        _ = result.ConfirmNull();
     }
-    #endregion
+    #endregion TryConvertStringToType_Constant
 
     [TestCase]
     public static void TryConvertStringToType_Void()
     {
-        Parser.TryConvertStringToType(
+        _ = Parser.TryConvertStringToType(
             _rg.NextString(8, 12),
             new(
                 _rg.NextString(8, 12),
@@ -586,6 +596,6 @@ public static class ParserTest
             ),
             out var result
         ).ConfirmEqual(EStringConversionResult.Invalid);
-        result.ConfirmNull();
+        _ = result.ConfirmNull();
     }
 }

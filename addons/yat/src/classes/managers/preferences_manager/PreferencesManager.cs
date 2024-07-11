@@ -18,13 +18,13 @@ public partial class PreferencesManager : Node
     {
         _defaultPreferences = Preferences.Duplicate() as YatPreferences;
 
-        Load();
+        _ = Load();
     }
 
     public void RestoreDefaults()
     {
         Preferences = (_defaultPreferences.Duplicate() as YatPreferences)!;
-        EmitSignal(SignalName.PreferencesUpdated, Preferences!);
+        _ = EmitSignal(SignalName.PreferencesUpdated, Preferences!);
     }
 
     public bool Save()
@@ -34,13 +34,16 @@ public partial class PreferencesManager : Node
 
     public bool Load()
     {
-        if (!ResourceLoader.Exists(PREFERENCES_PATH)) return false;
+        if (!ResourceLoader.Exists(PREFERENCES_PATH))
+        {
+            return false;
+        }
 
         Preferences = ResourceLoader.Load<YatPreferences>(
             PREFERENCES_PATH,
             cacheMode: ResourceLoader.CacheMode.Replace
         );
-        EmitSignal(SignalName.PreferencesUpdated, Preferences);
+        _ = EmitSignal(SignalName.PreferencesUpdated, Preferences);
 
         return true;
     }

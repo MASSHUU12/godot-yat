@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Godot;
+using Godot.Collections;
 using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
@@ -29,11 +31,16 @@ public sealed class Ls : ICommand
 
         _terminal = data.Terminal;
 
-        if (n) return Scene.PrintChildren(_terminal, path)
-            ? ICommand.Success()
-            : ICommand.Failure();
-        if (m) return PrintNodeMethods(path);
-        return PrintDirectoryContents(ProjectSettings.GlobalizePath(path));
+        if (n)
+        {
+            return Scene.PrintChildren(_terminal, path)
+                ? ICommand.Success()
+                : ICommand.Failure();
+        }
+
+        return m
+            ? PrintNodeMethods(path)
+            : PrintDirectoryContents(ProjectSettings.GlobalizePath(path));
     }
 
     private CommandResult PrintNodeMethods(string path)
@@ -41,21 +48,23 @@ public sealed class Ls : ICommand
         StringBuilder sb = new();
         Node? node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
 
-        if (node is null) return ICommand.Failure($"Node '{path}' does not exist.");
+        if (node is null)
+        {
+            return ICommand.Failure($"Node '{path}' does not exist.");
+        }
 
-        var methods = node.GetMethodList().GetEnumerator();
+        IEnumerator<Dictionary> methods = node.GetMethodList().GetEnumerator();
         while (methods.MoveNext())
         {
-            var info = Scene.GetNodeMethodInfo(methods.Current);
+            NodeMethodInfo info = Scene.GetNodeMethodInfo(methods.Current);
             string[] arguments = info.Args.Select(
                 arg => $"[u]{arg["name"]}[/u]: {((Variant.Type)(int)arg["type"]).ToString()}"
             ).ToArray();
             int returns = info.Return["type"].AsInt16();
 
-            sb.Append($"[b]{info.Name}[/b]");
-            sb.Append($"({string.Join(", ", arguments)}) -> ");
-            sb.Append(((Variant.Type)returns).ToString());
-            sb.AppendLine();
+            _ = sb.Append($"[b]{info.Name}[/b]")
+                .Append($"({string.Join(", ", arguments)}) -> ")
+                .AppendLine(((Variant.Type)returns).ToString());
         }
 
         return ICommand.Ok(sb.ToString());
@@ -63,7 +72,10 @@ public sealed class Ls : ICommand
 
     private CommandResult PrintDirectoryContents(string path)
     {
-        if (!Directory.Exists(path)) return ICommand.Failure($"Directory '{path}' does not exist.");
+        if (!Directory.Exists(path))
+        {
+            return ICommand.Failure($"Directory '{path}' does not exist.");
+        }
 
         try
         {
@@ -124,24 +136,31 @@ public sealed class Ls : ICommand
         foreach (FileSystemInfo info in infos)
         {
             var fileSizeString = Numeric.SizeToString(
-                                info is FileInfo
-                                ? ((FileInfo)info).Length
+                                info is FileInfo info1
+                                ? info1.Length
                                 : 0
             );
 
-            var line = string.Format(
+            string line = string.Format(
                 "{0}\t\t{1}\t\t{2}{3}{4}",
-                info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").PadRight(maxLastWriteTimeLength),
+                info
+                    .LastWriteTime
+                    .ToString("yyyy-MM-dd HH:mm:ss")
+                    .PadRight(maxLastWriteTimeLength),
                 info is FileInfo
-                    ? fileSizeString.PadRight(Mathf.Clamp(maxFileSizeLength - fileSizeString.Length, 0, maxFileSizeLength))
+                    ? fileSizeString.PadRight(
+                            Mathf.Clamp(maxFileSizeLength - fileSizeString.Length, 0, maxFileSizeLength)
+                        )
                     : string.Empty.PadRight(maxFileSizeLength),
                 info.Name,
                 info is DirectoryInfo ? '/' : string.Empty,
-                (info.Attributes & FileAttributes.Hidden) != 0 ? "*" : string.Empty
+                (info.Attributes & FileAttributes.Hidden) != 0
+                    ? "*"
+                    : string.Empty
             );
 
-            sb.Append(line);
-            sb.AppendLine();
+            _ = sb.Append(line);
+            _ = sb.AppendLine();
         }
     }
 }

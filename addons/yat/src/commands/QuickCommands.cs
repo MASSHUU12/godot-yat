@@ -26,7 +26,9 @@ public sealed class QuickCommands : ICommand
         _yat = data.Yat;
 
         if (action != "list" && string.IsNullOrEmpty(name))
+        {
             return ICommand.Failure("You need to provide a command name for this action.");
+        }
 
         switch (action)
         {
@@ -48,7 +50,9 @@ public sealed class QuickCommands : ICommand
     private CommandResult AddQuickCommand(string name, string command)
     {
         if (string.IsNullOrEmpty(command))
+        {
             return ICommand.Failure("You need to provide command for this action.");
+        }
 
         return _yat.Commands.AddQuickCommand(name, command)
             ? ICommand.Success($"Added quick command '{name}'.")
@@ -66,7 +70,7 @@ public sealed class QuickCommands : ICommand
     {
         if (_yat.Commands.QuickCommands.Commands.TryGetValue(name, out var command))
         {
-            terminal.CommandManager.Run(Text.SanitizeText(command), terminal);
+            _ = terminal.CommandManager.Run(Text.SanitizeText(command), terminal);
             return ICommand.Ok();
         }
 

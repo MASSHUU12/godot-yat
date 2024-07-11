@@ -22,10 +22,13 @@ public sealed class View : ICommand
 
     static View()
     {
-        var values = Enum.GetValues(typeof(ViewportDebugDraw));
+        Array values = Enum.GetValues(typeof(ViewportDebugDraw));
         MAX_DRAW_MODE = values.Length - 1;
 
-        foreach (var mode in values) Modes.Add(mode!.ToString()!.ToLower());
+        foreach (object? mode in values)
+        {
+            Modes.Add(mode!.ToString()!.ToLower());
+        }
     }
 
 #nullable disable
@@ -38,17 +41,23 @@ public sealed class View : ICommand
 
         _yat = data.Yat;
 
-        if (Modes.Contains(mode)) return SetDebugDraw(
+        if (Modes.Contains(mode))
+        {
+            return SetDebugDraw(
             (ViewportDebugDraw)Enum.Parse(typeof(ViewportDebugDraw), mode, true)
         );
+        }
 
         if (!int.TryParse(mode, out var iMode))
+        {
             return ICommand.InvalidArguments($"Invalid mode: {mode}.");
+        }
 
-        if (!IsValidMode(iMode))
-            return ICommand.InvalidArguments($"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}.");
-
-        return SetDebugDraw((ViewportDebugDraw)iMode);
+        return !IsValidMode(iMode)
+            ? ICommand.InvalidArguments(
+                $"Invalid mode: {mode}. Valid range: 0 to {MAX_DRAW_MODE}."
+            )
+            : SetDebugDraw((ViewportDebugDraw)iMode);
     }
 
     private CommandResult SetDebugDraw(ViewportDebugDraw debugDraw)
@@ -58,5 +67,8 @@ public sealed class View : ICommand
         return ICommand.Success($"Set viewport debug draw to {debugDraw} ({(int)debugDraw}).");
     }
 
-    private static bool IsValidMode(int mode) => mode >= 0 && mode <= MAX_DRAW_MODE;
+    private static bool IsValidMode(int mode)
+    {
+        return mode >= 0 && mode <= MAX_DRAW_MODE;
+    }
 }

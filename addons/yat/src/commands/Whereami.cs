@@ -25,12 +25,14 @@ public sealed class Whereami : ICommand
         );
     }
 
-    private static string GetExecutablePath(BaseTerminal terminal) =>
-        OS.GetExecutablePath().GetBaseDir();
+    private static string GetExecutablePath(BaseTerminal terminal)
+    {
+        return OS.GetExecutablePath().GetBaseDir();
+    }
 
     private static string GetSceneInfo(BaseTerminal terminal, bool s, bool l)
     {
-        var scene = terminal.GetTree().CurrentScene;
+        Node scene = terminal.GetTree().CurrentScene;
         scene = s ? terminal.SelectedNode.Current : scene;
 
         return string.Format(

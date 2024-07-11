@@ -21,8 +21,8 @@ public sealed class Sr : ICommand
         var fsr = (bool)data.Options["-fsr"];
         var fsr2 = (bool)data.Options["-fsr2"];
 
-        var viewport = data.Yat.GetViewport();
-        var window = viewport.GetWindow();
+        Viewport viewport = data.Yat.GetViewport();
+        Window window = viewport.GetWindow();
 
         window.Size = new(
             width == -1 ? window.Size.X : width,
@@ -37,8 +37,15 @@ public sealed class Sr : ICommand
 
         viewport.Scaling3DMode = Viewport.Scaling3DModeEnum.Bilinear;
 
-        if (fsr) viewport.Scaling3DMode = Viewport.Scaling3DModeEnum.Fsr;
-        if (fsr2) viewport.Scaling3DMode = Viewport.Scaling3DModeEnum.Fsr2;
+        if (fsr)
+        {
+            viewport.Scaling3DMode = Viewport.Scaling3DModeEnum.Fsr;
+        }
+
+        if (fsr2)
+        {
+            viewport.Scaling3DMode = Viewport.Scaling3DModeEnum.Fsr2;
+        }
 
         data.Terminal.Output.Print(
             string.Format("Screen resolution: {0}x{1}, scale: {2} ({3}x{4}), mode: {5}.",

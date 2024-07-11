@@ -13,19 +13,19 @@ public sealed class Reset : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var action = (string)data.Arguments["action"];
-
-        switch (action)
+        switch ((string)data.Arguments["action"])
         {
             case "size":
-                data.Terminal.EmitSignal(nameof(data.Terminal.SizeResetRequested));
+                _ = data.Terminal.EmitSignal(nameof(data.Terminal.SizeResetRequested));
                 break;
             case "position":
-                data.Terminal.EmitSignal(nameof(data.Terminal.PositionResetRequested));
+                _ = data.Terminal.EmitSignal(nameof(data.Terminal.PositionResetRequested));
                 break;
             case "all":
-                data.Terminal.EmitSignal(nameof(data.Terminal.SizeResetRequested));
-                data.Terminal.EmitSignal(nameof(data.Terminal.PositionResetRequested));
+                _ = data.Terminal.EmitSignal(nameof(data.Terminal.SizeResetRequested));
+                _ = data.Terminal.EmitSignal(nameof(data.Terminal.PositionResetRequested));
+                break;
+            default:
                 break;
         }
 

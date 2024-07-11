@@ -8,7 +8,7 @@ public partial class ContextMenu : PopupMenu
     [Export] public bool ShrinkToFit { get; set; } = true;
 
     private Viewport? _viewport = null;
-    private Rect2 _viewportRect = new();
+    private Rect2 _viewportRect;
 
     public override void _Ready()
     {
@@ -17,12 +17,15 @@ public partial class ContextMenu : PopupMenu
 
         Hide();
 
-        if (ShrinkToFit) MenuChanged += Shrink;
+        if (ShrinkToFit)
+        {
+            MenuChanged += Shrink;
+        }
     }
 
     private void Shrink()
     {
-        var itemsSize = GetItemsSize();
+        Vector2 itemsSize = GetItemsSize();
 
         Size = new()
         {
@@ -37,12 +40,17 @@ public partial class ContextMenu : PopupMenu
         var items = GetChildren();
         var size = new Vector2();
 
-        foreach (var item in items)
+        foreach (Node? item in items)
         {
             if (item is Control control)
+            {
                 size += control.Size;
+            }
+
             if (item is PopupMenu popupMenu)
+            {
                 size += popupMenu.Size;
+            }
         }
 
         return size;
@@ -50,9 +58,12 @@ public partial class ContextMenu : PopupMenu
 
     public void ShowNextToMouse()
     {
-        if (_viewport is null) return;
+        if (_viewport is null)
+        {
+            return;
+        }
 
-        var mousePos = _viewport.GetMousePosition();
+        Vector2 mousePos = _viewport.GetMousePosition();
         var (limitX, limitY) = CalculateLimits(_viewportRect);
 
         Show();
@@ -66,9 +77,9 @@ public partial class ContextMenu : PopupMenu
 
     public (float, float) CalculateLimits(Rect2 rect)
     {
-        var limitX = rect.Size.X - Size.X - WallMargin;
-        var limitY = rect.Size.Y - Size.Y - WallMargin;
+        float limitX = rect.Size.X - Size.X - WallMargin;
+        float limitY = rect.Size.Y - Size.Y - WallMargin;
 
-        return ((int)limitX, (int)limitY);
+        return (limitX, limitY);
     }
 }

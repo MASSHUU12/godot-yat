@@ -30,28 +30,33 @@ public sealed class Ds : ICommand
             return ICommand.Success();
         }
 
-        if (i.Contains("all")) data.Yat.DebugScreen.RunAll();
-        else data.Yat.DebugScreen.RunSelected(i);
+        if (i.Contains("all"))
+        {
+            data.Yat.DebugScreen.RunAll();
+        }
+        else
+        {
+            data.Yat.DebugScreen.RunSelected(i);
+        }
 
         return ICommand.Success();
     }
 
     private static void Help(BaseTerminal terminal)
     {
-        var message = new StringBuilder();
+        StringBuilder message = new();
 
-        message.AppendLine("Registered items:");
+        _ = message.AppendLine("Registered items:");
 
         foreach (var item in DebugScreen.registeredItems.Values.SelectMany(x => x))
         {
-            message.AppendLine(
-                string.Format(
+            _ = message.AppendFormat(
                     "- [b]{0}[/b] ({1}): {2}",
                     item.Item2.GetAttribute<TitleAttribute>()?.Title ?? item.Item2.Name,
                     item.Item2.Name,
                     item.Item1
                 )
-            );
+                .AppendLine();
         }
 
         terminal.Print(message);

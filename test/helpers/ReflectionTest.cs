@@ -46,88 +46,88 @@ public static class ReflectionTest
             | BindingFlags.Public
         );
 
-        events.ConfirmNotNull();
-        events.Length.ConfirmIsPositive();
+        _ = events.ConfirmNotNull();
+        _ = events.Length.ConfirmIsPositive();
     }
 
     [TestCase]
     public static void GetEvents_NoEvents()
     {
-        var events = Reflection.GetEvents(new TestClass());
+        EventInfo[] events = Reflection.GetEvents(new TestClass());
 
-        events.ConfirmNotNull();
-        events.Length.ConfirmEqual(0);
+        _ = events.ConfirmNotNull();
+        _ = events.Length.ConfirmEqual(0);
     }
-    #endregion
+    #endregion GetEvents
 
     #region GetAttribute
     [TestCase]
     public static void GetAttribute_AttributePresent()
     {
-        var attribute = Reflection.GetAttribute<CommandAttribute>(new TestClass());
+        CommandAttribute? attribute = Reflection.GetAttribute<CommandAttribute>(new TestClass());
 
-        attribute.ConfirmNotNull();
-        attribute?.Name.ConfirmEqual("test");
+        _ = attribute.ConfirmNotNull();
+        _ = (attribute?.Name.ConfirmEqual("test"));
     }
 
     [TestCase]
     public static void GetAttribute_AttributeNotPresent()
     {
-        var attribute = Reflection.GetAttribute<OptionAttribute>(new TestClass());
+        OptionAttribute? attribute = Reflection.GetAttribute<OptionAttribute>(new TestClass());
 
-        attribute.ConfirmNull();
+        _ = attribute.ConfirmNull();
     }
 
     [TestCase]
     public static void GetAttribute_AttributesPresent()
     {
-        var attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
+        ArgumentAttribute[]? attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
 
-        attributes.ConfirmNotNull();
-        attributes?.Length.ConfirmEqual(3);
-        attributes?[0].Name.ToString().ConfirmEqual("arg1");
-        attributes?[1].Name.ToString().ConfirmEqual("arg3");
-        attributes?[2].Name.ToString().ConfirmEqual("arg3");
+        _ = attributes.ConfirmNotNull();
+        _ = (attributes?.Length.ConfirmEqual(3));
+        _ = (attributes?[0].Name.ConfirmEqual("arg1"));
+        _ = (attributes?[1].Name.ToString().ConfirmEqual("arg3"));
+        _ = (attributes?[2].Name.ToString().ConfirmEqual("arg3"));
     }
 
     [TestCase]
     public static void GetAttribute_AttributesNotPresent()
     {
-        var attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
+        OptionAttribute[]? attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
 
-        attributes?.ConfirmEmpty();
+        _ = (attributes?.ConfirmEmpty());
     }
-    #endregion
+    #endregion GetAttribute
 
     #region HasAttribute
     [TestCase]
     public static void HasAttribute_AttributePresent()
     {
-        var hasAttribute = Reflection.HasAttribute<CommandAttribute>(new TestClass());
+        bool hasAttribute = Reflection.HasAttribute<CommandAttribute>(new TestClass());
 
-        hasAttribute.ConfirmTrue();
+        _ = hasAttribute.ConfirmTrue();
     }
 
     [TestCase]
     public static void HasAttribute_AttributeNotPresent()
     {
-        var hasAttribute = Reflection.HasAttribute<OptionAttribute>(new TestClass());
+        bool hasAttribute = Reflection.HasAttribute<OptionAttribute>(new TestClass());
 
-        hasAttribute.ConfirmFalse();
+        _ = hasAttribute.ConfirmFalse();
     }
-    #endregion
+    #endregion HasAttribute
 
     #region HasInterface
     [TestCase]
     public static void HasInterface_InterfacePresent()
     {
-        new Cls().HasInterface<ICommand>().ConfirmTrue();
+        _ = new Cls().HasInterface<ICommand>().ConfirmTrue();
     }
 
     [TestCase]
     public static void HasInterface_InterfaceNotPresent()
     {
-        new TestClass().HasInterface<ITestInterface>().ConfirmFalse();
+        _ = new TestClass().HasInterface<ITestInterface>().ConfirmFalse();
     }
-    #endregion
+    #endregion HasInterface
 }

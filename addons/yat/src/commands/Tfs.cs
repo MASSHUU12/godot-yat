@@ -21,7 +21,10 @@ public sealed class Tfs : ICommand
                 : WindowMode.Fullscreen
             );
         }
-        else WindowSetMode(WindowMode.Windowed);
+        else
+        {
+            WindowSetMode(WindowMode.Windowed);
+        }
 
         return ICommand.Success($"Toggled screen mode to {WindowGetMode()}.");
     }

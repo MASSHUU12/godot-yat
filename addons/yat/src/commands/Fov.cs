@@ -1,3 +1,4 @@
+using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
 using YAT.Types;
@@ -10,10 +11,13 @@ public sealed class Fov : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var fov = (float)data.Arguments["fov"];
-        var camera = data.Yat.GetTree().Root.GetCamera3D();
+        float fov = (float)data.Arguments["fov"];
+        Camera3D? camera = data.Yat.GetTree().Root.GetCamera3D();
 
-        if (camera is null) return ICommand.Failure("No 3D camera found.");
+        if (camera is null)
+        {
+            return ICommand.Failure("No 3D camera found.");
+        }
 
         camera.Fov = fov;
 

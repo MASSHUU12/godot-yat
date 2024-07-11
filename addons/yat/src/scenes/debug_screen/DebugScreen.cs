@@ -94,6 +94,7 @@ public partial class DebugScreen : Control
             EDebugScreenItemPosition.TopRight => _topRightContainer,
             EDebugScreenItemPosition.BottomLeft => _bottomLeftContainer,
             EDebugScreenItemPosition.BottomRight => _bottomRightContainer,
+            EDebugScreenItemPosition.None => throw new NotImplementedException(),
             _ => null,
         };
     }
@@ -110,7 +111,7 @@ public partial class DebugScreen : Control
             (EDebugScreenItemPosition.BottomRight, _bottomRightContainer)
         })
         {
-            foreach (var item in registeredItems[position])
+            foreach (Tuple<string, Type> item in registeredItems[position])
             {
                 AddItemToContainer(item.Item1, container);
             }
@@ -129,7 +130,7 @@ public partial class DebugScreen : Control
             return;
         }
 
-        var lowerTitles = titles.Select(t => t.ToLower());
+        IEnumerable<string> lowerTitles = titles.Select(t => t.ToLower());
 
         foreach (var position in new[]
         {
@@ -139,13 +140,16 @@ public partial class DebugScreen : Control
             EDebugScreenItemPosition.BottomRight
         })
         {
-            var container = GetContainer(position);
+            VBoxContainer? container = GetContainer(position);
 
-            if (container == null) continue;
-
-            foreach (var title in lowerTitles)
+            if (container == null)
             {
-                AddItemsToContainer(registeredItems[position], container, title);
+                continue;
+            }
+
+            foreach (string title in lowerTitles)
+            {
+                _ = AddItemsToContainer(registeredItems[position], container, title);
             }
         }
 
@@ -158,7 +162,7 @@ public partial class DebugScreen : Control
         string lowerTitle
     )
     {
-        foreach (var item in items)
+        foreach (Tuple<string, Type> item in items)
         {
             if (GetTitle(item.Item2).ToLower() == lowerTitle)
             {
@@ -195,14 +199,14 @@ public partial class DebugScreen : Control
 
     private void OnTimerTimeout()
     {
-        foreach (var container in new[] {
+        foreach (VBoxContainer? container in new[] {
             _topLeftContainer,
             _topRightContainer,
             _bottomLeftContainer,
             _bottomRightContainer
         })
         {
-            foreach (var child in container.GetChildren())
+            foreach (Node? child in container.GetChildren())
             {
                 (child as IDebugScreenItem)!.Update();
             }
@@ -220,11 +224,18 @@ public partial class DebugScreen : Control
 
     public static bool RegisterItem(Type item, string path, EDebugScreenItemPosition position)
     {
-        if (!item.HasInterface<IDebugScreenItem>()) return false;
-        if (item.GetAttribute<TitleAttribute>() is not TitleAttribute title) return false;
-        if (string.IsNullOrEmpty(title.Title)) return false;
+        if (!item.HasInterface<IDebugScreenItem>())
+        {
+            return false;
+        }
 
-        return registeredItems[position].Add(new(path, item));
+        if (item.GetAttribute<TitleAttribute>() is not TitleAttribute title)
+        {
+            return false;
+        }
+
+        return !string.IsNullOrEmpty(title.Title)
+            && registeredItems[position].Add(new(path, item));
     }
 
     public static bool UnregisterItem(Type item, string path, EDebugScreenItemPosition position)

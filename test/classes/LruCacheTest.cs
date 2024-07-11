@@ -14,68 +14,70 @@ public static class LruCacheTest
     [TestCase(32, 64)]
     public static void Add_WhenWithinCapacity(int additions, int capacity)
     {
-        var cache = new LRUCache<string, int>((ushort)capacity);
+        LRUCache<string, int> cache = new((ushort)capacity);
 
-        for (var i = 0; i < additions; i++)
+        for (int i = 0; i < additions; i++)
         {
             cache.Add(i.ToString(), i);
-            cache.Size.ConfirmLessThanOrEqual(capacity);
+            _ = cache.Size.ConfirmLessThanOrEqual(capacity);
         }
 
-        cache.Size.ConfirmLessThanOrEqual(capacity);
+        _ = cache.Size.ConfirmLessThanOrEqual(capacity);
     }
 
     [TestCase]
     public static void Add_WhenAtCapacity()
     {
-        var cache = new LRUCache<string, int>(1);
+        LRUCache<string, int> cache = new(1);
         cache.Add("test", 1);
-        cache.Size.ConfirmEqual(1);
+        _ = cache.Size.ConfirmEqual(1);
     }
 
     [TestCase]
     public static void Add_WhenOverCapacity()
     {
-        var cache = new LRUCache<string, int>(1);
+        LRUCache<string, int> cache = new(1);
         cache.Add("test", 1);
         cache.Add("test2", 2);
-        cache.Size.ConfirmEqual(1);
+        _ = cache.Size.ConfirmEqual(1);
     }
-    #endregion
+    #endregion Add
 
     #region Get
     [TestCase]
     public static void Get_WhenExists()
     {
-        var cache = new LRUCache<string, int>(1);
+        LRUCache<string, int> cache = new(1);
         cache.Add("test", 1);
-        cache.Get("test").ConfirmEqual(1);
+        _ = cache.Get("test").ConfirmEqual(1);
     }
 
     [TestCase]
     public static void Get_WhenNonExistent()
     {
-        var cache = new LRUCache<string, int>(1);
-        cache.Get("test").ConfirmEqual(0);
+        LRUCache<string, int> cache = new(1);
+        _ = cache.Get("test").ConfirmEqual(0);
     }
 
     [TestCase]
     public static void Get_WhenLaterAccessed()
     {
-        var cache = new LRUCache<string, int>(1);
+        LRUCache<string, int> cache = new(1);
         cache.Add("test", 1);
         cache.Add("test2", 2);
-        cache.Get("test").ConfirmEqual(0);
-        cache.Get("test2").ConfirmEqual(2);
+
+        _ = cache.Get("test").ConfirmEqual(0);
+        _ = cache.Get("test2").ConfirmEqual(2);
     }
 
     [TestCase]
     public static void Get_WhenAccessedTwice()
     {
-        var cache = new LRUCache<string, int>(1);
+        LRUCache<string, int> cache = new(1);
         cache.Add("test", 1);
-        cache.Get("test").ConfirmEqual(1);
-        cache.Get("test").ConfirmEqual(1);
+
+        _ = cache.Get("test").ConfirmEqual(1);
+        _ = cache.Get("test").ConfirmEqual(1);
     }
-    #endregion
+    #endregion Get
 }

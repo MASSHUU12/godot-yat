@@ -12,7 +12,9 @@ public class LRUCache<TKey, TValue> where TKey : notnull where TValue : notnull
     public LRUCache(ushort capacity)
     {
         if (capacity == 0)
+        {
             throw new ArgumentException("Capacity must be greater than 0.", nameof(capacity));
+        }
 
         this.capacity = capacity;
         cache = new(capacity);
@@ -50,7 +52,7 @@ public class LRUCache<TKey, TValue> where TKey : notnull where TValue : notnull
             // Remove the least recently used item
             var lastNode = lruList.Last;
             lruList.RemoveLast();
-            cache.Remove(lastNode!.Value.Key);
+            _ = cache.Remove(lastNode!.Value.Key);
         }
 
         lruList.AddFirst(new LinkedListNode<LRUItem<TKey, TValue>>(new(key, value)));

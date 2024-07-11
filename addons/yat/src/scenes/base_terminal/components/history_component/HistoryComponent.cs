@@ -23,7 +23,7 @@ public partial class HistoryComponent : Node
         }
 
         CurrentNode = null;
-        History.AddLast(command);
+        _ = History.AddLast(command);
     }
 
     public LinkedListNode<string>? MovePrevious()
@@ -44,7 +44,7 @@ public partial class HistoryComponent : Node
 
     public LinkedListNode<string>? MoveNext()
     {
-        if (CurrentNode is not null && CurrentNode.Next is not null)
+        if (CurrentNode?.Next is not null)
         {
             CurrentNode = CurrentNode.Next;
             return CurrentNode;

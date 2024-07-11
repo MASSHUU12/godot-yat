@@ -18,7 +18,10 @@ public partial class Input : LineEdit
         {
             _yat.TerminalManager.TerminalOpened += () =>
             {
-                if (Terminal.Current && !Terminal.FullWindowDisplay.IsOpen) GrabFocus();
+                if (Terminal.Current && !Terminal.FullWindowDisplay.IsOpen)
+                {
+                    GrabFocus();
+                }
             };
         };
 
@@ -27,27 +30,30 @@ public partial class Input : LineEdit
 
     private void OnTextSubmitted(string input)
     {
-        if (Terminal.Locked || string.IsNullOrEmpty(input)) return;
+        if (Terminal.Locked || string.IsNullOrEmpty(input))
+        {
+            return;
+        }
 
         input = GetQuickCommand(input);
 
-        var command = Parser.ParseCommand(input);
+        string[] command = Parser.ParseCommand(input);
 
-        if (command.Length == 0) return;
+        if (command.Length == 0)
+        {
+            return;
+        }
 
         Terminal.HistoryComponent.Add(input);
-        Terminal.CommandManager.Run(command, Terminal);
+        _ = Terminal.CommandManager.Run(command, Terminal);
         Clear();
     }
 
     private string GetQuickCommand(string input)
     {
-        if (_yat.Commands.QuickCommands.Commands.TryGetValue(input, out string? value))
-        {
-            return value;
-        }
-
-        return input;
+        return _yat.Commands.QuickCommands.Commands.TryGetValue(input, out string? value)
+            ? value
+            : input;
     }
 
     public void MoveCaretToEnd()

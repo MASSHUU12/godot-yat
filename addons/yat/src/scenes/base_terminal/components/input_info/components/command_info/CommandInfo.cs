@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -26,27 +28,33 @@ public partial class CommandInfo : Node
 
     public void UpdateCommandInfo(string text)
     {
-        var tokens = Text.SanitizeText(text);
+        string[] tokens = Text.SanitizeText(text);
 
-        if (!AreTokensValid(tokens)) return;
+        if (!AreTokensValid(tokens))
+        {
+            return;
+        }
 
         InputInfo.DisplayCommandInfo(GenerateCommandInfo(tokens));
     }
 
     private string GenerateCommandInfo(string[] tokens)
     {
-        var command = RegisteredCommands.Registered[tokens[0]];
+        Type command = RegisteredCommands.Registered[tokens[0]];
         CommandAttribute? commandAttribute = command.GetCustomAttribute<CommandAttribute>();
-        var commandArguments = command.GetCustomAttributes<ArgumentAttribute>();
+        IEnumerable<ArgumentAttribute>? commandArguments = command.GetCustomAttributes<ArgumentAttribute>();
 
         StringBuilder commandInfo = new();
-        commandInfo.Append(commandAttribute?.Name);
+        _ = commandInfo.Append(commandAttribute?.Name);
 
-        if (commandArguments is null) return commandInfo.ToString();
+        if (commandArguments is null)
+        {
+            return commandInfo.ToString();
+        }
 
         uint i = 0;
         uint count = (uint)commandArguments.Count();
-        foreach (var arg in commandArguments)
+        foreach (ArgumentAttribute arg in commandArguments)
         {
             bool current = tokens.Length - 1 == i;
             bool valid = Terminal.CommandValidator.ValidateCommandArgument(
@@ -66,9 +74,12 @@ public partial class CommandInfo : Node
                 valid ? string.Empty : "[/color]"
             );
 
-            commandInfo.Append(argument);
+            _ = commandInfo.Append(argument);
 
-            if (i < count - 1) commandInfo.Append(' ');
+            if (i < count - 1)
+            {
+                _ = commandInfo.Append(' ');
+            }
 
             i++;
         }

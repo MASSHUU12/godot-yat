@@ -10,11 +10,17 @@ public static class Clipboard
         ExecutionResult result = ExecutionResult.Success;
 
         if (Platform == OperatingSystem.Windows)
-            RunCommand($"echo {text} | clip", out result);
+        {
+            _ = RunCommand($"echo {text} | clip", out result);
+        }
         else if (Platform == OperatingSystem.Linux)
-            RunCommand($"echo {text} | xclip -selection clipboard", out result);
+        {
+            _ = RunCommand($"echo {text} | xclip -selection clipboard", out result);
+        }
         else if (Platform == OperatingSystem.OSX)
-            RunCommand($"echo {text} | pbcopy", out result);
+        {
+            _ = RunCommand($"echo {text} | pbcopy", out result);
+        }
 
         return result;
     }
@@ -31,9 +37,11 @@ public static class Clipboard
             // ProjectSettings.GlobalizePath works only in the editor.
             // To get access to the PowerShell script,
             // we need to copy it to a temporary file where PowerShell can access it.
-            var path = CreateScriptTempFile("res://addons/yat/src/classes/clipboard/CopyImageToClipboard.ps1");
+            string path = CreateScriptTempFile(
+                "res://addons/yat/src/classes/clipboard/CopyImageToClipboard.ps1"
+            );
 
-            RunCommand(
+            _ = RunCommand(
                 $"{path} -imagePath \"{tempFile}\"",
                 out result,
                 "powershell.exe"
@@ -43,11 +51,11 @@ public static class Clipboard
         }
         else if (Platform == OperatingSystem.Linux)
         {
-            RunCommand($"xclip -selection clipboard -t image/png -i {tempFile}", out result);
+            _ = RunCommand($"xclip -selection clipboard -t image/png -i {tempFile}", out result);
         }
         else if (Platform == OperatingSystem.OSX)
         {
-            RunCommand($"cat {tempFile} | pbcopy", out result);
+            _ = RunCommand($"cat {tempFile} | pbcopy", out result);
         }
 
         File.Delete(tempFile);
@@ -57,10 +65,10 @@ public static class Clipboard
 
     private static string CreateScriptTempFile(string path)
     {
-        var script = Godot.FileAccess.GetFileAsString(path);
-        var extension = Path.GetExtension(path);
-
+        string script = Godot.FileAccess.GetFileAsString(path);
+        string extension = Path.GetExtension(path);
         string tempFile = Path.GetTempFileName();
+
         File.WriteAllText(tempFile, script);
         File.Move(tempFile, tempFile + extension);
 

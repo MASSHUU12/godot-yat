@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -17,9 +18,15 @@ public sealed class List : ICommand
 
     public CommandResult Execute(CommandData data)
     {
-        if ((bool)data.Options["-f"]) _cache = string.Empty;
+        if ((bool)data.Options["-f"])
+        {
+            _cache = string.Empty;
+        }
 
-        if (string.IsNullOrEmpty(_cache)) GenerateList(data.Terminal);
+        if (string.IsNullOrEmpty(_cache))
+        {
+            GenerateList(data.Terminal);
+        }
 
         return ICommand.Ok(_cache);
     }
@@ -28,30 +35,40 @@ public sealed class List : ICommand
     {
         StringBuilder sb = new();
 
-        sb.AppendLine("Available commands:");
+        _ = sb.AppendLine("Available commands:");
 
-        var maxHeadSize = 0;
-        foreach (var command in RegisteredCommands.Registered)
+        int maxHeadSize = 0;
+        foreach (KeyValuePair<string, Type> command in RegisteredCommands.Registered)
         {
-            maxHeadSize = command.Key.Length > maxHeadSize ? command.Key.Length : maxHeadSize;
+            maxHeadSize = command.Key.Length > maxHeadSize
+                ? command.Key.Length
+                : maxHeadSize;
         }
 
         var linkStr = " - ";
         var tabSpaceNum = 2;
         var indentation = tabSpaceNum + maxHeadSize + linkStr.Length;
-        foreach (var command in RegisteredCommands.Registered)
+        foreach (KeyValuePair<string, Type> command in RegisteredCommands.Registered)
         {
-            if (command.Value.GetCustomAttribute<CommandAttribute>() is not { } attribute) continue;
+            if (command.Value.GetCustomAttribute<CommandAttribute>() is not { } attribute)
+            {
+                continue;
+            }
 
             var description = command.Value.GetCustomAttribute<DescriptionAttribute>();
 
             // Skip aliases
-            if (attribute.Aliases.Contains(command.Key)) continue;
-            var header = $"{new string(' ', tabSpaceNum)}[b]{command.Key}[/b]{new string(' ', maxHeadSize - command.Key.Length)} - ";
-            sb.Append(header);
-            var descriptionStr = description?.Description ?? attribute.Description;
-            sb.Append(descriptionStr.Replace("\n", $"\n{new string(' ', indentation)}"));
-            sb.AppendLine();
+            if (attribute.Aliases.Contains(command.Key))
+            {
+                continue;
+            }
+
+            string header = $"{new string(' ', tabSpaceNum)}[b]{command.Key}[/b]{new string(' ', maxHeadSize - command.Key.Length)} - ";
+            _ = sb.Append(header);
+
+            string descriptionStr = description?.Description ?? attribute.Description;
+            _ = sb.Append(descriptionStr.Replace("\n", $"\n{new string(' ', indentation)}"));
+            _ = sb.AppendLine();
         }
 
         _cache = sb.ToString();

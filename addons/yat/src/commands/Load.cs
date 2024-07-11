@@ -26,7 +26,10 @@ public sealed class Load : ICommand
         var path = (string)data.Arguments["object_path"];
         var is2D = (bool)data.Options["-2d"];
 
-        if (!ValidatePath(path)) return ICommand.Failure("Invalid object path.");
+        if (!ValidatePath(path))
+        {
+            return ICommand.Failure("Invalid object path.");
+        }
 
         return !is2D ? LoadNode3D(path, data) : LoadNode2D(path, data);
     }
@@ -35,17 +38,17 @@ public sealed class Load : ICommand
     {
         var camera = data.Yat.GetViewport().GetCamera3D();
         var absolute = (bool)data.Options["-absolute"];
-        var position = new Vector3(
+        Vector3 position = new(
             (float)data.Options["-x"],
             (float)data.Options["-y"],
             (float)data.Options["-z"]
         );
-        var rotation = new Vector3(
+        Vector3 rotation = new(
             (float)data.Options["-rx"],
             (float)data.Options["-ry"],
             (float)data.Options["-rz"]
         );
-        var scale = new Vector3(
+        Vector3 scale = new(
             (float)data.Options["-sx"],
             (float)data.Options["-sy"],
             (float)data.Options["-sz"]
@@ -53,10 +56,14 @@ public sealed class Load : ICommand
         var hidden = (bool)data.Options["-hidden"];
 
         if (camera is null && !absolute)
+        {
             return ICommand.Failure("No 3D camera found.");
+        }
 
         if (GD.Load<PackedScene>(path).Instantiate() is not Node3D node)
+        {
             return ICommand.Failure("Failed to load object.");
+        }
 
         data.Yat.GetTree().Root.AddChild(node);
 
@@ -77,22 +84,26 @@ public sealed class Load : ICommand
     {
         var camera = data.Yat.GetViewport().GetCamera2D();
         var absolute = (bool)data.Options["-absolute"];
-        var position = new Vector2(
+        Vector2 position = new(
             (float)data.Options["-x"],
             (float)data.Options["-y"]
         );
         var rotation = (float)data.Options["-rz"];
-        var scale = new Vector2(
+        Vector2 scale = new(
             (float)data.Options["-sx"],
             (float)data.Options["-sy"]
         );
         var hidden = (bool)data.Options["-hidden"];
 
         if (camera is null && !absolute)
+        {
             return ICommand.Failure("No 2D camera found.");
+        }
 
         if (GD.Load<PackedScene>(path).Instantiate() is not Node2D node)
+        {
             return ICommand.Failure("Failed to load object.");
+        }
 
         data.Yat.GetTree().Root.AddChild(node);
 
@@ -119,9 +130,10 @@ public sealed class Load : ICommand
         bool absolute
     )
     {
-        if (absolute) node.GlobalPosition = position;
-        else node.GlobalPosition = camera.GlobalTransform.Origin
-                                + camera.GlobalTransform.Basis * position;
+        node.GlobalPosition = absolute
+            ? position
+            : camera.GlobalTransform.Origin
+                + (camera.GlobalTransform.Basis * position);
 
         node.GlobalRotation = rotation;
         node.Scale = scale;
@@ -138,10 +150,16 @@ public sealed class Load : ICommand
         bool absolute
     )
     {
-        if (absolute) node.GlobalPosition = position;
-        else node.GlobalPosition = camera.GlobalTransform.Origin
-                                + camera.GlobalTransform.X * position.X
-                                + camera.GlobalTransform.Y * position.Y;
+        if (absolute)
+        {
+            node.GlobalPosition = position;
+        }
+        else
+        {
+            node.GlobalPosition = camera.GlobalTransform.Origin
+                                  + (camera.GlobalTransform.X * position.X)
+                                  + (camera.GlobalTransform.Y * position.Y);
+        }
 
         node.GlobalRotation = rotation;
         node.Scale = scale;

@@ -43,8 +43,8 @@ public partial class GameTerminal : YatWindow
     {
         if (id == 1)
         {
-            var prefs = new Commands.Preferences();
-            prefs.Execute(new(
+            Commands.Preferences prefs = new();
+            _ = prefs.Execute(new(
                 _yat, CurrentTerminal, prefs, Array.Empty<string>(), new(), new(), default
             ));
         }
@@ -53,7 +53,9 @@ public partial class GameTerminal : YatWindow
     public override void _Input(InputEvent @event)
     {
         if (@event.IsActionPressed(Keybindings.TerminalToggle))
-            CallDeferred("emit_signal", SignalName.CloseRequested);
+        {
+            _ = CallDeferred("emit_signal", SignalName.CloseRequested);
+        }
     }
 
     private new void UpdateOptions(YatPreferences prefs)

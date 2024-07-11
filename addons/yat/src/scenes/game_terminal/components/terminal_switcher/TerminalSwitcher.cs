@@ -44,15 +44,20 @@ public partial class TerminalSwitcher : PanelContainer
 
         UpdateTabBarVisibility();
 
-        EmitSignal(SignalName.CurrentTerminalChanged, CurrentTerminal);
-        EmitSignal(SignalName.TerminalSwitcherInitialized);
+        _ = EmitSignal(SignalName.CurrentTerminalChanged, CurrentTerminal);
+        _ = EmitSignal(SignalName.TerminalSwitcherInitialized);
     }
 
     private void AddTerminal()
     {
-        if (TerminalInstances.Count >= MAX_TERMINAL_INSTANCES) return;
+        if (TerminalInstances.Count >= MAX_TERMINAL_INSTANCES)
+        {
+            return;
+        }
 
-        var newTerminal = GD.Load<PackedScene>("uid://dfig0yknmx6b7").Instantiate<BaseTerminal>();
+        BaseTerminal newTerminal = GD
+            .Load<PackedScene>("uid://dfig0yknmx6b7")
+            .Instantiate<BaseTerminal>();
         newTerminal.Name = $"Terminal {TerminalInstances.Count + 1}";
 
         TerminalInstances.Add(newTerminal);
@@ -65,14 +70,17 @@ public partial class TerminalSwitcher : PanelContainer
 
         UpdateTabBarVisibility();
 
-        EmitSignal(SignalName.TerminalAdded, newTerminal);
+        _ = EmitSignal(SignalName.TerminalAdded, newTerminal);
     }
 
     private void RemoveTerminal(long index)
     {
-        if (TerminalInstances.Count <= 1) return;
+        if (TerminalInstances.Count <= 1)
+        {
+            return;
+        }
 
-        var terminal = TerminalInstances[(int)index];
+        BaseTerminal terminal = TerminalInstances[(int)index];
 
         if (terminal.Locked)
         {
@@ -81,14 +89,17 @@ public partial class TerminalSwitcher : PanelContainer
         }
 
         _tabBar.RemoveTab((int)index);
-        TerminalInstances.Remove(terminal);
+        _ = TerminalInstances.Remove(terminal);
         terminal.QueueFree();
 
-        if (CurrentTerminal == terminal) SwitchToTerminal(0);
+        if (CurrentTerminal == terminal)
+        {
+            SwitchToTerminal(0);
+        }
 
         UpdateTabBarVisibility();
 
-        EmitSignal(SignalName.TerminalRemoved, terminal);
+        _ = EmitSignal(SignalName.TerminalRemoved, terminal);
     }
 
     private void SwitchToTerminal(long index)
@@ -107,7 +118,7 @@ public partial class TerminalSwitcher : PanelContainer
 
         _tabBar.CurrentTab = (int)index;
 
-        EmitSignal(SignalName.CurrentTerminalChanged, CurrentTerminal);
+        _ = EmitSignal(SignalName.CurrentTerminalChanged, CurrentTerminal);
     }
 
     private void UpdateTabBarVisibility()

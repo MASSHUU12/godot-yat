@@ -4,6 +4,7 @@ using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
+using static YAT.Helpers.Networking;
 
 namespace YAT.Commands;
 
@@ -40,7 +41,7 @@ public sealed class Ping : ICommand
 
         while ((maxPings == 0 || pings < maxPings) && !data.CancellationToken.IsCancellationRequested)
         {
-            var status = Networking.Ping(hostname, out var reply, options);
+            EPingStatus status = Networking.Ping(hostname, out var reply, options);
 
             if (reply is null)
             {
@@ -54,16 +55,25 @@ public sealed class Ping : ICommand
                 break;
             }
 
-            if (reply.Status == IPStatus.Success) data.Terminal.Print(string.Format(
-                "Reply from {0}: bytes={1} time={2}ms TTL={3}",
-                reply.Address,
-                reply.Buffer.Length,
-                reply.RoundtripTime,
-                reply.Options?.Ttl
-            ));
-            else data.Terminal.Output.Error($"Request timed out.");
+            if (reply.Status == IPStatus.Success)
+            {
+                data.Terminal.Print(string.Format(
+                    "Reply from {0}: bytes={1} time={2}ms TTL={3}",
+                    reply.Address,
+                    reply.Buffer.Length,
+                    reply.RoundtripTime,
+                    reply.Options?.Ttl
+                ));
+            }
+            else
+            {
+                data.Terminal.Output.Error("Request timed out.");
+            }
 
-            if (maxPings != 0) pings++;
+            if (maxPings != 0)
+            {
+                pings++;
+            }
 
             Thread.Sleep(options.Delay);
         }
