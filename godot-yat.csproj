@@ -1,27 +1,26 @@
-<Project Sdk="Godot.NET.Sdk/4.3.0-beta.2">
-	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
-		<EnableDynamicLoading>true</EnableDynamicLoading>
-		<RootNamespace>godotyat</RootNamespace>
-		<LangVersion>11.0</LangVersion>
-		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<Nullable>enable</Nullable>
-		<Optimize Condition="'$(Configuration)' == 'ExportRelease'">
-			true
-		</Optimize>
-		<!--Disable
-		warning of invalid/incompatible GodotSharp version-->
-		<NoWarn>NU1605</NoWarn>
-		<DefaultItemExcludes Condition="'$(Configuration)' == 'ExportRelease'">
-			$(DefaultItemExcludes);test/**/*
-		</DefaultItemExcludes>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)' != 'ExportRelease'">
-		<DebugType>portable</DebugType>
-		<DebugSymbols>true</DebugSymbols>
-	</PropertyGroup>
-	<ItemGroup>
-		<Compile Remove="script_templates/**/*.cs" />
-		<Compile Remove="test/old/**/*.cs" />
-	</ItemGroup>
+<Project Sdk="Godot.NET.Sdk/4.3.0-beta.3">
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <RootNamespace>godotyat</RootNamespace>
+        <LangVersion>11.0</LangVersion>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <Nullable>enable</Nullable>
+        <Optimize Condition="'$(Configuration)' == 'ExportRelease'">
+            true
+        </Optimize>
+        <!-- Disable warning of invalid/incompatible GodotSharp version -->
+        <NoWarn>NU1605</NoWarn>
+        <DefaultItemExcludes Condition="'$(Configuration)' == 'ExportRelease'">
+            $(DefaultItemExcludes);test/**/*
+        </DefaultItemExcludes>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' != 'ExportRelease'">
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Remove="script_templates/**/*.cs" />
+        <Compile Remove="test/old/**/*.cs" />
+    </ItemGroup>
 </Project>
