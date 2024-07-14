@@ -11,7 +11,6 @@ public partial class YAT : Node
 
 #nullable disable
     public Node Windows { get; private set; }
-    public BaseTerminal CurrentTerminal { get; set; }
 
     public YatEnable YatEnable { get; private set; }
     public DebugScreen DebugScreen { get; private set; }
@@ -26,17 +25,11 @@ public partial class YAT : Node
         YatEnable = GetNode<YatEnable>("./YatEnable");
         DebugScreen = GetNode<DebugScreen>("./Windows/DebugScreen");
         Commands = GetNode<RegisteredCommands>("./RegisteredCommands");
+        TerminalManager = GetNode<TerminalManager>("./TerminalManager");
         PreferencesManager = GetNode<PreferencesManager>("%PreferencesManager");
 
-        TerminalManager = GetNode<TerminalManager>("./TerminalManager");
-        TerminalManager.GameTerminal.Ready += () =>
-        {
-            TerminalManager.GameTerminal.TerminalSwitcher.CurrentTerminalChanged +=
-            (BaseTerminal terminal) => CurrentTerminal = terminal;
-
-            _ = EmitSignal(SignalName.YatReady);
-        };
-
         Keybindings.LoadDefaultActions();
+
+        _ = EmitSignal(SignalName.YatReady);
     }
 }
