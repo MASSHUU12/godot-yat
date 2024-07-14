@@ -14,6 +14,7 @@ namespace YAT
             _version = GetPluginVersion();
 
             AddAutoloadSingleton(_name, GetPluginPath() + "/src/YAT.tscn");
+            AddAutoloadSingleton("DebugScreen", GetPluginPath() + "/src/scenes/debug_screen/DebugScreen.tscn");
 
             GD.Print($"{_name} {_version} loaded!");
             GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]https://github.com/MASSHUU12/godot-yat/tree/main[/url].");
@@ -22,6 +23,7 @@ namespace YAT
         public override void _ExitTree()
         {
             RemoveAutoloadSingleton(_name);
+            RemoveAutoloadSingleton("DebugScreen");
 
             GD.Print($"{_name} {_version} unloaded!");
         }
