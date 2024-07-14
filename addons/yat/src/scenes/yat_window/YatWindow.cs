@@ -42,7 +42,11 @@ public partial class YatWindow : Window
     public override void _Ready()
     {
         _yat = GetNode<YAT>("/root/YAT");
-        _yat.PreferencesManager.PreferencesUpdated += UpdateOptions;
+        _yat.Ready += () =>
+        {
+            _yat.PreferencesManager.PreferencesUpdated += UpdateOptions;
+            UpdateOptions(_yat.PreferencesManager.Preferences);
+        };
 
         _content = GetNode<PanelContainer>("Content");
 
@@ -57,7 +61,6 @@ public partial class YatWindow : Window
 
         Move(DefaultWindowPosition, ViewportEdgeOffset);
         OnViewportSizeChanged();
-        UpdateOptions(_yat.PreferencesManager.Preferences);
     }
 
     public void ResetPosition()

@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://c4oxru3g4p038"]
+[gd_scene load_steps=3 format=3 uid="uid://c4oxru3g4p038"]
 
 [ext_resource type="Script" path="res://addons/yat/src/scenes/terminal_manager/TerminalManager.cs" id="1_rojed"]
+[ext_resource type="PackedScene" uid="uid://dsyqv187j7w76" path="res://addons/yat/src/scenes/game_terminal/GameTerminal.tscn" id="2_cthvu"]
 
 [node name="TerminalManager" type="Node"]
 script = ExtResource("1_rojed")
+
+[node name="GameTerminal" parent="." instance=ExtResource("2_cthvu")]
+unique_name_in_owner = true

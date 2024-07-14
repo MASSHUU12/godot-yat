@@ -40,7 +40,7 @@ public partial class BaseTerminal : Control
     public override void _Ready()
     {
         _yat = GetNode<YAT>("/root/YAT");
-        _yat.YatReady += () =>
+        _yat.Ready += () =>
         {
             _yat.PreferencesManager.PreferencesUpdated += UpdateOptions;
             UpdateOptions(_yat.PreferencesManager.Preferences);

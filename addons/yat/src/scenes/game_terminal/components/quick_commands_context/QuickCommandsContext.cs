@@ -15,13 +15,15 @@ public partial class QuickCommandsContext : ContextSubmenu
         base._Ready();
 
         _yat = GetNode<YAT>("/root/YAT");
-        _yat.Commands.QuickCommandsChanged += GetQuickCommands;
+        _yat.Ready += () =>
+        {
+            _yat.Commands.QuickCommandsChanged += GetQuickCommands;
+            GetQuickCommands();
+        };
 
         _terminalSwitcher = GetNode<TerminalSwitcher>("../../Content/TerminalSwitcher");
 
         IdPressed += OnQuickCommandsPressed;
-
-        GetQuickCommands();
     }
 
     private void GetQuickCommands()

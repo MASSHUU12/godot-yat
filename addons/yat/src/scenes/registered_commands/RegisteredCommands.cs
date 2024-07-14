@@ -182,17 +182,17 @@ public partial class RegisteredCommands : Node
             switch (results[i])
             {
                 case ECommandAdditionStatus.UnknownCommand:
-                    _yat.CurrentTerminal.Output.Error(
+                    _yat.TerminalManager.CurrentTerminal.Output.Error(
                         Messages.UnknownCommand(results[i].ToString())
                     );
                     break;
                 case ECommandAdditionStatus.MissingAttribute:
-                    _yat.CurrentTerminal.Output.Error(
+                    _yat.TerminalManager.CurrentTerminal.Output.Error(
                         Messages.MissingAttribute("CommandAttribute", results[i].ToString())
                     );
                     break;
                 case ECommandAdditionStatus.ExistentCommand:
-                    _yat.CurrentTerminal.Output.Error($"Command {results[i]} already exists.");
+                    _yat.TerminalManager.CurrentTerminal.Output.Error($"Command {results[i]} already exists.");
                     break;
                 case ECommandAdditionStatus.Success:
                     break;

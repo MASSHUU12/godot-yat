@@ -1,3 +1,4 @@
+using Example;
 using Godot;
 using YAT.Helpers;
 
@@ -17,18 +18,16 @@ public partial class TerminalManager : Node
 
     public override void _Ready()
     {
-        GameTerminal = GD.Load<PackedScene>("uid://dsyqv187j7w76").Instantiate<GameTerminal>();
+        _yat = GetNode<YAT>("/root/YAT");
+
+        GameTerminal = GetNode<GameTerminal>("%GameTerminal");
+        GameTerminal.Visible = false;
         GameTerminal.TerminalSwitcher.CurrentTerminalChanged += (terminal) =>
         {
             CurrentTerminal = terminal;
         };
 
-        _yat = GetNode<YAT>("/root/YAT");
-        _yat.Ready += () =>
-        {
-            AddChild(GameTerminal);
-            GameTerminal.Visible = false;
-        };
+        CurrentTerminal = GameTerminal.TerminalSwitcher.CurrentTerminal;
     }
 
     public override void _UnhandledInput(InputEvent @event)
