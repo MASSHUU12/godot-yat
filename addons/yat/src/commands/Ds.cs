@@ -14,14 +14,18 @@ namespace YAT.Commands;
 [Option("--interval", "float(0.05:5)", "Update interval.", 0f)]
 public sealed class Ds : ICommand
 {
+    private static DebugScreen? _debug;
+
     public CommandResult Execute(CommandData data)
     {
         var h = (bool)data.Options["-h"];
         var i = ((object[])data.Options["-i"]).Cast<string>().ToArray();
         var interval = (float)data.Options["--interval"];
 
-        data.Yat.DebugScreen.UpdateInterval = interval == 0f
-            ? data.Yat.DebugScreen.DefaultUpdateInterval
+        _debug ??= data.Yat.GetTree().Root.GetNode<DebugScreen>("/root/DebugScreen");
+
+        _debug.UpdateInterval = interval == 0f
+            ? _debug.DefaultUpdateInterval
             : interval;
 
         if (h)
@@ -32,11 +36,11 @@ public sealed class Ds : ICommand
 
         if (i.Contains("all"))
         {
-            data.Yat.DebugScreen.RunAll();
+            _debug.RunAll();
         }
         else
         {
-            data.Yat.DebugScreen.RunSelected(i);
+            _debug.RunSelected(i);
         }
 
         return ICommand.Success();
