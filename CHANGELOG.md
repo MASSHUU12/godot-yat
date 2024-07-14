@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Moved CurrentTerminal property from YAT to TerminalManager.
 - Setter of CurrentTerminal in TerminalSwitcher has been made private.
+- Moved DebugScreen to separate autoload.
 
 ### Removed
 

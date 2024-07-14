@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dhbvghhlqawa4"]
+[gd_scene load_steps=9 format=3 uid="uid://dhbvghhlqawa4"]
 
 [ext_resource type="Script" path="res://addons/yat/src/YAT.cs" id="1_683p6"]
 [ext_resource type="PackedScene" uid="uid://b8xfvdai1l0vo" path="res://addons/yat/src/classes/managers/preferences_manager/PreferencesManager.tscn" id="4_5x7ox"]
 [ext_resource type="PackedScene" uid="uid://c4oxru3g4p038" path="res://addons/yat/src/scenes/terminal_manager/TerminalManager.tscn" id="4_tgqer"]
 [ext_resource type="FontFile" uid="uid://dsa5x2qgsn705" path="res://addons/yat/assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf" id="5_3fowk"]
-[ext_resource type="PackedScene" uid="uid://3avgdpuh3nap" path="res://addons/yat/src/scenes/debug_screen/DebugScreen.tscn" id="5_hnddm"]
 [ext_resource type="PackedScene" uid="uid://r45e18qb3ekv" path="res://addons/yat/src/scenes/registered_commands/RegisteredCommands.tscn" id="5_j53i0"]
 [ext_resource type="Script" path="res://addons/yat/src/resources/preferences/YatPreferences.cs" id="6_l2tdx"]
 [ext_resource type="PackedScene" uid="uid://bkrycicg7xrko" path="res://addons/yat/src/scenes/yat_enable/YatEnable.tscn" id="7_ar0j0"]
@@ -42,5 +41,3 @@ Preferences = SubResource("Resource_x0850")
 [node name="YatEnable" parent="." instance=ExtResource("7_ar0j0")]
 
 [node name="Windows" type="Node" parent="."]
-
-[node name="DebugScreen" parent="Windows" instance=ExtResource("5_hnddm")]
