@@ -7,8 +7,6 @@ namespace YAT;
 
 public partial class YAT : Node
 {
-    [Signal] public delegate void YatReadyEventHandler();
-
 #nullable disable
     public Node Windows { get; private set; }
 
@@ -29,7 +27,5 @@ public partial class YAT : Node
         PreferencesManager = GetNode<PreferencesManager>("%PreferencesManager");
 
         Keybindings.LoadDefaultActions();
-
-        _ = EmitSignal(SignalName.YatReady);
     }
 }
