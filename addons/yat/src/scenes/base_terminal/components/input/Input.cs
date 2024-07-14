@@ -14,7 +14,7 @@ public partial class Input : LineEdit
     public override void _Ready()
     {
         _yat = GetNode<YAT>("/root/YAT");
-        _yat.YatReady += () =>
+        _yat.Ready += () =>
         {
             _yat.TerminalManager.TerminalOpened += () =>
             {

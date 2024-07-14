@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- Moved CurrentTerminal property from YAT to TerminalManager.
+- Setter of CurrentTerminal in TerminalSwitcher has been made private.
+
+### Removed
+
+- YatReady signal.
+
 ## [1.30.0-beta 2024-07-11]
 
 ### Added

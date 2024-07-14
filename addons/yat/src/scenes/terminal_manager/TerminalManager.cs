@@ -10,20 +10,24 @@ public partial class TerminalManager : Node
 
 #nullable disable
     public GameTerminal GameTerminal;
+    public BaseTerminal CurrentTerminal { get; private set; }
 
     private YAT _yat;
 #nullable restore
 
     public override void _Ready()
     {
-        GameTerminal = GD.Load<PackedScene>("uid://dsyqv187j7w76").Instantiate<GameTerminal>();
-
         _yat = GetNode<YAT>("/root/YAT");
-        _yat.Ready += () =>
+
+        GameTerminal = GetNode<GameTerminal>("%GameTerminal");
+        GameTerminal.Visible = false;
+        GameTerminal.CloseRequested += CloseTerminal;
+        GameTerminal.TerminalSwitcher.CurrentTerminalChanged += (terminal) =>
         {
-            AddChild(GameTerminal);
-            GameTerminal.Visible = false;
+            CurrentTerminal = terminal;
         };
+
+        CurrentTerminal = GameTerminal.TerminalSwitcher.CurrentTerminal;
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -55,7 +59,7 @@ public partial class TerminalManager : Node
     {
         GameTerminal.Visible = true;
         // 'Prevents' writing to the input when the terminal is toggled
-        _yat.CurrentTerminal.Input.Clear();
+        CurrentTerminal.Input.Clear();
 
         _ = EmitSignal(SignalName.TerminalOpened);
     }

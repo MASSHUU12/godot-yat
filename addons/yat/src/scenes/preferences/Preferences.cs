@@ -45,7 +45,7 @@ public partial class Preferences : YatWindow
         _restoreDefaults.Pressed += () =>
         {
             _yat.PreferencesManager.RestoreDefaults();
-            _yat.CurrentTerminal.Print(
+            _yat.TerminalManager.CurrentTerminal.Print(
                 "Preferences restored to default values.",
                 EPrintType.Success
             );
@@ -61,7 +61,7 @@ public partial class Preferences : YatWindow
         UpdatePreferences();
         bool status = _yat.PreferencesManager.Save();
 
-        _yat.CurrentTerminal.Print(
+        _yat.TerminalManager.CurrentTerminal.Print(
             status
                 ? "Preferences saved successfully."
                 : "Failed to save preferences.",
@@ -75,7 +75,7 @@ public partial class Preferences : YatWindow
     {
         bool status = _yat.PreferencesManager.Load();
 
-        _yat.CurrentTerminal.Print(
+        _yat.TerminalManager.CurrentTerminal.Print(
             status
                 ? "Preferences loaded successfully."
                 : "Failed to load preferences.",
@@ -95,7 +95,7 @@ public partial class Preferences : YatWindow
             return true;
         });
 
-        _yat.CurrentTerminal.Print("Preferences updated successfully.", EPrintType.Success);
+        _yat.TerminalManager.CurrentTerminal.Print("Preferences updated successfully.", EPrintType.Success);
         _ = _yat.PreferencesManager.EmitSignal(
             nameof(_yat.PreferencesManager.PreferencesUpdated),
             _yat.PreferencesManager.Preferences

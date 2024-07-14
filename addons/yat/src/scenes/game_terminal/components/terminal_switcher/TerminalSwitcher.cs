@@ -14,7 +14,7 @@ public partial class TerminalSwitcher : PanelContainer
 #nullable disable
     public const ushort MAX_TERMINAL_INSTANCES = 5;
     public List<BaseTerminal> TerminalInstances = new();
-    public BaseTerminal CurrentTerminal;
+    public BaseTerminal CurrentTerminal { get; private set; }
 
     private YAT _yat;
     private Button _add;
@@ -36,8 +36,6 @@ public partial class TerminalSwitcher : PanelContainer
 
         _instancesContainer = GetNode<PanelContainer>("%InstancesContainer");
         _initialTerminal = GetNode<BaseTerminal>("%BaseTerminal");
-
-        _yat.CurrentTerminal = _initialTerminal;
 
         TerminalInstances.Add(_initialTerminal);
         CurrentTerminal = _initialTerminal;

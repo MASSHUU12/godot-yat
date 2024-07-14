@@ -23,8 +23,6 @@ public partial class GameTerminal : YatWindow
         CurrentTerminal.PositionResetRequested += ResetPosition;
         CurrentTerminal.SizeResetRequested += () => Size = InitialSize;
 
-        CloseRequested += _yat.TerminalManager.CloseTerminal;
-
 #if GODOT4_3_OR_GREATER
         ContextMenu.AddSubmenuNodeItem(
             "QuickCommands",
