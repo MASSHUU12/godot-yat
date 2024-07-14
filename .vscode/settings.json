@@ -10,6 +10,7 @@
 	"dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
 	"dotnet.defaultSolution": "godot-interaction.sln",
 	"cSpell.words": [
+		"autoload",
 		"Confirma",
 		"Parallelizable"
 	],
