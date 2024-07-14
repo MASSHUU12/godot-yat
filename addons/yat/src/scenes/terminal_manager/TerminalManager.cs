@@ -1,4 +1,3 @@
-using Example;
 using Godot;
 using YAT.Helpers;
 
@@ -22,6 +21,7 @@ public partial class TerminalManager : Node
 
         GameTerminal = GetNode<GameTerminal>("%GameTerminal");
         GameTerminal.Visible = false;
+        GameTerminal.CloseRequested += CloseTerminal;
         GameTerminal.TerminalSwitcher.CurrentTerminalChanged += (terminal) =>
         {
             CurrentTerminal = terminal;
