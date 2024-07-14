@@ -9,9 +9,7 @@ public partial class YAT : Node
 {
 #nullable disable
     public Node Windows { get; private set; }
-
     public YatEnable YatEnable { get; private set; }
-    public DebugScreen DebugScreen { get; private set; }
     public RegisteredCommands Commands { get; private set; }
     public TerminalManager TerminalManager { get; private set; }
     public PreferencesManager PreferencesManager { get; private set; }
@@ -21,7 +19,6 @@ public partial class YAT : Node
     {
         Windows = GetNode<Node>("./Windows");
         YatEnable = GetNode<YatEnable>("./YatEnable");
-        DebugScreen = GetNode<DebugScreen>("./Windows/DebugScreen");
         Commands = GetNode<RegisteredCommands>("./RegisteredCommands");
         TerminalManager = GetNode<TerminalManager>("./TerminalManager");
         PreferencesManager = GetNode<PreferencesManager>("%PreferencesManager");
