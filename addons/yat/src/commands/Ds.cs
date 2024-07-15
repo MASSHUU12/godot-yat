@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text;
 using YAT.Attributes;
@@ -48,19 +49,17 @@ public sealed class Ds : ICommand
 
     private static void Help(BaseTerminal terminal)
     {
-        StringBuilder message = new();
+        StringBuilder message = new("Registered debug items:\n");
 
-        _ = message.AppendLine("Registered items:");
-
-        foreach (var item in DebugScreen.registeredItems.Values.SelectMany(x => x))
+        foreach (var (uid, type) in DebugScreen.registeredItems.Values.SelectMany(x => x))
         {
+            var title = type.GetAttribute<TitleAttribute>()?.Title ?? type.Name;
             _ = message.AppendFormat(
-                    "- [b]{0}[/b] ({1}): {2}",
-                    item.Item2.GetAttribute<TitleAttribute>()?.Title ?? item.Item2.Name,
-                    item.Item2.Name,
-                    item.Item1
-                )
-                .AppendLine();
+                "- [b]{0}[/b] ({1}): {2}\n",
+                title,
+                type.Name == title ? string.Empty : type.Name,
+                uid
+            );
         }
 
         terminal.Print(message);
