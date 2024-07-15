@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text;
 using YAT.Attributes;
@@ -9,17 +10,17 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("ds", "Displays items in the debug screen.")]
+[Argument("screens", "stop|all|string", "Debug screen/s to display.")]
 [Option("-h", "bool", "Displays this help message.")]
-[Option("-i", "string...", "Items to display.", new string[] { })]
-[Option("--interval", "float(0.05:5)", "Update interval.", 0f)]
+[Option("--interval", "float(0.05:)", "Update interval.", 0f)]
 public sealed class Ds : ICommand
 {
     private static DebugScreen? _debug;
 
     public CommandResult Execute(CommandData data)
     {
-        var h = (bool)data.Options["-h"];
-        var i = ((object[])data.Options["-i"]).Cast<string>().ToArray();
+        var showHelp = (bool)data.Options["-h"];
+        var screens = (string)data.Arguments["screens"];
         var interval = (float)data.Options["--interval"];
 
         _debug ??= data.Yat.GetTree().Root.GetNode<DebugScreen>("/root/DebugScreen");
@@ -28,41 +29,42 @@ public sealed class Ds : ICommand
             ? _debug.DefaultUpdateInterval
             : interval;
 
-        if (h)
+        if (showHelp)
         {
-            Help(data.Terminal);
-            return ICommand.Success();
+            return ICommand.Success(Help());
         }
 
-        if (i.Contains("all"))
+        switch (screens.ToLower())
         {
-            _debug.RunAll();
-        }
-        else
-        {
-            _debug.RunSelected(i);
+            case "all":
+                _debug.RunAll();
+                break;
+            case "stop":
+                _debug.RunSelected();
+                break;
+            default:
+                _debug.RunSelected(screens.Split(",", StringSplitOptions.TrimEntries));
+                break;
         }
 
         return ICommand.Success();
     }
 
-    private static void Help(BaseTerminal terminal)
+    private static string Help()
     {
-        StringBuilder message = new();
+        StringBuilder message = new("Registered debug items:\n");
 
-        _ = message.AppendLine("Registered items:");
-
-        foreach (var item in DebugScreen.registeredItems.Values.SelectMany(x => x))
+        foreach (var (uid, type) in DebugScreen.registeredItems.Values.SelectMany(x => x))
         {
+            var title = type.GetAttribute<TitleAttribute>()?.Title ?? type.Name;
             _ = message.AppendFormat(
-                    "- [b]{0}[/b] ({1}): {2}",
-                    item.Item2.GetAttribute<TitleAttribute>()?.Title ?? item.Item2.Name,
-                    item.Item2.Name,
-                    item.Item1
-                )
-                .AppendLine();
+                "- [b]{0}[/b] ({1}): {2}\n",
+                title,
+                type.Name == title ? string.Empty : type.Name,
+                uid
+            );
         }
 
-        terminal.Print(message);
+        return message.ToString();
     }
 }
