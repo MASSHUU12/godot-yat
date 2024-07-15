@@ -10,17 +10,17 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("ds", "Displays items in the debug screen.")]
+[Argument("screens", "stop|all|string", "Debug screen/s to display.")]
 [Option("-h", "bool", "Displays this help message.")]
-[Option("-i", "string...", "Items to display.", new string[] { })]
-[Option("--interval", "float(0.05:5)", "Update interval.", 0f)]
+[Option("--interval", "float(0.05:)", "Update interval.", 0f)]
 public sealed class Ds : ICommand
 {
     private static DebugScreen? _debug;
 
     public CommandResult Execute(CommandData data)
     {
-        var h = (bool)data.Options["-h"];
-        var i = ((object[])data.Options["-i"]).Cast<string>().ToArray();
+        var showHelp = (bool)data.Options["-h"];
+        var screens = (string)data.Arguments["screens"];
         var interval = (float)data.Options["--interval"];
 
         _debug ??= data.Yat.GetTree().Root.GetNode<DebugScreen>("/root/DebugScreen");
@@ -29,25 +29,28 @@ public sealed class Ds : ICommand
             ? _debug.DefaultUpdateInterval
             : interval;
 
-        if (h)
+        if (showHelp)
         {
-            Help(data.Terminal);
-            return ICommand.Success();
+            return ICommand.Success(Help());
         }
 
-        if (i.Contains("all"))
+        switch (screens.ToLower())
         {
-            _debug.RunAll();
-        }
-        else
-        {
-            _debug.RunSelected(i);
+            case "all":
+                _debug.RunAll();
+                break;
+            case "stop":
+                _debug.RunSelected();
+                break;
+            default:
+                _debug.RunSelected(screens.Split(",", StringSplitOptions.TrimEntries));
+                break;
         }
 
         return ICommand.Success();
     }
 
-    private static void Help(BaseTerminal terminal)
+    private static string Help()
     {
         StringBuilder message = new("Registered debug items:\n");
 
@@ -62,6 +65,6 @@ public sealed class Ds : ICommand
             );
         }
 
-        terminal.Print(message);
+        return message.ToString();
     }
 }
