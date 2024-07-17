@@ -84,7 +84,7 @@ public partial interface ICommand
             return string.Format(
                 "[b]Usage[/b]: {0} {1}",
                 command.Name,
-                arguments?.Length > 0
+                arguments is not null && arguments.Any()
                     ? string.Join(' ', arguments.Select(arg => $"[i]{arg.Name}[/i]"))
                     : string.Empty
             );
@@ -122,7 +122,7 @@ public partial interface ICommand
     {
         var arguments = Reflection.GetAttributes<ArgumentAttribute>(this);
 
-        if (arguments is null || arguments.Length == 0)
+        if (arguments is null || !arguments.Any())
         {
             return new("\nThis command does not have any arguments.");
         }
@@ -145,7 +145,7 @@ public partial interface ICommand
     {
         var options = Reflection.GetAttributes<OptionAttribute>(this);
 
-        if (options is null || options.Length == 0)
+        if (options is null || !options.Any())
         {
             return new("\nThis command does not have any options.");
         }

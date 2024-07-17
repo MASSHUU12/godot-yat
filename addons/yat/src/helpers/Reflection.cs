@@ -24,7 +24,7 @@ public static class Reflection
             : attribute;
     }
 
-    public static T[]? GetAttributes<T>(this object obj) where T : Attribute
+    public static IEnumerable<T>? GetAttributes<T>(this object obj) where T : Attribute
     {
         return Attribute.GetCustomAttributes(obj.GetType(), typeof(T))
             is not T[] attributes

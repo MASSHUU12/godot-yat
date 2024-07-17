@@ -84,19 +84,19 @@ public static class ReflectionTest
     [TestCase]
     public static void GetAttribute_AttributesPresent()
     {
-        ArgumentAttribute[]? attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
+        IEnumerable<ArgumentAttribute>? attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
 
         _ = attributes.ConfirmNotNull();
-        _ = (attributes?.Length.ConfirmEqual(3));
-        _ = (attributes?[0].Name.ConfirmEqual("arg1"));
-        _ = (attributes?[1].Name.ToString().ConfirmEqual("arg3"));
-        _ = (attributes?[2].Name.ToString().ConfirmEqual("arg3"));
+        _ = (attributes?.Count().ConfirmEqual(3));
+        _ = (attributes?.ElementAt(0).Name.ConfirmEqual("arg1"));
+        _ = (attributes?.ElementAt(1).Name.ToString().ConfirmEqual("arg3"));
+        _ = (attributes?.ElementAt(2).Name.ToString().ConfirmEqual("arg3"));
     }
 
     [TestCase]
     public static void GetAttribute_AttributesNotPresent()
     {
-        OptionAttribute[]? attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
+        IEnumerable<OptionAttribute>? attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
 
         _ = (attributes?.ConfirmEmpty());
     }
