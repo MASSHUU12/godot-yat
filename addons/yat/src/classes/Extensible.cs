@@ -15,9 +15,7 @@ public partial class Extensible : Node
 
     public static bool RegisterExtension(StringName commandName, Type extension)
     {
-        if (string.IsNullOrEmpty(commandName) ||
-            !Reflection.HasInterface(extension, nameof(IExtension))
-        )
+        if (string.IsNullOrEmpty(commandName) || !Reflection.HasInterface<IExtension>(extension))
         {
             return false;
         }
