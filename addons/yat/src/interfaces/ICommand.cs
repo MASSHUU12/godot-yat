@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,54 +14,54 @@ public partial interface ICommand
 {
     public CommandResult Execute(CommandData data);
 
-    public static CommandResult Success(string message = "")
+    public static CommandResult Success(string? message = null)
     {
-        return new(ECommandResult.Success, message);
+        return new(ECommandResult.Success, message ?? string.Empty);
     }
 
-    public static CommandResult Failure(string message = "")
+    public static CommandResult Failure(string? message = null)
     {
-        return new(ECommandResult.Failure, message);
+        return new(ECommandResult.Failure, message ?? string.Empty);
     }
 
-    public static CommandResult InvalidArguments(string message = "")
+    public static CommandResult InvalidArguments(string? message = null)
     {
-        return new(ECommandResult.InvalidArguments, message);
+        return new(ECommandResult.InvalidArguments, message ?? string.Empty);
     }
 
-    public static CommandResult InvalidCommand(string message = "")
+    public static CommandResult InvalidCommand(string? message = null)
     {
-        return new(ECommandResult.InvalidCommand, message);
+        return new(ECommandResult.InvalidCommand, message ?? string.Empty);
     }
 
-    public static CommandResult InvalidPermissions(string message = "")
+    public static CommandResult InvalidPermissions(string? message = null)
     {
-        return new(ECommandResult.InvalidPermissions, message);
+        return new(ECommandResult.InvalidPermissions, message ?? string.Empty);
     }
 
-    public static CommandResult InvalidState(string message = "")
+    public static CommandResult InvalidState(string? message = null)
     {
-        return new(ECommandResult.InvalidState, message);
+        return new(ECommandResult.InvalidState, message ?? string.Empty);
     }
 
-    public static CommandResult NotImplemented(string message = "")
+    public static CommandResult NotImplemented(string? message = null)
     {
-        return new(ECommandResult.NotImplemented, message);
+        return new(ECommandResult.NotImplemented, message ?? string.Empty);
     }
 
-    public static CommandResult UnknownCommand(string message = "")
+    public static CommandResult UnknownCommand(string? message = null)
     {
-        return new(ECommandResult.UnknownCommand, message);
+        return new(ECommandResult.UnknownCommand, message ?? string.Empty);
     }
 
-    public static CommandResult UnknownError(string message = "")
+    public static CommandResult UnknownError(string? message = null)
     {
-        return new(ECommandResult.UnknownError, message);
+        return new(ECommandResult.UnknownError, message ?? string.Empty);
     }
 
-    public static CommandResult Ok(string message = "")
+    public static CommandResult Ok(string? message = null)
     {
-        return new(ECommandResult.Ok, message);
+        return new(ECommandResult.Ok, message ?? string.Empty);
     }
 
     public virtual StringBuilder GenerateUsageInformation()
@@ -118,50 +119,35 @@ public partial interface ICommand
         return sb;
     }
 
-    public virtual StringBuilder GenerateArgumentsManual()
+    public virtual StringBuilder GenerateManual<T>(string @for) where T : Attribute
     {
-        var arguments = Reflection.GetAttributes<ArgumentAttribute>(this);
+        StringBuilder sb = new(
+            $"[p align=center][font_size=22]{@for}[/font_size][/p]\n"
+        );
+        IEnumerable<T>? attributes = Reflection.GetAttributes<T>(this);
 
-        if (arguments is null || !arguments.Any())
+        if (attributes is null || !attributes.Any())
         {
-            return new("\nThis command does not have any arguments.");
+            _ = sb.AppendLine("\nThis command does not have any.");
+            return sb;
         }
 
-        StringBuilder sb = new();
-
-        _ = sb.AppendLine("[p align=center][font_size=18]Arguments[/font_size][/p]");
-
-        foreach (ArgumentAttribute arg in arguments)
+        foreach (T attribute in attributes)
         {
-            string types = string.Join(" | ", arg.Types.Select(t => t.Type));
-
-            _ = sb.AppendLine($"[b]{arg.Name}[/b]: {types} - {arg.Description}");
+            _ = sb.AppendLine(attribute.ToString());
         }
 
         return sb;
     }
 
+    public virtual StringBuilder GenerateArgumentsManual()
+    {
+        return GenerateManual<ArgumentAttribute>("Arguments");
+    }
+
     public virtual StringBuilder GenerateOptionsManual()
     {
-        var options = Reflection.GetAttributes<OptionAttribute>(this);
-
-        if (options is null || !options.Any())
-        {
-            return new("\nThis command does not have any options.");
-        }
-
-        StringBuilder sb = new();
-
-        _ = sb.AppendLine("[p align=center][font_size=18]Options[/font_size][/p]");
-
-        foreach (OptionAttribute opt in options)
-        {
-            string types = string.Join(" | ", opt.Types.Select(t => t.Type));
-
-            _ = sb.AppendLine($"[b]{opt.Name}[/b]: {types} - {opt.Description}");
-        }
-
-        return sb;
+        return GenerateManual<OptionAttribute>("Options");
     }
 
     public virtual StringBuilder GenerateSignalsManual()
