@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Override of 'ToString' method for Argument & Option attributes.
+- Virtual 'GenerateManual' method to ICommand interface.
+
 ### Changed
 
 - Moved CurrentTerminal property from YAT to TerminalManager.
@@ -11,6 +16,12 @@ All notable changes to this project will be documented in this file.
 - Moved DebugScreen to separate autoload.
 - 'ds' command have been rewritten.
 - Removed upper limit for update interval for 'ds' command.
+- 'Reflection.GetEvents' now returns 'IEnumerable<EventInfo>' instead of 'EventInfo[]'.
+- 'Reflection.GetAttributes<T>' now returns 'IEnumerable<T>?' instead of 'T[]?'.
+- 'Success', 'Failure', 'InvalidArguments', 'InvalidCommand',
+  'InvalidPermissions', 'InvalidState', 'NotImplemented', 'UnknownCommand',
+  'UnknownError', and 'Ok' methods in ICommand interface
+  now have null as default value for 'message' argument.
 
 ### Removed
 
