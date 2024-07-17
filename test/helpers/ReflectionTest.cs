@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Confirma.Attributes;
 using Confirma.Extensions;
@@ -47,16 +50,16 @@ public static class ReflectionTest
         );
 
         _ = events.ConfirmNotNull();
-        _ = events.Length.ConfirmIsPositive();
+        _ = events.Count().ConfirmIsPositive();
     }
 
     [TestCase]
     public static void GetEvents_NoEvents()
     {
-        EventInfo[] events = Reflection.GetEvents(new TestClass());
+        IEnumerable<EventInfo> events = Reflection.GetEvents(new TestClass());
 
         _ = events.ConfirmNotNull();
-        _ = events.Length.ConfirmEqual(0);
+        _ = events.Any().ConfirmFalse();
     }
     #endregion GetEvents
 
@@ -81,19 +84,19 @@ public static class ReflectionTest
     [TestCase]
     public static void GetAttribute_AttributesPresent()
     {
-        ArgumentAttribute[]? attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
+        IEnumerable<ArgumentAttribute>? attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
 
         _ = attributes.ConfirmNotNull();
-        _ = (attributes?.Length.ConfirmEqual(3));
-        _ = (attributes?[0].Name.ConfirmEqual("arg1"));
-        _ = (attributes?[1].Name.ToString().ConfirmEqual("arg3"));
-        _ = (attributes?[2].Name.ToString().ConfirmEqual("arg3"));
+        _ = (attributes?.Count().ConfirmEqual(3));
+        _ = (attributes?.ElementAt(0).Name.ConfirmEqual("arg1"));
+        _ = (attributes?.ElementAt(1).Name.ToString().ConfirmEqual("arg3"));
+        _ = (attributes?.ElementAt(2).Name.ToString().ConfirmEqual("arg3"));
     }
 
     [TestCase]
     public static void GetAttribute_AttributesNotPresent()
     {
-        OptionAttribute[]? attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
+        IEnumerable<OptionAttribute>? attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
 
         _ = (attributes?.ConfirmEmpty());
     }

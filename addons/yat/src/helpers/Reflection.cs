@@ -1,12 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
-using Godot;
 
 namespace YAT.Helpers;
 
 public static class Reflection
 {
-    public static EventInfo[] GetEvents(this object obj, BindingFlags bindingFlags = BindingFlags.Default)
+    public static IEnumerable<EventInfo> GetEvents(
+        this object obj,
+        BindingFlags bindingFlags = BindingFlags.Default
+    )
     {
         Type type = obj.GetType();
 
@@ -21,7 +24,7 @@ public static class Reflection
             : attribute;
     }
 
-    public static T[]? GetAttributes<T>(this object obj) where T : Attribute
+    public static IEnumerable<T>? GetAttributes<T>(this object obj) where T : Attribute
     {
         return Attribute.GetCustomAttributes(obj.GetType(), typeof(T))
             is not T[] attributes
@@ -39,7 +42,7 @@ public static class Reflection
         return obj.GetType().GetInterface(typeof(T).FullName ?? string.Empty, true) is not null;
     }
 
-    public static bool HasInterface(Type type, StringName interfaceName)
+    public static bool HasInterface(this Type type, string interfaceName)
     {
         return type.GetInterface(interfaceName, true) is not null;
     }
