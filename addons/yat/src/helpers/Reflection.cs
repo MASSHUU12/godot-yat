@@ -1,11 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace YAT.Helpers;
 
 public static class Reflection
 {
-    public static EventInfo[] GetEvents(this object obj, BindingFlags bindingFlags = BindingFlags.Default)
+    public static IEnumerable<EventInfo> GetEvents(
+        this object obj,
+        BindingFlags bindingFlags = BindingFlags.Default
+    )
     {
         Type type = obj.GetType();
 

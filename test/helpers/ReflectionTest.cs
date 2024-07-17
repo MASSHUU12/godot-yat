@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Confirma.Attributes;
 using Confirma.Extensions;
@@ -47,16 +50,16 @@ public static class ReflectionTest
         );
 
         _ = events.ConfirmNotNull();
-        _ = events.Length.ConfirmIsPositive();
+        _ = events.Count().ConfirmIsPositive();
     }
 
     [TestCase]
     public static void GetEvents_NoEvents()
     {
-        EventInfo[] events = Reflection.GetEvents(new TestClass());
+        IEnumerable<EventInfo> events = Reflection.GetEvents(new TestClass());
 
         _ = events.ConfirmNotNull();
-        _ = events.Length.ConfirmEqual(0);
+        _ = events.Any().ConfirmFalse();
     }
     #endregion GetEvents
 

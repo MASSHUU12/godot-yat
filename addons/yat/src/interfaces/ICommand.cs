@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -165,14 +166,14 @@ public partial interface ICommand
 
     public virtual StringBuilder GenerateSignalsManual()
     {
-        EventInfo[] signals = Reflection.GetEvents(
+        IEnumerable<EventInfo> signals = Reflection.GetEvents(
             this,
             BindingFlags.DeclaredOnly
             | BindingFlags.Instance
             | BindingFlags.Public
         );
 
-        if (signals.Length == 0)
+        if (!signals.Any())
         {
             return new("\nThis command does not have any signals.");
         }
