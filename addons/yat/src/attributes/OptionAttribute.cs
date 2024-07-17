@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace YAT.Attributes;
 
@@ -11,5 +12,12 @@ public sealed class OptionAttribute : CommandInputAttribute
     : base(name, type, description)
     {
         DefaultValue = defaultValue;
+    }
+
+    public override string ToString()
+    {
+        string types = string.Join(" | ", Types.Select(t => t.Type));
+
+        return $"[b]{Name}[/b]: {types} - {Description}";
     }
 }
