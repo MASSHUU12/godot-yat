@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using Godot;
 
 namespace YAT.Helpers;
 
@@ -39,7 +38,7 @@ public static class Reflection
         return obj.GetType().GetInterface(typeof(T).FullName ?? string.Empty, true) is not null;
     }
 
-    public static bool HasInterface(Type type, StringName interfaceName)
+    public static bool HasInterface(this Type type, string interfaceName)
     {
         return type.GetInterface(interfaceName, true) is not null;
     }
