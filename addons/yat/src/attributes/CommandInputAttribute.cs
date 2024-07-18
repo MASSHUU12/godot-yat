@@ -16,6 +16,9 @@ public class CommandInputAttribute : Attribute
         Name = name;
         Description = description;
 
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException($"{nameof(name)} cannot be empty.", nameof(name));
+
         if (string.IsNullOrEmpty(type))
             throw new ArgumentNullException(Messages.InvalidCommandInputType(type, name));
 

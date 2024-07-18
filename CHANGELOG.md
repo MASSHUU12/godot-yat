@@ -27,6 +27,10 @@ All notable changes to this project will be documented in this file.
 
 - YatReady signal.
 
+### Fixed
+
+- Option and argument names consisting of an empty string are considered valid.
+
 ## [1.30.0-beta 2024-07-11]
 
 ### Added
