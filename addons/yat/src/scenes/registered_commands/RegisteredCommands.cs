@@ -172,6 +172,7 @@ public partial class RegisteredCommands : Node
             typeof(Timescale),
             typeof(TraceRoute),
             typeof(ToggleAudio),
+            typeof(CheckUpdate),
             typeof(QuickCommands),
             typeof(Commands.Version),
             typeof(Commands.Preferences),
