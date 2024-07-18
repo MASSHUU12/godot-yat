@@ -1,37 +1,35 @@
 #if TOOLS
 using Godot;
 
-namespace YAT
+namespace YAT;
+
+[Tool]
+public partial class Plugin : EditorPlugin
 {
-    [Tool]
-    public partial class Plugin : EditorPlugin
+    private string _version = string.Empty;
+
+    public override void _EnterTree()
     {
-        private string _version = string.Empty;
-        private const string _name = "YAT";
+        _version = GetPluginVersion();
 
-        public override void _EnterTree()
-        {
-            _version = GetPluginVersion();
+        AddAutoloadSingleton("YAT", GetPluginPath() + "/src/YAT.tscn");
+        AddAutoloadSingleton("DebugScreen", GetPluginPath() + "/src/scenes/debug_screen/DebugScreen.tscn");
 
-            AddAutoloadSingleton(_name, GetPluginPath() + "/src/YAT.tscn");
-            AddAutoloadSingleton("DebugScreen", GetPluginPath() + "/src/scenes/debug_screen/DebugScreen.tscn");
+        GD.Print($"{_version} loaded!");
+        GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]https://github.com/MASSHUU12/godot-yat/tree/main[/url].");
+    }
 
-            GD.Print($"{_name} {_version} loaded!");
-            GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]https://github.com/MASSHUU12/godot-yat/tree/main[/url].");
-        }
+    public override void _ExitTree()
+    {
+        RemoveAutoloadSingleton("YAT");
+        RemoveAutoloadSingleton("DebugScreen");
 
-        public override void _ExitTree()
-        {
-            RemoveAutoloadSingleton(_name);
-            RemoveAutoloadSingleton("DebugScreen");
+        GD.Print($"YAT {_version} unloaded!");
+    }
 
-            GD.Print($"{_name} {_version} unloaded!");
-        }
-
-        private string GetPluginPath()
-        {
-            return GetScript().As<Script>().ResourcePath.GetBaseDir();
-        }
+    private string GetPluginPath()
+    {
+        return GetScript().As<Script>().ResourcePath.GetBaseDir();
     }
 }
 #endif
