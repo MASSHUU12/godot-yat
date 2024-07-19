@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -24,26 +25,55 @@ public static class Release
             return (false, httpResponse.ReasonPhrase ?? string.Empty);
         }
 
-        string content = await httpResponse.Content.ReadAsStringAsync();
-        return (true, content);
+        return (true, await httpResponse.Content.ReadAsStringAsync());
     }
 
-    public static async Task<(bool, string)> CheckLatestVersionAsync()
+    public static bool ExtractLatestVersion(string content, out string version)
     {
-        (bool isSuccess, string response) = await GetTagsAsync();
+        version = string.Empty;
 
-        if (!isSuccess) return (false, response);
+        try
+        {
+            JsonDocument json = JsonDocument.Parse(content);
+            JsonElement root = json.RootElement;
 
-        JsonDocument json = JsonDocument.Parse(response);
+            if (root.GetArrayLength() == 0)
+            {
+                return false;
+            }
 
-        return (true, "");
+            if (!root[0].TryGetProperty("name", out JsonElement element))
+            {
+                return false;
+            }
+
+            version = element.GetString() ?? string.Empty;
+
+            if (string.IsNullOrEmpty(version))
+            {
+                return false;
+            }
+        }
+        catch (Exception e) when (e is JsonException or ArgumentException)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public static (bool, string) CheckLatestVersion()
     {
-        Task<(bool, string)> task = Task.Run(CheckLatestVersionAsync);
+        Task<(bool, string)> task = Task.Run(GetTagsAsync);
         task.Wait();
 
-        return task.Result;
+        (bool isSuccess, string content) = task.Result;
+
+        if (!isSuccess)
+        {
+            return (false, content);
+        }
+
+        return (ExtractLatestVersion(content, out string version), version);
     }
 }
