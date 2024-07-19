@@ -465,4 +465,68 @@ public static class SemanticVersionTest
         _ = Confirm.IsFalse(v2 < v1);
     }
     #endregion
+
+    #region Equals
+    [TestCase]
+    public static void Equals_SameObject_ReturnsTrue()
+    {
+        SemanticVersion version = new(1, 2, 3);
+
+        _ = version.Equals(version).ConfirmTrue();
+    }
+
+    [TestCase]
+    public static void Equals_SameValues_ReturnsTrue()
+    {
+        SemanticVersion version1 = new(1, 2, 3);
+        SemanticVersion version2 = new(1, 2, 3);
+
+        _ = version1.Equals(version2).ConfirmTrue();
+    }
+
+    [TestCase]
+    public static void Equals_DifferentValues_ReturnsFalse()
+    {
+        SemanticVersion version1 = new(1, 2, 3);
+        SemanticVersion version2 = new(1, 2, 4);
+
+        _ = version1.Equals(version2).ConfirmFalse();
+    }
+
+    [TestCase]
+    public static void Equals_Null_ReturnsFalse()
+    {
+        SemanticVersion version = new(1, 2, 3);
+
+        _ = version.Equals(null).ConfirmFalse();
+    }
+
+    [TestCase]
+    public static void Equals_DifferentType_ReturnsFalse()
+    {
+        SemanticVersion version = new(1, 2, 3);
+
+        _ = version.Equals(new object()).ConfirmFalse();
+    }
+    #endregion
+
+    #region GetHashCode
+    [TestCase]
+    public static void GetHashCode_SameValues_ReturnsSameHashCode()
+    {
+        SemanticVersion version1 = new(1, 2, 3);
+        SemanticVersion version2 = new(1, 2, 3);
+
+        _ = version1.GetHashCode().ConfirmEqual(version2.GetHashCode());
+    }
+
+    [TestCase]
+    public static void GetHashCode_DifferentValues_ReturnsDifferentHashCode()
+    {
+        SemanticVersion version1 = new(1, 2, 3);
+        SemanticVersion version2 = new(1, 2, 4);
+
+        _ = version1.GetHashCode().ConfirmNotEqual(version2.GetHashCode());
+    }
+    #endregion
 }

@@ -211,11 +211,11 @@ public partial class SemanticVersion
         unchecked
         {
             int hash = 17;
-            hash = hash * 23 + Major.GetHashCode();
-            hash = hash * 23 + Minor.GetHashCode();
-            hash = hash * 23 + Patch.GetHashCode();
-            hash = hash * 23 + (Prerelease?.GetHashCode() ?? 0);
-            hash = hash * 23 + (BuildMetadata?.GetHashCode() ?? 0);
+            hash *= 23 + Major.GetHashCode();
+            hash *= 23 + Minor.GetHashCode();
+            hash *= 23 + Patch.GetHashCode();
+            hash *= 23 + (Prerelease?.GetHashCode() ?? 0);
+            hash *= 23 + (BuildMetadata?.GetHashCode() ?? 0);
             return hash;
         }
     }
