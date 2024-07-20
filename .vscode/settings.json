@@ -12,7 +12,8 @@
 	"cSpell.words": [
 		"autoload",
 		"Confirma",
-		"Parallelizable"
+		"Parallelizable",
+		"Zipball"
 	],
 	"markdownlint.config": {
 		// Allow html in markdown.
