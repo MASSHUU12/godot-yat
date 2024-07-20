@@ -8,6 +8,11 @@ All notable changes to this project will be documented in this file.
 
 - Override of 'ToString' method for Argument & Option attributes.
 - Virtual 'GenerateManual' method to ICommand interface.
+- SemanticVersion class.
+- Updater class.
+- Check update (cu) command.
+- '--yat' option to 'version' command.
+- Update check on YAT startup.
 
 ### Changed
 
