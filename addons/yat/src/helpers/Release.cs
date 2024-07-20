@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using YAT.Classes;
 
 namespace YAT.Helpers;
 
@@ -28,9 +29,9 @@ public static class Release
         return (true, await httpResponse.Content.ReadAsStringAsync());
     }
 
-    public static bool ExtractLatestVersion(string content, out string version)
+    public static bool TryExtractLatestVersion(string content, out SemanticVersion? version)
     {
-        version = string.Empty;
+        version = null;
 
         try
         {
@@ -47,12 +48,15 @@ public static class Release
                 return false;
             }
 
-            version = element.GetString() ?? string.Empty;
+            string versionString = element.GetString() ?? string.Empty;
+            versionString = versionString.StartsWith('v') ? versionString[1..] : versionString;
 
-            if (string.IsNullOrEmpty(version))
+            if (!SemanticVersion.TryParse(versionString, out SemanticVersion? v))
             {
                 return false;
             }
+
+            version = v!;
         }
         catch (Exception e) when (e is JsonException or ArgumentException)
         {
@@ -62,7 +66,7 @@ public static class Release
         return true;
     }
 
-    public static (bool, string) CheckLatestVersion()
+    public static (bool, SemanticVersion?) CheckLatestVersion()
     {
         Task<(bool, string)> task = Task.Run(GetTagsAsync);
         task.Wait();
@@ -71,9 +75,9 @@ public static class Release
 
         if (!isSuccess)
         {
-            return (false, content);
+            return (false, null);
         }
 
-        return (ExtractLatestVersion(content, out string version), version);
+        return (TryExtractLatestVersion(content, out SemanticVersion? version), version);
     }
 }

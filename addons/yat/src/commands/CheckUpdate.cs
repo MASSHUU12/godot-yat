@@ -1,4 +1,5 @@
 using YAT.Attributes;
+using YAT.Classes;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
@@ -11,10 +12,10 @@ public sealed class CheckUpdate : ICommand
 {
     public CommandResult Execute(CommandData _)
     {
-        (bool isSuccess, string version) = Release.CheckLatestVersion();
+        (bool isSuccess, SemanticVersion? version) = Release.CheckLatestVersion();
 
         return isSuccess
-            ? ICommand.Ok(version)
-            : ICommand.Failure(version);
+            ? ICommand.Ok(version!.ToString())
+            : ICommand.Failure("ERR");
     }
 }
