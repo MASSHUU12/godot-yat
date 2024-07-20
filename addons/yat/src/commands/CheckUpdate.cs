@@ -11,7 +11,7 @@ public sealed class CheckUpdate : ICommand
 {
     public CommandResult Execute(CommandData _)
     {
-        (bool isSuccess, ReleaseTagInfo? info) = Release.CheckLatestVersion();
+        (bool isSuccess, ReleaseTagInfo? info) = Release.GetLatestVersion();
 
         return isSuccess
             ? ICommand.Ok(info!.Version.ToString())

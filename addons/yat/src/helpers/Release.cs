@@ -91,7 +91,7 @@ public static class Release
         return true;
     }
 
-    public static (bool, ReleaseTagInfo?) CheckLatestVersion()
+    public static (bool, ReleaseTagInfo?) GetLatestVersion()
     {
         Task<(bool, string)> task = Task.Run(GetTagsAsync);
         task.Wait();
