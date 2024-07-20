@@ -20,7 +20,16 @@ public static class Release
         request.Headers.Add("Accept", "application/vnd.github+json");
         request.Headers.Add("User-Agent", "YAT");
 
-        HttpResponseMessage httpResponse = await client.SendAsync(request);
+        HttpResponseMessage httpResponse;
+
+        try
+        {
+            httpResponse = await client.SendAsync(request);
+        }
+        catch (Exception e) when (e is HttpRequestException)
+        {
+            return (false, "Unavailable");
+        }
 
         if (!httpResponse.IsSuccessStatusCode)
         {
