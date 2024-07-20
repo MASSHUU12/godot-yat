@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using YAT.Classes;
+using YAT.Types;
 
 namespace YAT.Helpers;
 
@@ -29,44 +30,68 @@ public static class Release
         return (true, await httpResponse.Content.ReadAsStringAsync());
     }
 
-    public static bool TryExtractLatestVersion(string content, out SemanticVersion? version)
+    public static bool TryExtractLatestReleaseTagInfo(JsonDocument document, out ReleaseTagInfo? tagInfo)
     {
-        version = null;
+        tagInfo = null;
 
-        try
-        {
-            JsonDocument json = JsonDocument.Parse(content);
-            JsonElement root = json.RootElement;
+        JsonElement root = document.RootElement;
+        string versionString, zipballUrl, tarballUrl, commitSha, commitUrl, nodeId;
 
-            if (root.GetArrayLength() == 0)
-            {
-                return false;
-            }
-
-            if (!root[0].TryGetProperty("name", out JsonElement element))
-            {
-                return false;
-            }
-
-            string versionString = element.GetString() ?? string.Empty;
-            versionString = versionString.StartsWith('v') ? versionString[1..] : versionString;
-
-            if (!SemanticVersion.TryParse(versionString, out SemanticVersion? v))
-            {
-                return false;
-            }
-
-            version = v!;
-        }
-        catch (Exception e) when (e is JsonException or ArgumentException)
+        if (root.GetArrayLength() == 0)
         {
             return false;
         }
 
+        JsonElement e = root[0];
+
+        if (!e.TryGetProperty("name", out JsonElement element))
+        {
+            return false;
+        }
+
+        versionString = element.GetString()!;
+        versionString = versionString.StartsWith('v') ? versionString[1..] : versionString;
+
+        if (!SemanticVersion.TryParse(versionString, out SemanticVersion? version))
+        {
+            return false;
+        }
+
+        if (!e.TryGetProperty("zipball_url", out element))
+        {
+            return false;
+        }
+
+        zipballUrl = element.GetString()!;
+
+        if (!e.TryGetProperty("tarball_url", out element))
+        {
+            return false;
+        }
+
+        tarballUrl = element.GetString()!;
+
+        if (!e.TryGetProperty("commit", out element))
+        {
+            return false;
+        }
+
+        commitSha = element.GetProperty("sha").GetString()!;
+        commitUrl = element.GetProperty("url").GetString()!;
+
+        if (!e.TryGetProperty("node_id", out element))
+        {
+            return false;
+        }
+
+        nodeId = element.GetString()!;
+
+        tagInfo = new(version!, zipballUrl, tarballUrl, commitSha, commitUrl, nodeId);
+
         return true;
     }
 
-    public static (bool, SemanticVersion?) CheckLatestVersion()
+    public static (bool, ReleaseTagInfo?) CheckLatestVersion()
     {
         Task<(bool, string)> task = Task.Run(GetTagsAsync);
         task.Wait();
@@ -78,6 +103,18 @@ public static class Release
             return (false, null);
         }
 
-        return (TryExtractLatestVersion(content, out SemanticVersion? version), version);
+        try
+        {
+            JsonDocument document = JsonDocument.Parse(content);
+
+            return (
+                TryExtractLatestReleaseTagInfo(document, out ReleaseTagInfo? info),
+                info
+            );
+        }
+        catch (Exception e) when (e is JsonException or ArgumentException)
+        {
+            return (false, null);
+        }
     }
 }
