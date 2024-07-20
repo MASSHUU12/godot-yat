@@ -284,13 +284,23 @@ public static class SemanticVersionTest
     }
     #endregion
 
+    #region ToString
     [TestCase]
-    public static void ToString_()
+    public static void ToString_WO_PrereleaseAndBuildMetadata()
+    {
+        _ = new SemanticVersion(1, 1, 2)
+            .ToString()
+            .ConfirmEqual("1.1.2");
+    }
+
+    [TestCase]
+    public static void ToString_W_PrereleaseAndBuildMetadata()
     {
         _ = new SemanticVersion(1, 1, 2, "prerelease", "meta")
             .ToString()
             .ConfirmEqual("1.1.2-prerelease+meta");
     }
+    #endregion
 
     #region EqualOperator
     [TestCase]
@@ -342,9 +352,9 @@ public static class SemanticVersionTest
     }
     #endregion
 
-    #region GreaterThan
+    #region GreaterThanOperator
     [TestCase]
-    public static void GreaterThan_MajorVersion_Different()
+    public static void GreaterThanOperator_MajorVersion_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3");
         SemanticVersion v2 = SemanticVersion.Parse("2.2.3");
@@ -354,7 +364,7 @@ public static class SemanticVersionTest
     }
 
     [TestCase]
-    public static void GreaterThan_MinorVersion_Different()
+    public static void GreaterThanOperator_MinorVersion_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3");
         SemanticVersion v2 = SemanticVersion.Parse("1.3.3");
@@ -364,7 +374,7 @@ public static class SemanticVersionTest
     }
 
     [TestCase]
-    public static void GreaterThan_PatchVersion_Different()
+    public static void GreaterThanOperator_PatchVersion_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3");
         SemanticVersion v2 = SemanticVersion.Parse("1.2.4");
@@ -374,7 +384,7 @@ public static class SemanticVersionTest
     }
 
     [TestCase]
-    public static void GreaterThan_PrereleaseVersion_Different()
+    public static void GreaterThanOperator_PrereleaseVersion_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3-alpha");
         SemanticVersion v2 = SemanticVersion.Parse("1.2.3-beta"); // !
@@ -384,7 +394,7 @@ public static class SemanticVersionTest
     }
 
     [TestCase]
-    public static void GreaterThan_BuildMetadata_Different()
+    public static void GreaterThanOperator_BuildMetadata_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3+build.123");
         SemanticVersion v2 = SemanticVersion.Parse("1.2.3+build.456");
@@ -404,9 +414,9 @@ public static class SemanticVersionTest
     }
     #endregion
 
-    #region LessThan
+    #region LessThanOperator
     [TestCase]
-    public static void LessThan_MajorVersion_Different()
+    public static void LessThanOperator_MajorVersion_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3");
         SemanticVersion v2 = SemanticVersion.Parse("2.2.3");
@@ -416,7 +426,7 @@ public static class SemanticVersionTest
     }
 
     [TestCase]
-    public static void LessThan_MinorVersion_Different()
+    public static void LessThanOperator_MinorVersion_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3");
         SemanticVersion v2 = SemanticVersion.Parse("1.3.3");
@@ -426,7 +436,7 @@ public static class SemanticVersionTest
     }
 
     [TestCase]
-    public static void LessThan_PatchVersion_Different()
+    public static void LessThanOperator_PatchVersion_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3");
         SemanticVersion v2 = SemanticVersion.Parse("1.2.4");
@@ -436,7 +446,7 @@ public static class SemanticVersionTest
     }
 
     [TestCase]
-    public static void LessThan_PrereleaseVersion_Different()
+    public static void LessThanOperator_PrereleaseVersion_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3-alpha");
         SemanticVersion v2 = SemanticVersion.Parse("1.2.3-beta");
@@ -446,7 +456,7 @@ public static class SemanticVersionTest
     }
 
     [TestCase]
-    public static void LessThan_BuildMetadata_Different()
+    public static void LessThanOperator_BuildMetadata_Different()
     {
         SemanticVersion v1 = SemanticVersion.Parse("1.2.3+build.123");
         SemanticVersion v2 = SemanticVersion.Parse("1.2.3+build.456");
@@ -527,6 +537,274 @@ public static class SemanticVersionTest
         SemanticVersion version2 = new(1, 2, 4);
 
         _ = version1.GetHashCode().ConfirmNotEqual(version2.GetHashCode());
+    }
+    #endregion
+
+    #region IncrementMajor
+    [TestCase]
+    public static void IncrementMajor_Defaults_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion incremented = version.IncrementMajor();
+
+        _ = incremented.Major.ConfirmEqual(2);
+        _ = incremented.Minor.ConfirmEqual(0);
+        _ = incremented.Patch.ConfirmEqual(0);
+        _ = incremented.Prerelease.ConfirmNull();
+        _ = incremented.BuildMetadata.ConfirmNull();
+    }
+
+    [TestCase]
+    public static void IncrementMajor_WithMetadata_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion incremented = version.IncrementMajor("beta", "build002");
+
+        _ = incremented.Major.ConfirmEqual(2);
+        _ = incremented.Minor.ConfirmEqual(0);
+        _ = incremented.Patch.ConfirmEqual(0);
+        _ = incremented.Prerelease.ConfirmEqual("beta");
+        _ = incremented.BuildMetadata.ConfirmEqual("build002");
+    }
+    #endregion
+
+    #region IncrementMinor
+    [TestCase]
+    public static void IncrementMinor_Defaults_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion incremented = version.IncrementMinor();
+
+        _ = incremented.Major.ConfirmEqual(1);
+        _ = incremented.Minor.ConfirmEqual(3);
+        _ = incremented.Patch.ConfirmEqual(0);
+        _ = incremented.Prerelease.ConfirmNull();
+        _ = incremented.BuildMetadata.ConfirmNull();
+    }
+
+    [TestCase]
+    public static void IncrementMinor_WithMetadata_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion incremented = version.IncrementMinor("beta", "build002");
+
+        _ = incremented.Major.ConfirmEqual(1);
+        _ = incremented.Minor.ConfirmEqual(3);
+        _ = incremented.Patch.ConfirmEqual(0);
+        _ = incremented.Prerelease.ConfirmEqual("beta");
+        _ = incremented.BuildMetadata.ConfirmEqual("build002");
+    }
+    #endregion
+
+    #region IncrementPatch
+    [TestCase]
+    public static void IncrementPatch_Defaults_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion incremented = version.IncrementPatch();
+
+        _ = incremented.Major.ConfirmEqual(1);
+        _ = incremented.Minor.ConfirmEqual(2);
+        _ = incremented.Patch.ConfirmEqual(4);
+        _ = incremented.Prerelease.ConfirmNull();
+        _ = incremented.BuildMetadata.ConfirmNull();
+    }
+
+    [TestCase]
+    public static void IncrementPatch_WithMetadata_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion incremented = version.IncrementPatch("beta", "build002");
+
+        _ = incremented.Major.ConfirmEqual(1);
+        _ = incremented.Minor.ConfirmEqual(2);
+        _ = incremented.Patch.ConfirmEqual(4);
+        _ = incremented.Prerelease.ConfirmEqual("beta");
+        _ = incremented.BuildMetadata.ConfirmEqual("build002");
+    }
+    #endregion
+
+    #region DecrementMajor
+    [TestCase]
+    public static void DecrementMajor_Defaults_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion decremented = version.DecrementMajor();
+
+        _ = decremented.Major.ConfirmEqual(0);
+        _ = decremented.Minor.ConfirmEqual(0);
+        _ = decremented.Patch.ConfirmEqual(0);
+        _ = decremented.Prerelease.ConfirmNull();
+        _ = decremented.BuildMetadata.ConfirmNull();
+    }
+
+    [TestCase]
+    public static void DecrementMajor_WithMetadata_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion decremented = version.DecrementMajor("beta", "build002");
+
+        _ = decremented.Major.ConfirmEqual(0);
+        _ = decremented.Minor.ConfirmEqual(0);
+        _ = decremented.Patch.ConfirmEqual(0);
+        _ = decremented.Prerelease.ConfirmEqual("beta");
+        _ = decremented.BuildMetadata.ConfirmEqual("build002");
+    }
+
+    [TestCase]
+    public static void DecrementMajor_ThrowsException_IfZero()
+    {
+        SemanticVersion version = new(0, 0, 0);
+        _ = Confirm.Throws<InvalidOperationException>(() => _ = version.DecrementMajor());
+    }
+    #endregion
+
+    #region DecrementMinor
+    [TestCase]
+    public static void DecrementMinor_Defaults_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion decremented = version.DecrementMinor();
+
+        _ = decremented.Major.ConfirmEqual(1);
+        _ = decremented.Minor.ConfirmEqual(1);
+        _ = decremented.Patch.ConfirmEqual(0);
+        _ = decremented.Prerelease.ConfirmNull();
+        _ = decremented.BuildMetadata.ConfirmNull();
+    }
+
+    [TestCase]
+    public static void DecrementMinor_WithMetadata_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion decremented = version.DecrementMinor("beta", "build002");
+
+        _ = decremented.Major.ConfirmEqual(1);
+        _ = decremented.Minor.ConfirmEqual(1);
+        _ = decremented.Patch.ConfirmEqual(0);
+        _ = decremented.Prerelease.ConfirmEqual("beta");
+        _ = decremented.BuildMetadata.ConfirmEqual("build002");
+    }
+
+    [TestCase]
+    public static void DecrementMinor_ThrowsException_IfZero()
+    {
+        SemanticVersion version = new(1, 0, 0);
+        _ = Confirm.Throws<InvalidOperationException>(() => _ = version.DecrementMinor());
+    }
+    #endregion
+
+    #region DecrementPatch
+    [TestCase]
+    public static void DecrementPatch_Defaults_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion decremented = version.DecrementPatch();
+
+        _ = decremented.Major.ConfirmEqual(1);
+        _ = decremented.Minor.ConfirmEqual(2);
+        _ = decremented.Patch.ConfirmEqual(2);
+        _ = decremented.Prerelease.ConfirmNull();
+        _ = decremented.BuildMetadata.ConfirmNull();
+    }
+
+    [TestCase]
+    public static void DecrementPatch_WithMetadata_PreserveValues()
+    {
+        SemanticVersion version = new(1, 2, 3, "alpha", "build001");
+        SemanticVersion decremented = version.DecrementPatch("beta", "build002");
+
+        _ = decremented.Major.ConfirmEqual(1);
+        _ = decremented.Minor.ConfirmEqual(2);
+        _ = decremented.Patch.ConfirmEqual(2);
+        _ = decremented.Prerelease.ConfirmEqual("beta");
+        _ = decremented.BuildMetadata.ConfirmEqual("build002");
+    }
+
+    [TestCase]
+    public static void DecrementPatch_ThrowsException_IfZero()
+    {
+        SemanticVersion version = new(1, 1, 0);
+        _ = Confirm.Throws<InvalidOperationException>(() => _ = version.DecrementPatch());
+    }
+    #endregion
+
+    #region CompareTo
+    [TestCase]
+    public static void CompareTo_MajorVersionDifferent()
+    {
+        SemanticVersion version1 = new(1, 0, 0);
+        SemanticVersion version2 = new(2, 0, 0);
+
+        _ = Confirm.IsTrue(version1.CompareTo(version2) < 0);
+        _ = Confirm.IsTrue(version2.CompareTo(version1) > 0);
+    }
+
+    [TestCase]
+    public static void CompareTo_MinorVersionDifferent()
+    {
+        SemanticVersion version1 = new(1, 1, 0);
+        SemanticVersion version2 = new(1, 2, 0);
+
+        _ = Confirm.IsTrue(version1.CompareTo(version2) < 0);
+        _ = Confirm.IsTrue(version2.CompareTo(version1) > 0);
+    }
+
+    [TestCase]
+    public static void CompareTo_PatchVersionDifferent()
+    {
+        SemanticVersion version1 = new(1, 0, 1);
+        SemanticVersion version2 = new(1, 0, 2);
+
+        _ = Confirm.IsTrue(version1.CompareTo(version2) < 0);
+        _ = Confirm.IsTrue(version2.CompareTo(version1) > 0);
+    }
+
+    [TestCase]
+    public static void CompareTo_PrereleaseVersionDifferent()
+    {
+        SemanticVersion version1 = new(1, 0, 0, "alpha");
+        SemanticVersion version2 = new(1, 0, 0, "beta");
+
+        _ = Confirm.IsTrue(version1.CompareTo(version2) < 0);
+        _ = Confirm.IsTrue(version2.CompareTo(version1) > 0);
+    }
+
+    [TestCase]
+    public static void CompareTo_PrereleaseVsRelease()
+    {
+        SemanticVersion version1 = new(1, 0, 0, "alpha");
+        SemanticVersion version2 = new(1, 0, 0);
+
+        _ = Confirm.IsTrue(version1.CompareTo(version2) < 0);
+        _ = Confirm.IsTrue(version2.CompareTo(version1) > 0);
+    }
+
+    [TestCase]
+    public static void CompareTo_BuildMetadataDifferent()
+    {
+        SemanticVersion version1 = new(1, 0, 0, null, "build1");
+        SemanticVersion version2 = new(1, 0, 0, null, "build2");
+
+        _ = Confirm.IsTrue(version1.CompareTo(version2) < 0);
+        _ = Confirm.IsTrue(version2.CompareTo(version1) > 0);
+    }
+
+    [TestCase]
+    public static void CompareTo_EqualVersions()
+    {
+        SemanticVersion version1 = new(1, 0, 0, "alpha", "build1");
+        SemanticVersion version2 = new(1, 0, 0, "alpha", "build1");
+
+        _ = Confirm.IsTrue(version1.CompareTo(version2) == 0);
+    }
+
+    [TestCase]
+    public static void CompareTo_NullVersion()
+    {
+        SemanticVersion version1 = new(1, 0, 0);
+
+        _ = Confirm.IsTrue(version1.CompareTo(null) > 0);
     }
     #endregion
 }

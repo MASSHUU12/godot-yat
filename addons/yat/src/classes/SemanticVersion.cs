@@ -3,13 +3,13 @@ using System.Text.RegularExpressions;
 
 namespace YAT.Classes;
 
-public partial class SemanticVersion
+public partial class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>
 {
-    public int Major { get; private set; }
-    public int Minor { get; private set; }
-    public int Patch { get; private set; }
-    public string? Prerelease { get; private set; }
-    public string? BuildMetadata { get; private set; }
+    public int Major { get; init; }
+    public int Minor { get; init; }
+    public int Patch { get; init; }
+    public string? Prerelease { get; init; }
+    public string? BuildMetadata { get; init; }
 
     private static readonly Regex _semanticVersionRegex = SemanticVersionRegex();
 
@@ -27,35 +27,12 @@ public partial class SemanticVersion
             + (prerelease is null ? string.Empty : $"-{prerelease}")
             + (buildMetadata is null ? string.Empty : $"+{buildMetadata}");
 
-        if (!IsValid(versionString, out Match match))
+        if (!IsValid(versionString))
         {
-            string errorMessage;
-            if (!match.Groups[1].Success)
-            {
-                errorMessage = "Major version is not a valid integer.";
-            }
-            else if (!match.Groups[2].Success)
-            {
-                errorMessage = "Minor version is not a valid integer.";
-            }
-            else if (!match.Groups[3].Success)
-            {
-                errorMessage = "Patch version is not a valid integer.";
-            }
-            else if (match.Groups[4].Success)
-            {
-                errorMessage = "Prerelease version is not in the correct format. It should be a dot-separated list of identifiers.";
-            }
-            else if (match.Groups[5].Success)
-            {
-                errorMessage = "Build metadata is not in the correct format. It should be a dot-separated list of identifiers.";
-            }
-            else
-            {
-                errorMessage = "Invalid semantic version format. The format should be Major.Minor.Patch[-Prerelease][+BuildMetadata].";
-            }
-
-            throw new FormatException(errorMessage);
+            throw new FormatException(
+                "Invalid semantic version format. "
+                + "The format should be Major.Minor.Patch[-Prerelease][+BuildMetadata]."
+            );
         }
 
         Major = major;
@@ -63,6 +40,48 @@ public partial class SemanticVersion
         Patch = patch;
         Prerelease = prerelease;
         BuildMetadata = buildMetadata;
+    }
+
+    public SemanticVersion IncrementMajor(string? prerelease = null, string? buildMetadata = null)
+    {
+        return new SemanticVersion(Major + 1, 0, 0, prerelease, buildMetadata);
+    }
+
+    public SemanticVersion IncrementMinor(string? prerelease = null, string? buildMetadata = null)
+    {
+        return new SemanticVersion(Major, Minor + 1, 0, prerelease, buildMetadata);
+    }
+
+    public SemanticVersion IncrementPatch(string? prerelease = null, string? buildMetadata = null)
+    {
+        return new SemanticVersion(Major, Minor, Patch + 1, prerelease, buildMetadata);
+    }
+
+    public SemanticVersion DecrementMajor(string? prerelease = null, string? buildMetadata = null)
+    {
+        if (Major == 0)
+        {
+            throw new InvalidOperationException("Major version cannot be less than 0.");
+        }
+        return new SemanticVersion(Major - 1, 0, 0, prerelease, buildMetadata);
+    }
+
+    public SemanticVersion DecrementMinor(string? prerelease = null, string? buildMetadata = null)
+    {
+        if (Minor == 0)
+        {
+            throw new InvalidOperationException("Minor version cannot be less than 0.");
+        }
+        return new SemanticVersion(Major, Minor - 1, 0, prerelease, buildMetadata);
+    }
+
+    public SemanticVersion DecrementPatch(string? prerelease = null, string? buildMetadata = null)
+    {
+        if (Patch == 0)
+        {
+            throw new InvalidOperationException("Patch version cannot be less than 0.");
+        }
+        return new SemanticVersion(Major, Minor, Patch - 1, prerelease, buildMetadata);
     }
 
     public static bool IsValid(string versionString, out Match match)
@@ -112,84 +131,24 @@ public partial class SemanticVersion
 
     public override string ToString()
     {
-        return string.Format(
-            "{0}.{1}.{2}-{3}+{4}",
-            Major,
-            Minor,
-            Patch,
-            Prerelease,
-            BuildMetadata
-        );
+        return $"{Major}.{Minor}.{Patch}" +
+               (Prerelease is null ? string.Empty : $"-{Prerelease}") +
+               (BuildMetadata is null ? string.Empty : $"+{BuildMetadata}");
     }
 
     public static bool operator ==(SemanticVersion v1, SemanticVersion v2)
     {
-        return v1.Major == v2.Major
-            && v1.Minor == v2.Minor
-            && v1.Patch == v2.Patch
-            && v1.Prerelease == v2.Prerelease
-            && v1.BuildMetadata == v2.BuildMetadata;
+        if (ReferenceEquals(v1, v2)) return true;
+        if (v1 is null || v2 is null) return false;
+
+        return v1.Equals(v2);
     }
 
-    public static bool operator !=(SemanticVersion v1, SemanticVersion v2)
-    {
-        return !(v1 == v2);
-    }
+    public static bool operator !=(SemanticVersion v1, SemanticVersion v2) => !(v1 == v2);
 
-    public static bool operator >(SemanticVersion v1, SemanticVersion v2)
-    {
-        if (v1.Major > v2.Major) return true;
-        if (v1.Major < v2.Major) return false;
+    public static bool operator >(SemanticVersion v1, SemanticVersion v2) => v1.CompareTo(v2) > 0;
 
-        if (v1.Minor > v2.Minor) return true;
-        if (v1.Minor < v2.Minor) return false;
-
-        if (v1.Patch > v2.Patch) return true;
-        if (v1.Patch < v2.Patch) return false;
-
-        if (v1.Prerelease is not null && v2.Prerelease is null) return true;
-        if (v1.Prerelease is null && v2.Prerelease is not null) return false;
-
-        if (v1.Prerelease is not null && v2.Prerelease is not null)
-        {
-            var v1Parts = v1.Prerelease.Split('.');
-            var v2Parts = v2.Prerelease.Split('.');
-
-            for (int i = 0; i < Math.Max(v1Parts.Length, v2Parts.Length); i++)
-            {
-                string v1Part = i < v1Parts.Length ? v1Parts[i] : string.Empty;
-                string v2Part = i < v2Parts.Length ? v2Parts[i] : string.Empty;
-
-                if (int.TryParse(v1Part, out int v1NumericPart) && int.TryParse(v2Part, out int v2NumericPart))
-                {
-                    if (v1NumericPart > v2NumericPart) return true;
-                    if (v1NumericPart < v2NumericPart) return false;
-                }
-                else
-                {
-                    int compareResult = string.Compare(v1Part, v2Part, StringComparison.Ordinal);
-
-                    if (compareResult > 0) return true;
-                    if (compareResult < 0) return false;
-                }
-            }
-        }
-
-        if (v1.BuildMetadata is not null && v2.BuildMetadata is null) return true;
-        if (v1.BuildMetadata is null && v2.BuildMetadata is not null) return false;
-
-        if (v1.BuildMetadata is not null && v2.BuildMetadata is not null)
-        {
-            return string.Compare(v1.BuildMetadata, v2.BuildMetadata, StringComparison.Ordinal) > 0;
-        }
-
-        return false;
-    }
-
-    public static bool operator <(SemanticVersion v1, SemanticVersion v2)
-    {
-        return v2 > v1;
-    }
+    public static bool operator <(SemanticVersion v1, SemanticVersion v2) => v1.CompareTo(v2) < 0;
 
     public override bool Equals(object? obj)
     {
@@ -203,21 +162,82 @@ public partial class SemanticVersion
             return false;
         }
 
-        return this == (SemanticVersion)obj;
+        return Equals((SemanticVersion)obj);
+    }
+
+    public bool Equals(SemanticVersion? other)
+    {
+        if (ReferenceEquals(this, other)) return true;
+        if (other is null) return false;
+
+        return Major == other.Major &&
+               Minor == other.Minor &&
+               Patch == other.Patch &&
+               Prerelease == other.Prerelease &&
+               BuildMetadata == other.BuildMetadata;
     }
 
     public override int GetHashCode()
     {
-        unchecked
+        return HashCode.Combine(Major, Minor, Patch, Prerelease, BuildMetadata);
+    }
+
+    public int CompareTo(SemanticVersion? other)
+    {
+        if (ReferenceEquals(this, other)) return 0;
+        if (other is null) return 1;
+
+        int result = Major.CompareTo(other.Major);
+        if (result != 0) return result;
+
+        result = Minor.CompareTo(other.Minor);
+        if (result != 0) return result;
+
+        result = Patch.CompareTo(other.Patch);
+        if (result != 0) return result;
+
+        result = ComparePrerelease(Prerelease, other.Prerelease);
+        if (result != 0) return result;
+
+        return CompareBuildMetadata(BuildMetadata, other.BuildMetadata);
+    }
+
+    private static int ComparePrerelease(string? prerelease1, string? prerelease2)
+    {
+        if (prerelease1 == prerelease2) return 0;
+        if (prerelease1 is null) return 1;
+        if (prerelease2 is null) return -1;
+
+        string[] v1Parts = prerelease1.Split('.');
+        string[] v2Parts = prerelease2.Split('.');
+
+        for (int i = 0; i < Math.Max(v1Parts.Length, v2Parts.Length); i++)
         {
-            int hash = 17;
-            hash *= 23 + Major.GetHashCode();
-            hash *= 23 + Minor.GetHashCode();
-            hash *= 23 + Patch.GetHashCode();
-            hash *= 23 + (Prerelease?.GetHashCode() ?? 0);
-            hash *= 23 + (BuildMetadata?.GetHashCode() ?? 0);
-            return hash;
+            string v1Part = i < v1Parts.Length ? v1Parts[i] : string.Empty;
+            string v2Part = i < v2Parts.Length ? v2Parts[i] : string.Empty;
+
+            if (int.TryParse(v1Part, out int v1NumericPart) && int.TryParse(v2Part, out int v2NumericPart))
+            {
+                int comparison = v1NumericPart.CompareTo(v2NumericPart);
+                if (comparison != 0) return comparison;
+            }
+            else
+            {
+                int comparison = string.Compare(v1Part, v2Part, StringComparison.Ordinal);
+                if (comparison != 0) return comparison;
+            }
         }
+
+        return 0;
+    }
+
+    private static int CompareBuildMetadata(string? buildMetadata1, string? buildMetadata2)
+    {
+        if (buildMetadata1 == buildMetadata2) return 0;
+        if (buildMetadata1 is null) return -1;
+        if (buildMetadata2 is null) return 1;
+
+        return string.Compare(buildMetadata1, buildMetadata2, StringComparison.Ordinal);
     }
 
     [GeneratedRegex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$", RegexOptions.Compiled)]
