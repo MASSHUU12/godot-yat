@@ -1,4 +1,5 @@
 using Godot;
+using YAT.Helpers;
 using YAT.Types;
 
 namespace YAT.Classes;
@@ -29,5 +30,17 @@ public static class Updater
 
         _currentVersion = SemanticVersion.TryParse(version, out var v) ? v : null;
         return _currentVersion;
+    }
+
+    public static bool IsUpdateAvailable()
+    {
+        (bool isSuccess, ReleaseTagInfo? info) = Release.GetLatestVersion();
+        SemanticVersion? currentVersion = GetCurrentVersion();
+
+        if (!isSuccess || info is null || currentVersion is null) return false;
+
+        if (info.Version > currentVersion) return true;
+
+        return false;
     }
 }
