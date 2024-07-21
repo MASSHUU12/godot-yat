@@ -23,4 +23,10 @@
         <Compile Remove="script_templates/**/*.cs" />
         <Compile Remove="test/old/**/*.cs" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="roslynator.analyzers" Version="4.12.4">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+    </ItemGroup>
 </Project>
