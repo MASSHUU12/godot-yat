@@ -1,3 +1,11 @@
 {
-	"recommendations": ["neikeq.godot-csharp-vscode", "editorconfig.editorconfig", "geequlim.godot-tools"]
+    "recommendations": [
+        "neikeq.godot-csharp-vscode",
+        "editorconfig.editorconfig",
+        "geequlim.godot-tools",
+        "josefpihrt-vscode.roslynator"
+    ],
+    "unwantedRecommendations": [
+        "ms-dotnettools.csdevkit"
+    ]
 }
