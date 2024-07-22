@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Confirma.Attributes;
 using Confirma.Classes;
 using Confirma.Extensions;
@@ -91,4 +92,61 @@ public static class TextTest
     {
         _ = Text.ShortenPath(path, (ushort)length).ConfirmEqual(expected);
     }
+
+    #region WildcardToRegex
+    [TestCase]
+    public static void WildcardToRegex_SimpleWildcard()
+    {
+        string regex = Text.WildcardToRegex("abc*def");
+
+        _ = Confirm.IsTrue(Regex.IsMatch("abcdef", regex));
+        _ = Confirm.IsTrue(Regex.IsMatch("abc123def", regex));
+        _ = Confirm.IsTrue(Regex.IsMatch("abcddef", regex));
+
+        _ = Confirm.IsFalse(Regex.IsMatch(string.Empty, regex));
+        _ = Confirm.IsFalse(Regex.IsMatch("def", regex));
+    }
+
+    [TestCase]
+    public static void WildcardToRegex_QuestionMarkWildcard()
+    {
+        string regex = Text.WildcardToRegex("abc?def");
+
+        _ = Confirm.IsTrue(Regex.IsMatch("abcddef", regex));
+        _ = Confirm.IsTrue(Regex.IsMatch("abcxdef", regex));
+        _ = Confirm.IsFalse(Regex.IsMatch("abc123def", regex));
+        _ = Confirm.IsFalse(Regex.IsMatch(string.Empty, regex));
+    }
+
+    [TestCase]
+    public static void WildcardToRegex_MultipleWildcards()
+    {
+        string regex = Text.WildcardToRegex("abc*def?ghi");
+
+        _ = Confirm.IsTrue(Regex.IsMatch("abcdef1ghi", regex));
+        _ = Confirm.IsTrue(Regex.IsMatch("abc123defxghi", regex));
+        _ = Confirm.IsFalse(Regex.IsMatch("abcddefghi", regex));
+        _ = Confirm.IsFalse(Regex.IsMatch(string.Empty, regex));
+    }
+
+    [TestCase]
+    public static void WildcardToRegex_NoWildcards()
+    {
+        string regex = Text.WildcardToRegex("abcdef");
+
+        _ = Confirm.IsTrue(Regex.IsMatch("abcdef", regex));
+
+        _ = Confirm.IsFalse(Regex.IsMatch("abcddef", regex));
+        _ = Confirm.IsFalse(Regex.IsMatch(string.Empty, regex));
+    }
+
+    [TestCase]
+    public static void WildcardToRegex_EmptyWildcard()
+    {
+        string regex = Text.WildcardToRegex(string.Empty);
+
+        _ = Confirm.IsTrue(Regex.IsMatch(string.Empty, regex));
+        _ = Confirm.IsFalse(Regex.IsMatch("d", regex));
+    }
+    #endregion WildcardToRegex
 }

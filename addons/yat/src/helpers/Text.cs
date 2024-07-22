@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace YAT.Helpers;
 
@@ -174,5 +175,10 @@ public static class Text
 
         // Ensure the result does not exceed maxLength
         return output[..Math.Min(maxLength, output.Length)];
+    }
+
+    public static string WildcardToRegex(string wildcard)
+    {
+        return "^" + Regex.Escape(wildcard).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
     }
 }
