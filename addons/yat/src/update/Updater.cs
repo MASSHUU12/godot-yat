@@ -1,4 +1,7 @@
-using Godot;
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 using YAT.Classes;
 using YAT.Helpers;
 using YAT.Types;
@@ -9,11 +12,37 @@ public static class Updater
 {
     private static SemanticVersion? _currentVersion;
 
-    public static bool UpdateToVersion(ReleaseTagInfo release)
+    public static async Task<string?> DownloadZipAsync(string url)
     {
-        // EditorInterface.Singleton.PopupDialogCentered();
+        string tempFilePath = Path.Combine(Path.GetTempPath(), "yat.zip");
 
-        return true;
+        using (HttpClient client = new())
+        {
+            HttpRequestMessage request = new(HttpMethod.Get, url);
+            request.Headers.Add("Accept", "application/vnd.github+json");
+            request.Headers.Add("User-Agent", "YAT");
+
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await client.SendAsync(request);
+            }
+            catch (Exception e) when (e is HttpRequestException)
+            {
+                return null;
+            }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            await using FileStream fileStream = new(tempFilePath, FileMode.Create);
+            await response.Content.CopyToAsync(fileStream);
+        }
+
+        return tempFilePath;
     }
 
     public static SemanticVersion? GetCurrentVersion()
@@ -26,11 +55,11 @@ public static class Updater
         // Read the information from the project settings
         // because addons can be installed in various locations,
         // so it cannot be assumed that YAT will always be in the default location.
-        string yatPath = ProjectSettings.GetSetting("autoload/YAT").AsString();
+        string yatPath = Godot.ProjectSettings.GetSetting("autoload/YAT").AsString();
         string pluginConfigPath = yatPath[1..].Remove(yatPath.Length - 13) + "plugin.cfg";
 
-        ConfigFile config = new();
-        if (config.Load(pluginConfigPath) != Error.Ok)
+        Godot.ConfigFile config = new();
+        if (config.Load(pluginConfigPath) != Godot.Error.Ok)
         {
             return null;
         }
