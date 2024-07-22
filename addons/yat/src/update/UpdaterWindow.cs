@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using Godot;
 using YAT.Classes;
@@ -51,16 +52,25 @@ public partial class UpdaterWindow : Window
 
     private async Task Update()
     {
-        _output.Text += $"Downloading ZIP from {UpdateInfo.ZipballUrl}...\n";
+        _output.Text += $"Downloading a ZIP file from {UpdateInfo.ZipballUrl}...\n";
 
         string? path = await Updater.DownloadZipAsync(UpdateInfo.ZipballUrl);
 
         if (string.IsNullOrEmpty(path))
         {
-            _output.Text += "Downloading ZIP failed.\n";
+            _output.Text += "The download of the ZIP file ended with a failure.\n";
             return;
         }
 
-        _output.Text += $"Downloaded ZIP to {path}\n";
+        _output.Text += $"Downloaded ZIP file to {path}\n";
+        _output.Text += "Attempting to remove the old version of YAT.\n";
+
+        if (!Updater.DeleteCurrentVersion())
+        {
+            _output.Text += "An attempt to remove the old version of YAT was unsuccessful.\n";
+            return;
+        }
+
+        _output.Text += "The old version of YAT was removed successfully.\n";
     }
 }

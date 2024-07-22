@@ -45,6 +45,37 @@ public static class Updater
         return tempFilePath;
     }
 
+    public static bool DeleteCurrentVersion()
+    {
+        string path = Godot.ProjectSettings.GlobalizePath(GetPluginPath()[6..]);
+
+        try
+        {
+            Directory.Delete(path, true);
+        }
+        catch (Exception e) when (
+            e is IOException
+            or UnauthorizedAccessException
+            or PathTooLongException
+            or DirectoryNotFoundException
+        )
+        {
+            Godot.GD.Print(e);
+            return false;
+        }
+
+        return true;
+    }
+
+    public static string GetPluginPath()
+    {
+        // Read the information from the project settings
+        // because addons can be installed in various locations,
+        // so it cannot be assumed that YAT will always be in the default location.
+        string yatPath = Godot.ProjectSettings.GetSetting("autoload/YAT").AsString();
+        return yatPath[1..].Remove(yatPath.Length - 13);
+    }
+
     public static SemanticVersion? GetCurrentVersion()
     {
         if (_currentVersion is not null)
@@ -52,11 +83,7 @@ public static class Updater
             return _currentVersion;
         }
 
-        // Read the information from the project settings
-        // because addons can be installed in various locations,
-        // so it cannot be assumed that YAT will always be in the default location.
-        string yatPath = Godot.ProjectSettings.GetSetting("autoload/YAT").AsString();
-        string pluginConfigPath = yatPath[1..].Remove(yatPath.Length - 13) + "plugin.cfg";
+        string pluginConfigPath = GetPluginPath() + "plugin.cfg";
 
         Godot.ConfigFile config = new();
         if (config.Load(pluginConfigPath) != Godot.Error.Ok)
