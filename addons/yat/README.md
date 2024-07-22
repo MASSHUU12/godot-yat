@@ -26,7 +26,7 @@ Make sure to update your [.csproj](./docs/USAGE.md).
 ### Features
 
 - Over 35 built-in commands
-- Small size footprint (< 256 KB)
+- Small size footprint (< 512 KB)
 - Custom commands (regular & threaded), extensions and windows
 - Automatic input validation (arguments, options)
 - Debug screen (FPS, CPU, GPU, etc.)
@@ -36,6 +36,7 @@ Make sure to update your [.csproj](./docs/USAGE.md).
 - Autocompletion
 - Script templates
 - Ability to restrict access to the plugin
+- Automatic update
 
 ## Documentation
 
