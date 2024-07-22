@@ -22,7 +22,10 @@ public partial class Plugin : EditorPlugin
         GD.Print($"YAT {_version} loaded!");
         GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]https://github.com/MASSHUU12/godot-yat/tree/main[/url].");
 
-        UpdateCheck();
+        if (Engine.IsEditorHint())
+        {
+            UpdateCheck();
+        }
     }
 
     public override void _ExitTree()
