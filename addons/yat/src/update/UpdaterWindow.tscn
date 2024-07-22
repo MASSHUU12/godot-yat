@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://bguvs2cii1eo6"]
+
+[ext_resource type="Script" path="res://addons/yat/src/update/UpdaterWindow.cs" id="1_4chee"]
+
+[node name="UpdaterWindow" type="Window"]
+disable_3d = true
+title = "YAT Updater"
+position = Vector2i(0, 36)
+size = Vector2i(960, 544)
+content_scale_mode = 1
+script = ExtResource("1_4chee")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="Output" type="TextEdit" parent="Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Update" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Update"
+
+[node name="Cancel" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cancel"
