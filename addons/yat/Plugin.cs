@@ -1,8 +1,8 @@
 #if TOOLS
 using Godot;
-using YAT.Classes;
 using YAT.Helpers;
 using YAT.Types;
+using YAT.Update;
 
 namespace YAT;
 

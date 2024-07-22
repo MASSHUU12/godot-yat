@@ -1,8 +1,9 @@
 using Godot;
+using YAT.Classes;
 using YAT.Helpers;
 using YAT.Types;
 
-namespace YAT.Classes;
+namespace YAT.Update;
 
 public static class Updater
 {
@@ -10,6 +11,8 @@ public static class Updater
 
     public static bool UpdateToVersion(ReleaseTagInfo release)
     {
+        // EditorInterface.Singleton.PopupDialogCentered();
+
         return true;
     }
 
