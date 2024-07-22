@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using YAT.Classes;
 using YAT.Types;
 
-namespace YAT.Helpers;
+namespace YAT.Update;
 
 public static class Release
 {

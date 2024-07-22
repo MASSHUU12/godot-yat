@@ -3,7 +3,6 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using YAT.Classes;
-using YAT.Helpers;
 using YAT.Types;
 
 namespace YAT.Update;
@@ -60,7 +59,6 @@ public static class Updater
             or DirectoryNotFoundException
         )
         {
-            Godot.GD.Print(e);
             return false;
         }
 
