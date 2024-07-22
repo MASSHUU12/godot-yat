@@ -13,13 +13,13 @@ public partial class UpdaterWindow : Window
     public ReleaseTagInfo UpdateInfo { get; set; }
 
     private TextEdit _output;
-    private Button _update, _cancel;
+    private Button _update, _close;
 #nullable restore
 
     public override void _Ready()
     {
-        _cancel = GetNode<Button>("%Cancel");
-        _cancel.Pressed += QueueFree;
+        _close = GetNode<Button>("%Close");
+        _close.Pressed += QueueFree;
 
         _update = GetNode<Button>("%Update");
         _update.Pressed += async () =>
@@ -46,7 +46,7 @@ public partial class UpdaterWindow : Window
     private void ToggleButtons(bool disabled)
     {
         _update.Disabled = disabled;
-        _cancel.Disabled = disabled;
+        _close.Disabled = disabled;
     }
 
     private async Task Update()
