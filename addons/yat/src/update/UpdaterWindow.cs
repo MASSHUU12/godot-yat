@@ -14,7 +14,7 @@ public partial class UpdaterWindow : Window
     public SemanticVersion CurrentVersion { get; set; }
     public ReleaseTagInfo UpdateInfo { get; set; }
 
-    private TextEdit _output;
+    private RichTextLabel _output;
     private Button _update, _close;
 #nullable restore
 
@@ -31,11 +31,17 @@ public partial class UpdaterWindow : Window
             ToggleButtons(false);
         };
 
-        _output = GetNode<TextEdit>("%Output");
+        _output = GetNode<RichTextLabel>("%Output");
+        _output.MetaClicked += MetaClicked;
 
         CloseRequested += QueueFree;
 
         PrepareInitialState();
+    }
+
+    private void MetaClicked(Variant meta)
+    {
+        _ = Godot.OS.ShellOpen(meta.ToString());
     }
 
     private void PrepareInitialState()
@@ -43,6 +49,10 @@ public partial class UpdaterWindow : Window
         Title = $"YAT Updater {CurrentVersion} to {UpdateInfo.Version}";
 
         _output.Text = $"YAT {UpdateInfo.Version} is available.\n";
+        _output.Text += "\nErrors happen, many things can go wrong during an upgrade."
+            + " It is recommended to use a version control system.\n";
+        _output.Text += "If you don't use it, you can download the new version of YAT "
+            + $"[url={UpdateInfo.ZipballUrl}]here[/url].\n";
     }
 
     private void ToggleButtons(bool disabled)
@@ -53,7 +63,7 @@ public partial class UpdaterWindow : Window
 
     private async Task Update()
     {
-        _output.Text += $"Downloading a ZIP file from {UpdateInfo.ZipballUrl}...\n";
+        _output.Text += $"\nDownloading a ZIP file from {UpdateInfo.ZipballUrl}...\n";
 
         string? zipPath = await Updater.DownloadZipAsync(UpdateInfo.ZipballUrl);
 
