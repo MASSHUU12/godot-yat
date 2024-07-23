@@ -13,7 +13,6 @@ All notable changes to this project will be documented in this file.
 - Check update (cu) command.
 - '--yat' option to 'version' command.
 - Update check on YAT startup.
-- Text.WildcardToRegex helper method.
 - UpdaterWindow scene.
 - ZipExtractor helper class.
 - Automatic plugin update.
