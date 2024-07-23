@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 - Check update (cu) command.
 - '--yat' option to 'version' command.
 - Update check on YAT startup.
+- UpdaterWindow scene.
+- ZipExtractor helper class.
+- Automatic plugin update.
 
 ### Changed
 

@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Confirma.Attributes;
 using Confirma.Classes;
 using Confirma.Extensions;

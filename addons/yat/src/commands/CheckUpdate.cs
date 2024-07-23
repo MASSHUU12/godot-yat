@@ -3,6 +3,7 @@ using YAT.Classes;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
+using YAT.Update;
 
 namespace YAT.Commands;
 

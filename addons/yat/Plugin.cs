@@ -3,6 +3,7 @@ using Godot;
 using YAT.Classes;
 using YAT.Helpers;
 using YAT.Types;
+using YAT.Update;
 
 namespace YAT;
 
@@ -21,7 +22,10 @@ public partial class Plugin : EditorPlugin
         GD.Print($"YAT {_version} loaded!");
         GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]https://github.com/MASSHUU12/godot-yat/tree/main[/url].");
 
-        UpdateCheck();
+        if (Engine.IsEditorHint())
+        {
+            UpdateCheck();
+        }
     }
 
     public override void _ExitTree()
@@ -32,12 +36,24 @@ public partial class Plugin : EditorPlugin
         GD.Print($"YAT {_version} unloaded!");
     }
 
+    private static void OpenUpdater(SemanticVersion currentVersion, ReleaseTagInfo info)
+    {
+        UpdaterWindow window = GD.Load<PackedScene>(
+            "res://addons/yat/src/update/UpdaterWindow.tscn"
+        ).Instantiate<UpdaterWindow>();
+
+        window.UpdateInfo = info;
+        window.CurrentVersion = currentVersion;
+
+        EditorInterface.Singleton.PopupDialogCentered(window);
+    }
+
     private string GetPluginPath()
     {
         return GetScript().As<Script>().ResourcePath.GetBaseDir();
     }
 
-    private static void UpdateCheck()
+    private void UpdateCheck()
     {
         const bool DISABLE_UPDATE_CHECK = false;
 
@@ -54,6 +70,7 @@ public partial class Plugin : EditorPlugin
 
             if (!isSuccess || info is null)
             {
+                GD.PrintErr("Something went wrong when downloading update info for YAT.");
                 return;
             }
 
@@ -64,6 +81,8 @@ public partial class Plugin : EditorPlugin
                     info.ZipballUrl
                 )
             );
+
+            OpenUpdater(SemanticVersion.Parse(GetPluginVersion()), info);
 
             return;
         }
