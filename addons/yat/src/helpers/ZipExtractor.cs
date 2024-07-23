@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace YAT.Helpers;
 
@@ -16,41 +16,42 @@ public static class ZipExtractor
     {
         try
         {
-            using (ZipArchive archive = ZipFile.OpenRead(filePath))
+            using ZipArchive archive = ZipFile.OpenRead(filePath);
+
+            IEnumerable<ZipArchiveEntry> result = from currEntry in archive.Entries
+                                                  where currEntry.FullName.Contains(folderToExtract)
+                                                  where !string.IsNullOrEmpty(currEntry.Name)
+                                                  select currEntry;
+
+            foreach (ZipArchiveEntry entry in result)
             {
-                foreach (ZipArchiveEntry entry in archive.Entries)
+                string[] pathElements = entry.FullName.Split(Path.DirectorySeparatorChar);
+                int folderIndex = Array.IndexOf(pathElements, folderToExtract);
+
+                // folderIndex + 1 to skip folder with the addon itself
+                if (folderIndex == -1 || folderIndex + 1 > pathElements.Length)
                 {
-                    if (!Regex.IsMatch(entry.FullName, folderToExtract))
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    string relativePath = entry.FullName.Substring(folderToExtract.Length).TrimStart('/');
+                string relativePath = string.Join(
+                    Path.DirectorySeparatorChar,
+                    pathElements[(folderIndex + 1)..]
+                );
+                string path = Path.Combine(extractPath, relativePath);
 
-                    if (string.IsNullOrEmpty(relativePath))
-                    {
-                        // Skip the folder itself
-                        continue;
-                    }
+                if (path.EndsWith($"{Path.DirectorySeparatorChar}", StringComparison.InvariantCulture))
+                {
+                    _ = Directory.CreateDirectory(path);
+                }
+                else
+                {
+                    _ = Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
-                    string path = string.Join("/", relativePath.Split("/").Skip(1));
+                    using FileStream fileStream = new(path, FileMode.Create);
+                    using Stream entryStream = entry.Open();
 
-                    if (entry.FullName.EndsWith("/"))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    else
-                    {
-                        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-
-                        using (FileStream fileStream = new(path, FileMode.Create))
-                        {
-                            using (Stream entryStream = entry.Open())
-                            {
-                                entryStream.CopyTo(fileStream);
-                            }
-                        }
-                    }
+                    entryStream.CopyTo(fileStream);
                 }
             }
             return true;

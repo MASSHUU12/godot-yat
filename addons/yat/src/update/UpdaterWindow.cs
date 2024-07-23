@@ -78,7 +78,7 @@ public partial class UpdaterWindow : Window
 
         _output.Text += $"Extracting the new version of YAT from the ZIP file to {pluginPath}.\n";
 
-        if (!ZipExtractor.ExtractFolderFromZipFile(zipPath, pluginPath, "^.*/addons/.*$"))
+        if (!ZipExtractor.ExtractFolderFromZipFile(zipPath, pluginPath, "yat"))
         {
             _output.Text += "There was an error while exporting the ZIP file, try again or update YAT manually.\n";
             return;
