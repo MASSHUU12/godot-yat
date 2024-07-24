@@ -2,12 +2,12 @@ namespace Confirma.Types;
 
 public record TestResult
 {
-    public uint TotalTests { get; set; } = 0;
-    public uint TestsPassed { get; set; } = 0;
-    public uint TestsFailed { get; set; } = 0;
-    public uint TestsIgnored { get; set; } = 0;
-    public double TotalTime { get; set; } = 0;
-    public uint Warnings { get; set; } = 0;
+    public uint TotalTests { get; set; }
+    public uint TestsPassed { get; set; }
+    public uint TestsFailed { get; set; }
+    public uint TestsIgnored { get; set; }
+    public double TotalTime { get; set; }
+    public uint Warnings { get; set; }
 
     public TestResult() { }
 

@@ -8,19 +8,20 @@ public struct TestsProps
 
     public TestResult Result { get; set; } = new();
 
-    public bool RunTests { get; set; } = false;
-    public bool IsVerbose { get; set; } = false;
-    public bool IsHeadless { get; set; } = false;
-    public bool ExitOnFail { get; set; } = false;
-    public bool QuitAfterTests { get; set; } = false;
+    public bool RunTests { get; set; }
+    public bool IsVerbose { get; set; }
+    public bool IsHeadless { get; set; }
+    public bool ExitOnFail { get; set; }
+    public bool QuitAfterTests { get; set; }
     public string ClassName { get; set; } = string.Empty;
-    public bool DisableParallelization { get; set; } = false;
+    public string MethodName { get; set; } = string.Empty;
+    public bool DisableParallelization { get; set; }
 
     public TestsProps() { }
 
     public void ResetStats()
     {
-        Result = new();
+        Result = new TestResult();
     }
 
     public readonly void CallExitOnFailure()

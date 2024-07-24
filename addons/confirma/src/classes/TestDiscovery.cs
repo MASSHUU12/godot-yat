@@ -7,11 +7,11 @@ using Confirma.Helpers;
 
 namespace Confirma.Classes;
 
-public class TestDiscovery
+public static class TestDiscovery
 {
     public static IEnumerable<Type> GetTestClassesFromAssembly(Assembly assembly)
     {
-        var types = assembly.GetTypes();
+        Type[] types = assembly.GetTypes();
         return types.Where(type => type.HasAttribute<TestClassAttribute>());
     }
 

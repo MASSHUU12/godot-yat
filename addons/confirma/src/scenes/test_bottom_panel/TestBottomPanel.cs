@@ -27,7 +27,7 @@ public partial class TestBottomPanel : Control
 
         _testRunner = GetNode<TestRunnerEditor>("%TestRunnerEditor");
 
-        CallDeferred("LateInit");
+        _ = CallDeferred("LateInit");
     }
 
     private void LateInit()

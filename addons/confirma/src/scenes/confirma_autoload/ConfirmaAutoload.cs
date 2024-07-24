@@ -1,3 +1,4 @@
+using System;
 using Confirma.Classes;
 using Confirma.Helpers;
 using Confirma.Types;
@@ -14,7 +15,10 @@ public partial class ConfirmaAutoload : Node
     {
         CheckArguments();
 
-        if (!Props.RunTests) return;
+        if (!Props.RunTests)
+        {
+            return;
+        }
 
         SetupGlobals();
         ChangeScene();
@@ -30,17 +34,31 @@ public partial class ConfirmaAutoload : Node
     {
         string[] args = OS.GetCmdlineUserArgs();
 
-        if (DisplayServer.GetName() == "headless") Props.IsHeadless = true;
-
-        foreach (var arg in args)
+        if (DisplayServer.GetName() == "headless")
         {
-            if (!Props.RunTests && arg.StartsWith("--confirma-run"))
+            Props.IsHeadless = true;
+        }
+
+        foreach (string arg in args)
+        {
+            if (!Props.RunTests && arg.StartsWith("--confirma-run", StringComparison.InvariantCulture))
             {
                 Props.RunTests = true;
 
                 Props.ClassName = arg.Find('=') == -1
                     ? string.Empty
                     : arg.Split('=')[1];
+
+                continue;
+            }
+            else if (Props.RunTests
+                && !Props.ClassName.Equals(string.Empty, StringComparison.Ordinal)
+                && arg.StartsWith("--confirma-method", StringComparison.InvariantCulture)
+            )
+            {
+                Props.MethodName = arg.Find('=') == -1
+                                    ? string.Empty
+                                    : arg.Split('=')[1];
 
                 continue;
             }
@@ -66,15 +84,17 @@ public partial class ConfirmaAutoload : Node
             if (!Props.DisableParallelization && arg == "--confirma-sequential")
             {
                 Props.DisableParallelization = true;
-                continue;
             }
         }
     }
 
     private void ChangeScene()
     {
-        GetTree().CallDeferred("change_scene_to_file", "uid://cq76c14wl2ti3");
+        _ = GetTree().CallDeferred("change_scene_to_file", "uid://cq76c14wl2ti3");
 
-        if (Props.QuitAfterTests) GetTree().Quit();
+        if (Props.QuitAfterTests)
+        {
+            GetTree().Quit();
+        }
     }
 }

@@ -50,14 +50,14 @@ public static class RandomNumberExtensions
 
     public static decimal NextDecimal(this Random rg, decimal maxValue)
     {
-        return rg.NextNonNegativeDecimal() / decimal.MaxValue * maxValue; ;
+        return rg.NextNonNegativeDecimal() / decimal.MaxValue * maxValue;
     }
 
     public static decimal NextDecimal(this Random rg, decimal minValue, decimal maxValue)
     {
-        if (minValue >= maxValue) throw new InvalidOperationException();
-
-        return rg.NextDecimal(maxValue - minValue) + minValue;
+        return minValue >= maxValue
+            ? throw new InvalidOperationException()
+            : rg.NextDecimal(maxValue - minValue) + minValue;
     }
 
     public static long NextNonNegativeLong(this Random rg)
@@ -76,15 +76,15 @@ public static class RandomNumberExtensions
 
     public static long NextLong(this Random rg, long minValue, long maxValue)
     {
-        if (minValue >= maxValue) throw new InvalidOperationException();
-
-        return rg.NextLong(maxValue - minValue) + minValue;
+        return minValue >= maxValue
+            ? throw new InvalidOperationException()
+            : rg.NextLong(maxValue - minValue) + minValue;
     }
 
     public static double NextDouble(this Random rg, double minValue, double maxValue)
     {
-        if (minValue >= maxValue) throw new InvalidOperationException();
-
-        return rg.NextDouble() * (maxValue - minValue) + minValue;
+        return minValue >= maxValue
+            ? throw new InvalidOperationException()
+            : (rg.NextDouble() * (maxValue - minValue)) + minValue;
     }
 }

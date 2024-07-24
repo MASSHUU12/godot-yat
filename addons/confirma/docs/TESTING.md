@@ -81,3 +81,6 @@ Allows to run all the tests included in the class on separate CPU cores.
 
 The Repeat attribute allows you to run a particular TestCase several times.
 Repeat refers to the next TestCase, so the order in which the attributes are defined matters.
+
+The attribute optionally takes a flag as a second argument
+indicating whether to stop running the test after the first error encountered.

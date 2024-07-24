@@ -8,8 +8,15 @@ public static class ArrayHelper
 {
     public static string ToString(object?[]? array, uint depth = 0, uint maxDepth = 1)
     {
-        if (depth > maxDepth) return string.Empty;
-        if (array is null || array.Length == 0) return string.Empty;
+        if (depth > maxDepth)
+        {
+            return string.Empty;
+        }
+
+        if (array is null || array.Length == 0)
+        {
+            return string.Empty;
+        }
 
         List<string> list = new();
 
@@ -29,8 +36,10 @@ public static class ArrayHelper
                     continue;
                 }
 
-                var arr = ((item as Array) ?? Array.Empty<object>()).OfType<object?>().ToArray();
-                var result = ToString(arr, depth + 1, maxDepth);
+                object?[] arr = ((item as Array) ?? Array.Empty<object>())
+                    .OfType<object?>()
+                    .ToArray();
+                string result = ToString(arr, depth + 1, maxDepth);
 
                 list.Add($"[{string.Join(", ", result)}]");
 

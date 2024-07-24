@@ -32,12 +32,11 @@ public static class TestExecutor
     }
 
     private static TestsProps _props;
-    private static readonly object _lock = new();
 
     public static void ExecuteTests(Assembly assembly, string className)
     {
-        var testClasses = TestDiscovery.DiscoverTestClasses(assembly);
-        var startTimeStamp = DateTime.Now;
+        IEnumerable<TestingClass> testClasses = TestDiscovery.DiscoverTestClasses(assembly);
+        DateTime startTimeStamp = DateTime.Now;
 
         if (!string.IsNullOrEmpty(className))
         {
@@ -53,24 +52,34 @@ public static class TestExecutor
         _props.ResetStats();
 
         if (_props.DisableParallelization)
-            foreach (var testClass in testClasses) ExecuteSingleClass(testClass, _props.Result);
+        {
+            foreach (TestingClass testClass in testClasses)
+            {
+                ExecuteSingleClass(testClass, _props.Result);
+            }
+        }
         else
         {
             var (parallelTestClasses, sequentialTestClasses) = ClassifyTests(testClasses);
-            var results = new ConcurrentBag<TestResult>();
+            ConcurrentBag<TestResult> results = new();
 
             parallelTestClasses.AsParallel().ForAll(testClass =>
             {
-                var localResult = new TestResult();
+                TestResult localResult = new();
                 ExecuteSingleClass(testClass, localResult);
                 results.Add(localResult);
             });
 
-            foreach (var testClass in sequentialTestClasses)
+            foreach (TestingClass testClass in sequentialTestClasses)
+            {
                 ExecuteSingleClass(testClass, _props.Result);
+            }
 
             // Aggregate results
-            foreach (var result in results) _props.Result += result;
+            foreach (TestResult result in results)
+            {
+                _props.Result += result;
+            }
         }
 
         PrintSummary(testClasses.Count(), startTimeStamp);
@@ -88,21 +97,24 @@ public static class TestExecutor
     {
         Log.Print($"> {testClass.Type.Name}...");
 
-        var attr = testClass.Type.GetCustomAttribute<IgnoreAttribute>();
-        if (attr is not null && attr.IsIgnored())
+        IgnoreAttribute? attr = testClass.Type.GetCustomAttribute<IgnoreAttribute>();
+        if (attr?.IsIgnored() == true)
         {
             _props.Result.TestsIgnored += (uint)testClass.TestMethods.Sum(m => m.TestCases.Count());
 
             Log.PrintWarning($" ignored.\n");
 
-            if (string.IsNullOrEmpty(attr.Reason)) return;
+            if (string.IsNullOrEmpty(attr.Reason))
+            {
+                return;
+            }
 
             Log.PrintWarning($"- {attr.Reason}\n");
         }
 
         Log.PrintLine();
 
-        var classResult = testClass.Run(_props);
+        TestClassResult classResult = testClass.Run(_props);
 
         result += classResult;
     }

@@ -8,7 +8,10 @@ public static class ConfirmAttributeExtensions
     #region ConfirmIsDecoratedWith
     public static Type ConfirmIsDecoratedWith(this Type actual, Type expected, string? message = null)
     {
-        if (actual.IsDefined(expected, false)) return actual;
+        if (actual.IsDefined(expected, false))
+        {
+            return actual;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -21,12 +24,15 @@ public static class ConfirmAttributeExtensions
     {
         return ConfirmIsDecoratedWith(actual, typeof(T), message);
     }
-    #endregion
+    #endregion ConfirmIsDecoratedWith
 
     #region ConfirmIsNotDecoratedWith
     public static Type ConfirmIsNotDecoratedWith(this Type actual, Type expected, string? message = null)
     {
-        if (!actual.IsDefined(expected, false)) return actual;
+        if (!actual.IsDefined(expected, false))
+        {
+            return actual;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -39,5 +45,5 @@ public static class ConfirmAttributeExtensions
     {
         return ConfirmIsNotDecoratedWith(actual, typeof(T), message);
     }
-    #endregion
+    #endregion ConfirmIsNotDecoratedWith
 }

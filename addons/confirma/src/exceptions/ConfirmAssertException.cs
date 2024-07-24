@@ -8,4 +8,6 @@ public class ConfirmAssertException : Exception
 
     public ConfirmAssertException(string message, Exception innerException)
     : base(message, innerException) { }
+
+    public ConfirmAssertException() { }
 }

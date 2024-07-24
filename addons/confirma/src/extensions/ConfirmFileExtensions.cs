@@ -8,7 +8,10 @@ public static class ConfirmFileExtensions
 {
     public static StringName ConfirmIsFile(this StringName path, string? message = null)
     {
-        if (File.Exists(path)) return path;
+        if (File.Exists(path))
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -18,7 +21,10 @@ public static class ConfirmFileExtensions
 
     public static StringName ConfirmIsNotFile(this StringName path, string? message = null)
     {
-        if (!File.Exists(path)) return path;
+        if (!File.Exists(path))
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -28,7 +34,10 @@ public static class ConfirmFileExtensions
 
     public static StringName ConfirmIsDirectory(this StringName path, string? message = null)
     {
-        if (Directory.Exists(path)) return path;
+        if (Directory.Exists(path))
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -38,7 +47,10 @@ public static class ConfirmFileExtensions
 
     public static StringName ConfirmIsNotDirectory(this StringName path, string? message = null)
     {
-        if (!Directory.Exists(path)) return path;
+        if (!Directory.Exists(path))
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -48,7 +60,10 @@ public static class ConfirmFileExtensions
 
     public static StringName ConfirmFileContains(this StringName path, string content, string? message = null)
     {
-        if (File.ReadAllText(path).Contains(content)) return path;
+        if (File.ReadAllText(path).Contains(content))
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -58,7 +73,10 @@ public static class ConfirmFileExtensions
 
     public static StringName ConfirmFileDoesNotContain(this StringName path, string content, string? message = null)
     {
-        if (!File.ReadAllText(path).Contains(content)) return path;
+        if (!File.ReadAllText(path).Contains(content))
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -68,7 +86,10 @@ public static class ConfirmFileExtensions
 
     public static StringName ConfirmFileHasLength(this StringName path, long length, string? message = null)
     {
-        if (new FileInfo(path).Length == length) return path;
+        if (new FileInfo(path).Length == length)
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -78,7 +99,10 @@ public static class ConfirmFileExtensions
 
     public static StringName ConfirmFileDoesNotHaveLength(this StringName path, long length, string? message = null)
     {
-        if (new FileInfo(path).Length != length) return path;
+        if (new FileInfo(path).Length != length)
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -88,7 +112,10 @@ public static class ConfirmFileExtensions
 
     public static StringName ConfirmFileHasAttributes(this StringName path, FileAttributes attributes, string? message = null)
     {
-        if ((new FileInfo(path).Attributes & attributes) == attributes) return path;
+        if ((new FileInfo(path).Attributes & attributes) == attributes)
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -98,7 +125,10 @@ public static class ConfirmFileExtensions
 
     public static StringName ConfirmFileDoesNotHaveAttributes(this StringName path, FileAttributes attributes, string? message = null)
     {
-        if ((new FileInfo(path).Attributes & attributes) != attributes) return path;
+        if ((new FileInfo(path).Attributes & attributes) != attributes)
+        {
+            return path;
+        }
 
         throw new ConfirmAssertException(
             message ??

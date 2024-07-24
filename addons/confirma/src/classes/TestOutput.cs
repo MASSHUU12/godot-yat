@@ -23,16 +23,23 @@ public static class TestOutput
 
     public static void PrintOutput(string name, string parameters, ETestCaseState state, bool verbose = false, string? message = null)
     {
-        if (!verbose && state == ETestCaseState.Passed) return;
-
-        if (verbose) PrintVerbose(name, parameters, state, message);
-        else PrintDefault(name, parameters, state, message);
+        switch (verbose)
+        {
+            case false when state == ETestCaseState.Passed:
+                return;
+            case true:
+                PrintVerbose(name, parameters, state, message);
+                break;
+            default:
+                PrintDefault(name, parameters, state, message);
+                break;
+        }
     }
 
     private static void PrintDefault(string name, string parameters, ETestCaseState state, string? message = null)
     {
-        var color = GetTestCaseStateColor(state);
-        var sState = GetTestCaseStateString(state);
+        string color = GetTestCaseStateColor(state);
+        string sState = GetTestCaseStateString(state);
 
         Log.PrintLine($"| {name}... ");
 
@@ -42,19 +49,25 @@ public static class TestOutput
             Log.PrintLine($"{Colors.ColorText(sState, color)}.");
         }
 
-        if (message is not null) Log.PrintLine($"  |- {Colors.ColorText(message, color)}");
+        if (message is not null)
+        {
+            Log.PrintLine($"  |- {Colors.ColorText(message, color)}");
+        }
     }
 
     private static void PrintVerbose(string name, string parameters, ETestCaseState state, string? message = null)
     {
-        var color = GetTestCaseStateColor(state);
-        var sState = GetTestCaseStateString(state);
+        string color = GetTestCaseStateColor(state);
+        string sState = GetTestCaseStateString(state);
 
         Log.PrintLine($"| {name}{(
             parameters.Length > 0
             ? $"({parameters})"
             : string.Empty)}... {Colors.ColorText(sState, color)}.");
 
-        if (message is not null) Log.PrintLine($"- {Colors.ColorText(message, color)}");
+        if (message is not null)
+        {
+            Log.PrintLine($"- {Colors.ColorText(message, color)}");
+        }
     }
 }

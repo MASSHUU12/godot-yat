@@ -8,14 +8,14 @@ public static class RandomCollectionExtensions
 {
     public static T NextElement<T>(this Random rg, IEnumerable<T> elements)
     {
-        if (!elements.Any())
+        if (elements.Any())
         {
-            throw new InvalidOperationException(
-                "Cannot get a random element from an empty collection."
-            );
+            return elements.ElementAt(rg.Next(0, elements.Count()));
         }
 
-        return elements.ElementAt(rg.Next(0, elements.Count()));
+        throw new InvalidOperationException(
+            "Cannot get a random element from an empty collection."
+        );
     }
 
     public static IEnumerable<T> NextElements<T>(
@@ -38,7 +38,7 @@ public static class RandomCollectionExtensions
             );
         }
 
-        var list = new List<T>();
+        List<T> list = new();
         for (int i = 0; i < numberOfElements; i++)
         {
             list.Add(rg.NextElement(elements));

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Confirma.Exceptions;
 
 namespace Confirma.Extensions;
@@ -7,23 +8,21 @@ public static class ConfirmActionExtensions
 {
     public static Action ConfirmCompletesWithin(this Action action, TimeSpan timeSpan, string? message = null)
     {
-        var task = System.Threading.Tasks.Task.Run(action);
-        if (!task.Wait(timeSpan))
-        {
-            throw new ConfirmAssertException(
+        Task task = Task.Run(action);
+
+        return !task.Wait(timeSpan)
+            ? throw new ConfirmAssertException(
                 message ??
                 $"Action did not complete within {timeSpan.TotalMilliseconds} ms."
-            );
-        }
-
-        return action;
+            )
+            : action;
     }
 
     public static Action ConfirmDoesNotCompleteWithin(this Action action, TimeSpan timeSpan, string? message = null)
     {
         try
         {
-            ConfirmCompletesWithin(action, timeSpan, message);
+            _ = ConfirmCompletesWithin(action, timeSpan, message);
         }
         catch (ConfirmAssertException)
         {

@@ -9,7 +9,11 @@ public static class Reflection
 {
     public static IEnumerable<Type> GetClassesFromAssembly(Assembly assembly)
     {
-        return assembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
+        return assembly.GetTypes().Where(type => type is
+        {
+            IsClass: true,
+            IsAbstract: false
+        });
     }
 
     public static IEnumerable<MethodInfo> GetMethodsWithAttribute<T>(Type type)

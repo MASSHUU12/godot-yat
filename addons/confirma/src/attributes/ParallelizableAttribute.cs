@@ -3,7 +3,4 @@ using System;
 namespace Confirma.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class ParallelizableAttribute : Attribute
-{
-    public ParallelizableAttribute() { }
-}
+public class ParallelizableAttribute : Attribute { }

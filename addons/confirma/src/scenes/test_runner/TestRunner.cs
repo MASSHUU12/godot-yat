@@ -8,25 +8,25 @@ namespace Confirma.Scenes;
 public partial class TestRunner : Control
 {
 #nullable disable
-    protected ConfirmaAutoload _autoload;
-    protected RichTextLabel _output;
+    protected ConfirmaAutoload Autoload;
+    protected RichTextLabel Output;
 #nullable restore
 
     private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
     public override void _Ready()
     {
-        _output = GetNode<RichTextLabel>("%Output");
-        Log.RichOutput = _output;
+        Output = GetNode<RichTextLabel>("%Output");
+        Log.RichOutput = Output;
 
-        _autoload = GetNode<ConfirmaAutoload>("/root/Confirma");
+        Autoload = GetNode<ConfirmaAutoload>("/root/Confirma");
     }
 
     public void RunAllTests(string className = "")
     {
-        _output.Clear();
+        Output.Clear();
 
-        TestExecutor.Props = _autoload.Props;
+        TestExecutor.Props = Autoload.Props;
         TestExecutor.ExecuteTests(_assembly, className);
     }
 }

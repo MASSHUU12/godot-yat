@@ -11,8 +11,11 @@ public partial class TestRunnerGame : TestRunner
 
     private void RunIfRoot()
     {
-        if (GetTree().CurrentScene != this) return;
+        if (GetTree().CurrentScene != this)
+        {
+            return;
+        }
 
-        RunAllTests(_autoload.Props.ClassName);
+        RunAllTests(Autoload.Props.ClassName);
     }
 }

@@ -9,7 +9,7 @@ public partial class TestRunnerEditor : TestRunner
 {
     public override void _Ready()
     {
-        CallDeferred("LateInit");
+        _ = CallDeferred("LateInit");
     }
 
     private void LateInit()
@@ -21,7 +21,7 @@ public partial class TestRunnerEditor : TestRunner
 
     public void ClearOutput()
     {
-        _output.Clear();
+        Output.Clear();
     }
 }
 

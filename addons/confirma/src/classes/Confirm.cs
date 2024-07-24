@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Confirma.Exceptions;
 using Confirma.Extensions;
 
@@ -8,23 +9,26 @@ public static class Confirm
 {
     public static bool IsTrue(bool expression, string? message = null)
     {
-        if (expression) return true;
-
-        throw new ConfirmAssertException(message ?? "Expected true but was false");
+        return expression
+            ? true
+            : throw new ConfirmAssertException(message ?? "Expected true but was false");
     }
 
     public static bool IsFalse(bool expression, string? message = null)
     {
-        if (!expression) return true;
-
-        throw new ConfirmAssertException(message ?? "Expected false but was true");
+        return !expression
+            ? true
+            : throw new ConfirmAssertException(message ?? "Expected false but was true");
     }
 
     #region IsEnumValue
     public static int IsEnumValue<T>(int value, string? message = null)
     where T : struct, Enum
     {
-        foreach (int v in Enum.GetValues(typeof(T))) if (v == value) return value;
+        if (Enum.GetValues(typeof(T)).Cast<int>().Any(v => v == value))
+        {
+            return value;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -37,7 +41,7 @@ public static class Confirm
     {
         try
         {
-            IsEnumValue<T>(value);
+            _ = IsEnumValue<T>(value);
         }
         catch (ConfirmAssertException)
         {
@@ -49,7 +53,7 @@ public static class Confirm
             $"Expected {value} not to be {typeof(T).Name} enum value."
         );
     }
-    #endregion
+    #endregion IsEnumValue
 
     #region IsEnumName
     public static string IsEnumName<T>(string name, bool ignoreCase = false, string? message = null)
@@ -57,15 +61,18 @@ public static class Confirm
     {
         foreach (string v in Enum.GetNames(typeof(T)))
         {
-            var n = v;
+            string n = v;
 
             if (ignoreCase)
             {
-                n = n.ToLower();
-                name = name.ToLower();
+                n = n.ToLowerInvariant();
+                name = name.ToLowerInvariant();
             }
 
-            if (n == name) return name;
+            if (n == name)
+            {
+                return name;
+            }
         }
 
         throw new ConfirmAssertException(
@@ -79,7 +86,7 @@ public static class Confirm
     {
         try
         {
-            IsEnumName<T>(name);
+            _ = IsEnumName<T>(name);
         }
         catch (ConfirmAssertException)
         {
@@ -91,7 +98,7 @@ public static class Confirm
             $"Expected {name} not to be {typeof(T).Name} enum name."
         );
     }
-    #endregion
+    #endregion IsEnumName
 
     #region Throws
     public static Action Throws<T>(Action action, string? message = null)
@@ -105,5 +112,5 @@ public static class Confirm
     {
         return action.ConfirmNotThrows<T>(message);
     }
-    #endregion
+    #endregion Throws
 }

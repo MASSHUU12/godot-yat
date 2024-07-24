@@ -12,7 +12,7 @@ public class TestingClass
 {
     public readonly Type Type;
     public readonly bool IsParallelizable;
-    public readonly IEnumerable<TestingMethod> TestMethods;
+    public IEnumerable<TestingMethod> TestMethods;
 
     private TestsProps _props;
     private readonly Dictionary<string, LifecycleMethodData> _lifecycleMethods = new();
@@ -34,11 +34,22 @@ public class TestingClass
 
         warnings += RunLifecycleMethod("BeforeAll");
 
-        foreach (var method in TestMethods)
+        if (!string.IsNullOrEmpty(props.MethodName))
+        {
+            TestMethods = TestMethods.Where(tm => tm.Name == props.MethodName);
+
+            if (!TestMethods.Any())
+            {
+                Log.PrintError($"No test Methods found with the name '{props.MethodName}'.");
+                return new TestClassResult(0, 0, 0, 1);
+            }
+        }
+
+        foreach (TestingMethod method in TestMethods)
         {
             warnings += RunLifecycleMethod("SetUp");
 
-            var methodResult = method.Run(props);
+            TestMethodResult methodResult = method.Run(props);
 
             warnings += RunLifecycleMethod("TearDown");
 
@@ -63,23 +74,34 @@ public class TestingClass
 
     private void AddLifecycleMethod(string name, IEnumerable<MethodInfo> methods)
     {
-        if (!methods.Any()) return;
+        if (!methods.Any())
+        {
+            return;
+        }
 
         _lifecycleMethods.Add(name, new(methods.First(), name, methods.Count() > 1));
     }
 
     private byte RunLifecycleMethod(string name)
     {
-        if (!_lifecycleMethods.TryGetValue(name, out var method)) return 0;
+        if (!_lifecycleMethods.TryGetValue(name, out LifecycleMethodData? method))
+        {
+            return 0;
+        }
 
         if (method.HasMultiple)
+        {
             Log.PrintWarning($"Multiple [{name}] methods found in {Type.Name}. Running only the first one.\n");
+        }
 
-        if (_props.IsVerbose) Log.PrintLine($"[{name}] {Type.Name}");
+        if (_props.IsVerbose)
+        {
+            Log.PrintLine($"[{name}] {Type.Name}");
+        }
 
         try
         {
-            method.Method.Invoke(null, null);
+            _ = method.Method.Invoke(null, null);
         }
         catch (Exception e)
         {

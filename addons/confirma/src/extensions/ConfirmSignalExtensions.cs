@@ -12,7 +12,10 @@ public static class ConfirmSignalExtensions
         string? message = null
     )
     {
-        if (actual.HasSignal(signalName)) return actual;
+        if (actual.HasSignal(signalName))
+        {
+            return actual;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -26,12 +29,15 @@ public static class ConfirmSignalExtensions
         string? message = null
     )
     {
-        if (!actual.HasSignal(signalName)) return actual;
+        if (!actual.HasSignal(signalName))
+        {
+            return actual;
+        }
 
         throw new ConfirmAssertException(
             message ??
             $"Expected signal '{signalName}' to not exist on object of type '{actual.GetType().Name}'."
         );
     }
-    #endregion
+    #endregion ConfirmSignalExists
 }

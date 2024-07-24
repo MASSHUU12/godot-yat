@@ -6,15 +6,15 @@ public static class ConfirmBooleanExtensions
 {
     public static bool ConfirmTrue(this bool actual, string? message = null)
     {
-        if (actual) return actual;
-
-        throw new ConfirmAssertException(message ?? "Expected true but was false.");
+        return actual
+            ? actual
+            : throw new ConfirmAssertException(message ?? "Expected true but was false.");
     }
 
     public static bool ConfirmFalse(this bool actual, string? message = null)
     {
-        if (!actual) return actual;
-
-        throw new ConfirmAssertException(message ?? "Expected false but was true.");
+        return !actual
+            ? actual
+            : throw new ConfirmAssertException(message ?? "Expected false but was true.");
     }
 }

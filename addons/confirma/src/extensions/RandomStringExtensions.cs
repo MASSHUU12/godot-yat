@@ -20,14 +20,14 @@ public static class RandomStringExtensions
 
     public static char NextChar(this Random rg, string allowedChars)
     {
-        if (string.IsNullOrEmpty(allowedChars))
+        if (!string.IsNullOrEmpty(allowedChars))
         {
-            throw new ArgumentException(
-                "Allowed characters cannot be null or empty."
-            );
+            return allowedChars[rg.Next(allowedChars.Length)];
         }
 
-        return allowedChars[rg.Next(allowedChars.Length)];
+        throw new ArgumentException(
+            "Allowed characters cannot be null or empty."
+        );
     }
 
     public static char NextLowerChar(this Random rg)
@@ -55,7 +55,10 @@ public static class RandomStringExtensions
         StringBuilder ss = new();
         int length = rg.Next(minLength, maxLength + 1);
 
-        for (int i = 0; i < length; i++) ss.Append(rg.NextChar(type));
+        for (int i = 0; i < length; i++)
+        {
+            _ = ss.Append(rg.NextChar(type));
+        }
 
         return ss.ToString();
     }

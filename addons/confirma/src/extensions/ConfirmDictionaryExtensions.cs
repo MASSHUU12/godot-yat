@@ -12,7 +12,10 @@ public static class ConfirmDictionaryExtensions
         string? message = null
     )
     {
-        if (dictionary.ContainsKey(key)) return dictionary;
+        if (dictionary.ContainsKey(key))
+        {
+            return dictionary;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -26,7 +29,10 @@ public static class ConfirmDictionaryExtensions
         string? message = null
     )
     {
-        if (!dictionary.ContainsKey(key)) return dictionary;
+        if (!dictionary.ContainsKey(key))
+        {
+            return dictionary;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -40,7 +46,10 @@ public static class ConfirmDictionaryExtensions
         string? message = null
     )
     {
-        if (dictionary.Values.Contains(value)) return dictionary;
+        if (dictionary.Values.Contains(value))
+        {
+            return dictionary;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -54,7 +63,10 @@ public static class ConfirmDictionaryExtensions
         string? message = null
     )
     {
-        if (!dictionary.Values.Contains(value)) return dictionary;
+        if (!dictionary.Values.Contains(value))
+        {
+            return dictionary;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -70,7 +82,9 @@ public static class ConfirmDictionaryExtensions
     )
     {
         if (dictionary.TryGetValue(key, out TValue? v) && v?.Equals(value) == true)
+        {
             return dictionary;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -86,7 +100,9 @@ public static class ConfirmDictionaryExtensions
     )
     {
         if (dictionary.TryGetValue(key, out var val) && val.VariantEquals(value))
+        {
             return dictionary;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -102,7 +118,9 @@ public static class ConfirmDictionaryExtensions
     )
     {
         if (!dictionary.TryGetValue(key, out TValue? v) || v?.Equals(value) == false)
+        {
             return dictionary;
+        }
 
         throw new ConfirmAssertException(
             message ??
@@ -117,8 +135,10 @@ public static class ConfirmDictionaryExtensions
         string? message = null
     )
     {
-        if (!dictionary.TryGetValue(key, out var val) || val.VariantEquals(value) == false)
+        if (!dictionary.TryGetValue(key, out Variant val) || !val.VariantEquals(value))
+        {
             return dictionary;
+        }
 
         throw new ConfirmAssertException(
             message ??

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Confirma.Attributes;
 using Confirma.Exceptions;
 using Confirma.Helpers;
 
@@ -10,9 +11,9 @@ public class TestCase
     public MethodInfo Method { get; init; }
     public object?[]? Parameters { get; init; }
     public string Params { get; init; }
-    public ushort Repeat { get; init; }
+    public RepeatAttribute? Repeat { get; init; }
 
-    public TestCase(MethodInfo method, object?[]? parameters, ushort repeat)
+    public TestCase(MethodInfo method, object?[]? parameters, RepeatAttribute? repeat)
     {
         Method = method;
         Parameters = parameters;
@@ -24,7 +25,7 @@ public class TestCase
     {
         try
         {
-            Method.Invoke(null, Parameters);
+            _ = Method.Invoke(null, Parameters);
         }
         catch (TargetInvocationException tie)
         {

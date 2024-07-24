@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Confirma.Attributes;
 using Confirma.Exceptions;
@@ -15,7 +14,7 @@ public class TestingMethod
     public MethodInfo Method { get; }
     public IEnumerable<TestCase> TestCases { get; }
     public string Name { get; }
-    public TestMethodResult Result { get; private set; }
+    public TestMethodResult Result { get; }
 
     public TestingMethod(MethodInfo method)
     {
@@ -29,10 +28,10 @@ public class TestingMethod
     {
         foreach (TestCase test in TestCases)
         {
-            for (ushort i = 0; i <= test.Repeat; i++)
+            for (ushort i = 0; i <= (test.Repeat?.Repeat ?? 1); i++)
             {
-                var attr = test.Method.GetCustomAttribute<IgnoreAttribute>();
-                if (attr is not null && attr.IsIgnored())
+                IgnoreAttribute? attr = test.Method.GetCustomAttribute<IgnoreAttribute>();
+                if (attr?.IsIgnored() == true)
                 {
                     Result.TestsIgnored++;
 
@@ -53,7 +52,15 @@ public class TestingMethod
 
                     TestOutput.PrintOutput(Name, test.Params, Failed, props.IsVerbose, e.Message);
 
-                    if (props.ExitOnFail) props.CallExitOnFailure();
+                    if (test.Repeat?.FailFast == true)
+                    {
+                        break;
+                    }
+
+                    if (props.ExitOnFail)
+                    {
+                        props.CallExitOnFailure();
+                    }
                 }
             }
         }
@@ -64,46 +71,46 @@ public class TestingMethod
     private IEnumerable<TestCase> DiscoverTestCases()
     {
         List<TestCase> cases = new();
-        var discovered = TestDiscovery.GetTestCasesFromMethod(Method).GetEnumerator();
+        using IEnumerator<System.Attribute> discovered = TestDiscovery
+            .GetTestCasesFromMethod(Method)
+            .GetEnumerator();
 
         while (discovered.MoveNext())
         {
-            if (discovered.Current is TestCaseAttribute testCase)
+            switch (discovered.Current)
             {
-                cases.Add(new(Method, testCase.Parameters, 0));
-                continue;
-            }
-
-            // I rely on the order in which the attributes are defined
-            // to determine which TestCase attributes should be assigned values
-            // from the Repeat attributes.
-            if (discovered.Current is RepeatAttribute repeat)
-            {
-                if (!discovered.MoveNext())
-                {
+                case TestCaseAttribute testCase:
+                    cases.Add(new(Method, testCase.Parameters, null));
+                    continue;
+                // I rely on the order in which the attributes are defined
+                // to determine which TestCase attributes should be assigned values
+                // from the Repeat attributes.
+                case RepeatAttribute when !discovered.MoveNext():
                     Log.PrintWarning(
                         $"The Repeat attribute for the \"{Method.Name}\" method will be ignored " +
                         "because it does not have the TestCase attribute after it.\n"
                     );
                     Result.Warnings++;
                     continue;
-                }
-
-                if (discovered.Current is RepeatAttribute)
-                {
+                case RepeatAttribute when discovered.Current is RepeatAttribute:
                     Log.PrintWarning(
                         $"The Repeat attributes for the \"{Method.Name}\" cannot occur in succession.\n"
                     );
                     Result.Warnings++;
                     continue;
-                }
+                case RepeatAttribute repeat:
+                    {
+                        if (discovered.Current is not TestCaseAttribute tc)
+                        {
+                            continue;
+                        }
 
-                if (discovered.Current is not TestCaseAttribute tc) continue;
-
-                cases.Add(new(Method, tc.Parameters, repeat.Repeat));
+                        cases.Add(new(Method, tc.Parameters, repeat));
+                        break;
+                    }
             }
         }
 
-        return cases.AsEnumerable();
+        return cases;
     }
 }
