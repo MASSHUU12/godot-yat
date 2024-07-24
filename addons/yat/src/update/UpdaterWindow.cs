@@ -20,6 +20,11 @@ public partial class UpdaterWindow : Window
 
     public override void _Ready()
     {
+        if (CurrentVersion is null || UpdateInfo is null)
+        {
+            return;
+        }
+
         _close = GetNode<Button>("%Close");
         _close.Pressed += QueueFree;
 
