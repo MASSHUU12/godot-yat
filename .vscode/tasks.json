@@ -32,7 +32,8 @@
             "group": "test",
             "presentation": {
                 "reveal": "always",
-                "panel": "dedicated"
+                "panel": "dedicated",
+                "clear": true
             }
         }
     ]
