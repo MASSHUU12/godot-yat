@@ -328,9 +328,9 @@ public static class ParserTest
     [TestCase]
     public static void TryConvertStringToType_String_OutOfRange()
     {
-        var (min, max) = (_rg.Next(16, 32), _rg.Next(32, 64));
+        (int min, int max) = (_rg.Next(16, 32), _rg.Next(32, 64));
         string str = _rg.NextBool()
-            ? _rg.NextString(1, min)
+            ? _rg.NextString(min / 2, min - 1)
             : _rg.NextString(max + 1, max * 2);
 
         _ = Parser.TryConvertStringToType(
@@ -342,7 +342,7 @@ public static class ParserTest
                 min,
                 max
             ),
-            out var result
+            out object? result
         ).ConfirmEqual(EStringConversionResult.OutOfRange);
         _ = result.ConfirmNull();
     }
