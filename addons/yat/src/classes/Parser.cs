@@ -222,7 +222,7 @@ public static class Parser
         }
 
         bool maxPresent = !range.EndsWith(':');
-        var minMax = range.Split(':', StringSplitOptions.RemoveEmptyEntries);
+        string[] minMax = range.Split(':', StringSplitOptions.RemoveEmptyEntries);
 
         // If range is invalid return
         if (minMax.Length is 0 or > 2)
@@ -238,6 +238,11 @@ public static class Parser
                 return false;
             }
 
+            if (type == ECommandInputType.String && val < 1)
+            {
+                return false;
+            }
+
             parsed = maxPresent
                 ? CreateOut(max: val)
                 : CreateOut(min: val);
@@ -248,6 +253,11 @@ public static class Parser
         // If both values were passed
         if (minMax[0].TryConvert(out float min) && minMax[1].TryConvert(out float max))
         {
+            if (type == ECommandInputType.String && (min < 1 || max < 1))
+            {
+                return false;
+            }
+
             parsed = CreateOut(min, max);
             return min < max;
         }
