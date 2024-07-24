@@ -79,21 +79,28 @@ public static class Parser
             return false;
         }
 
-        bool isArray = stringToParse.EndsWith("...");
+        bool isArray = stringToParse.EndsWith("...", StringComparison.InvariantCulture);
         if (isArray)
         {
             stringToParse = stringToParse[..^3].Trim();
         }
 
         // Get the min and max values if present
-        var tokens = stringToParse.Trim(')').Split('(', StringSplitOptions.RemoveEmptyEntries);
+        string[] tokens = stringToParse
+            .Trim(')')
+            .Split('(', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         if (tokens.Length is 0 or > 2)
         {
             return false;
         }
 
-        if ((!TryParseStringTypeToEnum(tokens[0], out var enumType) || enumType == Constant) && tokens.Length == 1)
+        if ((
+                !TryParseStringTypeToEnum(tokens[0], out ECommandInputType enumType)
+                || enumType == Constant
+            )
+            && tokens.Length == 1 && tokens[0] != ":"
+        )
         {
             parsed = new(tokens[0], Constant, isArray);
             return true;
@@ -111,7 +118,11 @@ public static class Parser
                 return false;
             }
 
-            if (!TryParseEnumType(tokens[1].Split(','), isArray, out var result))
+            if (!TryParseEnumType(
+                tokens[1].Split(','),
+                isArray,
+                out CommandTypeEnum? result
+            ))
             {
                 return false;
             }
@@ -125,7 +136,12 @@ public static class Parser
         {
             if (tokens.Length > 1) // Type with range
             {
-                if (!TryParseTypeWithRange(enumType, tokens[1], isArray, out var result))
+                if (!TryParseTypeWithRange(
+                    enumType,
+                    tokens[1],
+                    isArray,
+                    out CommandTypeRanged? result
+                ))
                 {
                     return false;
                 }
@@ -142,7 +158,7 @@ public static class Parser
             parsed = new(tokens[0], enumType, isArray);
         }
 
-        return true;
+        return parsed.Type != ECommandInputType.Void;
     }
 
     public static bool TryParseEnumType(

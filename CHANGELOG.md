@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 - UpdaterWindow does not work in a custom plugin location.
 - String of negative length is allowed.
+- The colon is a valid type.
 
 ## [1.31.0-beta 2024-07-23]
 
