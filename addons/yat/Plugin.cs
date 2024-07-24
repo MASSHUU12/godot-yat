@@ -36,10 +36,10 @@ public partial class Plugin : EditorPlugin
         GD.Print($"YAT {_version} unloaded!");
     }
 
-    private static void OpenUpdater(SemanticVersion currentVersion, ReleaseTagInfo info)
+    private void OpenUpdater(SemanticVersion currentVersion, ReleaseTagInfo info)
     {
         UpdaterWindow window = GD.Load<PackedScene>(
-            "res://addons/yat/src/update/UpdaterWindow.tscn"
+            GetPluginPath() + "/src/update/UpdaterWindow.tscn"
         ).Instantiate<UpdaterWindow>();
 
         window.UpdateInfo = info;
