@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- UpdaterWindow will not work in editor when public fields are null.
+
+### Fixed
+
+- UpdaterWindow does not work in a custom plugin location.
+
 ## [1.31.0-beta 2024-07-23]
 
 ### Added
