@@ -39,7 +39,9 @@ public static class Reflection
 
     public static bool HasInterface<T>(this object obj) where T : notnull
     {
-        return obj.GetType().GetInterface(typeof(T).FullName ?? string.Empty, true) is not null;
+        return obj is Type type
+            ? type.HasInterface(typeof(T).FullName ?? string.Empty)
+            : obj.GetType().GetInterface(typeof(T).FullName ?? string.Empty, true) is not null;
     }
 
     public static bool HasInterface(this Type type, string interfaceName)
