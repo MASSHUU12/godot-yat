@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Extensible.ClearExtension() method.
+
 ### Changed
 
 - UpdaterWindow will not work in editor when public fields are null.
@@ -13,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - UpdaterWindow does not work in a custom plugin location.
 - String of negative length is allowed.
 - The colon is a valid type.
+- The HasInterface method sometimes fails to detect the interface on Type variables.
 
 ## [1.31.0-beta 2024-07-23]
 
