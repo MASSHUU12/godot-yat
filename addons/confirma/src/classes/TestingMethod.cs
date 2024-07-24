@@ -28,7 +28,7 @@ public class TestingMethod
     {
         foreach (TestCase test in TestCases)
         {
-            for (ushort i = 0; i <= (test.Repeat?.Repeat ?? 1); i++)
+            for (ushort i = 0; i <= (test.Repeat?.Repeat ?? 0); i++)
             {
                 IgnoreAttribute? attr = test.Method.GetCustomAttribute<IgnoreAttribute>();
                 if (attr?.IsIgnored() == true)
