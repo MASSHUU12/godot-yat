@@ -57,4 +57,17 @@ public static class Keybindings
             InputMap.Singleton.ActionAddEvent(action.Item1, action.Item2);
         }
     }
+
+    public static void RemoveDefaultActions()
+    {
+        foreach (Tuple<string, InputEvent> action in _defaultActions)
+        {
+            if (!InputMap.Singleton.HasAction(action.Item1))
+            {
+                continue;
+            }
+
+            InputMap.Singleton.EraseAction(action.Item1);
+        }
+    }
 }
