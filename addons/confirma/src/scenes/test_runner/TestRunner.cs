@@ -7,6 +7,12 @@ namespace Confirma.Scenes;
 
 public partial class TestRunner : Control
 {
+    [Signal]
+    public delegate void TestsExecutionStartedEventHandler();
+
+    [Signal]
+    public delegate void TestsExecutionFinishedEventHandler();
+
 #nullable disable
     protected ConfirmaAutoload Autoload;
     protected RichTextLabel Output;
@@ -24,9 +30,13 @@ public partial class TestRunner : Control
 
     public void RunAllTests(string className = "")
     {
+        _ = EmitSignal(SignalName.TestsExecutionStarted);
+
         Output.Clear();
 
         TestExecutor.Props = Autoload.Props;
         TestExecutor.ExecuteTests(_assembly, className);
+
+        _ = EmitSignal(SignalName.TestsExecutionFinished);
     }
 }

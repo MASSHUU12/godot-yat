@@ -26,6 +26,8 @@ public partial class TestBottomPanel : Control
         _verbose = GetNode<CheckBox>("%Verbose");
 
         _testRunner = GetNode<TestRunnerEditor>("%TestRunnerEditor");
+        _testRunner.TestsExecutionStarted += OnTestsExecutionStarted;
+        _testRunner.TestsExecutionFinished += OnTestsExecutionFinished;
 
         _ = CallDeferred("LateInit");
     }
@@ -45,6 +47,16 @@ public partial class TestBottomPanel : Control
     private void OnClearOutputPressed()
     {
         _testRunner.ClearOutput();
+    }
+
+    private void OnTestsExecutionStarted()
+    {
+        _runAllTests.Disabled = true;
+    }
+
+    private void OnTestsExecutionFinished()
+    {
+        _runAllTests.Disabled = false;
     }
 }
 

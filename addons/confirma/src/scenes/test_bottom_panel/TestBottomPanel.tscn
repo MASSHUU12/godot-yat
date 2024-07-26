@@ -1,24 +1,143 @@
-[gd_scene load_steps=8 format=3 uid="uid://bl21wviqvff84"]
+[gd_scene load_steps=13 format=3 uid="uid://bl21wviqvff84"]
 
 [ext_resource type="Script" path="res://addons/confirma/src/scenes/test_bottom_panel/TestBottomPanel.cs" id="1_cnf8q"]
 [ext_resource type="PackedScene" uid="uid://baxebi0q3s62s" path="res://addons/confirma/src/scenes/test_runner_editor/TestRunnerEditor.tscn" id="2_80bgg"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xcbu7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hfib7"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.189, 0.216, 0.261, 1)
+border_color = Color(0.147, 0.168, 0.203, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
+anti_aliasing = false
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5kiws"]
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ylh65"]
 
-[sub_resource type="Theme" id="Theme_52oh6"]
-Button/styles/focus = SubResource("StyleBoxEmpty_xcbu7")
-MarginContainer/constants/margin_bottom = 8
-MarginContainer/constants/margin_left = 8
-MarginContainer/constants/margin_right = 8
-MarginContainer/constants/margin_top = 8
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_5kiws")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ebtxa"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 1, 1, 0.11)
+border_color = Color(1, 1, 1, 0.05)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bdlxm"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.147, 0.168, 0.203, 1)
+border_color = Color(0.1155, 0.132, 0.1595, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ddkf"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.128625, 0.147, 0.177625, 1)
+border_color = Color(0.1155, 0.132, 0.1595, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fjvpb"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.147, 0.168, 0.203, 1)
+draw_center = false
+border_color = Color(0.1155, 0.132, 0.1595, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sigia"]
+bg_color = Color(0.147, 0.168, 0.203, 1)
+draw_center = false
+border_color = Color(0.1155, 0.132, 0.1595, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
+anti_aliasing = false
+
+[sub_resource type="Theme" id="Theme_n05xl"]
+Button/colors/font_color = Color(0.8025, 0.81, 0.8225, 1)
+Button/colors/font_disabled_color = Color(1, 1, 1, 0.35)
+Button/colors/font_focus_color = Color(0.90125, 0.905, 0.91125, 1)
+Button/colors/font_hover_color = Color(0.90125, 0.905, 0.91125, 1)
+Button/colors/font_hover_pressed_color = Color(0.559925, 0.7755, 0.962125, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 0)
+Button/colors/font_pressed_color = Color(0.44, 0.73, 0.98, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1.15, 1.15, 1.15, 1)
+Button/colors/icon_hover_color = Color(1.15, 1.15, 1.15, 1)
+Button/colors/icon_hover_pressed_color = Color(0.506, 0.8395, 1.127, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(0.506, 0.8395, 1.127, 1)
+Button/constants/align_to_largest_stylebox = 1
+Button/constants/h_separation = 8
+Button/constants/outline_size = 0
+Button/styles/disabled = SubResource("StyleBoxFlat_hfib7")
+Button/styles/focus = SubResource("StyleBoxEmpty_ylh65")
+Button/styles/hover = SubResource("StyleBoxFlat_ebtxa")
+Button/styles/normal = SubResource("StyleBoxFlat_bdlxm")
+Button/styles/pressed = SubResource("StyleBoxFlat_7ddkf")
+CheckBox/colors/font_color = Color(0.8025, 0.81, 0.8225, 1)
+CheckBox/colors/font_disabled_color = Color(1, 1, 1, 0.35)
+CheckBox/colors/font_focus_color = Color(0.90125, 0.905, 0.91125, 1)
+CheckBox/colors/font_hover_color = Color(0.90125, 0.905, 0.91125, 1)
+CheckBox/colors/font_hover_pressed_color = Color(0.559925, 0.7755, 0.962125, 1)
+CheckBox/colors/font_outline_color = Color(0, 0, 0, 0)
+CheckBox/colors/font_pressed_color = Color(0.44, 0.73, 0.98, 1)
+CheckBox/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+CheckBox/colors/icon_focus_color = Color(1.15, 1.15, 1.15, 1)
+CheckBox/colors/icon_hover_color = Color(1.15, 1.15, 1.15, 1)
+CheckBox/colors/icon_normal_color = Color(1, 1, 1, 1)
+CheckBox/colors/icon_pressed_color = Color(0.506, 0.8395, 1.127, 1)
+CheckBox/constants/check_v_offset = 0
+CheckBox/constants/h_separation = 16
+CheckBox/constants/outline_size = 0
+CheckBox/styles/disabled = SubResource("StyleBoxFlat_fjvpb")
+CheckBox/styles/hover = SubResource("StyleBoxFlat_fjvpb")
+CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_fjvpb")
+CheckBox/styles/normal = SubResource("StyleBoxFlat_fjvpb")
+CheckBox/styles/pressed = SubResource("StyleBoxFlat_fjvpb")
+HBoxContainer/constants/separation = 8
+HSplitContainer/constants/minimum_grab_thickness = 8
+HSplitContainer/constants/separation = 8
+MarginContainer/constants/margin_bottom = 0
+MarginContainer/constants/margin_left = 0
+MarginContainer/constants/margin_right = 0
+MarginContainer/constants/margin_top = 0
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_sigia")
+VBoxContainer/constants/separation = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_70jaa"]
 bg_color = Color(0.211765, 0.239216, 0.290196, 1)
@@ -48,7 +167,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_52oh6")
+theme = SubResource("Theme_n05xl")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -61,38 +180,32 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HSplitContainer"]
-layout_mode = 2
-
-[node name="Menu" type="PanelContainer" parent="PanelContainer/HSplitContainer/MarginContainer"]
+[node name="Menu" type="PanelContainer" parent="PanelContainer/HSplitContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_70jaa")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HSplitContainer/MarginContainer/Menu"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HSplitContainer/Menu"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HSplitContainer/MarginContainer/Menu/MarginContainer"]
-layout_mode = 2
-
-[node name="RunAllTests" type="Button" parent="PanelContainer/HSplitContainer/MarginContainer/Menu/MarginContainer/VBoxContainer"]
+[node name="RunAllTests" type="Button" parent="PanelContainer/HSplitContainer/Menu/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Run All Tests"
 
-[node name="ClearOutput" type="Button" parent="PanelContainer/HSplitContainer/MarginContainer/Menu/MarginContainer/VBoxContainer"]
+[node name="ClearOutput" type="Button" parent="PanelContainer/HSplitContainer/Menu/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Clear Output"
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/HSplitContainer/MarginContainer/Menu/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/HSplitContainer/Menu/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/separator = SubResource("StyleBoxEmpty_swiyr")
 
-[node name="Options" type="VBoxContainer" parent="PanelContainer/HSplitContainer/MarginContainer/Menu/MarginContainer/VBoxContainer"]
+[node name="Options" type="VBoxContainer" parent="PanelContainer/HSplitContainer/Menu/VBoxContainer"]
 layout_mode = 2
 
-[node name="Verbose" type="CheckBox" parent="PanelContainer/HSplitContainer/MarginContainer/Menu/MarginContainer/VBoxContainer/Options"]
+[node name="Verbose" type="CheckBox" parent="PanelContainer/HSplitContainer/Menu/VBoxContainer/Options"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Verbose"

@@ -1,5 +1,5 @@
 <div align="center">
- <img height=128 src="./docs/resources/icon.svg" />
+ <img height=128 src="./docs/resources/icon.svg" alt="Confirma icon" />
  <h3>Confirma</h1>
  <p>A lightweight and intuitive unit testing tool for the Godot game engine.</p>
 </div>
@@ -15,7 +15,7 @@
 
 ## Overview
 
-![Confirma](https://github.com/MASSHUU12/godot-confirma/assets/61974579/47d2a6b1-113b-4142-8441-244e14f894b8)
+![Confirma](https://github.com/user-attachments/assets/fdddfa06-4d0b-4d01-9233-d92c491bfc98)
 
 ### Features
 
