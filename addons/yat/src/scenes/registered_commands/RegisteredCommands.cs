@@ -1,6 +1,6 @@
-using Godot;
 using System;
 using System.Collections.Generic;
+using Godot;
 using YAT.Attributes;
 using YAT.Commands;
 using YAT.Enums;
@@ -159,8 +159,8 @@ public partial class RegisteredCommands : Node
             typeof(Wenv),
             typeof(Load),
             typeof(Pause),
-			// typeof(Watch),
-			typeof(Reset),
+            // typeof(Watch),
+            typeof(Reset),
             typeof(Crash),
             typeof(Cowsay),
             typeof(Dollar),

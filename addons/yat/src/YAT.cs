@@ -1,7 +1,7 @@
 using Godot;
+using YAT.Classes.Managers;
 using YAT.Helpers;
 using YAT.Scenes;
-using YAT.Classes.Managers;
 
 namespace YAT;
 
@@ -24,5 +24,10 @@ public partial class YAT : Node
         PreferencesManager = GetNode<PreferencesManager>("%PreferencesManager");
 
         Keybindings.LoadDefaultActions();
+    }
+
+    public override void _ExitTree()
+    {
+        Keybindings.RemoveDefaultActions();
     }
 }
