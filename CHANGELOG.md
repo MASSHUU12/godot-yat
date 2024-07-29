@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- 'locale' command.
+
 ## [1.31.1-beta 2024-07-24]
 
 ### Added
