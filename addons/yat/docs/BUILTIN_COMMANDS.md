@@ -49,5 +49,6 @@
 | sr            | N/A    | Set the screen resolution.                                                       |
 | lcr           | N/A    | Shows the result of the last command.                                            |
 | cu            | N/A    | Check if YAT update is available.                                                |
+| locale        | N/A    | Manages game locale.                                                             |
 
 <!-- | watch         | N/A    | Runs user-defined (not threaded) commands at regular intervals.                  | -->
