@@ -7,6 +7,17 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - 'locale' command.
+- 'Timeout' value to ExecutionResult enum.
+- Timeout to OS.RunCommand.
+
+### Changed
+
+- Reworked OS.RunCommand.
+
+### Fixed
+
+- PowerShell script cannot be accessed when YAT is in custom location.
+- OS.RunCommand hangs on Linux.
 
 ## [1.31.1-beta 2024-07-24]
 

@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -12,18 +13,19 @@ public static class OS
 
     public enum OperatingSystem
     {
-        Unknown,
-        Windows,
-        Linux,
-        OSX
+        Unknown = 0,
+        Windows = 1,
+        Linux = 2,
+        OSX = 3
     }
 
     public enum ExecutionResult
     {
-        Success,
-        CannotExecute,
-        ErrorExecuting,
-        UnknownPlatform
+        Success = 0,
+        CannotExecute = 1,
+        ErrorExecuting = 2,
+        UnknownPlatform = 3,
+        Timeout = 4
     }
 
     static OS()
@@ -32,7 +34,13 @@ public static class OS
         CheckDefaultTerminal();
     }
 
-    public static StringBuilder RunCommand(string command, out ExecutionResult result, string program = "", string args = "")
+    public static StringBuilder RunCommand(
+        string command,
+        out ExecutionResult result,
+        string program = "",
+        string args = "",
+        int timeoutMilis = 10000
+    )
     {
         StringBuilder output = new();
         result = ExecutionResult.Success;
@@ -62,6 +70,9 @@ public static class OS
 
         using Process process = new() { StartInfo = startInfo };
 
+        StringBuilder outputStandard = new();
+        StringBuilder outputError = new();
+
         try
         {
             _ = process.Start();
@@ -70,27 +81,33 @@ public static class OS
             process.StandardInput.Flush();
             process.StandardInput.Close();
 
-            StringBuilder outputStandard = new();
-            StringBuilder outputError = new();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
 
-            while (!process.HasExited && process.StandardOutput.Peek() > -1)
+            process.OutputDataReceived +=
+                (sender, data) => outputStandard.AppendLine(data.Data);
+            process.ErrorDataReceived +=
+                (sender, data) => outputError.AppendLine(data.Data);
+
+            if (!process.WaitForExit(timeoutMilis))
             {
-                _ = outputStandard.AppendLine(process.StandardOutput.ReadLine());
+                process.Kill();
+                result = ExecutionResult.Timeout;
             }
-
-            while (!process.HasExited && process.StandardError.Peek() > -1)
+            else
             {
-                _ = outputError.AppendLine(process.StandardError.ReadLine());
+                result = ExecutionResult.Success;
             }
-
-            process.WaitForExit();
 
             _ = output.Append(outputStandard);
             _ = output.Append(outputError);
         }
         catch (Exception ex)
         {
-            _ = output.AppendLine($"Error executing command: {ex.Message}");
+            _ = output.AppendLine(
+                CultureInfo.InvariantCulture,
+                $"Error executing command: {ex.Message}"
+            );
             result = ExecutionResult.ErrorExecuting;
 
             return output;
