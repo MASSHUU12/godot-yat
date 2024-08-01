@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Reworked OS.RunCommand.
+- Renamed OperatinSystem enum to EOperatingSystem and
+  ExecutionResult to EExecutionResult.
 
 ### Fixed
 
