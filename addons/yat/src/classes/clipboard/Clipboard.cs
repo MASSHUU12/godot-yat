@@ -52,7 +52,7 @@ public static class Clipboard
         }
         else if (Platform == OperatingSystem.Linux)
         {
-            _ = RunCommand($"xclip -selection clipboard -t image/png -i {tempFile}", out result);
+            _ = RunCommand($"xclip -selection clipboard -t image/png < {tempFile}", out result);
         }
         else if (Platform == OperatingSystem.OSX)
         {
