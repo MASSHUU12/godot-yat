@@ -117,9 +117,9 @@ public sealed class Ss : ICommand
                 break;
         }
 
-        ExecutionResult result = Clipboard.SetImageData(buffer);
+        EExecutionResult result = Clipboard.SetImageData(buffer);
 
-        if (result != ExecutionResult.Success)
+        if (result != EExecutionResult.Success)
         {
             _terminal.Output.Error("Error saving the screenshot to the clipboard.");
         }

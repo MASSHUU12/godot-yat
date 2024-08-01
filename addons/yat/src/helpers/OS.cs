@@ -8,10 +8,10 @@ namespace YAT.Helpers;
 
 public static class OS
 {
-    public static OperatingSystem Platform { get; private set; }
+    public static EOperatingSystem Platform { get; private set; }
     public static string DefaultTerminal { get; private set; } = string.Empty;
 
-    public enum OperatingSystem
+    public enum EOperatingSystem
     {
         Unknown = 0,
         Windows = 1,
@@ -19,7 +19,7 @@ public static class OS
         OSX = 3
     }
 
-    public enum ExecutionResult
+    public enum EExecutionResult
     {
         Success = 0,
         CannotExecute = 1,
@@ -36,19 +36,19 @@ public static class OS
 
     public static StringBuilder RunCommand(
         string command,
-        out ExecutionResult result,
+        out EExecutionResult result,
         string program = "",
         string args = "",
         int timeoutMilis = 10000
     )
     {
         StringBuilder output = new();
-        result = ExecutionResult.Success;
+        result = EExecutionResult.Success;
 
-        if (Platform == OperatingSystem.Unknown)
+        if (Platform == EOperatingSystem.Unknown)
         {
             _ = output.AppendLine("Cannot run command, unknown platform.");
-            result = ExecutionResult.UnknownPlatform;
+            result = EExecutionResult.UnknownPlatform;
 
             return output;
         }
@@ -92,11 +92,11 @@ public static class OS
             if (!process.WaitForExit(timeoutMilis))
             {
                 process.Kill();
-                result = ExecutionResult.Timeout;
+                result = EExecutionResult.Timeout;
             }
             else
             {
-                result = ExecutionResult.Success;
+                result = EExecutionResult.Success;
             }
 
             _ = output.Append(outputStandard);
@@ -108,7 +108,7 @@ public static class OS
                 CultureInfo.InvariantCulture,
                 $"Error executing command: {ex.Message}"
             );
-            result = ExecutionResult.ErrorExecuting;
+            result = EExecutionResult.ErrorExecuting;
 
             return output;
         }
@@ -119,22 +119,22 @@ public static class OS
     private static void CheckOSPlatform()
     {
         Platform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-            ? OperatingSystem.Windows
+            ? EOperatingSystem.Windows
             : RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
-                ? OperatingSystem.Linux
+                ? EOperatingSystem.Linux
                 : RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-                    ? OperatingSystem.OSX
-                    : OperatingSystem.Unknown;
+                    ? EOperatingSystem.OSX
+                    : EOperatingSystem.Unknown;
     }
 
     private static void CheckDefaultTerminal()
     {
         DefaultTerminal = Platform switch
         {
-            OperatingSystem.Windows => "cmd.exe",
-            OperatingSystem.Linux => "/bin/bash",
-            OperatingSystem.OSX => "/bin/bash",
-            OperatingSystem.Unknown => throw new NotImplementedException(),
+            EOperatingSystem.Windows => "cmd.exe",
+            EOperatingSystem.Linux => "/bin/bash",
+            EOperatingSystem.OSX => "/bin/bash",
+            EOperatingSystem.Unknown => throw new NotImplementedException(),
             _ => string.Empty
         };
     }
