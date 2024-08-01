@@ -1,4 +1,5 @@
 using System.IO;
+using YAT.Update;
 using static YAT.Helpers.OS;
 
 namespace YAT.Classes;
@@ -38,7 +39,7 @@ public static class Clipboard
             // To get access to the PowerShell script,
             // we need to copy it to a temporary file where PowerShell can access it.
             string path = CreateScriptTempFile(
-                "res://addons/yat/src/classes/clipboard/CopyImageToClipboard.ps1"
+                Updater.GetPluginPath() + "src/classes/clipboard/CopyImageToClipboard.ps1"
             );
 
             _ = RunCommand(
