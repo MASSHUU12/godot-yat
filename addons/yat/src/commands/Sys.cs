@@ -25,7 +25,7 @@ public sealed class Sys : ICommand
 
         StringBuilder result = OS.RunCommand(commandName, out var status, program, commandArgs);
 
-        if (status == OS.ExecutionResult.Success)
+        if (status == OS.EExecutionResult.Success)
         {
             data.Terminal.Output.Print(result.ToString());
         }

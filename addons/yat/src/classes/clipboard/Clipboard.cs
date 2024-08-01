@@ -6,19 +6,19 @@ namespace YAT.Classes;
 
 public static class Clipboard
 {
-    public static ExecutionResult SetText(string text)
+    public static EExecutionResult SetText(string text)
     {
-        ExecutionResult result = ExecutionResult.Success;
+        EExecutionResult result = EExecutionResult.Success;
 
-        if (Platform == OperatingSystem.Windows)
+        if (Platform == EOperatingSystem.Windows)
         {
             _ = RunCommand($"echo {text} | clip", out result);
         }
-        else if (Platform == OperatingSystem.Linux)
+        else if (Platform == EOperatingSystem.Linux)
         {
             _ = RunCommand($"echo {text} | xclip -selection clipboard", out result);
         }
-        else if (Platform == OperatingSystem.OSX)
+        else if (Platform == EOperatingSystem.OSX)
         {
             _ = RunCommand($"echo {text} | pbcopy", out result);
         }
@@ -26,14 +26,14 @@ public static class Clipboard
         return result;
     }
 
-    public static ExecutionResult SetImageData(byte[] data)
+    public static EExecutionResult SetImageData(byte[] data)
     {
-        ExecutionResult result = ExecutionResult.Success;
+        EExecutionResult result = EExecutionResult.Success;
 
         string tempFile = Path.GetTempFileName();
         File.WriteAllBytes(tempFile, data);
 
-        if (Platform == OperatingSystem.Windows)
+        if (Platform == EOperatingSystem.Windows)
         {
             // ProjectSettings.GlobalizePath works only in the editor.
             // To get access to the PowerShell script,
@@ -50,11 +50,11 @@ public static class Clipboard
 
             File.Delete(path);
         }
-        else if (Platform == OperatingSystem.Linux)
+        else if (Platform == EOperatingSystem.Linux)
         {
             _ = RunCommand($"xclip -selection clipboard -t image/png < {tempFile}", out result);
         }
-        else if (Platform == OperatingSystem.OSX)
+        else if (Platform == EOperatingSystem.OSX)
         {
             _ = RunCommand($"cat {tempFile} | pbcopy", out result);
         }
