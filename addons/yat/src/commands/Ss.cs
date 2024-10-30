@@ -63,7 +63,7 @@ public sealed class Ss : ICommand
     private void SaveScreenshot(Viewport viewport, string path, string name, string extension)
     {
         Image image = viewport.GetTexture().GetImage();
-        string fileName = path + name + extension;
+        string fileName = $"{path}{name}.{extension}";
 
         Error err = Error.Ok;
         switch (extension)
