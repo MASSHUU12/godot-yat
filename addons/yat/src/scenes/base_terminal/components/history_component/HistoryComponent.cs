@@ -19,7 +19,7 @@ public partial class HistoryComponent : Node
     {
         if (History.Count >= _yat!.PreferencesManager.Preferences.HistoryLimit)
         {
-            return;
+            History.RemoveFirst();
         }
 
         CurrentNode = null;
