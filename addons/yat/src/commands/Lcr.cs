@@ -8,6 +8,8 @@ namespace YAT.Commands;
 [Option("-l", "bool", "Also displays name of the result.")]
 public sealed class Lcr : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         return ICommand.Ok(

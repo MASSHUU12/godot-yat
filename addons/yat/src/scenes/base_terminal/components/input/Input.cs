@@ -45,7 +45,8 @@ public partial class Input : LineEdit
         }
 
         Terminal.HistoryComponent.Add(input);
-        _ = Terminal.CommandManager.Run(command, Terminal);
+        _ = Terminal.CommandManager.RunAsync(command, Terminal)
+            .ConfigureAwait(false).GetAwaiter().GetResult();
         Clear();
     }
 

@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using YAT.Attributes;
+using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -20,13 +23,22 @@ public class Pipeline
         _commands.Add(command);
     }
 
-    public CommandResult Execute(CommandData context)
+    public void Clear()
+    {
+        _commands.Clear();
+    }
+
+    public async Task<CommandResult> ExecuteAsync(CommandData context)
     {
         CommandResult? result = ICommand.Ok();
 
         foreach (ICommand command in _commands)
         {
-            result = command.Execute(context);
+            context.Terminal.Locked = true;
+            result = command.GetAttribute<ThreadedAttribute>() is not null
+                ? await Task.Run(() => command.Execute(context))
+                : command.Execute(context);
+            context.Terminal.Locked = false;
 
             if (result.Result is not Success or Ok)
             {

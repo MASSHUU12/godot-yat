@@ -13,6 +13,8 @@ namespace YAT.Interfaces;
 
 public interface ICommand
 {
+    string[]? Arguments { get; set; }
+
     CommandResult Execute(CommandData data);
 
     static CommandResult Success(string? message = null)

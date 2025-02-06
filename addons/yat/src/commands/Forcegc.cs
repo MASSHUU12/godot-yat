@@ -18,6 +18,8 @@ namespace YAT.Commands;
 [Option("-c", "bool", "A value that specifies whether the GC is forced to compact the heap.")]
 public sealed class Forcegc : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var gen = (int)data.Options["-g"];

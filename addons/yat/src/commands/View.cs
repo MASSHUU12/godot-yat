@@ -20,6 +20,8 @@ public sealed class View : ICommand
     private static readonly int MAX_DRAW_MODE;
     private static readonly List<StringName> Modes = new();
 
+    public string[]? Arguments { get; set; }
+
     static View()
     {
         Array values = Enum.GetValues(typeof(ViewportDebugDraw));

@@ -7,6 +7,8 @@ namespace YAT.Commands;
 [Command("pause", "Toggles the game pause state.")]
 public sealed class Pause : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         data.Yat.GetTree().Paused = !data.Yat.GetTree().Paused;

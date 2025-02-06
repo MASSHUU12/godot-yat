@@ -15,6 +15,8 @@ public static class RegisteredCommandsTest
     [Command("test")]
     private class TestCommand : ICommand
     {
+        public string[]? Arguments { get; set; }
+
         public CommandResult Execute(CommandData data)
         {
             return ICommand.NotImplemented();
@@ -23,6 +25,8 @@ public static class RegisteredCommandsTest
 
     private class TestCommandWithoutAttribute : ICommand
     {
+        public string[]? Arguments { get; set; }
+
         public CommandResult Execute(CommandData data)
         {
             return ICommand.NotImplemented();

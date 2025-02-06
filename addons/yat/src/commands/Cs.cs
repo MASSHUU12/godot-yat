@@ -17,6 +17,8 @@ public partial class Cs : Node, ICommand
     [Signal]
     public delegate void SceneChangeFailedEventHandler(string scenePath, ESceneChangeFailureReason reason);
 
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var scene = (string)data.Arguments["scene"];

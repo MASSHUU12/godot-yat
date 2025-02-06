@@ -22,6 +22,8 @@ namespace YAT.Commands;
 [Option("-limit", "int(1:255)", "The maximum number of pings to send.", 0)]
 public sealed class Ping : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var hostname = (string)data.Arguments["hostname"];

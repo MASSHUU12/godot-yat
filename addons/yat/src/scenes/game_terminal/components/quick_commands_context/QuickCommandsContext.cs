@@ -46,9 +46,9 @@ public partial class QuickCommandsContext : ContextSubmenu
             return;
         }
 
-        _ = _terminalSwitcher.CurrentTerminal.CommandManager.Run(
+        _ = _terminalSwitcher.CurrentTerminal.CommandManager.RunAsync(
             Text.SanitizeText(command),
             _terminalSwitcher.CurrentTerminal
-        );
+        ).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 }

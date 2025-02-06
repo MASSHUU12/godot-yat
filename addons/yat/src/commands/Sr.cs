@@ -13,6 +13,8 @@ namespace YAT.Commands;
 [Option("-fsr2", "bool", "Enable AMD FSR 2.2")]
 public sealed class Sr : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var width = (int)data.Options["-w"];

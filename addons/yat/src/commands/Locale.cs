@@ -21,6 +21,8 @@ namespace YAT.Commands;
 )]
 public sealed class Locale : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     private BaseTerminal? _terminal;
 
     public CommandResult Execute(CommandData data)

@@ -14,6 +14,8 @@ namespace YAT.Commands;
 [Option("-f", "bool", "Flush the cache before listing commands.")]
 public sealed class List : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     private static string _cache = string.Empty;
 
     public CommandResult Execute(CommandData data)

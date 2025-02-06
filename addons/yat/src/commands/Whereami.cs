@@ -12,6 +12,8 @@ namespace YAT.Commands;
 [Option("-e", "bool", "Prints the path to the executable.")]
 public sealed class Whereami : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var s = (bool)data.Options["-s"];

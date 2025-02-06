@@ -13,6 +13,8 @@ public sealed class Wenv : ICommand
     private static Environment _world3DEnvironment;
 #nullable restore
 
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var action = (string)data.Arguments["action"];

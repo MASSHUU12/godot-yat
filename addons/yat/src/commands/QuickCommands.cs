@@ -13,6 +13,8 @@ namespace YAT.Commands;
 [Option("-command", "string", "The command to execute when the quick command is called.")]
 public sealed class QuickCommands : ICommand
 {
+    public string[]? Arguments { get; set; }
+
 #nullable disable
     private YAT _yat;
 #nullable restore
@@ -70,7 +72,8 @@ public sealed class QuickCommands : ICommand
     {
         if (_yat.Commands.QuickCommands.Commands.TryGetValue(name, out var command))
         {
-            _ = terminal.CommandManager.Run(Text.SanitizeText(command), terminal);
+            _ = terminal.CommandManager.RunAsync(Text.SanitizeText(command), terminal)
+                .ConfigureAwait(false).GetAwaiter().GetResult();
             return ICommand.Ok();
         }
 

@@ -9,6 +9,8 @@ namespace YAT.Commands;
 [Option("-message", "string", "The message to when crashing.", ":c")]
 public sealed class Crash : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var message = (string)data.Options["-message"];
