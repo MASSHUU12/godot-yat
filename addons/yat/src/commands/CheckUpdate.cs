@@ -1,6 +1,5 @@
 using YAT.Attributes;
 using YAT.Classes;
-using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
 using YAT.Update;
@@ -11,6 +10,8 @@ namespace YAT.Commands;
 [Description("Check if YAT update is available.")]
 public sealed class CheckUpdate : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData _)
     {
         (bool isSuccess, ReleaseTagInfo? info) = Release.GetLatestVersion();

@@ -9,7 +9,7 @@ namespace YAT.Types;
 public sealed record CommandData(
     YAT Yat,
     BaseTerminal Terminal,
-    ICommand Command,
+    ICommand? Command,
     string[] RawData,
     Dictionary<StringName, object> Arguments,
     Dictionary<StringName, object> Options,

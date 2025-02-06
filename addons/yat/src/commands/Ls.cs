@@ -19,6 +19,8 @@ namespace YAT.Commands;
 [Option("-m", "bool", "Lists the methods of the current node.")]
 public sealed class Ls : ICommand
 {
+    public string[]? Arguments { get; set; }
+
 #nullable disable
     private BaseTerminal _terminal;
 #nullable restore

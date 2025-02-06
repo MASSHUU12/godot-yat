@@ -16,6 +16,8 @@ namespace YAT.Commands;
 [Option("--interval", "float(0.5:60)", "The interval at which to run the command.", 1f)]
 public sealed class Watch : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var parsed = Parser.ParseCommand((string)data.Arguments["command"]);
@@ -39,7 +41,10 @@ public sealed class Watch : ICommand
 
         while (!data.CancellationToken.IsCancellationRequested)
         {
-            if (!data.Terminal.CommandManager.Run(parsed, data.Terminal))
+            bool success = data.Terminal.CommandManager.RunAsync(parsed, data.Terminal)
+                .ConfigureAwait(false).GetAwaiter().GetResult();
+
+            if (!success)
             {
                 return ICommand.Failure(
                     $"Error executing command '{commandName}', exiting watch."

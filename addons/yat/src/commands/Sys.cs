@@ -16,6 +16,8 @@ namespace YAT.Commands;
 [Threaded]
 public sealed class Sys : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var program = (string)data.Options["-program"];

@@ -14,6 +14,8 @@ public sealed class Quit : ICommand
     private BaseTerminal _terminal;
 #nullable restore
 
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var t = (bool)data.Options["-t"];

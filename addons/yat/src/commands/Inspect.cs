@@ -13,6 +13,8 @@ namespace YAT.Commands;
 [Option("-all", "bool", "Inspect all properties. Some properties might not be displayed correctly.")]
 public sealed class Inspect : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var useRayCast = (bool)data.Options["-ray"];

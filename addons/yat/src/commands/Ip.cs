@@ -13,6 +13,8 @@ namespace YAT.Commands;
 [Argument("action", "addr", "The action to perform.")]
 public sealed class Ip : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var action = (string)data.Arguments["action"];

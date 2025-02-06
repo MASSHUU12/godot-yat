@@ -42,29 +42,132 @@ public partial class CommandManager : Node
         _yat = GetNode<YAT>("/root/YAT");
     }
 
-    public bool Run(string[] args, BaseTerminal terminal)
+    public async Task<bool> RunAsync(string[] args, BaseTerminal terminal)
     {
         if (args.Length == 0)
         {
             return false;
         }
 
-        string commandName = args[0];
+        Cts = new();
+        Dictionary<StringName, object?> convertedArgs = [];
+        Dictionary<StringName, object?> convertedOpts = [];
 
-        if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type? value))
+        Pipeline? pipeline = CreatePipeline(
+            args,
+            terminal,
+            ref convertedArgs,
+            ref convertedOpts
+        );
+        if (pipeline is null)
+        {
+            terminal.Output.Error(Messages.UnknownCommand(args[0]));
+            return false;
+        }
+
+        CommandData data = new(
+            _yat,
+            terminal,
+            null,
+            args,
+            convertedArgs!,
+            convertedOpts!,
+            Cts.Token
+        );
+
+        _ = CallDeferredThreadGroup(
+            "emit_signal",
+            SignalName.CommandStarted,
+            args[0],
+            args
+        );
+
+        CommandResult result = await pipeline.ExecuteAsync(data);
+        Cts.Dispose();
+
+        _ = CallDeferredThreadGroup(
+            "emit_signal",
+            SignalName.CommandFinished,
+            args[0],
+            args,
+            (ushort)result.Result
+        );
+
+        terminal.LastCommandResult = result.Result;
+
+        PrintCommandResult(result, terminal);
+
+        return result.Result is ECommandResult.Success or ECommandResult.Ok;
+    }
+
+    private static Pipeline? CreatePipeline(
+        string[] args,
+        BaseTerminal terminal,
+        ref Dictionary<StringName, object?> cA,
+        ref Dictionary<StringName, object?> cO
+    )
+    {
+        Pipeline pipeline = new();
+        List<string> commandBuffer = [];
+
+        foreach (string arg in args)
+        {
+            if (arg == "|")
+            {
+                if (commandBuffer.Count > 0)
+                {
+                    if (!AddCommandToPipeline(
+                        [.. commandBuffer],
+                        pipeline,
+                        terminal,
+                        ref cA,
+                        ref cO
+                    ))
+                    {
+                        return null;
+                    }
+                    commandBuffer.Clear();
+                }
+            }
+            else
+            {
+                commandBuffer.Add(arg);
+            }
+        }
+
+        return commandBuffer.Count > 0
+            && !AddCommandToPipeline(
+                [.. commandBuffer],
+                pipeline,
+                terminal,
+                ref cA,
+                ref cO
+            ) ? null : pipeline;
+    }
+
+    private static bool AddCommandToPipeline(
+        string[] args,
+        Pipeline pipeline,
+        BaseTerminal terminal,
+        ref Dictionary<StringName, object?> cA,
+        ref Dictionary<StringName, object?> cO
+    )
+    {
+        string commandName = args[0];
+        string[] commandArgs = args.Length > 1 ? args[1..] : [];
+
+        if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type? commandType))
         {
             terminal.Output.Error(Messages.UnknownCommand(commandName));
             return false;
         }
 
-        ICommand command = (Activator.CreateInstance(value) as ICommand)!;
-        Dictionary<StringName, object?> convertedArgs = new();
-        Dictionary<StringName, object?> convertedOpts = new();
+        ICommand command = (Activator.CreateInstance(commandType) as ICommand)!;
 
         if (command.GetAttribute<NoValidateAttribute>() is null)
         {
             if (!terminal.CommandValidator.ValidatePassedData<ArgumentAttribute>(
-                command, args[1..], out convertedArgs
+                command, args[1..], out cA
             ))
             {
                 return false;
@@ -72,69 +175,16 @@ public partial class CommandManager : Node
 
             if (command.GetAttributes<OptionAttribute>() is not null
                 && !terminal.CommandValidator.ValidatePassedData<OptionAttribute>(
-                    command, args[1..], out convertedOpts
+                    command, args[1..], out cO
                 ))
             {
                 return false;
             }
         }
-
-        _ = CallDeferredThreadGroup(
-            "emit_signal",
-            SignalName.CommandStarted,
-            commandName,
-            args
-        );
-
-        Cts = new();
-        CommandData data = new(_yat, terminal, command, args, convertedArgs!, convertedOpts!, Cts.Token);
-
-        if (command.GetAttribute<ThreadedAttribute>() is not null)
-        {
-            ExecuteThreadedCommand(data);
-            return false;
-        }
-
-        ExecuteCommand(data);
-
-        // Prevent creating orphans
-        if (command is Node node)
-        {
-            node.QueueFree();
-        }
+        command.Arguments = commandArgs;
+        pipeline.AddCommand(command);
 
         return true;
-    }
-
-    private void ExecuteCommand(CommandData data)
-    {
-        string commandName = data.RawData[0];
-
-        data.Terminal.Locked = true;
-        CommandResult result = data.Command.Execute(data);
-        data.Terminal.Locked = false;
-
-        Cts.Dispose();
-
-        _ = CallDeferredThreadGroup(
-            "emit_signal",
-            SignalName.CommandFinished,
-            commandName,
-            data.RawData,
-            (ushort)result.Result
-        );
-
-        data.Terminal.LastCommandResult = result.Result;
-
-        PrintCommandResult(result, data.Terminal);
-    }
-
-    private async void ExecuteThreadedCommand(CommandData data)
-    {
-        new Task(() => ExecuteCommand(data), Cts.Token).Start();
-        _ = await ToSignal(this, SignalName.CommandFinished);
-
-        data.Terminal.Output.Success($"Command {data.Command.GetType().Name} finished.");
     }
 
     private static void PrintCommandResult(CommandResult result, BaseTerminal terminal)

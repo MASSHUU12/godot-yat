@@ -27,6 +27,8 @@ public sealed class Ss : ICommand
     private BaseTerminal _terminal;
 #nullable restore
 
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var cp = (bool)data.Options["-cp"];

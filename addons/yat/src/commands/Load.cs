@@ -21,6 +21,8 @@ namespace YAT.Commands;
 [Option("-2d", "bool", "The object will be loaded as a 2D object.")]
 public sealed class Load : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var path = (string)data.Arguments["object_path"];

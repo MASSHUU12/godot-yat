@@ -11,6 +11,8 @@ namespace YAT.Commands;
 [Option("--yat", "bool", "Display YAT version.")]
 public sealed class Version : ICommand
 {
+    public string[]? Arguments { get; set; }
+
     private static readonly string _gameName, _gameVersion, _version;
 
     static Version()

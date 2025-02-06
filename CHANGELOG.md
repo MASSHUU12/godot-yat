@@ -9,12 +9,17 @@ All notable changes to this project will be documented in this file.
 - 'locale' command.
 - 'Timeout' value to ExecutionResult enum.
 - Timeout to OS.RunCommand.
+- `Pipeline` class.
+- `Arguments` field to the `ICommand`.
 
 ### Changed
 
 - Reworked OS.RunCommand.
 - Renamed OperatinSystem enum to EOperatingSystem and
-  ExecutionResult to EExecutionResult.
+ExecutionResult to EExecutionResult.
+- `ICommand.GenerateCommandManual` & `ICommand.GenerateManual` uses invariant
+culture.
+- Threaded commands no longer print on finish.
 
 ### Fixed
 
@@ -36,7 +41,8 @@ All notable changes to this project will be documented in this file.
 - UpdaterWindow does not work in a custom plugin location.
 - String of negative length is allowed.
 - The colon is a valid type.
-- The HasInterface method sometimes fails to detect the interface on Type variables.
+- The HasInterface method sometimes fails to detect the interface on Type
+variables.
 
 ## [1.31.0-beta 2024-07-23]
 
@@ -60,7 +66,8 @@ All notable changes to this project will be documented in this file.
 - Moved DebugScreen to separate autoload.
 - 'ds' command have been rewritten.
 - Removed upper limit for update interval for 'ds' command.
-- 'Reflection.GetEvents' now returns 'IEnumerable<EventInfo>' instead of 'EventInfo[]'.
+- 'Reflection.GetEvents' now returns 'IEnumerable<EventInfo>' instead of
+'EventInfo[]'.
 - 'Reflection.GetAttributes<T>' now returns 'IEnumerable<T>?' instead of 'T[]?'.
 - 'Success', 'Failure', 'InvalidArguments', 'InvalidCommand',
   'InvalidPermissions', 'InvalidState', 'NotImplemented', 'UnknownCommand',
@@ -111,14 +118,17 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Networking.Ping now returns EPingStatus and a reply is returned as out parameter.
-- The message displayed when threaded command execution ends now includes the command's name.
+- Networking.Ping now returns EPingStatus and a reply is returned as out
+parameter.
+- The message displayed when threaded command execution ends now includes the
+command's name.
 - Disabled 'watch' command.
 
 ### Fixed
 
 - HasInterface incorrectly checks if interface is present.
-- Registering/calling commands creates orphans when a command inherits from a Node.
+- Registering/calling commands creates orphans when a command inherits from a
+Node.
 - OS.RunCommand is hanging when running on Linux.
 
 ## [1.28.0-beta 2024-04-03]
@@ -171,8 +181,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Scrolling text in FullWindowDisplay did not work.
-- YatWindow did not update its settings when it was opened after changes were made.
-- 'TryParseCommandInputType' should not accept '( : )', '(:)' and '()' as valid input type (#266).
+- YatWindow did not update its settings when it was opened after changes were
+made.
+- 'TryParseCommandInputType' should not accept '( : )', '(:)' and '()' as valid
+input type (#266).
 
 ## [1.27.0-beta 2024-03-11]
 
@@ -188,7 +200,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Terminal now uses JetBrainsMono font.
-- Timer in DebugScreen no longer works when DebugScreen does not display anything.
+- Timer in DebugScreen no longer works when DebugScreen does not display
+anything.
 - Reworked the way the items in DebugScreen are stored and used.
 - Reduced memory usage by around 25% when YAT is not in use,
     and by ~6% when using DebugScreen.
@@ -261,7 +274,8 @@ All notable changes to this project will be documented in this file.
 
 - Reworked components from Monitor for DebugScreen.
 - ShortenPath method shortens paths in a better way and takes more parameters.
-- Increased the maximum displayed path length in the terminal from 20 to 32 characters.
+- Increased the maximum displayed path length in the terminal from 20 to 32
+characters.
 - Testing on Godot SDK 4.3.0-dev.4.
 - Using 'AddSubmenuNodeItem' to display QuickCommands context menu on Godot 4.3,
     for Godot 4.2 'AddSubmenuItem' is still used.
@@ -273,7 +287,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Not passing any value to an option that expects a value caused an exception to be thrown.
+- Not passing any value to an option that expects a value caused an exception to
+be thrown.
 - QuickCommands menu had a fixed size.
 
 ## [1.24.1-beta 2024-02-24]
@@ -288,13 +303,15 @@ All notable changes to this project will be documented in this file.
 
 - Keybindings class now uses array of tuples instead of a list of tuples.
 - Moved TestTryParseCommandInputType to Parser class.
-- The list command by default displays the list of commands stored in the cache, updating the list requires using the -f option.
+- The list command by default displays the list of commands stored in the cache,
+updating the list requires using the -f option.
 - Removed left out log messages.
 - Improved view command.
 
 ### Fixed
 
-- The action argument for the QuickCommands command was not aligned with recent changes.
+- The action argument for the QuickCommands command was not aligned with recent
+changes.
 - Entering text containing the '=' character was incorrectly handled.
 - Attempting to run the toggleaudio & traceroute command threw an exception.
 
@@ -330,13 +347,15 @@ All notable changes to this project will be documented in this file.
 
 - Renamed CommandResult to ECommandResult.
 - Commands now return CommandResult record.
-- The SceneAboutToChange signal in the Cs command now also gives the old path, not just the new one.
+- The SceneAboutToChange signal in the Cs command now also gives the old path,
+not just the new one.
 - Renamed ping command options.
 - Argument & Option attributes inherit from CommandInput attribute.
 - Options with null type are no longer supported.
 - The way of defining the type for arguments and options has changed.
 - CommandData now uses StringName instead of string for dictionaries.
-- Methods StartsWith & EndsWith from Text class are now extensions of string type.
+- Methods StartsWith & EndsWith from Text class are now extensions of string
+type.
 - Using default value for bool type options is no longer necessary.
 - Double is no longer a valid type for options & arguments.
 - Updated AUTOMATIC_INPUT_VALIDATION.md & script templates.
@@ -347,7 +366,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- It is possible to call the history command via itself, which can cause an endless loop.
+- It is possible to call the history command via itself, which can cause an
+endless loop.
 - The set command throws an exception when there are no registered extensions.
 
 ## [1.23.0-beta 2024-02-13]
@@ -371,7 +391,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Moved method management logic from SelectedNode to MethodManager class.
-- Moved RejectionReason, MethodStatus, PrintType & YatEnableLocation enums to separate files.
+- Moved RejectionReason, MethodStatus, PrintType & YatEnableLocation enums to
+separate files.
 - Moved CommandManager to managers folder.
 - Updated documentation:
   - CREATING_COMMANDS.md
@@ -390,7 +411,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- CurrentTerminal was initialized with a null value instead of the initial terminal.
+- CurrentTerminal was initialized with a null value instead of the initial
+terminal.
 
 ### Removed
 
@@ -428,7 +450,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Changing node when currently selected node is invalid throws ObjectDisposedException.
+- Changing node when currently selected node is invalid throws
+ObjectDisposedException.
 - Shallow search of cn command throws NullReferenceException.
 - It is possible to call methods when the terminal is locked.
 - Calling methods on disposed nodes throws ObjectDisposedException.
@@ -459,7 +482,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Reset command does not reset terminal position to the center.
-- Pressing the termination key of a threaded command when no command is running makes an attempt to terminate the command.
+- Pressing the termination key of a threaded command when no command is running
+makes an attempt to terminate the command.
 
 ## [1.20.0-beta 2024-01-26]
 
@@ -487,7 +511,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- When there are several simultaneously running threaded commands, only the last one can be terminated.
+- When there are several simultaneously running threaded commands, only the last
+one can be terminated.
 
 ### Removed
 
@@ -513,7 +538,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- The terminal locking mechanism has been moved from CommandManager to BaseTerminal.
+- The terminal locking mechanism has been moved from CommandManager to
+BaseTerminal.
 - CancellationToken in CommandData is no longer nullable.
 - YatEnabled variable in YAT class is public.
 - Moved TerminalOpened & TerminalClosed signals from YAT to TerminalManager.
@@ -525,7 +551,8 @@ All notable changes to this project will be documented in this file.
 - YatOptions resource is now in the 'resources' folder.
 - Yat options & OptionsChanged signal have been moved to the OptionsManager class.
 - Options are disabled until the entire system is rewritten from scratch.
-- YAT no longer stores instances of commands, only their type, and creates objects dynamically when needed.
+- YAT no longer stores instances of commands, only their type, and creates
+objects dynamically when needed.
 
 ### Fixed
 
@@ -636,13 +663,17 @@ All notable changes to this project will be documented in this file.
 - Logged messages from ls command are more descriptive.
 - Cn command logs error when path is invalid.
 - CurrentNode variable renamed to Current in SelectedNode scene.
-- Cn command now can switch current node to the one at which the camera is looking at.
-- Path to the currently selected node displayed in the terminal is limited to 20 characters.
+- Cn command now can switch current node to the one at which the camera is
+looking at.
+- Path to the currently selected node displayed in the terminal is limited to 20
+characters.
 
 ### Fixed
 
-- "Options"/"Arguments" headers were displaying where a command had no options/arguments.
-- Ls command used path to the SelectedNode scene instead of path to the currently selected node.
+- "Options"/"Arguments" headers were displaying where a command had no
+options/arguments.
+- Ls command used path to the SelectedNode scene instead of path to the
+currently selected node.
 
 ## [1.15.1-beta 2023-12-15]
 
@@ -690,8 +721,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- The terminal toggle button no longer writes to the input
-    (it's a workaround, the input is unfortunately cleared every time the terminal is opened).
+- The terminal toggle button no longer writes to the input (it's a workaround,
+the input is unfortunately cleared every time the terminal is opened).
 
 ## [1.14.0-beta 2023-12-08]
 
@@ -798,14 +829,17 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Godot.NET.Sdk version to 4.2.0-rc.2.
-- The terminal now distinguishes between sentences wrapped in " or ' and treats them as a whole.
+- The terminal now distinguishes between sentences wrapped in " or ' and treats
+them as a whole.
 - Renamed keybindings for example scenes.
 - New showcase video.
 
 ### Fixed
 
-- The CommandManager variable in YAT was empty, instead of storing a reference to Command Manager.
-- Providing an '=' character in an option resulted in incorrect parsing of the option.
+- The CommandManager variable in YAT was empty, instead of storing a reference
+to Command Manager.
+- Providing an '=' character in an option resulted in incorrect parsing of the
+option.
 
 ## [1.9.0-beta 2023-11-23]
 
@@ -817,7 +851,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Separated logic from ValidateCommandArguments to ValidateCommandArgument method.
+- Separated logic from ValidateCommandArguments to ValidateCommandArgument
+method.
 - Improved input sanitization.
 - Existing autocompletion have been moved from Input.cs to Autocompletion.cs.
 
@@ -832,7 +867,8 @@ All notable changes to this project will be documented in this file.
 
 - CommandManager scene.
 - CommandStarted signal.
-- The name of the currently running command is displayed in the title of the terminal window.
+- The name of the currently running command is displayed in the title of the
+terminal window.
 
 ### Changed
 
@@ -843,7 +879,8 @@ All notable changes to this project will be documented in this file.
 - YAT inherits from Node.
 - CommandExecuted signal have been renamed to CommandFinished.
 - Moved command execution logic from terminal to command manager.
-- CommandExecuted signal, Locked and cancellation token have been moved to command manager.
+- CommandExecuted signal, Locked and cancellation token have been moved to
+command manager.
 
 ## [1.7.0-beta 2023-11-20]
 
@@ -879,7 +916,8 @@ All notable changes to this project will be documented in this file.
 
 - Update Godot.NET.Sdk version to 4.2.0-beta.6.
 - Dictionary passed to Execute method can contain both arguments and options.
-- Command whereami displays abbreviated form by default, adding -l option restores previous behavior.
+- Command whereami displays abbreviated form by default, adding -l option
+restores previous behavior.
 - Methods that generate documentation take no arguments.
 - Moved documentation on automatic input validation to a separate file.
 
@@ -899,7 +937,8 @@ All notable changes to this project will be documented in this file.
 
 - Man command displays command arguments.
 - Built-in commands use automatic argument validation.
-- Attributes, interfaces and enums have been moved to their respective folders and namespaces.
+- Attributes, interfaces and enums have been moved to their respective folders
+and namespaces.
 - Attributes are no longer partial, but are sealed.
 - Templates have been updated.
 
@@ -920,15 +959,15 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Caret sticks to the beginning of the string when scrolling through the command history &
-    when scrolling through suggestions from autocompletion.
+- Caret sticks to the beginning of the string when scrolling through the command
+history & when scrolling through suggestions from autocompletion.
 
 ## [1.3.0-beta - 2023-11-10]
 
 ### Added
 
-- InvalidArgument method to LogHelper.
-- watch command.
+- `InvalidArgument` method to `LogHelper`.
+- 'watch' command.
 - Terminal lock feature to prevent calling a new command during execution of a command.
 - Threaded attribute for running commands on a separate thread.
 - yat_terminal_interrupt keybinding.
@@ -936,23 +975,23 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Terminal's Print method uses CallDeferred to display messages in the output.
-- Execute method is now virtual.
+- Terminal's `Print` method uses `CallDeferred` to display messages in the output.
+- `Execute` method is now virtual.
 - Renamed keybindings:
-  - yat_history_next to yat_terminal_history_next
-  - yat_history_previous to yat_terminal_history_previous
+  - 'yat_history_next' to 'yat_terminal_history_next'
+  - 'yat_history_previous' to 'yat_terminal_history_previous'
 
 ### Removed
 
-- InvalidArguments method from LogHelper.
+- `InvalidArguments` method from `LogHelper`.
 
 ## [1.2.0-beta - 2023-11-09]
 
 ### Added
 
-- Overridable GenerateCommandManual method for commands.
-- Overridable GenerateExtensionManual method for extensions.
-- Overridable GenerateExtensionsManual method for Extensible.
+- Overridable `GenerateCommandManual` method for commands.
+- Overridable `GenerateExtensionManual` method for extensions.
+- Overridable `GenerateExtensionsManual` method for Extensible.
 
 ### Changed
 
@@ -981,7 +1020,8 @@ All notable changes to this project will be documented in this file.
 - Terminal fetches settings on Ready.
 - The print method always displays the message on a new line of the terminal.
 - Only add-ons folder will be included in the exported ZIP.
-- The documentation has been separated from the README.md file and is located in the docs folder.
+- The documentation has been separated from the README.md file and is located
+in the docs folder.
 
 ### Removed
 

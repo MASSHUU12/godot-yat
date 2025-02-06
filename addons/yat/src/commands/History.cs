@@ -13,6 +13,8 @@ namespace YAT.Commands;
 [Argument("action", "clear|list|int(0:)", "The action to perform.")]
 public sealed class History : ICommand
 {
+    public string[]? Arguments { get; set; }
+
 #nullable disable
     private BaseTerminal _terminal;
     private HistoryComponent _historyComponent;
@@ -57,7 +59,9 @@ public sealed class History : ICommand
         _terminal.Print(
             $"Executing command at index {index}: {Text.EscapeBBCode(command)}"
         );
-        _ = _terminal.CommandManager.Run(Text.SanitizeText(command), _terminal);
+
+        _ = _terminal.CommandManager.RunAsync(Text.SanitizeText(command), _terminal)
+            .ConfigureAwait(false).GetAwaiter().GetResult();
 
         return ICommand.Success();
     }

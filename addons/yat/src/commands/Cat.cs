@@ -23,6 +23,8 @@ public sealed class Cat : ICommand
     private RichTextLabel _display;
 #nullable restore
 
+    public string[]? Arguments { get; set; }
+
     public CommandResult Execute(CommandData data)
     {
         var fileName = (string)data.Arguments["file"];
