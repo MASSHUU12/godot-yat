@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,69 +11,69 @@ using YAT.Types;
 
 namespace YAT.Interfaces;
 
-public partial interface ICommand
+public interface ICommand
 {
-    public CommandResult Execute(CommandData data);
+    CommandResult Execute(CommandData data);
 
-    public static CommandResult Success(string? message = null)
+    static CommandResult Success(string? message = null)
     {
         return new(ECommandResult.Success, message ?? string.Empty);
     }
 
-    public static CommandResult Failure(string? message = null)
+    static CommandResult Failure(string? message = null)
     {
         return new(ECommandResult.Failure, message ?? string.Empty);
     }
 
-    public static CommandResult InvalidArguments(string? message = null)
+    static CommandResult InvalidArguments(string? message = null)
     {
         return new(ECommandResult.InvalidArguments, message ?? string.Empty);
     }
 
-    public static CommandResult InvalidCommand(string? message = null)
+    static CommandResult InvalidCommand(string? message = null)
     {
         return new(ECommandResult.InvalidCommand, message ?? string.Empty);
     }
 
-    public static CommandResult InvalidPermissions(string? message = null)
+    static CommandResult InvalidPermissions(string? message = null)
     {
         return new(ECommandResult.InvalidPermissions, message ?? string.Empty);
     }
 
-    public static CommandResult InvalidState(string? message = null)
+    static CommandResult InvalidState(string? message = null)
     {
         return new(ECommandResult.InvalidState, message ?? string.Empty);
     }
 
-    public static CommandResult NotImplemented(string? message = null)
+    static CommandResult NotImplemented(string? message = null)
     {
         return new(ECommandResult.NotImplemented, message ?? string.Empty);
     }
 
-    public static CommandResult UnknownCommand(string? message = null)
+    static CommandResult UnknownCommand(string? message = null)
     {
         return new(ECommandResult.UnknownCommand, message ?? string.Empty);
     }
 
-    public static CommandResult UnknownError(string? message = null)
+    static CommandResult UnknownError(string? message = null)
     {
         return new(ECommandResult.UnknownError, message ?? string.Empty);
     }
 
-    public static CommandResult Ok(string? message = null)
+    static CommandResult Ok(string? message = null)
     {
         return new(ECommandResult.Ok, message ?? string.Empty);
     }
 
-    public virtual StringBuilder GenerateUsageInformation()
+    virtual StringBuilder GenerateUsageInformation()
     {
-        var usage = this.GetAttribute<UsageAttribute>()!;
-        var command = this.GetAttribute<CommandAttribute>()!;
-        var arguments = this.GetAttributes<ArgumentAttribute>();
+        UsageAttribute? usage = this.GetAttribute<UsageAttribute>()!;
+        CommandAttribute command = this.GetAttribute<CommandAttribute>()!;
+        IEnumerable<ArgumentAttribute>? arguments = this.GetAttributes<ArgumentAttribute>();
 
         string GetUsage()
         {
-            if (command.Manual != string.Empty)
+            if (!string.IsNullOrEmpty(command.Manual))
             {
                 return command.Manual;
             }
@@ -83,9 +84,10 @@ public partial interface ICommand
             }
 
             return string.Format(
+                CultureInfo.InvariantCulture,
                 "[b]Usage[/b]: {0} {1}",
                 command.Name,
-                arguments is not null && arguments.Any()
+                arguments?.Any() == true
                     ? string.Join(' ', arguments.Select(arg => $"[i]{arg.Name}[/i]"))
                     : string.Empty
             );
@@ -94,7 +96,7 @@ public partial interface ICommand
         return new(GetUsage());
     }
 
-    public virtual StringBuilder GenerateCommandManual()
+    virtual StringBuilder GenerateCommandManual()
     {
         CommandAttribute command = Reflection.GetAttribute<CommandAttribute>(this)!;
         UsageAttribute usage = Reflection.GetAttribute<UsageAttribute>(this)!;
@@ -104,29 +106,35 @@ public partial interface ICommand
         StringBuilder sb = new();
 
         _ = sb.AppendFormat(
+                CultureInfo.InvariantCulture,
                 "[p align=center][font_size=22]{0}[/font_size] [font_size=14]{1}[/font_size][/p]",
                 command.Name,
                 isThreaded ? "[threaded]" : string.Empty
             )
             .AppendLine();
-        _ = sb.AppendLine($"[p align=center]{description?.Description ?? command.Description}[/p]")
+        _ = sb.AppendLine(
+            CultureInfo.InvariantCulture,
+            $"[p align=center]{description?.Description ?? command.Description}[/p]"
+        )
             .Append(GenerateUsageInformation())
             .AppendLine("\n[b]Aliases[/b]:")
             .AppendLine(command.Aliases.Length > 0
-                ? string.Join("\n", command.Aliases.Select(alias => $"[ul]\t{alias}[/ul]"))
+                ? string.Join("\n", command.Aliases.Select(
+                    static alias => $"[ul]\t{alias}[/ul]")
+                )
                 : "[ul]\tNone[/ul]");
 
         return sb;
     }
 
-    public virtual StringBuilder GenerateManual<T>(string @for) where T : Attribute
+    virtual StringBuilder GenerateManual<T>(string name) where T : Attribute
     {
         StringBuilder sb = new(
-            $"[p align=center][font_size=22]{@for}[/font_size][/p]\n"
+            $"[p align=center][font_size=22]{name}[/font_size][/p]\n"
         );
         IEnumerable<T>? attributes = Reflection.GetAttributes<T>(this);
 
-        if (attributes is null || !attributes.Any())
+        if (attributes?.Any() != true)
         {
             _ = sb.AppendLine("\nThis command does not have any.");
             return sb;
@@ -140,17 +148,17 @@ public partial interface ICommand
         return sb;
     }
 
-    public virtual StringBuilder GenerateArgumentsManual()
+    virtual StringBuilder GenerateArgumentsManual()
     {
         return GenerateManual<ArgumentAttribute>("Arguments");
     }
 
-    public virtual StringBuilder GenerateOptionsManual()
+    virtual StringBuilder GenerateOptionsManual()
     {
         return GenerateManual<OptionAttribute>("Options");
     }
 
-    public virtual StringBuilder GenerateSignalsManual()
+    virtual StringBuilder GenerateSignalsManual()
     {
         IEnumerable<EventInfo> signals = Reflection.GetEvents(
             this,
