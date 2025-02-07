@@ -13,8 +13,6 @@ namespace YAT.Commands;
 [Argument("action", "clear|list|int(0:)", "The action to perform.")]
 public sealed class History : ICommand
 {
-    public string[]? Arguments { get; set; }
-
 #nullable disable
     private BaseTerminal _terminal;
     private HistoryComponent _historyComponent;
@@ -38,7 +36,7 @@ public sealed class History : ICommand
     private CommandResult ClearHistory()
     {
         _historyComponent.History.Clear();
-        return ICommand.Success("History cleared.");
+        return ICommand.Success(message: "History cleared.");
     }
 
     private CommandResult ExecuteFromHistory(int index)
@@ -77,6 +75,6 @@ public sealed class History : ICommand
             _ = sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
         }
 
-        return ICommand.Ok(sb.ToString());
+        return ICommand.Ok(message: sb.ToString());
     }
 }

@@ -23,11 +23,8 @@ namespace YAT.Commands;
 public sealed class Ss : ICommand
 {
 #nullable disable
-    private YAT _yat;
     private BaseTerminal _terminal;
 #nullable restore
-
-    public string[]? Arguments { get; set; }
 
     public CommandResult Execute(CommandData data)
     {
@@ -37,7 +34,6 @@ public sealed class Ss : ICommand
         var keepOpen = (bool)data.Options["-keepOpen"];
         var extension = (string)data.Options["-e"];
 
-        _yat = data.Yat;
         _terminal = data.Terminal;
 
         if (!keepOpen)

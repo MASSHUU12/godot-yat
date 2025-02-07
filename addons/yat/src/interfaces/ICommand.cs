@@ -13,58 +13,56 @@ namespace YAT.Interfaces;
 
 public interface ICommand
 {
-    string[]? Arguments { get; set; }
-
     CommandResult Execute(CommandData data);
 
-    static CommandResult Success(string? message = null)
+    static CommandResult Success(string[]? OutData = null, string? message = null)
     {
-        return new(ECommandResult.Success, message ?? string.Empty);
+        return new(ECommandResult.Success, OutData, message ?? string.Empty);
     }
 
     static CommandResult Failure(string? message = null)
     {
-        return new(ECommandResult.Failure, message ?? string.Empty);
+        return new(ECommandResult.Failure, null, message ?? string.Empty);
     }
 
     static CommandResult InvalidArguments(string? message = null)
     {
-        return new(ECommandResult.InvalidArguments, message ?? string.Empty);
+        return new(ECommandResult.InvalidArguments, null, message ?? string.Empty);
     }
 
     static CommandResult InvalidCommand(string? message = null)
     {
-        return new(ECommandResult.InvalidCommand, message ?? string.Empty);
+        return new(ECommandResult.InvalidCommand, null, message ?? string.Empty);
     }
 
     static CommandResult InvalidPermissions(string? message = null)
     {
-        return new(ECommandResult.InvalidPermissions, message ?? string.Empty);
+        return new(ECommandResult.InvalidPermissions, null, message ?? string.Empty);
     }
 
     static CommandResult InvalidState(string? message = null)
     {
-        return new(ECommandResult.InvalidState, message ?? string.Empty);
+        return new(ECommandResult.InvalidState, null, message ?? string.Empty);
     }
 
     static CommandResult NotImplemented(string? message = null)
     {
-        return new(ECommandResult.NotImplemented, message ?? string.Empty);
+        return new(ECommandResult.NotImplemented, null, message ?? string.Empty);
     }
 
     static CommandResult UnknownCommand(string? message = null)
     {
-        return new(ECommandResult.UnknownCommand, message ?? string.Empty);
+        return new(ECommandResult.UnknownCommand, null, message ?? string.Empty);
     }
 
     static CommandResult UnknownError(string? message = null)
     {
-        return new(ECommandResult.UnknownError, message ?? string.Empty);
+        return new(ECommandResult.UnknownError, null, message ?? string.Empty);
     }
 
-    static CommandResult Ok(string? message = null)
+    static CommandResult Ok(string[]? OutData = null, string? message = null)
     {
-        return new(ECommandResult.Ok, message ?? string.Empty);
+        return new(ECommandResult.Ok, OutData, message ?? string.Empty);
     }
 
     virtual StringBuilder GenerateUsageInformation()

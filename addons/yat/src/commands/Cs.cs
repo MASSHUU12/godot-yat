@@ -17,8 +17,6 @@ public partial class Cs : Node, ICommand
     [Signal]
     public delegate void SceneChangeFailedEventHandler(string scenePath, ESceneChangeFailureReason reason);
 
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var scene = (string)data.Arguments["scene"];
@@ -41,7 +39,7 @@ public partial class Cs : Node, ICommand
 
         _ = EmitSignal(SignalName.SceneChanged, scene);
 
-        return ICommand.Success($"Changed scene to '{scene}'.");
+        return ICommand.Success(message: $"Changed scene to '{scene}'.");
     }
 
     private bool CheckSceneExistence(string scene)

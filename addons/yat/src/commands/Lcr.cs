@@ -8,12 +8,10 @@ namespace YAT.Commands;
 [Option("-l", "bool", "Also displays name of the result.")]
 public sealed class Lcr : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         return ICommand.Ok(
-            (bool)data.Options["-l"]
+            message: (bool)data.Options["-l"]
                 ? $"{data.Terminal.LastCommandResult} ({(int)data.Terminal.LastCommandResult})"
                 : ((int)data.Terminal.LastCommandResult).ToString()
         );

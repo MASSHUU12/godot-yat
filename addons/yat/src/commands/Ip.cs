@@ -13,29 +13,26 @@ namespace YAT.Commands;
 [Argument("action", "addr", "The action to perform.")]
 public sealed class Ip : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var action = (string)data.Arguments["action"];
 
         if (action == "addr")
         {
-            PrintLocalInterfaces(data.Terminal);
+            return ICommand.Success([PrintLocalInterfaces(data.Terminal)]);
         }
 
         return ICommand.Success();
     }
 
-    private static void PrintLocalInterfaces(BaseTerminal terminal)
+    private static string PrintLocalInterfaces(BaseTerminal terminal)
     {
         StringBuilder sb = new();
         var interfaces = IP.GetLocalInterfaces();
 
         if (interfaces.Count == 0)
         {
-            terminal.Print("No local interfaces found.");
-            return;
+            _ = sb.AppendLine("No local interfaces found.");
         }
 
         foreach (Dictionary? iface in interfaces)
@@ -52,5 +49,6 @@ public sealed class Ip : ICommand
         }
 
         terminal.Print(sb.ToString());
+        return sb.ToString();
     }
 }

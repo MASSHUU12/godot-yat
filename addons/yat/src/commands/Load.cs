@@ -21,8 +21,6 @@ namespace YAT.Commands;
 [Option("-2d", "bool", "The object will be loaded as a 2D object.")]
 public sealed class Load : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var path = (string)data.Arguments["object_path"];
@@ -72,7 +70,7 @@ public sealed class Load : ICommand
         TransformNode3D(node, camera!, position, rotation, scale, hidden, absolute);
 
         return ICommand.Success(
-            string.Format(
+            message: string.Format(
                 "Object '{0}' loaded at {1} with rotation {2} and scale {3}.",
                 node.Name,
                 node.Position,
@@ -112,7 +110,7 @@ public sealed class Load : ICommand
         TransformNode2D(node, camera!, position, rotation, scale, hidden, absolute);
 
         return ICommand.Success(
-            string.Format(
+            message: string.Format(
                 "Object '{0}' loaded at {1} with rotation {2} and scale {3}.",
                 node.Name,
                 node.Position,

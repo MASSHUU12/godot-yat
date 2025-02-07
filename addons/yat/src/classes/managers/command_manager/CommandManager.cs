@@ -50,15 +50,8 @@ public partial class CommandManager : Node
         }
 
         Cts = new();
-        Dictionary<StringName, object?> convertedArgs = [];
-        Dictionary<StringName, object?> convertedOpts = [];
 
-        Pipeline? pipeline = CreatePipeline(
-            args,
-            terminal,
-            ref convertedArgs,
-            ref convertedOpts
-        );
+        Pipeline? pipeline = CreatePipeline(args, terminal);
         if (pipeline is null)
         {
             terminal.Output.Error(Messages.UnknownCommand(args[0]));
@@ -70,8 +63,8 @@ public partial class CommandManager : Node
             terminal,
             null,
             args,
-            convertedArgs!,
-            convertedOpts!,
+            [],
+            [],
             Cts.Token
         );
 
@@ -102,9 +95,7 @@ public partial class CommandManager : Node
 
     private static Pipeline? CreatePipeline(
         string[] args,
-        BaseTerminal terminal,
-        ref Dictionary<StringName, object?> cA,
-        ref Dictionary<StringName, object?> cO
+        BaseTerminal terminal
     )
     {
         Pipeline pipeline = new();
@@ -119,9 +110,7 @@ public partial class CommandManager : Node
                     if (!AddCommandToPipeline(
                         [.. commandBuffer],
                         pipeline,
-                        terminal,
-                        ref cA,
-                        ref cO
+                        terminal
                     ))
                     {
                         return null;
@@ -139,22 +128,17 @@ public partial class CommandManager : Node
             && !AddCommandToPipeline(
                 [.. commandBuffer],
                 pipeline,
-                terminal,
-                ref cA,
-                ref cO
+                terminal
             ) ? null : pipeline;
     }
 
     private static bool AddCommandToPipeline(
         string[] args,
         Pipeline pipeline,
-        BaseTerminal terminal,
-        ref Dictionary<StringName, object?> cA,
-        ref Dictionary<StringName, object?> cO
+        BaseTerminal terminal
     )
     {
         string commandName = args[0];
-        string[] commandArgs = args.Length > 1 ? args[1..] : [];
 
         if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type? commandType))
         {
@@ -163,25 +147,6 @@ public partial class CommandManager : Node
         }
 
         ICommand command = (Activator.CreateInstance(commandType) as ICommand)!;
-
-        if (command.GetAttribute<NoValidateAttribute>() is null)
-        {
-            if (!terminal.CommandValidator.ValidatePassedData<ArgumentAttribute>(
-                command, args[1..], out cA
-            ))
-            {
-                return false;
-            }
-
-            if (command.GetAttributes<OptionAttribute>() is not null
-                && !terminal.CommandValidator.ValidatePassedData<OptionAttribute>(
-                    command, args[1..], out cO
-                ))
-            {
-                return false;
-            }
-        }
-        command.Arguments = commandArgs;
         pipeline.AddCommand(command);
 
         return true;

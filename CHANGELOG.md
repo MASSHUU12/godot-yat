@@ -10,7 +10,8 @@ All notable changes to this project will be documented in this file.
 - 'Timeout' value to ExecutionResult enum.
 - Timeout to OS.RunCommand.
 - `Pipeline` class.
-- `Arguments` field to the `ICommand`.
+- `CommandResult` accepts command output data.
+- Result of the command can be passed using pipe ('|') to the next command.
 
 ### Changed
 

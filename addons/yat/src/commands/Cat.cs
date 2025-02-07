@@ -23,11 +23,9 @@ public sealed class Cat : ICommand
     private RichTextLabel _display;
 #nullable restore
 
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
-        var fileName = (string)data.Arguments["file"];
+        string fileName = (string)data.Arguments["file"];
         int lineLimit = (int)data.Options["-l"];
         bool embed = (bool)data.Options["-e"];
 

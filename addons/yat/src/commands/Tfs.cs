@@ -9,8 +9,6 @@ namespace YAT.Commands;
 [Option("-e", "bool", "Enables the exclusive full screen mode.")]
 public sealed class Tfs : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var exclusive = (bool)data.Options["-e"];
@@ -28,6 +26,8 @@ public sealed class Tfs : ICommand
             WindowSetMode(WindowMode.Windowed);
         }
 
-        return ICommand.Success($"Toggled screen mode to {WindowGetMode()}.");
+        return ICommand.Success(
+            message: $"Toggled screen mode to {WindowGetMode()}."
+        );
     }
 }

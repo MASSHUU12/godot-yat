@@ -14,8 +14,6 @@ namespace YAT.Commands;
 [Option("-e", "bool", "Embed the manual in the terminal. Instead of opening in a new window.")]
 public sealed class Man : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     private readonly LRUCache<string, string> cache = new(10);
 
     public CommandResult Execute(CommandData data)

@@ -9,8 +9,6 @@ namespace YAT.Commands;
 [Argument("fov", "float(1:179)", "The field of view to set.")]
 public sealed class Fov : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         float fov = (float)data.Arguments["fov"];
@@ -23,6 +21,6 @@ public sealed class Fov : ICommand
 
         camera.Fov = fov;
 
-        return ICommand.Success($"Field of view set to {fov}.");
+        return ICommand.Success(message: $"Field of view set to {fov}.");
     }
 }

@@ -10,8 +10,6 @@ namespace YAT.Commands;
 [Option("-name", "string", "The name of the audio bus to toggle.")]
 public sealed class ToggleAudio : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var id = (int)data.Options["-id"];
