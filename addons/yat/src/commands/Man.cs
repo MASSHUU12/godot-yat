@@ -10,18 +10,25 @@ using YAT.Types;
 namespace YAT.Commands;
 
 [Command("man", "Displays the manual for a command.")]
-[Argument("command_name", "string", "The name of the command to display the manual for.")]
-[Option("-e", "bool", "Embed the manual in the terminal. Instead of opening in a new window.")]
+[Argument("command_name", "string",
+    "The name of the command to display the manual for."
+)]
+[Option("-e", "bool",
+    "Embed the manual in the terminal. Instead of opening in a new window."
+)]
 public sealed class Man : ICommand
 {
-    private readonly LRUCache<string, string> cache = new(10);
+    private static readonly LRUCache<string, string> _cache = new(10);
 
     public CommandResult Execute(CommandData data)
     {
-        var commandName = (string)data.Arguments["command_name"];
-        var embed = (bool)data.Options["-e"];
+        string commandName = (string)data.Arguments["command_name"];
+        bool embed = (bool)data.Options["-e"];
 
-        if (!RegisteredCommands.Registered.TryGetValue(commandName, out var value))
+        if (!RegisteredCommands.Registered.TryGetValue(
+            commandName,
+            out Type? value
+        ))
         {
             return ICommand.InvalidCommand(Messages.UnknownCommand(commandName));
         }
@@ -29,7 +36,7 @@ public sealed class Man : ICommand
         ICommand command = (ICommand)Activator.CreateInstance(value)!;
 
         // Check if the command manual is already in the cache.
-        if (cache.Get(commandName) is string manual)
+        if (_cache.Get(commandName) is string manual)
         {
             if (embed)
             {
@@ -53,7 +60,7 @@ public sealed class Man : ICommand
             _ = bManual.Append(extensible.GenerateExtensionsManual());
         }
 
-        cache.Add(commandName, bManual.ToString());
+        _cache.Add(commandName, bManual.ToString());
 
         if (embed)
         {

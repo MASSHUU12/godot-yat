@@ -7,25 +7,31 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - 'locale' command.
-- 'Timeout' value to ExecutionResult enum.
-- Timeout to OS.RunCommand.
+- `Timeout` value to `EExecutionResult` enum.
+- Timeout to `OS.RunCommand`.
 - `Pipeline` class.
 - `CommandResult` accepts command output data.
 - Result of the command can be passed using pipe ('|') to the next command.
+- '-s' option to the 'cat' command for silent file content output.
+- `Text.ToStringInvariant` extension method.
 
 ### Changed
 
-- Reworked OS.RunCommand.
-- Renamed OperatinSystem enum to EOperatingSystem and
-ExecutionResult to EExecutionResult.
+- Reworked `OS.RunCommand`.
+- Renamed `OperatingSystem` enum to `EOperatingSystem` and
+`ExecutionResult` to `EExecutionResult`.
 - `ICommand.GenerateCommandManual` & `ICommand.GenerateManual` uses invariant
 culture.
 - Threaded commands no longer print on finish.
+- Built-in commands use invariant culture.
+- Built-in commands return data when applicable.
+- Command 'ping' no longer returns with a success when ping failed.
 
 ### Fixed
 
 - PowerShell script cannot be accessed when YAT is in custom location.
-- OS.RunCommand hangs on Linux.
+- `OS.RunCommand` hangs on Linux.
+- Cache in 'man' command is not saved between calls.
 
 ## [1.31.1-beta 2024-07-24]
 

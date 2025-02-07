@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -46,7 +47,11 @@ public sealed class Ls : ICommand
     private CommandResult PrintNodeMethods(string path)
     {
         StringBuilder sb = new();
-        Node? node = Scene.GetFromPathOrDefault(path, _terminal.SelectedNode.Current, out path);
+        Node? node = Scene.GetFromPathOrDefault(
+            path,
+            _terminal.SelectedNode.Current,
+            out path
+        );
 
         if (node is null)
         {
@@ -57,20 +62,28 @@ public sealed class Ls : ICommand
         while (methods.MoveNext())
         {
             NodeMethodInfo info = Scene.GetNodeMethodInfo(methods.Current);
-            string[] arguments = info.Args.Select(
-                arg => $"[u]{arg["name"]}[/u]: {((Variant.Type)(int)arg["type"]).ToString()}"
-            ).ToArray();
+            string[] arguments = [.. info.Args.Select(
+                static arg => string.Format(
+                    CultureInfo.InvariantCulture,
+                    "[u]{0}[/u]: {1}",
+                    arg["name"],
+                    ((Variant.Type)(int)arg["type"]).ToString()
+                )
+            )];
             int returns = info.Return["type"].AsInt16();
 
-            _ = sb.Append($"[b]{info.Name}[/b]")
-                .Append($"({string.Join(", ", arguments)}) -> ")
+            _ = sb.Append(CultureInfo.InvariantCulture, $"[b]{info.Name}[/b]")
+                .Append(
+                    CultureInfo.InvariantCulture,
+                    $"({string.Join(", ", arguments)}) -> "
+                )
                 .AppendLine(((Variant.Type)returns).ToString());
         }
 
-        return ICommand.Ok(message: sb.ToString());
+        return ICommand.Ok([sb.ToString()], sb.ToString());
     }
 
-    private CommandResult PrintDirectoryContents(string path)
+    private static CommandResult PrintDirectoryContents(string path)
     {
         if (!Directory.Exists(path))
         {
@@ -89,7 +102,7 @@ public sealed class Ls : ICommand
 
             AppendDetails(sb, fileSystemInfos);
 
-            _terminal.Print(sb.ToString());
+            return ICommand.Ok([sb.ToString()], sb.ToString());
         }
         catch (UnauthorizedAccessException)
         {
@@ -103,8 +116,6 @@ public sealed class Ls : ICommand
         {
             return ICommand.Failure($"Error accessing directory '{path}': {ex.Message}");
         }
-
-        return ICommand.Success();
     }
 
     /// <summary>
@@ -121,8 +132,11 @@ public sealed class Ls : ICommand
         foreach (FileSystemInfo info in infos)
         {
             maxLastWriteTimeLength = Math.Max(
-                                    maxLastWriteTimeLength,
-                                    info.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss").Length
+                maxLastWriteTimeLength,
+                info.LastWriteTime.ToString(
+                    "yyyy-MM-dd HH:mm:ss",
+                    CultureInfo.InvariantCulture
+                ).Length
             );
             maxFileSizeLength = Math.Max(maxFileSizeLength, (info is FileInfo file)
                                 ? Numeric.SizeToString(file.Length).Length
@@ -135,22 +149,25 @@ public sealed class Ls : ICommand
         // Append the details of each FileSystemInfo object to the StringBuilder.
         foreach (FileSystemInfo info in infos)
         {
-            var fileSizeString = Numeric.SizeToString(
-                                info is FileInfo info1
-                                ? info1.Length
-                                : 0
+            string fileSizeString = Numeric.SizeToString(
+                info is FileInfo info1 ? info1.Length : 0
             );
 
             string line = string.Format(
+                CultureInfo.InvariantCulture,
                 "{0}\t\t{1}\t\t{2}{3}{4}",
                 info
                     .LastWriteTime
-                    .ToString("yyyy-MM-dd HH:mm:ss")
+                    .ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
                     .PadRight(maxLastWriteTimeLength),
                 info is FileInfo
                     ? fileSizeString.PadRight(
-                            Mathf.Clamp(maxFileSizeLength - fileSizeString.Length, 0, maxFileSizeLength)
+                        Mathf.Clamp(
+                            maxFileSizeLength - fileSizeString.Length,
+                            0,
+                            maxFileSizeLength
                         )
+                    )
                     : string.Empty.PadRight(maxFileSizeLength),
                 info.Name,
                 info is DirectoryInfo ? '/' : string.Empty,

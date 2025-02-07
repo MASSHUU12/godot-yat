@@ -15,7 +15,7 @@ public sealed class Wenv : ICommand
 
     public CommandResult Execute(CommandData data)
     {
-        var action = (string)data.Arguments["action"];
+        string action = (string)data.Arguments["action"];
         World3D world = data.Yat.GetTree().Root.World3D;
 
         return action == "remove"

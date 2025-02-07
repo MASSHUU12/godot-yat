@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using YAT.Attributes;
@@ -61,7 +62,7 @@ public sealed class History : ICommand
         _ = _terminal.CommandManager.RunAsync(Text.SanitizeText(command), _terminal)
             .ConfigureAwait(false).GetAwaiter().GetResult();
 
-        return ICommand.Success();
+        return ICommand.Success([command]);
     }
 
     private CommandResult ShowHistory()
@@ -72,7 +73,10 @@ public sealed class History : ICommand
         ushort i = 0;
         foreach (string command in _historyComponent.History)
         {
-            _ = sb.AppendLine($"{i++}: {Text.EscapeBBCode(command)}");
+            _ = sb.AppendLine(
+                CultureInfo.InvariantCulture,
+                $"{i++}: {Text.EscapeBBCode(command)}"
+            );
         }
 
         return ICommand.Ok(message: sb.ToString());

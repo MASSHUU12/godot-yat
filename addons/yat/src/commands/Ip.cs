@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using Godot;
 using Godot.Collections;
@@ -15,7 +16,7 @@ public sealed class Ip : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var action = (string)data.Arguments["action"];
+        string action = (string)data.Arguments["action"];
 
         if (action == "addr")
         {
@@ -28,7 +29,7 @@ public sealed class Ip : ICommand
     private static string PrintLocalInterfaces(BaseTerminal terminal)
     {
         StringBuilder sb = new();
-        var interfaces = IP.GetLocalInterfaces();
+        Array<Dictionary> interfaces = IP.GetLocalInterfaces();
 
         if (interfaces.Count == 0)
         {
@@ -37,12 +38,15 @@ public sealed class Ip : ICommand
 
         foreach (Dictionary? iface in interfaces)
         {
-            _ = sb.AppendLine($"[b]{iface["index"]}[/b]: {iface["friendly"]} ({iface["name"]})");
+            _ = sb.AppendLine(
+                CultureInfo.InvariantCulture,
+                $"[b]{iface["index"]}[/b]: {iface["friendly"]} ({iface["name"]})"
+            );
             _ = sb.AppendLine("Addresses:");
 
             foreach (string addr in iface["addresses"].AsStringArray())
             {
-                _ = sb.AppendLine($"\t{addr}");
+                _ = sb.AppendLine(CultureInfo.InvariantCulture, $"\t{addr}");
             }
 
             _ = sb.AppendLine();

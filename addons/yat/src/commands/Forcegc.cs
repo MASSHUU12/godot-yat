@@ -20,10 +20,10 @@ public sealed class Forcegc : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var gen = (int)data.Options["-g"];
-        var mode = (GCCollectionMode)data.Options["-m"];
-        var block = (bool)data.Options["-b"];
-        var compact = (bool)data.Options["-c"];
+        int gen = (int)data.Options["-g"];
+        GCCollectionMode mode = (GCCollectionMode)data.Options["-m"];
+        bool block = (bool)data.Options["-b"];
+        bool compact = (bool)data.Options["-c"];
 
         if (gen > GC.MaxGeneration)
         {

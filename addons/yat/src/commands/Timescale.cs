@@ -1,5 +1,6 @@
 using Godot;
 using YAT.Attributes;
+using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -13,6 +14,8 @@ public sealed class Timescale : ICommand
     {
         Engine.TimeScale = (float)data.Options["-set"];
 
-        return ICommand.Success();
+        return ICommand.Success(
+            [Engine.TimeScale.ToStringInvariant()]
+        );
     }
 }

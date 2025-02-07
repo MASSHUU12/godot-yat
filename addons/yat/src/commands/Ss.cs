@@ -15,7 +15,8 @@ namespace YAT.Commands;
 [Option(
     "-path",
     "string",
-    "Save the screenshot to the specified path. If not specified, the screenshot will be saved to the current directory."
+    "Save the screenshot to the specified path. If not specified, the "
+    + "screenshot will be saved to the current directory."
 )]
 [Option("-name", "string", "Name of the screenshot file.")]
 [Option("-keepOpen", "bool", "Do not close the terminal window.")]
@@ -28,11 +29,13 @@ public sealed class Ss : ICommand
 
     public CommandResult Execute(CommandData data)
     {
-        var cp = (bool)data.Options["-cp"];
-        var path = (string)data.Options["-path"] ?? OS.GetExecutablePath().GetBaseDir() + "/";
-        var name = (string)data.Options["-name"] ?? $"{((DateTimeOffset)DateTime.UtcNow).ToUnixTimeMilliseconds()}";
-        var keepOpen = (bool)data.Options["-keepOpen"];
-        var extension = (string)data.Options["-e"];
+        bool cp = (bool)data.Options["-cp"];
+        string path = (string)data.Options["-path"]
+            ?? OS.GetExecutablePath().GetBaseDir() + "/";
+        string name = (string)data.Options["-name"]
+            ?? $"{((DateTimeOffset)DateTime.UtcNow).ToUnixTimeMilliseconds()}";
+        bool keepOpen = (bool)data.Options["-keepOpen"];
+        string extension = (string)data.Options["-e"];
 
         _terminal = data.Terminal;
 
@@ -55,10 +58,15 @@ public sealed class Ss : ICommand
             data.Yat.TerminalManager.OpenTerminal();
         }), (uint)ConnectFlags.OneShot);
 
-        return ICommand.Success();
+        return ICommand.Success([path]);
     }
 
-    private void SaveScreenshot(Viewport viewport, string path, string name, string extension)
+    private void SaveScreenshot(
+        Viewport viewport,
+        string path,
+        string name,
+        string extension
+    )
     {
         Image image = viewport.GetTexture().GetImage();
         string fileName = $"{path}{name}.{extension}";
@@ -96,7 +104,7 @@ public sealed class Ss : ICommand
     {
         Image image = viewport.GetTexture().GetImage();
 
-        byte[] buffer = Array.Empty<byte>();
+        byte[] buffer = [];
         switch (extension)
         {
             case "exr":

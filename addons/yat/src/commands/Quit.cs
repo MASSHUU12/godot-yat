@@ -16,7 +16,7 @@ public sealed class Quit : ICommand
 
     public CommandResult Execute(CommandData data)
     {
-        var t = (bool)data.Options["-t"];
+        bool t = (bool)data.Options["-t"];
 
         _yat = data.Yat;
         _terminal = data.Terminal;

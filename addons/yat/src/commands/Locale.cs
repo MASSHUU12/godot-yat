@@ -36,37 +36,42 @@ public sealed class Locale : ICommand
 
         if (listCountries)
         {
-            PrintArray(TranslationServer.Singleton.GetAllCountries());
-            return ICommand.Ok();
+            string[] countries = TranslationServer.Singleton.GetAllCountries();
+            PrintArray(countries);
+            return ICommand.Ok(countries);
         }
 
         if (listLanguages)
         {
-            PrintArray(TranslationServer.Singleton.GetAllLanguages());
-            return ICommand.Ok();
+            string[] languages = TranslationServer.Singleton.GetAllLanguages();
+            PrintArray(languages);
+            return ICommand.Ok(languages);
         }
 
         if (listScripts)
         {
-            PrintArray(TranslationServer.Singleton.GetAllScripts());
-            return ICommand.Ok();
+            string[] scripts = TranslationServer.Singleton.GetAllScripts();
+            PrintArray(scripts);
+            return ICommand.Ok(scripts);
         }
 
         if (listLocales)
         {
-            PrintArray(TranslationServer.Singleton.GetLoadedLocales());
-            return ICommand.Ok();
+            string[] locales = TranslationServer.Singleton.GetLoadedLocales();
+            PrintArray(locales);
+            return ICommand.Ok(locales);
         }
 
         if (getLocale)
         {
-            return ICommand.Ok(message: TranslationServer.Singleton.GetLocale());
+            string locale = TranslationServer.Singleton.GetLocale();
+            return ICommand.Ok([locale], locale);
         }
 
         if (!string.IsNullOrEmpty(setLocale))
         {
             TranslationServer.Singleton.SetLocale(setLocale);
-            return ICommand.Ok();
+            return ICommand.Ok([setLocale]);
         }
 
         return ICommand.Ok();

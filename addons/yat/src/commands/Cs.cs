@@ -11,15 +11,21 @@ namespace YAT.Commands;
 public partial class Cs : Node, ICommand
 {
     [Signal]
-    public delegate void SceneAboutToChangeEventHandler(string oldPath, string newPath);
+    public delegate void SceneAboutToChangeEventHandler(
+        string oldPath,
+        string newPath
+    );
     [Signal]
     public delegate void SceneChangedEventHandler(string scenePath);
     [Signal]
-    public delegate void SceneChangeFailedEventHandler(string scenePath, ESceneChangeFailureReason reason);
+    public delegate void SceneChangeFailedEventHandler(
+        string scenePath,
+        ESceneChangeFailureReason reason
+    );
 
     public CommandResult Execute(CommandData data)
     {
-        var scene = (string)data.Arguments["scene"];
+        string scene = (string)data.Arguments["scene"];
 
         if (!CheckSceneExistence(scene))
         {
@@ -39,12 +45,12 @@ public partial class Cs : Node, ICommand
 
         _ = EmitSignal(SignalName.SceneChanged, scene);
 
-        return ICommand.Success(message: $"Changed scene to '{scene}'.");
+        return ICommand.Success([scene], $"Changed scene to '{scene}'.");
     }
 
     private bool CheckSceneExistence(string scene)
     {
-        var sceneExists = ResourceLoader.Exists(scene, nameof(PackedScene));
+        bool sceneExists = ResourceLoader.Exists(scene, nameof(PackedScene));
 
         if (!sceneExists)
         {
@@ -60,13 +66,13 @@ public partial class Cs : Node, ICommand
 
     private void EmitSceneAboutToChange(YAT yat, string scene)
     {
-        var oldPath = yat.GetTree().CurrentScene.SceneFilePath;
+        string oldPath = yat.GetTree().CurrentScene.SceneFilePath;
         _ = EmitSignal(SignalName.SceneAboutToChange, oldPath, scene);
     }
 
     private bool ChangeScene(string scene, YAT yat)
     {
-        var error = yat.GetTree().ChangeSceneToFile(scene);
+        Error error = yat.GetTree().ChangeSceneToFile(scene);
         if (error == Error.Ok)
         {
             return true;
@@ -74,8 +80,8 @@ public partial class Cs : Node, ICommand
 
         _ = EmitSignal(SignalName.SceneChangeFailed, scene, (short)(
             error == Error.CantOpen
-            ? ESceneChangeFailureReason.CantOpen
-            : ESceneChangeFailureReason.CantInstantiate
+                ? ESceneChangeFailureReason.CantOpen
+                : ESceneChangeFailureReason.CantInstantiate
         ));
 
         return false;

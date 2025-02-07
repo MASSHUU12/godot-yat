@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using YAT.Attributes;
 using YAT.Enums;
@@ -34,7 +35,7 @@ public sealed class Cn : ICommand
 
     public CommandResult Execute(CommandData data)
     {
-        var path = (string)data.Arguments["node_path"];
+        string path = (string)data.Arguments["node_path"];
         bool result;
 
         _yat = data.Yat;
@@ -53,12 +54,15 @@ public sealed class Cn : ICommand
 
         return !result
             ? ICommand.Failure($"Invalid node path: {path}")
-            : ICommand.Success();
+            : ICommand.Success([path]);
     }
 
     private NodePath? GetNodeFromSearch(string path)
     {
-        Node? result = path.StartsWith(TREE_SHALLOW_SEARCH_PREFIX)
+        Node? result = path.StartsWith(
+            TREE_SHALLOW_SEARCH_PREFIX,
+            StringComparison.Ordinal
+        )
             ? World.SearchNode(_terminal.SelectedNode.Current, path[2..])
             : World.SearchNode(_yat.GetTree().Root, path[1..]);
 
@@ -81,7 +85,9 @@ public sealed class Cn : ICommand
             return null;
         }
 
-        Node? collider = result.TryGetValue("collider", out Variant value) ? value.As<Node>() : null;
+        Node? collider = result.TryGetValue("collider", out Variant value)
+            ? value.As<Node>()
+            : null;
 
         return collider?.GetPath();
     }

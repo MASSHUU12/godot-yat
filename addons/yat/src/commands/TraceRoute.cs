@@ -20,7 +20,7 @@ public sealed class TraceRoute : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var hostname = (string)data.Arguments["hostname"];
+        string hostname = (string)data.Arguments["hostname"];
         NetworkingOptions options = new()
         {
             Timeout = (ushort)(int)data.Options["-t"],
@@ -43,6 +43,6 @@ public sealed class TraceRoute : ICommand
             _ = result.AppendLine(address?.ToString());
         }
 
-        return ICommand.Ok(message: result.ToString());
+        return ICommand.Ok([result.ToString()], result.ToString());
     }
 }
