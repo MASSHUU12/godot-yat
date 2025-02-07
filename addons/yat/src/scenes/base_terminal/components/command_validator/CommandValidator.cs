@@ -1,7 +1,7 @@
-using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using YAT.Attributes;
 using YAT.Classes;
 using YAT.Enums;
@@ -19,14 +19,19 @@ public partial class CommandValidator : Node
 #nullable restore
 
     /// <summary>
-    /// Validates the passed data for a given command and returns a dictionary of arguments.
+    /// Validates the passed data for a given command and returns a dictionary
+    /// of arguments.
     /// </summary>
     /// <typeparam name="T">The type of attribute to validate.</typeparam>
     /// <param name="command">The command to validate.</param>
     /// <param name="passedData">The arguments passed to the command.</param>
     /// <param name="data">The dictionary of arguments.</param>
     /// <returns>True if the passed data is valid, false otherwise.</returns>
-    public bool ValidatePassedData<T>(ICommand command, string[] passedData, out Dictionary<StringName, object?> data)
+    public bool ValidatePassedData<T>(
+        ICommand command,
+        string[] passedData,
+        out Dictionary<StringName, object> data
+    )
     where T : CommandInputAttribute
     {
         Type type = typeof(T);
@@ -36,22 +41,25 @@ public partial class CommandValidator : Node
         CommandAttribute commandAttribute = command.GetAttribute<CommandAttribute>()!;
 
         _commandName = commandAttribute.Name;
-        data = new();
+        data = [];
 
         if (commandAttribute is null)
         {
-            Terminal.Output.Error(Messages.MissingAttribute("CommandAttribute", command.GetType().Name));
+            Terminal.Output.Error(Messages.MissingAttribute(
+                "CommandAttribute",
+                command.GetType().Name
+            ));
             return false;
         }
 
-        T[] dataAttrArr = command.GetType().GetCustomAttributes(type, false) as T[] ?? Array.Empty<T>();
+        T[] dataAttrArr = command.GetType().GetCustomAttributes(type, false) as T[] ?? [];
 
         if (type == argType)
         {
             if (passedData.Length < dataAttrArr.Length)
             {
                 Terminal.Output.Error(Messages.MissingArguments(
-                    commandAttribute.Name, dataAttrArr.Select<T, string>(a => a.Name).ToArray())
+                    commandAttribute.Name, [.. dataAttrArr.Select(static a => a.Name)])
                 );
                 return false;
             }
@@ -71,7 +79,7 @@ public partial class CommandValidator : Node
     }
 
     private bool ValidateCommandArguments(
-        Dictionary<StringName, object?> validatedArgs,
+        Dictionary<StringName, object> validatedArgs,
         string[] passedArgs,
         ArgumentAttribute[] arguments
     )
@@ -88,7 +96,7 @@ public partial class CommandValidator : Node
     }
 
     private bool ValidateCommandOptions(
-        Dictionary<StringName, object?> validatedOpts,
+        Dictionary<StringName, object> validatedOpts,
         string[] passedOpts,
         OptionAttribute[] options
     )
@@ -106,7 +114,7 @@ public partial class CommandValidator : Node
 
     public bool ValidateCommandArgument(
         ArgumentAttribute argument,
-        Dictionary<StringName, object?> validatedArgs,
+        Dictionary<StringName, object> validatedArgs,
         string passedArg,
         bool log = true
     )
@@ -115,11 +123,15 @@ public partial class CommandValidator : Node
 
         foreach (CommandType type in argument.Types)
         {
-            EStringConversionResult status = Parser.TryConvertStringToType(passedArg, type, out var converted);
+            EStringConversionResult status = Parser.TryConvertStringToType(
+                passedArg,
+                type,
+                out object? converted
+            );
 
             if (status == EStringConversionResult.Success)
             {
-                validatedArgs[argument.Name] = converted;
+                validatedArgs[argument.Name] = converted!;
                 return true;
             }
 
@@ -136,16 +148,18 @@ public partial class CommandValidator : Node
 
     private bool ValidateCommandOption(
         OptionAttribute option,
-        Dictionary<StringName, object?> validatedOpts,
+        Dictionary<StringName, object> validatedOpts,
         string[] passedOpts
     )
     {
-        ILookup<ECommandInputType, CommandType> lookup = option.Types.ToLookup(t => t.Type);
+        ILookup<ECommandInputType, CommandType> lookup = option.Types.ToLookup(
+            static t => t.Type
+        );
         bool isBool = lookup.Contains(ECommandInputType.Bool);
 
         foreach (string passedOpt in passedOpts)
         {
-            if (!passedOpt.StartsWith(option.Name))
+            if (!passedOpt.StartsWith(option.Name, StringComparison.Ordinal))
             {
                 continue;
             }
@@ -169,7 +183,9 @@ public partial class CommandValidator : Node
             {
                 Terminal.Output.Error(
                     Messages.InvalidArgument(_commandName, passedOpt, string.Join(
-                        ", ", option.Types.Select(t => t.Type + (t.IsArray ? "..." : string.Empty))
+                        ", ", option.Types.Select(
+                            static t => t.Type + (t.IsArray ? "..." : string.Empty)
+                        )
                     ))
                 );
                 return false;
@@ -186,19 +202,23 @@ public partial class CommandValidator : Node
                     if (values.Length == 0)
                     {
                         Terminal.Output.Error(
-                            Messages.InvalidArgument(_commandName, passedOpt, option.Name)
+                            Messages.InvalidArgument(
+                                _commandName,
+                                passedOpt,
+                                option.Name
+                            )
                         );
                         return false;
                     }
 
-                    List<object?> convertedL = new();
+                    List<object?> convertedL = [];
 
                     foreach (string v in values)
                     {
                         EStringConversionResult st = Parser.TryConvertStringToType(
                             v,
                             type,
-                            out var convertedLValue
+                            out object? convertedLValue
                         );
 
                         if (st != EStringConversionResult.Success)
@@ -216,14 +236,17 @@ public partial class CommandValidator : Node
 
                 if (string.IsNullOrEmpty(value))
                 {
-                    Terminal.Output.Error(Messages.MissingValue(_commandName, option.Name));
+                    Terminal.Output.Error(Messages.MissingValue(
+                        _commandName,
+                        option.Name
+                    ));
                     return false;
                 }
 
                 EStringConversionResult status = Parser.TryConvertStringToType(
                     value,
                     type,
-                    out var converted
+                    out object? converted
                 );
 
                 if (status != EStringConversionResult.Success)
@@ -233,15 +256,19 @@ public partial class CommandValidator : Node
                     return false;
                 }
 
-                validatedOpts[option.Name] = converted;
+                validatedOpts[option.Name] = converted!;
                 return true;
             }
-            Terminal.Output.Error(Messages.InvalidArgument(_commandName, passedOpt, option.Name));
+            Terminal.Output.Error(Messages.InvalidArgument(
+                _commandName,
+                passedOpt,
+                option.Name
+            ));
         }
 
         validatedOpts[option.Name] = isBool && option.DefaultValue is null
             ? false
-            : option.DefaultValue;
+            : option.DefaultValue!;
 
         return true;
     }
@@ -259,7 +286,9 @@ public partial class CommandValidator : Node
                 Terminal.Output.Error(Messages.InvalidArgument(
                         _commandName,
                         value?.ToString() ?? commandInput.Name,
-                        string.Join(", ", commandInput.Types.Select(t => t.TypeDefinition)
+                        string.Join(", ", commandInput.Types.Select(
+                            static t => t.TypeDefinition
+                        )
                     )
                 ));
                 break;

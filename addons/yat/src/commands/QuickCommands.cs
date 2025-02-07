@@ -13,8 +13,6 @@ namespace YAT.Commands;
 [Option("-command", "string", "The command to execute when the quick command is called.")]
 public sealed class QuickCommands : ICommand
 {
-    public string[]? Arguments { get; set; }
-
 #nullable disable
     private YAT _yat;
 #nullable restore
@@ -57,14 +55,14 @@ public sealed class QuickCommands : ICommand
         }
 
         return _yat.Commands.AddQuickCommand(name, command)
-            ? ICommand.Success($"Added quick command '{name}'.")
+            ? ICommand.Success(message: $"Added quick command '{name}'.")
             : ICommand.Failure($"Failed to add quick command '{name}'.");
     }
 
     private CommandResult RemoveQuickCommand(string name)
     {
         return _yat.Commands.RemoveQuickCommand(name)
-            ? ICommand.Success($"Removed quick command '{name}'.")
+            ? ICommand.Success(message: $"Removed quick command '{name}'.")
             : ICommand.Failure($"Failed to remove quick command '{name}'.");
     }
 

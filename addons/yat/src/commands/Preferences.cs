@@ -16,8 +16,6 @@ public sealed class Preferences : ICommand
         "uid://ca2i4r24ny7y3"
     );
 
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         bool instanceValid = GodotObject.IsInstanceValid(_windowInstance);

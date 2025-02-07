@@ -16,8 +16,6 @@ namespace YAT.Commands;
 [Option("--interval", "float(0.5:60)", "The interval at which to run the command.", 1f)]
 public sealed class Watch : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var parsed = Parser.ParseCommand((string)data.Arguments["command"]);

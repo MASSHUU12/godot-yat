@@ -24,8 +24,6 @@ public sealed class Cowsay : ICommand
     private BaseTerminal _terminal;
 #nullable restore
 
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         char eye = 'o';
@@ -36,14 +34,14 @@ public sealed class Cowsay : ICommand
         var eyes = new Dictionary<string, char>
             {
                 { "-b", '=' }, // Borg
-				{ "-d", 'x' }, // Dead
-				{ "-g", '$' }, // Greedy
-				{ "-p", '@' }, // Paranoid
-				{ "-s", '*' }, // Stoned
-				{ "-t", '-' }, // Tired
-				{ "-w", 'O' }, // Wired
-				{ "-y", '.' }  // Youthful
-			};
+                { "-d", 'x' }, // Dead
+                { "-g", '$' }, // Greedy
+                { "-p", '@' }, // Paranoid
+                { "-s", '*' }, // Stoned
+                { "-t", '-' }, // Tired
+                { "-w", 'O' }, // Wired
+                { "-y", '.' }  // Youthful
+            };
 
         var tongues = new Dictionary<string, char>
             {

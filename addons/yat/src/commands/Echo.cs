@@ -9,10 +9,9 @@ namespace YAT.Commands;
 [Argument("message", "string", "The text to display.")]
 public sealed class Echo : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
-        return ICommand.Ok(string.Join(' ', data.RawData[1..]));
+        string message = (string)data.Arguments["message"];
+        return ICommand.Ok([message], message);
     }
 }

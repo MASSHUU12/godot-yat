@@ -19,8 +19,6 @@ namespace YAT.Commands;
 [Option("-m", "bool", "Lists the methods of the current node.")]
 public sealed class Ls : ICommand
 {
-    public string[]? Arguments { get; set; }
-
 #nullable disable
     private BaseTerminal _terminal;
 #nullable restore
@@ -69,7 +67,7 @@ public sealed class Ls : ICommand
                 .AppendLine(((Variant.Type)returns).ToString());
         }
 
-        return ICommand.Ok(sb.ToString());
+        return ICommand.Ok(message: sb.ToString());
     }
 
     private CommandResult PrintDirectoryContents(string path)

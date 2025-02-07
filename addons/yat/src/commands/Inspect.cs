@@ -13,8 +13,6 @@ namespace YAT.Commands;
 [Option("-all", "bool", "Inspect all properties. Some properties might not be displayed correctly.")]
 public sealed class Inspect : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var useRayCast = (bool)data.Options["-ray"];
@@ -23,7 +21,7 @@ public sealed class Inspect : ICommand
             ? InspectRayCastedObject(World.RayCast(data.Yat.GetViewport()), all)
             : InspectNode(data.Terminal.SelectedNode.Current, all);
 
-        return ICommand.Ok(result.ToString());
+        return ICommand.Ok(message: result.ToString());
     }
 
     private static StringBuilder GetAllProperties(Node node)

@@ -21,8 +21,6 @@ namespace YAT.Commands;
 )]
 public sealed class Locale : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     private BaseTerminal? _terminal;
 
     public CommandResult Execute(CommandData data)
@@ -62,7 +60,7 @@ public sealed class Locale : ICommand
 
         if (getLocale)
         {
-            return ICommand.Ok(TranslationServer.Singleton.GetLocale());
+            return ICommand.Ok(message: TranslationServer.Singleton.GetLocale());
         }
 
         if (!string.IsNullOrEmpty(setLocale))

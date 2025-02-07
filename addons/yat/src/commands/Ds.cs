@@ -15,8 +15,6 @@ namespace YAT.Commands;
 [Option("--interval", "float(0.05:)", "Update interval.", 0f)]
 public sealed class Ds : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     private static DebugScreen? _debug;
 
     public CommandResult Execute(CommandData data)
@@ -33,7 +31,7 @@ public sealed class Ds : ICommand
 
         if (showHelp)
         {
-            return ICommand.Success(Help());
+            return ICommand.Success(message: Help());
         }
 
         switch (screens.ToLower())

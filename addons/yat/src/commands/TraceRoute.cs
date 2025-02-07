@@ -18,8 +18,6 @@ namespace YAT.Commands;
 [Threaded]
 public sealed class TraceRoute : ICommand
 {
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var hostname = (string)data.Arguments["hostname"];
@@ -45,6 +43,6 @@ public sealed class TraceRoute : ICommand
             _ = result.AppendLine(address?.ToString());
         }
 
-        return ICommand.Ok(result.ToString());
+        return ICommand.Ok(message: result.ToString());
     }
 }

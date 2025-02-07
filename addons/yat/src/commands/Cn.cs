@@ -32,8 +32,6 @@ public sealed class Cn : ICommand
     private BaseTerminal _terminal;
 #nullable restore
 
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var path = (string)data.Arguments["node_path"];

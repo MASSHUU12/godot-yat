@@ -13,8 +13,6 @@ public sealed class Wenv : ICommand
     private static Environment _world3DEnvironment;
 #nullable restore
 
-    public string[]? Arguments { get; set; }
-
     public CommandResult Execute(CommandData data)
     {
         var action = (string)data.Arguments["action"];
@@ -40,7 +38,7 @@ public sealed class Wenv : ICommand
         world.Environment = _world3DEnvironment;
         _world3DEnvironment = null;
 
-        return ICommand.Success("Restored environment.");
+        return ICommand.Success(message: "Restored environment.");
     }
 
     private static CommandResult RemoveEnvironment(World3D world)
@@ -60,6 +58,6 @@ public sealed class Wenv : ICommand
         _world3DEnvironment = env;
         world.Environment = null;
 
-        return ICommand.Success("Removed environment.");
+        return ICommand.Success(message: "Removed environment.");
     }
 }
