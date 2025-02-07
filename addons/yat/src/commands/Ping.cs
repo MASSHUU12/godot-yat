@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Threading;
 using YAT.Attributes;
@@ -24,9 +25,9 @@ public sealed class Ping : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var hostname = (string)data.Arguments["hostname"];
-        var maxPings = (int)data.Options["-limit"];
-        var options = new NetworkingOptions
+        string hostname = (string)data.Arguments["hostname"];
+        int maxPings = (int)data.Options["-limit"];
+        NetworkingOptions options = new()
         {
             Timeout = (ushort)(int)data.Options["-t"],
             TTL = (ushort)(int)data.Options["-ttl"],
@@ -39,35 +40,42 @@ public sealed class Ping : ICommand
 
         data.Terminal.Output.Print($"Pinging {hostname}...");
 
-        while ((maxPings == 0 || pings < maxPings) && !data.CancellationToken.IsCancellationRequested)
+        while (
+            (maxPings == 0 || pings < maxPings)
+            && !data.CancellationToken.IsCancellationRequested
+        )
         {
-            EPingStatus status = Networking.Ping(hostname, out var reply, options);
+            EPingStatus status = Networking.Ping(
+                hostname,
+                out PingReply? reply,
+                options
+            );
 
             if (reply is null)
             {
-                if (status == Networking.EPingStatus.Unsupported)
-                {
-                    data.Terminal.Output.Error("The current platform does not support ICMP or access is denied.");
-                    break;
-                }
-
-                data.Terminal.Output.Error("Failed to ping the host.");
-                break;
+                return ICommand.Failure(
+                    status == EPingStatus.Unsupported
+                        ? "The current platform does not support ICMP or access is denied."
+                        : "Failed to ping the host."
+                );
             }
 
             if (reply.Status == IPStatus.Success)
             {
-                data.Terminal.Print(string.Format(
-                    "Reply from {0}: bytes={1} time={2}ms TTL={3}",
-                    reply.Address,
-                    reply.Buffer.Length,
-                    reply.RoundtripTime,
-                    reply.Options?.Ttl
-                ));
+                data.Terminal.Print(
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        "Reply from {0}: bytes={1} time={2}ms TTL={3}",
+                        reply.Address,
+                        reply.Buffer.Length,
+                        reply.RoundtripTime,
+                        reply.Options?.Ttl
+                    )
+                );
             }
             else
             {
-                data.Terminal.Output.Error("Request timed out.");
+                return ICommand.Failure("Request timed out.");
             }
 
             if (maxPings != 0)

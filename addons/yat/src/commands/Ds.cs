@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using YAT.Attributes;
@@ -19,9 +20,9 @@ public sealed class Ds : ICommand
 
     public CommandResult Execute(CommandData data)
     {
-        var showHelp = (bool)data.Options["-h"];
-        var screens = (string)data.Arguments["screens"];
-        var interval = (float)data.Options["--interval"];
+        bool showHelp = (bool)data.Options["-h"];
+        string screens = (string)data.Arguments["screens"];
+        float interval = (float)data.Options["--interval"];
 
         _debug ??= data.Yat.GetTree().Root.GetNode<DebugScreen>("/root/DebugScreen");
 
@@ -34,7 +35,7 @@ public sealed class Ds : ICommand
             return ICommand.Success(message: Help());
         }
 
-        switch (screens.ToLower())
+        switch (screens.ToLowerInvariant())
         {
             case "all":
                 _debug.RunAll();
@@ -54,10 +55,13 @@ public sealed class Ds : ICommand
     {
         StringBuilder message = new("Registered debug items:\n");
 
-        foreach (var (uid, type) in DebugScreen.registeredItems.Values.SelectMany(x => x))
+        foreach ((string uid, Type type) in DebugScreen.registeredItems.Values
+            .SelectMany(static x => x)
+        )
         {
-            var title = type.GetAttribute<TitleAttribute>()?.Title ?? type.Name;
+            string title = type.GetAttribute<TitleAttribute>()?.Title ?? type.Name;
             _ = message.AppendFormat(
+                CultureInfo.InvariantCulture,
                 "- [b]{0}[/b] ({1}): {2}\n",
                 title,
                 type.Name == title ? string.Empty : type.Name,

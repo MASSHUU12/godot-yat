@@ -12,8 +12,8 @@ public sealed class ToggleAudio : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var id = (int)data.Options["-id"];
-        var name = (string)data.Options["-name"];
+        int id = (int)data.Options["-id"];
+        string name = (string)data.Options["-name"];
 
         if (id == -1 && string.IsNullOrEmpty(name))
         {

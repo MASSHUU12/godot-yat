@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -28,7 +29,7 @@ public sealed class List : ICommand
             GenerateList();
         }
 
-        return ICommand.Ok(message: _cache);
+        return ICommand.Ok([_cache], _cache);
     }
 
     private static void GenerateList()
@@ -45,9 +46,9 @@ public sealed class List : ICommand
                 : maxHeadSize;
         }
 
-        var linkStr = " - ";
-        var tabSpaceNum = 2;
-        var indentation = tabSpaceNum + maxHeadSize + linkStr.Length;
+        const string linkStr = " - ";
+        const int tabSpaceNum = 2;
+        int indentation = tabSpaceNum + maxHeadSize + linkStr.Length;
         foreach (KeyValuePair<string, Type> command in RegisteredCommands.Registered)
         {
             if (command.Value.GetCustomAttribute<CommandAttribute>() is not { } attribute)
@@ -55,15 +56,21 @@ public sealed class List : ICommand
                 continue;
             }
 
-            var description = command.Value.GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute? description = command.Value
+                .GetCustomAttribute<DescriptionAttribute>();
 
-            // Skip aliases
             if (attribute.Aliases.Contains(command.Key))
             {
                 continue;
             }
 
-            string header = $"{new string(' ', tabSpaceNum)}[b]{command.Key}[/b]{new string(' ', maxHeadSize - command.Key.Length)} - ";
+            string header = string.Format(
+                CultureInfo.InvariantCulture,
+                "{0}[b]{1}[/b]{2} - ",
+                new string(' ', tabSpaceNum),
+                command.Key,
+                new string(' ', maxHeadSize - command.Key.Length)
+            );
             _ = sb.Append(header);
 
             string descriptionStr = description?.Description ?? attribute.Description;

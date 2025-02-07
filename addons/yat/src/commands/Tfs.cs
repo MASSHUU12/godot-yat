@@ -11,7 +11,7 @@ public sealed class Tfs : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var exclusive = (bool)data.Options["-e"];
+        bool exclusive = (bool)data.Options["-e"];
 
         if (WindowGetMode() == WindowMode.Windowed)
         {
@@ -27,7 +27,8 @@ public sealed class Tfs : ICommand
         }
 
         return ICommand.Success(
-            message: $"Toggled screen mode to {WindowGetMode()}."
+            [WindowGetMode().ToString()],
+            $"Toggled screen mode to {WindowGetMode()}."
         );
     }
 }

@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using Godot;
 using Godot.Collections;
@@ -10,18 +11,22 @@ namespace YAT.Commands;
 
 [Command("inspect", "Inspect selected object.", aliases: new[] { "ins" })]
 [Option("-ray", "bool", "Use RayCast to select an object.")]
-[Option("-all", "bool", "Inspect all properties. Some properties might not be displayed correctly.")]
+[Option(
+    "-all",
+    "bool",
+    "Inspect all properties. Some properties might not be displayed correctly.")
+]
 public sealed class Inspect : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var useRayCast = (bool)data.Options["-ray"];
-        var all = (bool)data.Options["-all"];
+        bool useRayCast = (bool)data.Options["-ray"];
+        bool all = (bool)data.Options["-all"];
         StringBuilder result = useRayCast
             ? InspectRayCastedObject(World.RayCast(data.Yat.GetViewport()), all)
             : InspectNode(data.Terminal.SelectedNode.Current, all);
 
-        return ICommand.Ok(message: result.ToString());
+        return ICommand.Ok([result.ToString()], result.ToString());
     }
 
     private static StringBuilder GetAllProperties(Node node)
@@ -35,11 +40,11 @@ public sealed class Inspect : ICommand
 
         foreach (var property in (Array<Dictionary>)node.GetPropertyList())
         {
-            var name = property["name"];
-            var type = (int)property["type"];
-            var propertyData = node.Get((string)name);
+            Variant name = property["name"];
+            int type = (int)property["type"];
+            Variant propertyData = node.Get((string)name);
 
-            _ = sb.Append($"[b]{name}[/b]: ");
+            _ = sb.Append(CultureInfo.InvariantCulture, $"[b]{name}[/b]: ");
 
             if (type == (int)Variant.Type.Nil)
             {
@@ -64,7 +69,7 @@ public sealed class Inspect : ICommand
             }
             else if (type == (int)Variant.Type.Object)
             {
-                var obj = propertyData.As<Script>();
+                Script obj = propertyData.As<Script>();
 
                 _ = sb.AppendLine(obj?.ResourcePath);
             }
@@ -130,7 +135,9 @@ public sealed class Inspect : ICommand
 
         _ = sb.AppendLine()
             .AppendLine("[b]Node[/b]: " + node.Name)
-            .AppendLine("[b]UID[/b]: " + ResourceUid.IdToText(ResourceLoader.GetResourceUid(node.SceneFilePath)))
+            .AppendLine("[b]UID[/b]: " + ResourceUid.IdToText(
+                ResourceLoader.GetResourceUid(node.SceneFilePath))
+            )
             .AppendLine("[b]Path[/b]: " + node.GetPath())
             .AppendLine("[b]Scene Path[/b]: " + node.SceneFilePath)
             .AppendLine("[b]Script[/b]: " + ((Script)node.GetScript())?.ResourcePath)

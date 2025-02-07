@@ -1,3 +1,4 @@
+using System.Globalization;
 using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
@@ -14,18 +15,17 @@ public sealed class Whereami : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var s = (bool)data.Options["-s"];
-        var e = (bool)data.Options["-e"];
-        var longForm = (bool)data.Options["-l"];
+        bool s = (bool)data.Options["-s"];
+        bool e = (bool)data.Options["-e"];
+        bool longForm = (bool)data.Options["-l"];
 
-        return ICommand.Ok(
-            message: e
-            ? GetExecutablePath(data.Terminal)
-            : GetSceneInfo(data.Terminal, s, longForm)
-        );
+        string p = e
+            ? GetExecutablePath()
+            : GetSceneInfo(data.Terminal, s, longForm);
+        return ICommand.Ok([p], p);
     }
 
-    private static string GetExecutablePath(BaseTerminal terminal)
+    private static string GetExecutablePath()
     {
         return OS.GetExecutablePath().GetBaseDir();
     }
@@ -36,6 +36,7 @@ public sealed class Whereami : ICommand
         scene = s ? terminal.SelectedNode.Current : scene;
 
         return string.Format(
+            CultureInfo.InvariantCulture,
             "{0} {1}",
             scene.GetPath(),
             l ? "(" + scene.SceneFilePath + ")" : string.Empty

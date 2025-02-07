@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Godot;
 using YAT.Attributes;
+using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
 using static Godot.RenderingServer;
@@ -12,7 +14,9 @@ namespace YAT.Commands;
     "view",
     "Changes the rendering mode of the viewport.\n"
     + "You can use either the name of the mode or the integer value.\n"
-    + "See: [url=https://docs.godotengine.org/en/stable/classes/class_renderingserver.html#class-renderingserver-method-set-debug-generate-wireframes]ViewportDebugDraw[/url]."
+    + "See: [url=https://docs.godotengine.org/en/stable/classes/"
+    + "class_renderingserver.html#class-renderingserver-method-set-debug-"
+    + "generate-wireframes]ViewportDebugDraw[/url]."
 )]
 [Argument("mode", "string|int(0:)", "The type of debug draw to use.")]
 public sealed class View : ICommand
@@ -27,7 +31,7 @@ public sealed class View : ICommand
 
         foreach (object? mode in values)
         {
-            Modes.Add(mode!.ToString()!.ToLower());
+            Modes.Add(mode!.ToString()!.ToLowerInvariant());
         }
     }
 
@@ -37,7 +41,7 @@ public sealed class View : ICommand
 
     public CommandResult Execute(CommandData data)
     {
-        var mode = (string)data.Arguments["mode"];
+        string mode = (string)data.Arguments["mode"];
 
         _yat = data.Yat;
 
@@ -48,7 +52,7 @@ public sealed class View : ICommand
         );
         }
 
-        if (!int.TryParse(mode, out var iMode))
+        if (!int.TryParse(mode, out int iMode))
         {
             return ICommand.InvalidArguments($"Invalid mode: {mode}.");
         }
@@ -64,7 +68,10 @@ public sealed class View : ICommand
     {
         ViewportSetDebugDraw(_yat.GetViewport().GetViewportRid(), debugDraw);
 
-        return ICommand.Success(message: $"Set viewport debug draw to {debugDraw} ({(int)debugDraw}).");
+        return ICommand.Success(
+            [((int)debugDraw).ToStringInvariant()],
+            $"Set viewport debug draw to {debugDraw} ({(int)debugDraw})."
+        );
     }
 
     private static bool IsValidMode(int mode)

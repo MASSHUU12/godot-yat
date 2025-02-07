@@ -21,7 +21,7 @@ public sealed class Dollar : ICommand
     {
         _terminal = data.Terminal;
 
-        if (!ValidateInputData(data.RawData[1], out var methods))
+        if (!ValidateInputData(data.RawData[1], out string[] methods))
         {
             return ICommand.Failure("Invalid method.");
         }
@@ -41,7 +41,12 @@ public sealed class Dollar : ICommand
         );
     }
 
-    private bool CallMethod(Node node, string method, out Variant result, params Variant[] args)
+    private bool CallMethod(
+        Node node,
+        string method,
+        out Variant result,
+        params Variant[] args
+    )
     {
         result = new();
         switch (node.ValidateMethod(method))
@@ -55,7 +60,6 @@ public sealed class Dollar : ICommand
                 EmitStatus(method, result, EMethodStatus.Failed);
                 return false;
             case MethodValidationResult.Success:
-                break;
             default:
                 break;
         }

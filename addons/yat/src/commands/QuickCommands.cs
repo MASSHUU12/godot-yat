@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
@@ -10,7 +11,9 @@ namespace YAT.Commands;
 [Description("Manages Quick Commands.")]
 [Argument("action", "add|remove|list|run", "The action to perform.")]
 [Option("-name", "string", "The name of the quick command.")]
-[Option("-command", "string", "The command to execute when the quick command is called.")]
+[Option("-command", "string",
+    "The command to execute when the quick command is called."
+)]
 public sealed class QuickCommands : ICommand
 {
 #nullable disable
@@ -19,15 +22,17 @@ public sealed class QuickCommands : ICommand
 
     public CommandResult Execute(CommandData data)
     {
-        var action = (string)data.Arguments["action"];
-        var name = (string)data.Options["-name"];
-        var command = (string)data.Options["-command"];
+        string action = (string)data.Arguments["action"];
+        string name = (string)data.Options["-name"];
+        string command = (string)data.Options["-command"];
 
         _yat = data.Yat;
 
         if (action != "list" && string.IsNullOrEmpty(name))
         {
-            return ICommand.Failure("You need to provide a command name for this action.");
+            return ICommand.Failure(
+                "You need to provide a command name for this action."
+            );
         }
 
         switch (action)
@@ -39,8 +44,15 @@ public sealed class QuickCommands : ICommand
             case "run":
                 return RunQuickCommand(name, data.Terminal);
             default:
-                foreach (var qc in _yat.Commands.QuickCommands.Commands)
-                    data.Terminal.Print($"[b]{qc.Key}[/b] - {Text.EscapeBBCode(qc.Value)}");
+                foreach (
+                    KeyValuePair<string, string> qc
+                    in _yat.Commands.QuickCommands.Commands
+                )
+                {
+                    data.Terminal.Print(
+                        $"[b]{qc.Key}[/b] - {Text.EscapeBBCode(qc.Value)}"
+                    );
+                }
                 break;
         }
 
@@ -68,7 +80,7 @@ public sealed class QuickCommands : ICommand
 
     private CommandResult RunQuickCommand(string name, BaseTerminal terminal)
     {
-        if (_yat.Commands.QuickCommands.Commands.TryGetValue(name, out var command))
+        if (_yat.Commands.QuickCommands.Commands.TryGetValue(name, out string? command))
         {
             _ = terminal.CommandManager.RunAsync(Text.SanitizeText(command), terminal)
                 .ConfigureAwait(false).GetAwaiter().GetResult();

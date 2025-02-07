@@ -1,3 +1,4 @@
+using System.Globalization;
 using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
@@ -15,11 +16,11 @@ public sealed class Sr : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var width = (int)data.Options["-w"];
-        var height = (int)data.Options["-h"];
-        var scale = (float)data.Options["-s"];
-        var fsr = (bool)data.Options["-fsr"];
-        var fsr2 = (bool)data.Options["-fsr2"];
+        int width = (int)data.Options["-w"];
+        int height = (int)data.Options["-h"];
+        float scale = (float)data.Options["-s"];
+        bool fsr = (bool)data.Options["-fsr"];
+        bool fsr2 = (bool)data.Options["-fsr2"];
 
         Viewport viewport = data.Yat.GetViewport();
         Window window = viewport.GetWindow();
@@ -48,7 +49,9 @@ public sealed class Sr : ICommand
         }
 
         data.Terminal.Output.Print(
-            string.Format("Screen resolution: {0}x{1}, scale: {2} ({3}x{4}), mode: {5}.",
+            string.Format(
+                CultureInfo.InvariantCulture,
+                "Screen resolution: {0}x{1}, scale: {2} ({3}x{4}), mode: {5}.",
                 window.Size.X, window.Size.Y,
                 viewport.Scaling3DScale,
                 (int)(window.Size.X * viewport.Scaling3DScale),
@@ -57,6 +60,6 @@ public sealed class Sr : ICommand
             )
         );
 
-        return ICommand.Success();
+        return ICommand.Success([$"{window.Size.X}x{window.Size.Y}"]);
     }
 }

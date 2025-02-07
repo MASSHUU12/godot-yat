@@ -1,3 +1,4 @@
+using System.Globalization;
 using Godot;
 using YAT.Attributes;
 using YAT.Interfaces;
@@ -7,7 +8,12 @@ namespace YAT.Commands;
 
 [Command("load", "Loads specified object into the scene.")]
 [Argument("object_path", "string", "The object path to load.")]
-[Option("-absolute", "bool", "If true, the object will be loaded at the origin, otherwise relative positioning will be used.")]
+[Option(
+    "-absolute",
+    "bool",
+    "If true, the object will be loaded at the origin, otherwise relative "
+    + "positioning will be used."
+)]
 [Option("-x", "float", "The X position of the object.", 0f)]
 [Option("-y", "float", "The Y position of the object.", 0f)]
 [Option("-z", "float", "The Z position of the object.", -5f)]
@@ -23,8 +29,8 @@ public sealed class Load : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var path = (string)data.Arguments["object_path"];
-        var is2D = (bool)data.Options["-2d"];
+        string path = (string)data.Arguments["object_path"];
+        bool is2D = (bool)data.Options["-2d"];
 
         if (!ValidatePath(path))
         {
@@ -36,8 +42,8 @@ public sealed class Load : ICommand
 
     private static CommandResult LoadNode3D(string path, CommandData data)
     {
-        var camera = data.Yat.GetViewport().GetCamera3D();
-        var absolute = (bool)data.Options["-absolute"];
+        Camera3D? camera = data.Yat.GetViewport().GetCamera3D();
+        bool absolute = (bool)data.Options["-absolute"];
         Vector3 position = new(
             (float)data.Options["-x"],
             (float)data.Options["-y"],
@@ -53,7 +59,7 @@ public sealed class Load : ICommand
             (float)data.Options["-sy"],
             (float)data.Options["-sz"]
         );
-        var hidden = (bool)data.Options["-hidden"];
+        bool hidden = (bool)data.Options["-hidden"];
 
         if (camera is null && !absolute)
         {
@@ -70,7 +76,9 @@ public sealed class Load : ICommand
         TransformNode3D(node, camera!, position, rotation, scale, hidden, absolute);
 
         return ICommand.Success(
-            message: string.Format(
+            [path],
+            string.Format(
+                CultureInfo.InvariantCulture,
                 "Object '{0}' loaded at {1} with rotation {2} and scale {3}.",
                 node.Name,
                 node.Position,
@@ -82,18 +90,18 @@ public sealed class Load : ICommand
 
     private static CommandResult LoadNode2D(string path, CommandData data)
     {
-        var camera = data.Yat.GetViewport().GetCamera2D();
-        var absolute = (bool)data.Options["-absolute"];
+        Camera2D? camera = data.Yat.GetViewport().GetCamera2D();
+        bool absolute = (bool)data.Options["-absolute"];
         Vector2 position = new(
             (float)data.Options["-x"],
             (float)data.Options["-y"]
         );
-        var rotation = (float)data.Options["-rz"];
+        float rotation = (float)data.Options["-rz"];
         Vector2 scale = new(
             (float)data.Options["-sx"],
             (float)data.Options["-sy"]
         );
-        var hidden = (bool)data.Options["-hidden"];
+        bool hidden = (bool)data.Options["-hidden"];
 
         if (camera is null && !absolute)
         {
@@ -110,7 +118,9 @@ public sealed class Load : ICommand
         TransformNode2D(node, camera!, position, rotation, scale, hidden, absolute);
 
         return ICommand.Success(
-            message: string.Format(
+            [path],
+            string.Format(
+                CultureInfo.InvariantCulture,
                 "Object '{0}' loaded at {1} with rotation {2} and scale {3}.",
                 node.Name,
                 node.Position,
@@ -150,16 +160,11 @@ public sealed class Load : ICommand
         bool absolute
     )
     {
-        if (absolute)
-        {
-            node.GlobalPosition = position;
-        }
-        else
-        {
-            node.GlobalPosition = camera.GlobalTransform.Origin
-                                  + (camera.GlobalTransform.X * position.X)
-                                  + (camera.GlobalTransform.Y * position.Y);
-        }
+        node.GlobalPosition = absolute
+            ? position
+            : camera.GlobalTransform.Origin
+                + (camera.GlobalTransform.X * position.X)
+                + (camera.GlobalTransform.Y * position.Y);
 
         node.GlobalRotation = rotation;
         node.Scale = scale;

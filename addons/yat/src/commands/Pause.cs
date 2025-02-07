@@ -11,6 +11,6 @@ public sealed class Pause : ICommand
     {
         data.Yat.GetTree().Paused = !data.Yat.GetTree().Paused;
 
-        return ICommand.Success();
+        return ICommand.Success([data.Yat.GetTree().Paused.ToString()]);
     }
 }

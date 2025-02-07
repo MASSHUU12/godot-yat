@@ -44,6 +44,6 @@ public sealed class Version : ICommand
                 : ICommand.Ok(message: $"YAT {yatVersion}");
         }
 
-        return ICommand.Ok(message: _version);
+        return ICommand.Ok([_version], _version);
     }
 }

@@ -15,6 +15,9 @@ namespace YAT.Commands;
     "-e", "bool",
     "Embeds the file content into the terminal instead of printing it to the FullWindowDisplay."
 )]
+[Option(
+    "-s", "bool", "Silently output file content to the command output without printing."
+)]
 public sealed class Cat : ICommand
 {
 #nullable disable
@@ -28,6 +31,7 @@ public sealed class Cat : ICommand
         string fileName = (string)data.Arguments["file"];
         int lineLimit = (int)data.Options["-l"];
         bool embed = (bool)data.Options["-e"];
+        bool silent = (bool)data.Options["-s"];
 
         if (!FileAccess.FileExists(fileName))
         {
@@ -40,18 +44,33 @@ public sealed class Cat : ICommand
 
         using FileAccess file = FileAccess.Open(fileName, FileAccess.ModeFlags.Read);
 
-        var (output, lineCount) = GenerateContent(file, lineLimit);
-        DisplayContent(output, embed, lineLimit > 0 && lineCount > lineLimit, lineLimit);
+        (StringBuilder output, int lineCount) = GenerateContent(file, lineLimit);
+        if (!silent)
+        {
+            DisplayContent(
+                output,
+                embed,
+                lineLimit > 0 && lineCount > lineLimit,
+                lineLimit
+            );
+        }
 
-        return ICommand.Success();
+        return ICommand.Success([output.ToString(), $"{lineCount}"]);
     }
 
-    private static (StringBuilder, int) GenerateContent(FileAccess file, int lineLimit)
+    private static (StringBuilder, int) GenerateContent(
+        FileAccess file,
+        int lineLimit
+    )
     {
         int lineCount;
         StringBuilder output = new();
 
-        for (lineCount = 1; !file.EofReached() && (lineLimit <= 0 || lineCount <= lineLimit); ++lineCount)
+        for (
+            lineCount = 1;
+            !file.EofReached() && (lineLimit <= 0 || lineCount <= lineLimit);
+            ++lineCount
+        )
         {
             _ = output.AppendLine(file.GetLine());
         }
@@ -59,7 +78,12 @@ public sealed class Cat : ICommand
         return (output, lineCount);
     }
 
-    private void DisplayContent(StringBuilder content, bool embed, bool limitReached, int limit)
+    private void DisplayContent(
+        StringBuilder content,
+        bool embed,
+        bool limitReached,
+        int limit
+    )
     {
         if (embed)
         {

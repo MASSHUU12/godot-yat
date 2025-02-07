@@ -10,7 +10,7 @@ namespace YAT.Commands;
 [Description("Check if YAT update is available.")]
 public sealed class CheckUpdate : ICommand
 {
-    public CommandResult Execute(CommandData _)
+    public CommandResult Execute(CommandData data)
     {
         (bool isSuccess, ReleaseTagInfo? info) = Release.GetLatestVersion();
         SemanticVersion? currentVersion = Updater.GetCurrentVersion();

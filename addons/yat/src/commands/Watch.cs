@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using YAT.Attributes;
 using YAT.Classes;
@@ -18,10 +19,10 @@ public sealed class Watch : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
-        var parsed = Parser.ParseCommand((string)data.Arguments["command"]);
-        var commandName = parsed[0];
+        string[]? parsed = Parser.ParseCommand((string)data.Arguments["command"]);
+        string commandName = parsed[0];
 
-        if (!RegisteredCommands.Registered.TryGetValue(commandName, out var type))
+        if (!RegisteredCommands.Registered.TryGetValue(commandName, out Type? type))
         {
             return ICommand.InvalidArguments(
                 $"Command '{commandName}' not found, exiting watch."
@@ -35,11 +36,12 @@ public sealed class Watch : ICommand
             );
         }
 
-        var interval = (float)data.Options["--interval"] * 1000;
+        float interval = (float)data.Options["--interval"] * 1000;
 
         while (!data.CancellationToken.IsCancellationRequested)
         {
-            bool success = data.Terminal.CommandManager.RunAsync(parsed, data.Terminal)
+            bool success = data.Terminal.CommandManager
+                .RunAsync(parsed, data.Terminal)
                 .ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (!success)

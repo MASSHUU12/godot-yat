@@ -21,6 +21,6 @@ public sealed class Fov : ICommand
 
         camera.Fov = fov;
 
-        return ICommand.Success(message: $"Field of view set to {fov}.");
+        return ICommand.Success([$"{fov}"], $"Field of view set to {fov}.");
     }
 }

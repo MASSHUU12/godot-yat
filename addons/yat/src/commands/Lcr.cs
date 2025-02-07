@@ -1,4 +1,7 @@
+using System.Globalization;
 using YAT.Attributes;
+using YAT.Enums;
+using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Types;
 
@@ -10,10 +13,13 @@ public sealed class Lcr : ICommand
 {
     public CommandResult Execute(CommandData data)
     {
+        ECommandResult result = data.Terminal.LastCommandResult;
+
         return ICommand.Ok(
-            message: (bool)data.Options["-l"]
-                ? $"{data.Terminal.LastCommandResult} ({(int)data.Terminal.LastCommandResult})"
-                : ((int)data.Terminal.LastCommandResult).ToString()
+            [result.ToString()],
+            (bool)data.Options["-l"]
+                ? $"{result} ({(int)result})"
+                : ((int)result).ToStringInvariant()
         );
     }
 }
