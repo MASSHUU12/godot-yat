@@ -59,8 +59,7 @@ public sealed class History : ICommand
             $"Executing command at index {index}: {Text.EscapeBBCode(command)}"
         );
 
-        _ = _terminal.CommandManager.RunAsync(Text.SanitizeText(command), _terminal)
-            .ConfigureAwait(false).GetAwaiter().GetResult();
+        _ = _terminal.CommandManager.Run(Text.SanitizeText(command), _terminal);
 
         return ICommand.Success([command]);
     }

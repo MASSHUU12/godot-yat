@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
-using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
 using YAT.Interfaces;
@@ -42,7 +41,7 @@ public partial class CommandManager : Node
         _yat = GetNode<YAT>("/root/YAT");
     }
 
-    public async Task<bool> RunAsync(string[] args, BaseTerminal terminal)
+    public bool Run(string[] args, BaseTerminal terminal)
     {
         if (args.Length == 0)
         {
@@ -68,25 +67,11 @@ public partial class CommandManager : Node
             Cts.Token
         );
 
-        _ = CallDeferredThreadGroup(
-            "emit_signal",
-            SignalName.CommandStarted,
-            args[0],
-            args
-        );
+        data.Terminal.Locked = true;
+        CommandResult result = pipeline.Execute(data);
+        data.Terminal.Locked = false;
 
-        CommandResult result = await pipeline.ExecuteAsync(data);
         Cts.Dispose();
-
-        _ = CallDeferredThreadGroup(
-            "emit_signal",
-            SignalName.CommandFinished,
-            args[0],
-            args,
-            (ushort)result.Result
-        );
-
-        terminal.LastCommandResult = result.Result;
 
         PrintCommandResult(result, terminal);
 

@@ -82,8 +82,7 @@ public sealed class QuickCommands : ICommand
     {
         if (_yat.Commands.QuickCommands.Commands.TryGetValue(name, out string? command))
         {
-            _ = terminal.CommandManager.RunAsync(Text.SanitizeText(command), terminal)
-                .ConfigureAwait(false).GetAwaiter().GetResult();
+            _ = terminal.CommandManager.Run(Text.SanitizeText(command), terminal);
             return ICommand.Ok();
         }
 

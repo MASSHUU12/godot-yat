@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Godot;
 using YAT.Attributes;
+using YAT.Classes.Managers;
 using YAT.Helpers;
 using YAT.Interfaces;
 using YAT.Scenes;
@@ -30,8 +30,9 @@ public class Pipeline
         _commands.Clear();
     }
 
-    public async Task<CommandResult> ExecuteAsync(CommandData context)
+    public CommandResult Execute(CommandData context)
     {
+        CommandManager manager = context.Terminal.CommandManager;
         CommandResult? result = null;
 
         foreach (ICommand command in _commands)
@@ -57,22 +58,68 @@ public class Pipeline
                 Options = cO
             };
 
-            context.Terminal.Locked = true;
+            if (command.GetAttribute<ThreadedAttribute>() is not null)
             {
-                result = command.GetAttribute<ThreadedAttribute>() is not null
-                            ? await Task.Run(
-                                () => command.Execute(context),
-                                context.CancellationToken
-                            )
-                            : command.Execute(context);
-            }
-            context.Terminal.Locked = false;
+                // result = await ExecuteCommandInThreadAsync();
 
-            if (result.Result is not Success or Ok)
+                // TODO: Resolve this
+                return ICommand.Failure(
+                    "Threads are broken in Godot, or I'm just stupid. "
+                    + "Before I was able to work around this, but this no longer works."
+                );
+            }
+
+            ExecuteCommand();
+
+            context.Terminal.LastCommandResult = result!.Result;
+
+            if (result!.Result is not Success or Ok)
             {
                 return result;
             }
         }
+
+        void ExecuteCommand()
+        {
+            _ = manager.CallDeferredThreadGroup(
+                "emit_signal",
+                "CommandStarted",
+                nameof(context.Command),
+                context.RawData
+            );
+
+            result = context.Command!.Execute(context);
+
+            _ = manager.CallDeferredThreadGroup(
+                "emit_signal",
+                "CommandFinished",
+                nameof(context.Command),
+                context.RawData,
+                (ushort)result.Result
+            );
+        }
+
+        // async Task<CommandResult> ExecuteCommandInThreadAsync()
+        // {
+        //     TaskCompletionSource<CommandResult> tcs = new();
+        //     GodotThread t = new();
+        //     _ = t.Start(Callable.From(() =>
+        //     {
+        //         ExecuteCommand();
+        //         tcs.SetResult(result!);
+        //     }));
+
+        //     return await tcs.Task;
+        // }
+
+        // async Task ExecuteCommandAsync()
+        // {
+        //     Task task = Task.Run(() => ExecuteCommand(), context.CancellationToken);
+        //     task.Wait();
+        //     // new Task(() => ExecuteCommand(), context.CancellationToken).Start();
+        //     // await Task.Run(() => ExecuteCommand(), context.CancellationToken);
+        //     _ = await manager.ToSignal(manager, "CommandFinished");
+        // }
 
         return result!;
     }
