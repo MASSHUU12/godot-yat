@@ -1,46 +1,40 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Godot;
 using Godot.Collections;
 using YAT.Enums;
-using YAT.Scenes;
 using YAT.Types;
 
 namespace YAT.Helpers;
 
 public static class Scene
 {
-    public static bool PrintChildren(BaseTerminal terminal, string path)
+    public static string PrintChildren(Node node)
     {
-        Node? node = GetFromPathOrDefault(path, terminal.SelectedNode.Current, out path);
-
-        if (node is null)
-        {
-            terminal.Output.Error(Messages.InvalidNodePath(path));
-            return false;
-        }
-
         Array<Node> children = node.GetChildren();
 
         if (children.Count == 0)
         {
-            terminal.Print($"Node '{path}' has no children.", EPrintType.Warning);
-            terminal.Output.Warning(Messages.NodeHasNoChildren(path));
-            return true;
+            return $"Node '{node.GetPath()}' has no children.";
         }
 
         StringBuilder sb = new();
-        _ = sb.AppendLine($"Found {children.Count} children of '{node.Name}' node:");
+        _ = sb.AppendLine(
+            CultureInfo.InvariantCulture,
+            $"Found {children.Count} children of '{node.Name}' node:"
+        );
 
         foreach (Node child in children)
         {
-            _ = sb.Append($"[{child.Name}] ({child.GetType().Name}) - {child.GetPath()}");
+            _ = sb.Append(
+                CultureInfo.InvariantCulture,
+                $"[{child.Name}] ({child.GetType().Name}) - {child.GetPath()}"
+            );
             _ = sb.AppendLine();
         }
 
-        terminal.Print(sb);
-
-        return true;
+        return sb.ToString();
     }
 
     /// <summary>

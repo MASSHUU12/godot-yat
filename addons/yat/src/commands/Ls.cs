@@ -34,9 +34,19 @@ public sealed class Ls : ICommand
 
         if (n)
         {
-            return Scene.PrintChildren(_terminal, path)
-                ? ICommand.Success()
-                : ICommand.Failure();
+            Node? node = Scene.GetFromPathOrDefault(
+                path,
+                _terminal.SelectedNode.Current,
+                out _
+            );
+
+            if (node is null)
+            {
+                return ICommand.Failure(Messages.InvalidNodePath(path));
+            }
+
+            string output = Scene.PrintChildren(node);
+            return ICommand.Ok([output], output);
         }
 
         return m
