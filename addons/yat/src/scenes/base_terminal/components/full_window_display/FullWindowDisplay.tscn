@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cm6kd53al1tcc"]
 
 [ext_resource type="Theme" uid="uid://csssl8ua88ca4" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_theme.tres" id="1_2e7rg"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/full_window_display/FullWindowDisplay.cs" id="1_5wycr"]
+[ext_resource type="Script" uid="uid://p8nu46p5cwln" path="res://addons/yat/src/scenes/base_terminal/components/full_window_display/FullWindowDisplay.cs" id="1_5wycr"]
 
 [node name="FullWindowDisplay" type="Control"]
 layout_mode = 3

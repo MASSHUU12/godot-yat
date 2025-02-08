@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ds38fns27q672"]
 
-[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/items/os_info_item/OsInfoItem.cs" id="1_o8y1i"]
+[ext_resource type="Script" uid="uid://delb8et1fdv63" path="res://addons/yat/src/scenes/debug_screen/items/os_info_item/OsInfoItem.cs" id="1_o8y1i"]
 
 [node name="OsInfoItem" type="PanelContainer"]
 layout_direction = 3

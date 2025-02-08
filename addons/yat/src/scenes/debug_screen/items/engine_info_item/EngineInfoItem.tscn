@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://fcjyl1y5lo"]
 
-[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/items/engine_info_item/EngineInfoItem.cs" id="1_j32i0"]
+[ext_resource type="Script" uid="uid://dh2o5kb31vsy8" path="res://addons/yat/src/scenes/debug_screen/items/engine_info_item/EngineInfoItem.cs" id="1_j32i0"]
 
 [node name="EngineInfoItem" type="PanelContainer"]
 layout_direction = 3

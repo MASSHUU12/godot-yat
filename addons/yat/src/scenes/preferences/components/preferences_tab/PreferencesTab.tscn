@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bxdeasqh565nr"]
 
-[ext_resource type="Script" path="res://addons/yat/src/scenes/preferences/components/preferences_tab/PreferencesTab.cs" id="1_d73le"]
+[ext_resource type="Script" uid="uid://co7xf23g1jafx" path="res://addons/yat/src/scenes/preferences/components/preferences_tab/PreferencesTab.cs" id="1_d73le"]
 
 [node name="PreferencesTab" type="PanelContainer"]
 anchors_preset = 15

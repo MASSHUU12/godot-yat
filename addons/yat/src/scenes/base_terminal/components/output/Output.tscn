@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b6tsk66eajwde"]
 
-[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/output/Output.cs" id="1_ntaaq"]
+[ext_resource type="Script" uid="uid://d18ns14t2u66" path="res://addons/yat/src/scenes/base_terminal/components/output/Output.cs" id="1_ntaaq"]
 
 [node name="Output" type="RichTextLabel"]
 anchors_preset = 15
