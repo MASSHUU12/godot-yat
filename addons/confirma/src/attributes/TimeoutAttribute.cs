@@ -3,12 +3,7 @@ using System;
 namespace Confirma.Attributes;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class TimeoutAttribute : Attribute
+public class TimeoutAttribute(uint timeout) : Attribute
 {
-    public uint Timeout { get; }
-
-    public TimeoutAttribute(uint timeout)
-    {
-        Timeout = timeout;
-    }
+    public uint Timeout { get; } = timeout;
 }

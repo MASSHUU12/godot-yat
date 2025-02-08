@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="RunTarget" load_steps=2 format=3 uid="uid://uv7rtdd7jo0b"]
+
+[ext_resource type="Script" path="res://addons/confirma/src/types/RunTarget.gd" id="1_um4i4"]
+
+[resource]
+script = ExtResource("1_um4i4")

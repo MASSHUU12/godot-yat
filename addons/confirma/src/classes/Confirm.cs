@@ -11,14 +11,20 @@ public static class Confirm
     {
         return expression
             ? true
-            : throw new ConfirmAssertException(message ?? "Expected true but was false");
+            : throw new ConfirmAssertException(
+                message
+                ?? "Expected true but was false."
+            );
     }
 
     public static bool IsFalse(bool expression, string? message = null)
     {
         return !expression
             ? true
-            : throw new ConfirmAssertException(message ?? "Expected false but was true");
+            : throw new ConfirmAssertException(
+                message
+                ?? "Expected false but was true."
+            );
     }
 
     #region IsEnumValue
@@ -31,8 +37,8 @@ public static class Confirm
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Expected {value} to be {typeof(T).Name} enum value."
+            message
+            ?? $"Expected {value} to be {typeof(T).Name} enum value."
         );
     }
 
@@ -49,14 +55,18 @@ public static class Confirm
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Expected {value} not to be {typeof(T).Name} enum value."
+            message
+            ?? $"Expected {value} not to be {typeof(T).Name} enum value."
         );
     }
     #endregion IsEnumValue
 
     #region IsEnumName
-    public static string IsEnumName<T>(string name, bool ignoreCase = false, string? message = null)
+    public static string IsEnumName<T>(
+        string name,
+        bool ignoreCase = false,
+        string? message = null
+    )
     where T : struct, Enum
     {
         foreach (string v in Enum.GetNames(typeof(T)))
@@ -76,8 +86,8 @@ public static class Confirm
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Expected {name} to be {typeof(T).Name} enum name."
+            message
+            ?? $"Expected {name} to be {typeof(T).Name} enum name."
         );
     }
 
@@ -94,8 +104,8 @@ public static class Confirm
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Expected {name} not to be {typeof(T).Name} enum name."
+            message
+            ?? $"Expected {name} not to be {typeof(T).Name} enum name."
         );
     }
     #endregion IsEnumName

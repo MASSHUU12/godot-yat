@@ -5,7 +5,10 @@ namespace Confirma.Extensions;
 
 public static class ConfirmUuidExtensions
 {
-    public static string? ConfirmValidUuid4(this string? actual, string? message = null)
+    public static string? ConfirmValidUuid4(
+        this string? actual,
+        string? message = null
+    )
     {
         if (Guid.TryParse(actual, out Guid _))
         {
@@ -13,12 +16,19 @@ public static class ConfirmUuidExtensions
         }
 
         throw new ConfirmAssertException(
+            "Expected a valid UUID, but got {2}.",
+            nameof(ConfirmValidUuid4),
+            null,
+            null,
+            actual,
             message
-            ?? $"Expected a valid UUID, but '{actual}' is not in the correct format."
         );
     }
 
-    public static string? ConfirmInvalidUuid4(this string? actual, string? message = null)
+    public static string? ConfirmInvalidUuid4(
+        this string? actual,
+        string? message = null
+    )
     {
         if (!Guid.TryParse(actual, out Guid _))
         {
@@ -26,8 +36,12 @@ public static class ConfirmUuidExtensions
         }
 
         throw new ConfirmAssertException(
+            "Expected invalid UUID, but got {2}.",
+            nameof(ConfirmInvalidUuid4),
+            null,
+            null,
+            actual,
             message
-            ?? $"Expected '{actual}' to not be a valid UUID."
         );
     }
 }

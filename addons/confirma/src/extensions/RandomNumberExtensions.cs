@@ -53,9 +53,13 @@ public static class RandomNumberExtensions
         return rg.NextNonNegativeDecimal() / decimal.MaxValue * maxValue;
     }
 
-    public static decimal NextDecimal(this Random rg, decimal minValue, decimal maxValue)
+    public static decimal NextDecimal(
+        this Random rg,
+        decimal minValue,
+        decimal maxValue
+    )
     {
-        return minValue >= maxValue
+        return minValue > maxValue
             ? throw new InvalidOperationException()
             : rg.NextDecimal(maxValue - minValue) + minValue;
     }
@@ -76,15 +80,52 @@ public static class RandomNumberExtensions
 
     public static long NextLong(this Random rg, long minValue, long maxValue)
     {
-        return minValue >= maxValue
+        return minValue > maxValue
             ? throw new InvalidOperationException()
             : rg.NextLong(maxValue - minValue) + minValue;
     }
 
     public static double NextDouble(this Random rg, double minValue, double maxValue)
     {
-        return minValue >= maxValue
+        return minValue > maxValue
             ? throw new InvalidOperationException()
             : (rg.NextDouble() * (maxValue - minValue)) + minValue;
+    }
+
+    public static double NextGaussianDouble(
+        this Random rg,
+        double mean,
+        double standardDeviation
+    )
+    {
+        double u1 = rg.NextDouble();
+        double u2 = rg.NextDouble();
+        double standardNormal = Math.Sqrt(-2 * Math.Log(u1)) * Math.Cos(2 * Math.PI * u2);
+        return mean + (standardDeviation * standardNormal);
+    }
+
+    public static double NextExponentialDouble(this Random rg, double lambda)
+    {
+        return -Math.Log(rg.NextDouble()) / lambda;
+    }
+
+    public static int NextPoissonInt(this Random rg, double lambda)
+    {
+        if (lambda == 0.0)
+        {
+            return 0;
+        }
+
+        double l = Math.Exp(-lambda);
+        int k = 0;
+        double p = 1.0;
+
+        while (p > l)
+        {
+            p *= rg.NextDouble();
+            k++;
+        }
+
+        return k - 1;
     }
 }

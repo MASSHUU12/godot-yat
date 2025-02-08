@@ -1,4 +1,5 @@
 using Confirma.Exceptions;
+using Confirma.Formatters;
 
 namespace Confirma.Extensions;
 
@@ -11,7 +12,14 @@ public static class ConfirmNullExtensions
             return obj;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected null, but got {obj}.");
+        throw new ConfirmAssertException(
+            "Expected null but got {2}.",
+            nameof(ConfirmNull),
+            new AutomaticFormatter(),
+            null,
+            obj,
+            message
+        );
     }
 
     public static object? ConfirmNotNull(this object? obj, string? message = null)
@@ -21,6 +29,13 @@ public static class ConfirmNullExtensions
             return obj;
         }
 
-        throw new ConfirmAssertException(message ?? "Expected a non-null value.");
+        throw new ConfirmAssertException(
+            "Expected non-null value.",
+            nameof(ConfirmNotNull),
+            new AutomaticFormatter(),
+            obj,
+            null,
+            message
+        );
     }
 }

@@ -1,0 +1,23 @@
+{
+    "version":1,
+    "data":[
+        {
+            "type":"header",
+            "text":"Help pages",
+            "level":1
+        },
+        {
+            "type":"text",
+            "format":["b"],
+            "text":"Available help pages:\n"
+        },
+        {
+            "type":"text",
+            "text":"- arguments\n- testing\n"
+        },
+        {
+            "type":"text",
+            "text":"  - C# (testing-csharp)\n  - GDscript (testing-gd)\n\n"
+        }
+    ]
+}

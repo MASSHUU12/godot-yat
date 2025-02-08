@@ -1,11 +1,17 @@
 using System;
 using Confirma.Exceptions;
+using Confirma.Formatters;
 
 namespace Confirma.Extensions;
 
 public static class ConfirmTypeExtensions
 {
-    public static object? ConfirmType(this object? actual, Type expected, string? message = null)
+    #region ConfirmType
+    public static object? ConfirmType(
+        this object? actual,
+        Type expected,
+        string? message = null
+    )
     {
         if (actual?.GetType() == expected)
         {
@@ -13,8 +19,12 @@ public static class ConfirmTypeExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Expected object of type {expected} but found: {actual?.GetType().Name}"
+            "Expected object of type {1}, but got {2}.",
+            nameof(ConfirmType),
+            null,
+            expected.Name,
+            actual?.GetType().Name,
+            message
         );
     }
 
@@ -23,8 +33,14 @@ public static class ConfirmTypeExtensions
         _ = actual.ConfirmType(typeof(T), message);
         return (T)actual!;
     }
+    #endregion ConfirmType
 
-    public static object? ConfirmNotType(this object? actual, Type expected, string? message = null)
+    #region ConfirmNotType
+    public static object? ConfirmNotType(
+        this object? actual,
+        Type expected,
+        string? message = null
+    )
     {
         if (actual?.GetType() != expected)
         {
@@ -32,13 +48,75 @@ public static class ConfirmTypeExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Expected object not to be of type {expected} but found: {actual?.GetType().Name}"
+            "Expected object not to be of type {1}.",
+            nameof(ConfirmNotType),
+            null,
+            expected.Name,
+            null,
+            message
         );
     }
 
-    public static object? ConfirmNotType<T>(this object? actual, string? message = null)
+    public static object? ConfirmNotType<T>(
+        this object? actual,
+        string? message = null
+    )
     {
         return actual.ConfirmNotType(typeof(T), message);
     }
+    #endregion ConfirmNotType
+
+    #region ConfirmInstanceOf
+    public static TExpected? ConfirmInstanceOf<TExpected>(
+        this object? actual,
+        string? message = null
+    )
+    {
+        return (TExpected?)actual.ConfirmInstanceOf(typeof(TExpected), message);
+    }
+
+    public static object? ConfirmInstanceOf(
+        this object? actual,
+        Type expected,
+        string? message = null
+    )
+    {
+        return expected.IsAssignableFrom(actual?.GetType()) == true
+            ? actual
+            : throw new ConfirmAssertException(
+            "Expected {1} to be an instance of {2}.",
+            nameof(ConfirmInstanceOf),
+            null,
+            new AutomaticFormatter().Format(actual),
+            expected.Name,
+            message
+        );
+    }
+
+    public static object? ConfirmNotInstanceOf<TExpected>(
+        this object? actual,
+        string? message = null
+    )
+    {
+        return actual.ConfirmNotInstanceOf(typeof(TExpected), message);
+    }
+
+    public static object? ConfirmNotInstanceOf(
+        this object? actual,
+        Type expected,
+        string? message = null
+    )
+    {
+        return !expected.IsAssignableFrom(actual?.GetType())
+            ? actual
+            : throw new ConfirmAssertException(
+            "Expected {1} not to be an instance of {2}.",
+            nameof(ConfirmNotInstanceOf),
+            null,
+            new AutomaticFormatter().Format(actual),
+            expected.Name,
+            message
+        );
+    }
+    #endregion ConfirmInstanceOf
 }

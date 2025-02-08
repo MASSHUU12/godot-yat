@@ -1,0 +1,129 @@
+{
+    "version":1,
+    "data":[
+        {
+            "type": "header",
+            "text": "Arguments",
+            "level": 1
+        },
+        {
+            "type": "text",
+            "text": "List of available arguments",
+            "format": ["i"]
+        },
+        {
+            "type":"header",
+            "text":"Legend:",
+            "level":3
+        },
+        {
+            "type":"code",
+            "lines":
+            [
+                "[] - optional argument",
+                "<> - required argument"
+            ]
+        },
+        {
+            "type":"text",
+            "text":"\n"
+        },
+        {
+            "type":"header",
+            "text":"--confirma-run=[test_class_name]",
+            "level": 2
+        },
+        {
+            "type":"text",
+            "text":"Launches tests\nargument: test_class_name - name of targeted class to run\n"
+        },
+        {
+            "type": "header",
+            "text": "--confirma-method=<test_method_name>",
+            "level": 2
+        },
+        {
+            "type":"text",
+            "text":"Launches single test method\n"
+        },
+        {
+            "type":"text",
+            "format":["b"],
+            "color": "#ffdd65",
+            "text":"Requires: --confirma-run with specified target class\n"
+        },
+        {
+            "type": "text",
+            "text":"argument: test_method_name - name of targeted method to be run\n"
+        },
+        {
+            "type":"header",
+            "text": "--confirma-verbose",
+            "level": 2
+        },
+        {
+            "type":"text",
+            "text":"Displays more information available about the tests being run\n"
+        },
+        {
+            "type":"header",
+            "text": "--confirma-sequential",
+            "level": 2
+        },
+        {
+            "type":"text",
+            "text":"Disables parallelization\n"
+        },
+        {
+            "type":"header",
+            "text": "--confirma-exit-on-failure",
+            "level": 2
+        },
+        {
+            "type":"text",
+            "text":"Terminates after the first error occurs\n"
+        },
+        {
+            "type":"header",
+            "text": "--confirma-disable-orphans-monitor",
+            "level": 2
+        },
+        {
+            "type":"text",
+            "text":"Disables monitoring the number of orphans\n"
+        },
+        {
+            "type":"header",
+            "text": "--confirma-disable-cs/gd",
+            "level": 2
+        },
+        {
+            "type":"text",
+            "text":"Disables C# or GDScript tests\n"
+        },
+        {
+            "type":"header",
+            "text": "--confirma-output=<log|json>",
+            "level": 2
+        },
+        {
+            "type":"text",
+            "text":"Specifies how to return tests result information\n"
+        },
+        {
+            "type":"header",
+            "text": "--confirma-output-path=<path>",
+            "level": 2
+        },
+        {
+            "type":"text",
+            "text":"Specifies the path in which to create a report of the tests performed "
+        },
+        {
+            "type":"text",
+            "text":"(directory must exist)\n",
+            "format":["b"],
+            "color":"#ffdd65"
+        }
+    ]
+}

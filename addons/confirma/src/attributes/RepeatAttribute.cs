@@ -8,7 +8,15 @@ public class RepeatAttribute : Attribute
     public ushort Repeat { get; init; }
     public bool FailFast { get; init; }
 
-    public RepeatAttribute(ushort repeat, bool failFast = false)
+    public bool IsFlaky { get; init; }
+    public int Backoff { get; init; }
+
+    public RepeatAttribute(
+        ushort repeat,
+        bool failFast = false,
+        bool isFlaky = false,
+        int backoff = 0
+    )
     {
         if (repeat == 0)
         {
@@ -17,5 +25,10 @@ public class RepeatAttribute : Attribute
 
         Repeat = (ushort)(repeat - 1);
         FailFast = failFast;
+
+        IsFlaky = isFlaky;
+        Backoff = backoff;
     }
+
+    public int GetFlakyRetries => Repeat + 1;
 }

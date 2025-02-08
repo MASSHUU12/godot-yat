@@ -2,5 +2,7 @@ using System;
 
 namespace Confirma.Attributes;
 
-[AttributeUsage(AttributeTargets.Method)]
-public class TearDownAttribute : Attribute { }
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+public class TearDownAttribute(string methodName = "TearDown")
+: LifecycleAttribute(methodName)
+{ }

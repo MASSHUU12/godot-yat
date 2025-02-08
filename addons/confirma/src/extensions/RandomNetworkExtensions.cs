@@ -31,7 +31,11 @@ public static class RandomNetworkExtensions
         return new(data);
     }
 
-    public static string NextEmail(this Random rg, int minLength = 8, int maxLength = 12)
+    public static string NextEmail(
+        this Random rg,
+        int minLength = 8,
+        int maxLength = 12
+    )
     {
         if (minLength < 1 || maxLength < minLength)
         {

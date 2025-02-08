@@ -9,23 +9,27 @@
 
 ## Prerequisites
 
-- [.NET SDK 7^](https://dotnet.microsoft.com/en-us/download)
+- [.NET SDK 8^](https://dotnet.microsoft.com/en-us/download)
 - [.NET enabled Godot 4^](https://godotengine.org/download)
-- C# 11^
+- C# 12^
 
 ## Overview
 
-![Confirma](https://github.com/user-attachments/assets/fdddfa06-4d0b-4d01-9233-d92c491bfc98)
+![Confirma](https://github.com/user-attachments/assets/ee03605f-8ed1-4329-ace5-aabd8788ec76)
 
 ### Features
 
-- Writing and executing tests in C#
-- Custom assertion library (over 130 assertions)
-- Extensions for Random class
-- Independent of Godot editor (but can be accessed from Godot)
-- Simple syntax for writing tests
+- JSON output
+- Flaky tests
 - Parametrized tests
 - Parallelized tests
+- Simple mocking library
+- Extensions for Random class
+- Accessible via editor or CLI
+- Basic support for fuzz testing
+- Simple syntax for writing tests
+- Writing and executing tests in C# and GDScript
+- Custom assertion library (over 130 assertions)
 
 ## Setup
 
