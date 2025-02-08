@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://o78tqt867i13"]
 
 [ext_resource type="Theme" uid="uid://bkuhm7arbteea" path="res://addons/yat/src/scenes/preferences/components/preferences_section/yat_preferences_section_theme.tres" id="1_yjkcx"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/preferences/components/preferences_section/PreferencesSection.cs" id="2_nom1n"]
+[ext_resource type="Script" uid="uid://2s6qhsxpy0x1" path="res://addons/yat/src/scenes/preferences/components/preferences_section/PreferencesSection.cs" id="2_nom1n"]
 
 [node name="PreferencesSection" type="PanelContainer"]
 anchors_preset = 15

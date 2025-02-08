@@ -28,6 +28,7 @@ culture.
 - Command 'ping' no longer returns with a success when ping failed.
 - Threaded commands are disabled, because it seems that Godot doesn't like C#
 threads, or I'm just stupid.
+- Minimum .NET version is now 8.
 
 ### Fixed
 

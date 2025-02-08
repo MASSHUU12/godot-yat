@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dgq3jncmxdomf"]
 
 [ext_resource type="Theme" uid="uid://c550tfu5s4jf3" path="res://addons/yat/src/scenes/input_container/yat_input_container_theme.tres" id="1_cib6j"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/input_container/InputContainer.cs" id="1_i2hav"]
+[ext_resource type="Script" uid="uid://buyc2vcvxrfok" path="res://addons/yat/src/scenes/input_container/InputContainer.cs" id="1_i2hav"]
 
 [node name="InputContainer" type="PanelContainer"]
 anchors_preset = 15

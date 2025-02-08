@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dopcpwc6ch10v"]
 
-[ext_resource type="Script" path="res://addons/yat/src/scenes/debug_screen/items/cpu_info_item/CpuInfoItem.cs" id="1_h8i72"]
+[ext_resource type="Script" uid="uid://5x8cp4sw5v20" path="res://addons/yat/src/scenes/debug_screen/items/cpu_info_item/CpuInfoItem.cs" id="1_h8i72"]
 
 [node name="CpuInfoItem" type="PanelContainer"]
 layout_direction = 3

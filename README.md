@@ -5,17 +5,19 @@
 </div>
 
 > [!NOTE]
-> This project is in the early stages of development. Many things may be added, removed or changed.
+> This project is in the early stages of development. Many things may be added,
+> removed or changed.
 
-YAT stands for Yet Another Terminal. The goal of this project is to create a real terminal integrated with Godot that allows you to perform actions whether in the game, editor, or user system. This is intended to facilitate game development, debugging, and prototyping.
-
-The second goal, which is particularly important to me, is to make YAT as open as possible to change, personalization, and expansion, so that everyone can customize it as much as possible for their own project.
+YAT stands for Yet Another Terminal. The goal of this project is to create a
+real terminal integrated with Godot that allows you to perform actions whether
+in the game, editor, or user system. This is intended to facilitate game
+development, debugging, and prototyping.
 
 ## Prerequisites
 
-- [.NET SDK 7^](https://dotnet.microsoft.com/en-us/download)
+- [.NET SDK 8^](https://dotnet.microsoft.com/en-us/download)
 - [.NET enabled Godot 4.2^](https://godotengine.org/download)
-- C# 11^
+- C# 12^
 
 Make sure to update your [.csproj](./addons/yat/docs/USAGE.md).
 
@@ -27,9 +29,9 @@ Make sure to update your [.csproj](./addons/yat/docs/USAGE.md).
 
 - Over 35 built-in commands
 - Small size footprint (< 512 KB)
-- Custom commands (regular & threaded), extensions and windows
+- Custom commands (regular & ~~threaded~~), extensions and windows
 - Automatic input validation (arguments, options)
-- Debug screen (FPS, CPU, GPU, etc.)
+- Customizable debug screen (FPS, CPU, GPU, etc.)
 - Access to the node tree (experimental)
 - Plugin customization
 - Quick Commands
@@ -40,12 +42,15 @@ Make sure to update your [.csproj](./addons/yat/docs/USAGE.md).
 
 ## Documentation
 
-Instructions on how to get started can be found in the [USAGE.md](./addons/yat/docs/USAGE.md) file.
+Instructions on how to get started can be found in the
+[USAGE.md](./addons/yat/docs/USAGE.md) file.
 
 You can find the documentation in the [docs](./addons/yat/docs/) folder
 and example in the [example](./example/) folder.
 
-The project also has templates in the [script_templates](./script_templates/) folder, which can make it easier to create commands, etc.
+The project also has templates in the
+[script_templates](./script_templates/) folder, which can make it easier to
+create commands, etc.
 
 ## License
 

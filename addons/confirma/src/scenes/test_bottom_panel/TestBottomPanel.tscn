@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://bl21wviqvff84"]
 
-[ext_resource type="Script" path="res://addons/confirma/src/scenes/test_bottom_panel/TestBottomPanel.cs" id="1_cnf8q"]
+[ext_resource type="Script" uid="uid://c4wm32t5iuevm" path="res://addons/confirma/src/scenes/test_bottom_panel/TestBottomPanel.cs" id="1_cnf8q"]
 [ext_resource type="PackedScene" uid="uid://baxebi0q3s62s" path="res://addons/confirma/src/scenes/test_runner_editor/TestRunnerEditor.tscn" id="2_80bgg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hfib7"]

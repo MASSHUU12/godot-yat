@@ -1,9 +1,9 @@
 [gd_scene load_steps=21 format=3 uid="uid://bxbhysvcges3"]
 
-[ext_resource type="Script" path="res://example/scenes/game/Game.cs" id="1_2co8j"]
+[ext_resource type="Script" uid="uid://ci0w1p2qs2ska" path="res://example/scenes/game/Game.cs" id="1_2co8j"]
 [ext_resource type="PackedScene" uid="uid://dvnxjokqnumnn" path="res://example/scenes/player/Player.tscn" id="1_5qf0i"]
 [ext_resource type="PackedScene" uid="uid://bgdcyhxl4a4bj" path="res://example/props/static_cube/StaticCube.tscn" id="3_mrgv2"]
-[ext_resource type="Shader" path="res://example/assets/shaders/grid.gdshader" id="3_or71a"]
+[ext_resource type="Shader" uid="uid://bcvnikc3hjac" path="res://example/assets/shaders/grid.gdshader" id="3_or71a"]
 [ext_resource type="AudioStream" uid="uid://c6jdu6yveeusj" path="res://example/assets/audio/glaciære - two months of moments - 01 Into the Maelstrom.mp3" id="3_v48uh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q280h"]
@@ -177,8 +177,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j6yai"]
 _data = {
-"RESET": SubResource("Animation_uojfr"),
-"cube_movement": SubResource("Animation_e10mw")
+&"RESET": SubResource("Animation_uojfr"),
+&"cube_movement": SubResource("Animation_e10mw")
 }
 
 [node name="Game" type="Node3D"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c4oxru3g4p038"]
 
-[ext_resource type="Script" path="res://addons/yat/src/scenes/terminal_manager/TerminalManager.cs" id="1_rojed"]
+[ext_resource type="Script" uid="uid://c6c3g0nq4kah1" path="res://addons/yat/src/scenes/terminal_manager/TerminalManager.cs" id="1_rojed"]
 [ext_resource type="PackedScene" uid="uid://dsyqv187j7w76" path="res://addons/yat/src/scenes/game_terminal/GameTerminal.tscn" id="2_cthvu"]
 
 [node name="TerminalManager" type="Node"]

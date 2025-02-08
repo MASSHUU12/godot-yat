@@ -1,11 +1,11 @@
 [gd_scene load_steps=16 format=3 uid="uid://dfig0yknmx6b7"]
 
-[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.cs" id="1_gwi3k"]
+[ext_resource type="Script" uid="uid://cvqjohbhnbacs" path="res://addons/yat/src/scenes/base_terminal/BaseTerminal.cs" id="1_gwi3k"]
 [ext_resource type="Theme" uid="uid://csssl8ua88ca4" path="res://addons/yat/src/scenes/base_terminal/theme/yat_base_terminal_theme.tres" id="1_mdg7i"]
 [ext_resource type="PackedScene" uid="uid://duldfph1vr1yb" path="res://addons/yat/src/scenes/base_terminal/components/autocompletion/Autocompletion.tscn" id="3_6vb77"]
 [ext_resource type="PackedScene" uid="uid://b6tsk66eajwde" path="res://addons/yat/src/scenes/base_terminal/components/output/Output.tscn" id="3_alxhd"]
 [ext_resource type="PackedScene" uid="uid://crxh4uxlaoyrq" path="res://addons/yat/src/scenes/base_terminal/components/input_info/InputInfo.tscn" id="3_evvr3"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/base_terminal/components/input/Input.cs" id="4_4lcgu"]
+[ext_resource type="Script" uid="uid://bgb4ta2rplwnl" path="res://addons/yat/src/scenes/base_terminal/components/input/Input.cs" id="4_4lcgu"]
 [ext_resource type="PackedScene" uid="uid://c522nry8jbfon" path="res://addons/yat/src/scenes/base_terminal/components/input_info/components/command_info/CommandInfo.tscn" id="4_eo32s"]
 [ext_resource type="Theme" uid="uid://dqsefo8kmb7dj" path="res://addons/yat/src/resources/yat_tooltip_theme.tres" id="6_ovorl"]
 [ext_resource type="PackedScene" uid="uid://b2ljvgvvny52r" path="res://addons/yat/src/scenes/base_terminal/components/selected_node/SelectedNode.tscn" id="6_prlgb"]

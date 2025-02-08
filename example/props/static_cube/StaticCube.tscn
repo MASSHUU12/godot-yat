@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bgdcyhxl4a4bj"]
 
-[ext_resource type="Shader" path="res://example/assets/shaders/grid.gdshader" id="1_hgiqo"]
+[ext_resource type="Shader" uid="uid://bcvnikc3hjac" path="res://example/assets/shaders/grid.gdshader" id="1_hgiqo"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5h86q"]
 render_priority = 0

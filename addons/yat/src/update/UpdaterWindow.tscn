@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://sm3imhta7viu"]
 
-[ext_resource type="Script" path="res://addons/yat/src/update/UpdaterWindow.cs" id="1_4chee"]
+[ext_resource type="Script" uid="uid://db0b7p6im6xwx" path="res://addons/yat/src/update/UpdaterWindow.cs" id="1_4chee"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qsttq"]
 content_margin_left = 12.0

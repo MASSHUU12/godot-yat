@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ca2i4r24ny7y3"]
 
 [ext_resource type="PackedScene" uid="uid://o1hlj04h0rri" path="res://addons/yat/src/scenes/yat_window/YatWindow.tscn" id="1_f8myu"]
-[ext_resource type="Script" path="res://addons/yat/src/scenes/preferences/Preferences.cs" id="2_1u1aj"]
+[ext_resource type="Script" uid="uid://b45nsby66wolu" path="res://addons/yat/src/scenes/preferences/Preferences.cs" id="2_1u1aj"]
 [ext_resource type="Theme" uid="uid://ugpwajpfdu4" path="res://addons/yat/src/scenes/preferences/yat_preferences_theme.tres" id="4_ti2tk"]
 
 [node name="Preferences" instance=ExtResource("1_f8myu")]
