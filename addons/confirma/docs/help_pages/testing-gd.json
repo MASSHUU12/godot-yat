@@ -1,0 +1,113 @@
+{
+    "version":1,
+    "data":[
+        {
+            "type":"header",
+            "text":"Testing GdScript",
+            "level":1
+        },
+        {
+            "type":"header",
+            "text":"Writing tests",
+            "level":2
+        },
+        {
+            "type":"text",
+            "text":"Testing of GDScript code is possible via exposed wrappers for C# assertions.\nConfirma's current architecture does not allow native assertions\nto be created in GDScript, as the language does not support exceptions.\n\nConfirma searches the selected folder for tests and runs them one by one.\nEach class that contains tests must extends `TestClass` class.\n\n\"Chaining\" assertions is allowed, so something like this is possible:\n\n"
+        },
+        {
+            "type":"code",
+            "lines":[
+                "class_name TestSomething extends TestClass",
+                "",
+                "func something() -> void:",
+	            "   ConfirmRange.in_range_int(ConfirmEqual.not_equal(5, 7), 0, 15)"
+            ]
+        },
+        {
+            "type":"header",
+            "text":"Overridable methods",
+            "level":2
+        },
+        {
+            "type":"header",
+            "text":"before_all",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Runs before all test methods in the class.\n"
+        },
+        {
+            "type":"header",
+            "text":"after_all",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Runs after all test methods in the class.\n"
+        },
+        {
+            "type":"header",
+            "text":"set_up",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Runs before every test method in the class.\n"
+        },
+        {
+            "type":"header",
+            "text":"tear_down",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Runs after every test method in the class.\n"
+        },
+        {
+            "type":"header",
+            "text":"category",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Allows to assign a category to a test class.\nThe category can be used to run only tests from the category.\n"
+        },
+        {
+            "type":"header",
+            "text":"ignore",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Ignore class during testing.\n\n"
+        },
+        {
+            "type":"text",
+            "text":"Can ignore always, only when run from the editor\nor when tests are not run from the specified category.\nThe third option can be a bit confusing,\nbut allows creating tests that will not be always run,\nbut only under certain circumstances.\n\n"
+        },
+        {
+            "type":"text",
+            "text":"To ignore a class, it is required to override the `ignore` method\nand return an `Ignore` object.\nThis object accepts `mode`, `reason`, `hide_from_results` and `category`.\n\n"
+        },
+        {
+            "type":"text",
+            "text":"The following example shows a method that tells Confirma\nthat a class is to be run only when category \"SomeCategory\" is tested:\n\n"
+        },
+        {
+            "type":"code",
+            "lines":[
+                "func ignore() -> Ignore:",
+	            "   return Ignore.new(",
+		        "       # Or use numeric value, 2 in this case.",
+		        "       Ignore.IgnoreMode.WHEN_NOT_RUNNING_CATEGORY,",
+		        "       \"Interesting reason\",",
+		        "       false,",
+		        "       \"SomeCategory\"",
+	            "   )"
+            ]
+        }
+
+    ]
+}

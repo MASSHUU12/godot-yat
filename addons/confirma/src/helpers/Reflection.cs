@@ -9,7 +9,7 @@ public static class Reflection
 {
     public static IEnumerable<Type> GetClassesFromAssembly(Assembly assembly)
     {
-        return assembly.GetTypes().Where(type => type is
+        return assembly.GetTypes().Where(static type => type is
         {
             IsClass: true,
             IsAbstract: false
@@ -19,8 +19,8 @@ public static class Reflection
     public static IEnumerable<MethodInfo> GetMethodsWithAttribute<T>(Type type)
     where T : Attribute
     {
-        return type.GetMethods().Where(method => method.CustomAttributes.Any(
-            attribute => attribute.AttributeType == typeof(T)
+        return type.GetMethods().Where(static method => method.CustomAttributes.Any(
+            static attribute => attribute.AttributeType == typeof(T)
         ));
     }
 

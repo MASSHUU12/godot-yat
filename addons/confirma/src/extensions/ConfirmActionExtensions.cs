@@ -1,24 +1,35 @@
 using System;
 using System.Threading.Tasks;
 using Confirma.Exceptions;
+using Confirma.Formatters;
 
 namespace Confirma.Extensions;
 
 public static class ConfirmActionExtensions
 {
-    public static Action ConfirmCompletesWithin(this Action action, TimeSpan timeSpan, string? message = null)
+    public static Action ConfirmCompletesWithin(
+        this Action action,
+        TimeSpan timeSpan,
+        string? message = null
+    )
     {
-        Task task = Task.Run(action);
-
-        return !task.Wait(timeSpan)
+        return !Task.Run(action).Wait(timeSpan)
             ? throw new ConfirmAssertException(
-                message ??
-                $"Action did not complete within {timeSpan.TotalMilliseconds} ms."
+                "Expected action to complete within {1} ms, but it timed out.",
+                nameof(ConfirmCompletesWithin),
+                new NumericFormatter(2),
+                timeSpan.TotalMilliseconds,
+                null,
+                message
             )
             : action;
     }
 
-    public static Action ConfirmDoesNotCompleteWithin(this Action action, TimeSpan timeSpan, string? message = null)
+    public static Action ConfirmDoesNotCompleteWithin(
+        this Action action,
+        TimeSpan timeSpan,
+        string? message = null
+    )
     {
         try
         {
@@ -30,8 +41,12 @@ public static class ConfirmActionExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Action completed within {timeSpan.TotalMilliseconds} ms, but it should not have."
+            "Expected action to not complete within {1} ms, but it did.",
+            nameof(ConfirmDoesNotCompleteWithin),
+            new NumericFormatter(2),
+            timeSpan.TotalMilliseconds,
+            null,
+            message
         );
     }
 }

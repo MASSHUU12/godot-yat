@@ -1,0 +1,254 @@
+{
+    "version":1,
+    "data":[
+        {
+            "type": "header",
+            "text": "Testing C#",
+            "level": 1
+        },
+        {
+            "type":"header",
+            "text":"Writing tests",
+            "level":2
+        },
+        {
+            "type":"text",
+            "text":"Confirma will detect all tests, regardless of where in the project they're placed.\nEach class that contains tests must be labelled with the TestClass attribute. Each test method must be tagged with the TestCase attribute.\nChaining assertions is allowed, so something like this is possible:\n\n"
+        },
+        {
+            "type":"code",
+            "lines":
+            [
+                "using Confirma.Attributes;",
+                "using Confirma.Extensions;",
+                "",
+                "[TestClass]",
+                "[Parallelizable]",
+                "public static class TestSomething",
+                "{",
+                "    [TestCase]",
+                "    public static void Something()",
+                "    {",
+                "        5.ConfirmInRange(0, 15)",
+                "            .ConfirmNotEqual(7);",
+                "    }",
+                "}"
+            ]
+        },
+        {
+            "type":"text",
+            "text":"\n"
+        },
+        {
+            "type":"header",
+            "text":"Mocking",
+            "level":2
+        },
+        {
+            "type":"text",
+            "text":"Confirma includes a simple library for "
+        },
+        {
+            "type":"link",
+            "text":"mocking",
+            "url":"https://stackoverflow.com/questions/2665812/what-is-mocking#2666006"
+        },
+        {
+            "type":"text",
+            "text":", which is located in the Confirma.Classes.Mock namespace.\n"
+        },
+        {
+            "type":"header",
+            "text":"Flasky tests",
+            "level":2
+        },
+        {
+            "type":"text",
+            "text":"Confirma includes basic support for handling "
+        },
+        {
+            "type":"link",
+            "text":"flasky tests.",
+            "url":"https://www.lambdatest.com/learning-hub/flaky-test"
+        },
+        {
+            "type":"text",
+            "text":"\n\nFlaky tests use the Repeat attribute.\n"
+        },
+        {
+            "type":"header",
+            "text":"Fuzz testing",
+            "level":2
+        },
+        {
+            "type":"text",
+            "text":"Confirma includes basic support for "
+        },
+        {
+            "type":"link",
+            "url":"https://en.wikipedia.org/wiki/Fuzzing",
+            "text":"fuzz testing."
+        },
+        {
+            "type":"text",
+            "text":"This function allows you to pass random values to test method arguments.\nThe supported data types are: int, double, float, string and bool.\n\n"
+        },
+        {
+            "type":"text",
+            "text":"Each attribute corresponds to one method parameter.\nTheir order is important, they are taken from top to bottom,\nso the first argument corresponds to the first attribute of the method.\n\n"
+        },
+        {
+            "type":"text",
+            "text":"The `Repeat` attribute is allowed,\nit must be assigned to only one `Fuzz` argument.\nThe `Repeat` argument will have the same effect as when it is assigned to the\n`TestCase` argument.\n"
+        },
+        {
+            "type":"header",
+            "text":"Accessing scene tree",
+            "level":2
+        },
+        {
+            "type":"text",
+            "text":"Access to the scene tree is enabled by the static `Global` class.\nIt provides the variable `Root` where the tree's root Window is located.\n"
+        },
+        {
+            "type":"header",
+            "text":"Attributes",
+            "level":2
+        },
+        {
+            "type":"header",
+            "text":"TestClass (required)",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"The TestClass attribute is used to identify the classes\nin which the tests are located.\nIt is required, Confirma ignores all classes that do not have this attribute.\n"
+        },
+        {
+            "type":"header",
+            "text":"TestCase (required)",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"It is used to create test methods.\nEach method can take multiple of these attributes,\nwhich is especially useful for parameterized tests.\n\n"
+        },
+        {
+            "type":"text",
+            "text":"Example:\n\n"
+        },
+        {
+            "type":"code",
+            "lines":
+            [
+                "[TestCase(\"abc\")]",
+                "[TestCase(\"123\")]",
+                "[TestCase(\"A$B2c_\")]",
+                "public static void NextChar_AllowedChars_ReturnsCharFromAllowedChars(string allowedChars)",
+                "{",
+                "   _ = allowedChars.ConfirmContains(_rg.NextChar(allowedChars));",
+                "}"
+            ]
+        },
+        {
+            "type":"header",
+            "text":"Category",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Allows to assign a category to a test class.\nThe category can be used to run only tests from the category,\nor to exclude them from running.\n\n"
+        },
+        {
+            "type":"header",
+            "text":"Ignore",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Ignore class/method during testing.\n\nCan ignore always, only when run in editor/headless mode\nor when tests are not run from the specified category.\n\nThe third option can be a bit confusing,\nbut allows creating tests that will not be always run,\nbut only under certain circumstances.\n\n"
+        },
+        {
+            "type":"header",
+            "text":"TestName",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Used to display a different name for the test than the method name.\n\n"
+        },
+        {
+            "type":"header",
+            "text":"Parallelizable",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Allows to run all the tests included in the class on separate CPU cores.\n\n"
+        },
+        {
+            "type":"header",
+            "text":"Repeat",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"The Repeat attribute allows to run a particular TestCase several times.\nRepeat refers to the next TestCase,so the order in which the attributes are defined matters.\n\nThe attribute optionally takes a flag as a second argument\nindicating whether to stop running the test after the first error encountered.\n\nThis attribute also allows the test to be marked as flaky.\nMeaning that if it fails, it will be restarted up to a certain number of times\nbefore it is considered a failure.\nThe `Backoff` variable allows to set the interval in milliseconds between\nsuccessive attempts to execute the test.\n\n"
+        },
+        {
+            "type":"header",
+            "text":"Lifecycle attributes",
+            "level":2
+        },
+        {
+            "type":"text",
+            "text":"All lifecycle attributes are assignable to the test class\nand"
+        },
+        {
+            "type":"text",
+            "text":" not ",
+            "format":["b"],
+            "color":"#ffdd65"
+        },
+        {
+            "type":"text",
+            "text":"the method.\n\nThey take the name of the method to run, by default the attribute name.\n\n"
+        },
+        {
+            "type":"header",
+            "text":"BeforeAll",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Runs before all test methods in the class.\n"
+        },
+        {
+            "type":"header",
+            "text":"AfterAll",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Runs after all test methods in the class.\n"
+        },
+        {
+            "type":"header",
+            "text":"SetUp",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Runs before every test method in the class.\n"
+        },
+        {
+            "type":"header",
+            "text":"TearDown",
+            "level":3
+        },
+        {
+            "type":"text",
+            "text":"Runs after every test method in the class.\n"
+        }
+    ]
+}

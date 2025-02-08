@@ -12,6 +12,8 @@ using YAT.Types;
 
 namespace YAT.Test;
 
+[SetUp]
+[TearDown]
 [TestClass]
 [Parallelizable]
 public static class ReflectionTest
@@ -37,13 +39,11 @@ public static class ReflectionTest
         }
     }
 
-    [SetUp]
     public static void SetUp()
     {
         _button = new();
     }
 
-    [TearDown]
     public static void TearDown()
     {
         _button!.QueueFree();

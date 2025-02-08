@@ -1,12 +1,16 @@
 using System.IO;
 using Confirma.Exceptions;
+using Confirma.Formatters;
 using Godot;
 
 namespace Confirma.Extensions;
 
 public static class ConfirmFileExtensions
 {
-    public static StringName ConfirmIsFile(this StringName path, string? message = null)
+    public static StringName ConfirmIsFile(
+        this StringName path,
+        string? message = null
+    )
     {
         if (File.Exists(path))
         {
@@ -14,12 +18,19 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"File '{path}' does not exist."
+            "Expected file {1} to exist.",
+            nameof(ConfirmIsFile),
+            new StringFormatter(),
+            path,
+            null,
+            message
         );
     }
 
-    public static StringName ConfirmIsNotFile(this StringName path, string? message = null)
+    public static StringName ConfirmIsNotFile(
+        this StringName path,
+        string? message = null
+    )
     {
         if (!File.Exists(path))
         {
@@ -27,12 +38,19 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"File '{path}' exists, but was not expected to."
+            "Expected file {1} to not exist.",
+            nameof(ConfirmIsNotFile),
+            new StringFormatter(),
+            path,
+            null,
+            message
         );
     }
 
-    public static StringName ConfirmIsDirectory(this StringName path, string? message = null)
+    public static StringName ConfirmIsDirectory(
+        this StringName path,
+        string? message = null
+    )
     {
         if (Directory.Exists(path))
         {
@@ -40,12 +58,19 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Directory '{path}' does not exist."
+            "Expected directory {1} to exist.",
+            nameof(ConfirmIsDirectory),
+            new StringFormatter(),
+            path,
+            null,
+            message
         );
     }
 
-    public static StringName ConfirmIsNotDirectory(this StringName path, string? message = null)
+    public static StringName ConfirmIsNotDirectory(
+        this StringName path,
+        string? message = null
+    )
     {
         if (!Directory.Exists(path))
         {
@@ -53,12 +78,20 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Directory '{path}' exists, but was not expected to."
+            "Expected directory {1} to not exist.",
+            nameof(ConfirmIsNotDirectory),
+            new StringFormatter(),
+            path,
+            null,
+            message
         );
     }
 
-    public static StringName ConfirmFileContains(this StringName path, string content, string? message = null)
+    public static StringName ConfirmFileContains(
+        this StringName path,
+        string content,
+        string? message = null
+    )
     {
         if (File.ReadAllText(path).Contains(content))
         {
@@ -66,12 +99,20 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"File '{path}' does not contain '{content}'."
+            "Expected file {1} to contain {2}.",
+            nameof(ConfirmFileContains),
+            new StringFormatter(),
+            path,
+            content,
+            message
         );
     }
 
-    public static StringName ConfirmFileDoesNotContain(this StringName path, string content, string? message = null)
+    public static StringName ConfirmFileDoesNotContain(
+        this StringName path,
+        string content,
+        string? message = null
+    )
     {
         if (!File.ReadAllText(path).Contains(content))
         {
@@ -79,12 +120,20 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"File '{path}' contains '{content}', but was not expected to."
+            "Expected file {1} to not contain {2}.",
+            nameof(ConfirmFileDoesNotContain),
+            new StringFormatter(),
+            path,
+            content,
+            message
         );
     }
 
-    public static StringName ConfirmFileHasLength(this StringName path, long length, string? message = null)
+    public static StringName ConfirmFileHasLength(
+        this StringName path,
+        long length,
+        string? message = null
+    )
     {
         if (new FileInfo(path).Length == length)
         {
@@ -92,12 +141,21 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"File '{path}' has length {new FileInfo(path).Length}, but expected {length}."
+            $"Expected file {new StringFormatter().Format(path)} to has length "
+            + "{1}, but got {2}.",
+            nameof(ConfirmFileHasLength),
+            new NumericFormatter(),
+            length,
+            new FileInfo(path).Length,
+            message
         );
     }
 
-    public static StringName ConfirmFileDoesNotHaveLength(this StringName path, long length, string? message = null)
+    public static StringName ConfirmFileDoesNotHaveLength(
+        this StringName path,
+        long length,
+        string? message = null
+    )
     {
         if (new FileInfo(path).Length != length)
         {
@@ -105,12 +163,21 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"File '{path}' has length {length}, but was not expected to."
+            $"Expected file {new StringFormatter().Format(path)} to not have "
+            + "length of {1}",
+            nameof(ConfirmFileDoesNotHaveLength),
+            new NumericFormatter(),
+            length,
+            null,
+            message
         );
     }
 
-    public static StringName ConfirmFileHasAttributes(this StringName path, FileAttributes attributes, string? message = null)
+    public static StringName ConfirmFileHasAttributes(
+        this StringName path,
+        FileAttributes attributes,
+        string? message = null
+    )
     {
         if ((new FileInfo(path).Attributes & attributes) == attributes)
         {
@@ -118,12 +185,20 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"File '{path}' does not have attributes '{attributes}'."
+            "Expected file {1} to have attributes {2}.",
+            nameof(ConfirmFileDoesNotContain),
+            new StringFormatter(),
+            path,
+            attributes,
+            message
         );
     }
 
-    public static StringName ConfirmFileDoesNotHaveAttributes(this StringName path, FileAttributes attributes, string? message = null)
+    public static StringName ConfirmFileDoesNotHaveAttributes(
+        this StringName path,
+        FileAttributes attributes,
+        string? message = null
+    )
     {
         if ((new FileInfo(path).Attributes & attributes) != attributes)
         {
@@ -131,8 +206,12 @@ public static class ConfirmFileExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"File '{path}' has attributes '{attributes}', but was not expected to."
+            "Expected file {1} to not have attributes {2}.",
+            nameof(ConfirmFileDoesNotContain),
+            new StringFormatter(),
+            path,
+            attributes,
+            message
         );
     }
 }

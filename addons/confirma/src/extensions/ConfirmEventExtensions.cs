@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Confirma.Exceptions;
 
 namespace Confirma.Extensions;
@@ -31,9 +32,13 @@ public static class ConfirmEventExtensions
         }
 
         throw new ConfirmAssertException(
-                message ??
-                $"{eventHandler?.GetType().Name ?? "event"} was not raised."
-            );
+            "Expected event {1} to be raised.",
+            nameof(ConfirmRaisesEvent),
+            null,
+            GetEventName(eventHandler),
+            null,
+            message
+        );
 
         void Handler(object? sender, TEventArgs e)
         {
@@ -67,13 +72,40 @@ public static class ConfirmEventExtensions
         }
 
         throw new ConfirmAssertException(
-                message ??
-                $"{eventHandler?.GetType().Name ?? "event"} was raised."
-            );
+            "Expected event {1} not to be raised.",
+            nameof(ConfirmRaisesEvent),
+            null,
+            GetEventName(eventHandler),
+            null,
+            message
+        );
 
         void Handler(object? sender, TEventArgs e)
         {
             eventRaised = true;
         }
+    }
+
+    // TODO: Test this method.
+    private static string GetEventName<TEventArgs>(
+        EventHandler<TEventArgs>? eventHandler
+    )
+    where TEventArgs : EventArgs
+    {
+        if (eventHandler is null) return "null";
+
+        MethodInfo methodInfo = eventHandler.Method;
+        if (methodInfo.DeclaringType is null) return "unknown";
+
+        FieldInfo? fieldInfo = methodInfo.DeclaringType.GetField(
+            methodInfo.Name,
+            BindingFlags.Instance | BindingFlags.NonPublic
+        );
+        if (fieldInfo is null) return "unknown";
+
+        EventInfo? eventInfo = fieldInfo.DeclaringType?.GetEvent(fieldInfo.Name);
+        if (eventInfo is null) return "unknown";
+
+        return eventInfo.Name;
     }
 }

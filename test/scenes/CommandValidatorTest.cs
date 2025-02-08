@@ -6,6 +6,7 @@ using YAT.Scenes;
 
 namespace YAT.Test.Scenes;
 
+[AfterAll]
 [TestClass]
 [Parallelizable]
 public static class CommandValidatorTest
@@ -259,7 +260,6 @@ public static class CommandValidatorTest
     // TODO
     // }
 
-    [AfterAll]
     public static void AfterAll()
     {
         _validator.QueueFree();

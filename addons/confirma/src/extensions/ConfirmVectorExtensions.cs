@@ -1,4 +1,5 @@
 using Confirma.Exceptions;
+using Confirma.Formatters;
 using Godot;
 
 namespace Confirma.Extensions;
@@ -18,7 +19,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{expected}', but got '{vector}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be equal {2}.",
+            nameof(ConfirmEqualApprox),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector3 ConfirmEqualApprox(
@@ -33,7 +41,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{expected}', but got '{vector}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be equal {2}.",
+            nameof(ConfirmEqualApprox),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector4 ConfirmEqualApprox(
@@ -48,7 +63,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{expected}', but got '{vector}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be equal {2}.",
+            nameof(ConfirmEqualApprox),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
     #endregion ConfirmEqualApprox
 
@@ -65,7 +87,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected not '{expected}', but got '{vector}'");
+        throw new ConfirmAssertException(
+            "Expected {1} not to be equal {2}.",
+            nameof(ConfirmNotEqualApprox),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector3 ConfirmNotEqualApprox(
@@ -80,7 +109,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected not '{expected}', but got '{vector}'");
+        throw new ConfirmAssertException(
+            "Expected {1} not to be equal {2}.",
+            nameof(ConfirmNotEqualApprox),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector4 ConfirmNotEqualApprox(
@@ -95,7 +131,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected not '{expected}', but got '{vector}'");
+        throw new ConfirmAssertException(
+            "Expected {1} not to be equal {2}.",
+            nameof(ConfirmNotEqualApprox),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
     #endregion ConfirmNotEqualApprox
 
@@ -111,7 +154,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be less than '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be less than {2}.",
+            nameof(ConfirmLessThan),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector3 ConfirmLessThan(
@@ -125,7 +175,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be less than '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be less than {2}.",
+            nameof(ConfirmLessThan),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector4 ConfirmLessThan(
@@ -139,7 +196,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be less than '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be less than {2}.",
+            nameof(ConfirmLessThan),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
     #endregion ConfirmLessThan
 
@@ -155,7 +219,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be less than or equal to '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be less than or equal {2}.",
+            nameof(ConfirmLessThanOrEqual),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector3 ConfirmLessThanOrEqual(
@@ -169,7 +240,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be less than or equal to '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be less than or equal {2}.",
+            nameof(ConfirmLessThanOrEqual),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector4 ConfirmLessThanOrEqual(
@@ -183,7 +261,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be less than or equal to '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be less than or equal {2}.",
+            nameof(ConfirmLessThanOrEqual),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
     #endregion ConfirmLessThanOrEqual
 
@@ -199,7 +284,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be greater than '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be greater than {2}.",
+            nameof(ConfirmGreaterThan),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector3 ConfirmGreaterThan(
@@ -213,7 +305,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be greater than '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be greater than {2}.",
+            nameof(ConfirmGreaterThan),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector4 ConfirmGreaterThan(
@@ -227,7 +326,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be greater than '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be greater than {2}.",
+            nameof(ConfirmGreaterThan),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
     #endregion ConfirmGreaterThan
 
@@ -243,7 +349,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be greater than or equal to '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be greater than or equal {2}.",
+            nameof(ConfirmGreaterThanOrEqual),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector3 ConfirmGreaterThanOrEqual(
@@ -257,7 +370,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be greater than or equal to '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be greater than or equal {2}.",
+            nameof(ConfirmGreaterThanOrEqual),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
 
     public static Vector4 ConfirmGreaterThanOrEqual(
@@ -271,7 +391,14 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be greater than or equal to '{expected}'");
+        throw new ConfirmAssertException(
+            "Expected {1} to be greater than or equal {2}.",
+            nameof(ConfirmGreaterThanOrEqual),
+            new VectorFormatter(),
+            vector,
+            expected,
+            message
+        );
     }
     #endregion ConfirmGreaterThanOrEqual
 
@@ -288,7 +415,15 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be between {min} and {max}");
+        throw new ConfirmAssertException(
+            $"Expected {new VectorFormatter().Format(vector)} to be between "
+            + "{1} and {2}.",
+            nameof(ConfirmBetween),
+            new VectorFormatter(),
+            min,
+            max,
+            message
+        );
     }
 
     public static Vector3 ConfirmBetween(
@@ -303,7 +438,15 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be between {min} and {max}");
+        throw new ConfirmAssertException(
+            $"Expected {new VectorFormatter().Format(vector)} to be between "
+            + "{1} and {2}.",
+            nameof(ConfirmBetween),
+            new VectorFormatter(),
+            min,
+            max,
+            message
+        );
     }
 
     public static Vector4 ConfirmBetween(
@@ -318,7 +461,15 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to be between {min} and {max}");
+        throw new ConfirmAssertException(
+            $"Expected {new VectorFormatter().Format(vector)} to be between "
+            + "{1} and {2}.",
+            nameof(ConfirmBetween),
+            new VectorFormatter(),
+            min,
+            max,
+            message
+        );
     }
     #endregion ConfirmBetween
 
@@ -335,7 +486,15 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to not be between {min} and {max}");
+        throw new ConfirmAssertException(
+            $"Expected {new VectorFormatter().Format(vector)} not to be between "
+            + "{1} and {2}.",
+            nameof(ConfirmNotBetween),
+            new VectorFormatter(),
+            min,
+            max,
+            message
+        );
     }
 
     public static Vector3 ConfirmNotBetween(
@@ -350,7 +509,15 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to not be between {min} and {max}");
+        throw new ConfirmAssertException(
+            $"Expected {new VectorFormatter().Format(vector)} not to be between "
+            + "{1} and {2}.",
+            nameof(ConfirmNotBetween),
+            new VectorFormatter(),
+            min,
+            max,
+            message
+        );
     }
 
     public static Vector4 ConfirmNotBetween(
@@ -365,7 +532,15 @@ public static class ConfirmVectorExtensions
             return vector;
         }
 
-        throw new ConfirmAssertException(message ?? $"Expected '{vector}' to not be between {min} and {max}");
+        throw new ConfirmAssertException(
+            $"Expected {new VectorFormatter().Format(vector)} not to be between "
+            + "{1} and {2}.",
+            nameof(ConfirmNotBetween),
+            new VectorFormatter(),
+            min,
+            max,
+            message
+        );
     }
     #endregion ConfirmNotBetween
 }

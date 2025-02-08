@@ -1,5 +1,6 @@
 using Godot;
 using static Godot.Variant;
+using static System.StringComparison;
 
 namespace Confirma.Extensions;
 
@@ -21,7 +22,7 @@ public static class VariantExtensions
             Type.Bool => left.AsBool().Equals(right.AsBool()),
             Type.Int => left.AsInt64().Equals(right.AsInt64()),
             Type.Float => left.AsDouble().Equals(right.AsDouble()),
-            Type.String => left.AsString().Equals(right.AsString()),
+            Type.String => left.AsString().Equals(right.AsString(), Ordinal),
             Type.Vector2 => left.AsVector2().Equals(right.AsVector2()),
             Type.Vector2I => left.AsVector2I().Equals(right.AsVector2I()),
             Type.Rect2 => left.AsRect2().Equals(right.AsRect2()),

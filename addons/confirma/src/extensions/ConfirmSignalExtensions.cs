@@ -18,8 +18,12 @@ public static class ConfirmSignalExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Expected signal '{signalName}' to exist on object of type '{actual.GetType().Name}'."
+            "Expected signal {1} to exist on object of type {2}.",
+            nameof(ConfirmSignalExists),
+            null,
+            signalName,
+            actual.GetType().Name,
+            message
         );
     }
 
@@ -35,8 +39,12 @@ public static class ConfirmSignalExtensions
         }
 
         throw new ConfirmAssertException(
-            message ??
-            $"Expected signal '{signalName}' to not exist on object of type '{actual.GetType().Name}'."
+            "Expected signal {1} to not exist on object of type {2}.",
+            nameof(ConfirmSignalDoesNotExist),
+            null,
+            signalName,
+            actual.GetType().Name,
+            message
         );
     }
     #endregion ConfirmSignalExists

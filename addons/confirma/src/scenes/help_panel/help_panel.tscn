@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://tx5xyqboqit7"]
+
+[ext_resource type="Script" path="res://addons/confirma/src/scenes/help_panel/HelpPanel.cs" id="1_0ixu8"]
+
+[sub_resource type="Theme" id="Theme_y0fn5"]
+RichTextLabel/constants/text_highlight_v_padding = 0
+
+[node name="HelpPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0ixu8")
+
+[node name="Output" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_y0fn5")
+bbcode_enabled = true
+scroll_following = true
+autowrap_mode = 0

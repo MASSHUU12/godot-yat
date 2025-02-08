@@ -5,9 +5,12 @@ namespace Confirma.Extensions;
 
 public static class RandomStringExtensions
 {
-    public enum StringType { Upper, Lower, MixedLetter, Digit }
+    public enum StringType { Upper = 0, Lower = 1, MixedLetter = 2, Digit = 3 }
 
-    public static char NextChar(this Random rg, StringType type = StringType.MixedLetter)
+    public static char NextChar(
+        this Random rg,
+        StringType type = StringType.MixedLetter
+    )
     {
         return type switch
         {

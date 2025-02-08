@@ -3,12 +3,7 @@ using System;
 namespace Confirma.Attributes;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-public class TestNameAttribute : Attribute
+public class TestNameAttribute(string name) : Attribute
 {
-    public string Name { get; }
-
-    public TestNameAttribute(string name)
-    {
-        Name = name;
-    }
+    public string Name { get; } = name;
 }

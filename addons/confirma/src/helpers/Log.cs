@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Godot;
 
 namespace Confirma.Helpers;
@@ -5,24 +7,34 @@ namespace Confirma.Helpers;
 public static class Log
 {
     public static RichTextLabel? RichOutput { get; set; }
-    public static bool IsHeadless { get; set; }
+    public static bool IsHeadless { get; set; } = true;
 
-    public static void Print(string message)
+    public static void Print<T>(T message, TextWriter? stream)
+    where T : IConvertible
     {
-        // Note: GD.PrintRich does not support hex color codes
-        if (IsHeadless)
+        if (IsHeadless || RichOutput is null)
         {
-            GD.PrintRaw(message);
+            stream ??= Console.Out;
+            stream.Write(message);
         }
         else
         {
-            _ = RichOutput!.CallDeferred("append_text", message);
+            _ = RichOutput!.CallDeferred("append_text", message.ToString()!);
         }
     }
 
-    public static void PrintLine(string message)
+    public static void Print<T>(params T[] messages) where T : IConvertible
     {
-        Print($"{message}\n");
+        foreach (T message in messages)
+        {
+            Print(message, Console.Out);
+        }
+    }
+
+    public static void PrintLine<T>(params T[] messages) where T : IConvertible
+    {
+        Print(messages);
+        PrintLine();
     }
 
     public static void PrintLine()
@@ -30,17 +42,17 @@ public static class Log
         Print("\n");
     }
 
-    public static void PrintError(string message)
+    public static void PrintError<T>(T message) where T : IConvertible
     {
-        Print(Colors.ColorText(message, Colors.Error));
+        Print(Colors.ColorText(message, Colors.Error), Console.Error);
     }
 
-    public static void PrintSuccess(string message)
+    public static void PrintSuccess<T>(T message) where T : IConvertible
     {
         Print(Colors.ColorText(message, Colors.Success));
     }
 
-    public static void PrintWarning(string message)
+    public static void PrintWarning<T>(T message) where T : IConvertible
     {
         Print(Colors.ColorText(message, Colors.Warning));
     }

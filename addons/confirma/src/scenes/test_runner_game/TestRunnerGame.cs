@@ -16,6 +16,6 @@ public partial class TestRunnerGame : TestRunner
             return;
         }
 
-        RunAllTests(Autoload.Props.ClassName);
+        RunAllTests();
     }
 }
