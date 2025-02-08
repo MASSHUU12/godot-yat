@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Result of the command can be passed using pipe ('|') to the next command.
 - '-s' option to the 'cat' command for silent file content output.
 - `Text.ToStringInvariant` extension method.
+- 'sleep' test command.
 
 ### Changed
 
@@ -22,10 +23,11 @@ All notable changes to this project will be documented in this file.
 `ExecutionResult` to `EExecutionResult`.
 - `ICommand.GenerateCommandManual` & `ICommand.GenerateManual` uses invariant
 culture.
-- Threaded commands no longer print on finish.
 - Built-in commands use invariant culture.
 - Built-in commands return data when applicable.
 - Command 'ping' no longer returns with a success when ping failed.
+- Threaded commands are disabled, because it seems that Godot doesn't like C#
+threads, or I'm just stupid.
 
 ### Fixed
 

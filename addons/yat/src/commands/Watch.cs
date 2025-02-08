@@ -41,8 +41,7 @@ public sealed class Watch : ICommand
         while (!data.CancellationToken.IsCancellationRequested)
         {
             bool success = data.Terminal.CommandManager
-                .RunAsync(parsed, data.Terminal)
-                .ConfigureAwait(false).GetAwaiter().GetResult();
+                .Run(parsed, data.Terminal);
 
             if (!success)
             {
