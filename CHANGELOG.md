@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - '-s' option to the 'cat' command for silent file content output.
 - `Text.ToStringInvariant` extension method.
 - 'sleep' test command.
+- `OS.IsRunningAsAdmin` method.
 
 ### Changed
 
@@ -23,20 +24,26 @@ All notable changes to this project will be documented in this file.
 `ExecutionResult` to `EExecutionResult`.
 - `ICommand.GenerateCommandManual` & `ICommand.GenerateManual` uses invariant
 culture.
-- Built-in commands use invariant culture.
-- Built-in commands return data when applicable.
-- Command 'ping' no longer returns with a success when ping failed.
-- Threaded commands are disabled, because it seems that Godot doesn't like C#
-threads, or I'm just stupid.
-- Minimum .NET version is now 8.
+- [Commands] Built-in commands use invariant culture.
+- [Commands] Built-in commands return data when applicable.
+- [Commands] Command 'ping' no longer returns with a success when ping failed.
+- [Commands] Threaded commands are disabled, because it seems that Godot
+doesn't like C# threads, or I'm just stupid.
+- [Dependencies] Minimum .NET version is now 8.
 - `Numeric.SizeToString` uses invariant culture.
 - Reworked `Scene.PrintChildren` method.
+- [Networking] Moved networking code to the 'YAT.Net' namespace.
+- [Networking] Renamed `EPingStatus` to `EConnectionStatus`
+& extracted it from the `Networking` class.
+- [Dependencies] YAT needs to be compiled with 'AllowUnsafeBlocks' enabled.
 
 ### Fixed
 
 - PowerShell script cannot be accessed when YAT is in custom location.
-- `OS.RunCommand` hangs on Linux.
+- [Linux] `OS.RunCommand` hangs.
 - Cache in 'man' command is not saved between calls.
+- [Linux][Networking] A non-privileged process causes
+`PlatformNotSupportedException` to be thrown when the buffer is of non-zero size.
 
 ## [1.31.1-beta 2024-07-24]
 

@@ -155,7 +155,7 @@ public static partial class OS
     }
 
 #if !GODOT_WINDOWS
-    [LibraryImport("libc", EntryPoint = "getuid")]
+    [LibraryImport("libc", EntryPoint = "geteuid")]
     private static partial uint GetEuid();
 #endif
 }
