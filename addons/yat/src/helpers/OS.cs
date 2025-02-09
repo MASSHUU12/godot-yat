@@ -2,24 +2,17 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 using System.Text;
 
 namespace YAT.Helpers;
 
 public static partial class OS
 {
-    public static EOperatingSystem Platform { get; private set; }
-    public static string DefaultTerminal { get; private set; } = string.Empty;
-
-    // TODO: Remove this
-    public enum EOperatingSystem
-    {
-        Unknown = 0,
-        Windows = 1,
-        Linux = 2,
-        OSX = 3
-    }
+#if GODOT_WINDOWS
+    public const string DefaultTerminal = "cmd.exe";
+#else
+    public const string DefaultTerminal = "/bin/bash";
+#endif
 
     public enum EExecutionResult
     {
@@ -28,12 +21,6 @@ public static partial class OS
         ErrorExecuting = 2,
         UnknownPlatform = 3,
         Timeout = 4
-    }
-
-    static OS()
-    {
-        CheckOSPlatform();
-        CheckDefaultTerminal();
     }
 
     public static StringBuilder RunCommand(
@@ -46,14 +33,6 @@ public static partial class OS
     {
         StringBuilder output = new();
         result = EExecutionResult.Success;
-
-        if (Platform == EOperatingSystem.Unknown)
-        {
-            _ = output.AppendLine("Cannot run command, unknown platform.");
-            result = EExecutionResult.UnknownPlatform;
-
-            return output;
-        }
 
         if (string.IsNullOrEmpty(program))
         {
@@ -116,29 +95,6 @@ public static partial class OS
         }
 
         return output;
-    }
-
-    private static void CheckOSPlatform()
-    {
-        Platform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-            ? EOperatingSystem.Windows
-            : RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
-                ? EOperatingSystem.Linux
-                : RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-                    ? EOperatingSystem.OSX
-                    : EOperatingSystem.Unknown;
-    }
-
-    private static void CheckDefaultTerminal()
-    {
-        DefaultTerminal = Platform switch
-        {
-            EOperatingSystem.Windows => "cmd.exe",
-            EOperatingSystem.Linux => "/bin/bash",
-            EOperatingSystem.OSX => "/bin/bash",
-            EOperatingSystem.Unknown => throw new NotImplementedException(),
-            _ => string.Empty
-        };
     }
 
     public static bool IsRunningAsAdmin()
