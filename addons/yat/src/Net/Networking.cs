@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
+using YAT.Helpers;
 
 namespace YAT.Net;
 
 public static class Networking
 {
-    public static EPingStatus Ping(
+    /// <summary>
+    /// Attempts to send an ICMP echo message (ping) to the specified host
+    /// and returns the status of the connection.
+    /// </summary>
+    /// <remarks>
+    /// This method returns EConnectionStatus.AccessDenied if the application
+    /// is not running as an administrator on a platform that requires it to
+    /// send ICMP echo message.
+    /// </remarks>
+    public static EConnectionStatus Ping(
         string hostname,
         out PingReply? reply,
         NetworkingOptions? options = null
@@ -18,13 +28,11 @@ public static class Networking
 
         if (string.IsNullOrEmpty(hostname))
         {
-            return EPingStatus.Unknown;
+            return EConnectionStatus.Unknown;
         }
 
         options ??= new();
 
-        // TODO: Handle running in non-privileged process.
-        //https://learn.microsoft.com/en-us/dotnet/core/compatibility/networking/7.0/ping-custom-payload-linux
         byte[] buffer = CreateBuffer(options.BufferSize);
 
         using Ping ping = new();
@@ -36,11 +44,13 @@ public static class Networking
                 Ttl = options.TTL,
                 DontFragment = options.DontFragment
             });
-            return EPingStatus.Success;
+            return EConnectionStatus.Success;
         }
         catch (PlatformNotSupportedException)
         {
-            return EPingStatus.Unsupported;
+            return !OS.IsRunningAsAdmin()
+                ? EConnectionStatus.AccessDenied
+                : EConnectionStatus.Unsupported;
         }
         catch (Exception ex) when (ex
             is PingException
@@ -48,7 +58,7 @@ public static class Networking
             or ArgumentException
         )
         {
-            return EPingStatus.Unknown;
+            return EConnectionStatus.Unknown;
         }
         finally
         {
@@ -76,7 +86,7 @@ public static class Networking
 
         for (ushort ttl = 1; ttl <= options.TTL && !ct.IsCancellationRequested; ttl++)
         {
-            EPingStatus status = Ping(
+            EConnectionStatus status = Ping(
                 hostname,
                 out PingReply? reply,
                 new()
@@ -88,7 +98,7 @@ public static class Networking
                 }
             );
 
-            if (status != EPingStatus.Success)
+            if (status != EConnectionStatus.Success)
             {
                 break;
             }

@@ -10,6 +10,7 @@
         <WarningLevel>4</WarningLevel>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisLevel>latest</AnalysisLevel>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' != 'ExportRelease'">
         <DebugType>portable</DebugType>

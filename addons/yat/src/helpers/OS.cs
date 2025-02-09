@@ -2,15 +2,17 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 
 namespace YAT.Helpers;
 
-public static class OS
+public static partial class OS
 {
     public static EOperatingSystem Platform { get; private set; }
     public static string DefaultTerminal { get; private set; } = string.Empty;
 
+    // TODO: Remove this
     public enum EOperatingSystem
     {
         Unknown = 0,
@@ -138,4 +140,22 @@ public static class OS
             _ => string.Empty
         };
     }
+
+    public static bool IsRunningAsAdmin()
+    {
+#if GODOT_WINDOWS
+        using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+        {
+            WindowsPrincipal principal = new(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+#else // Unix-like systems (Linux, macOS) check
+        return GetEuid() == 0;
+#endif
+    }
+
+#if !GODOT_WINDOWS
+    [LibraryImport("libc", EntryPoint = "getuid")]
+    private static partial uint GetEuid();
+#endif
 }

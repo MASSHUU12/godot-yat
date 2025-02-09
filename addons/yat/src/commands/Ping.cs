@@ -46,7 +46,7 @@ public sealed class Ping : ICommand
             && !data.CancellationToken.IsCancellationRequested
         )
         {
-            EPingStatus status = Ping(
+            EConnectionStatus status = Ping(
                 hostname,
                 out PingReply? reply,
                 options
@@ -55,7 +55,7 @@ public sealed class Ping : ICommand
             if (reply is null)
             {
                 return ICommand.Failure(
-                    status == EPingStatus.Unsupported
+                    status == EConnectionStatus.Unsupported
                         ? "The current platform does not support ICMP or access is denied."
                         : "Failed to ping the host."
                 );
