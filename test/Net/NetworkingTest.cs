@@ -18,18 +18,18 @@ public class NetworkingTest
     [TestCase]
     public void Ping_WithEmptyHostname_ReturnsUnknown()
     {
-        EPingStatus result = Ping(string.Empty, out PingReply? reply, _opts);
+        EConnectionStatus result = Ping(string.Empty, out PingReply? reply, _opts);
 
-        _ = result.ConfirmEqual(EPingStatus.Unknown);
+        _ = result.ConfirmEqual(EConnectionStatus.Unknown);
         _ = reply.ConfirmNull();
     }
 
     [TestCase]
     public void Ping_WithValidHostname_ReturnsSuccess()
     {
-        EPingStatus result = Ping("localhost", out PingReply? reply, _opts);
+        EConnectionStatus result = Ping("localhost", out PingReply? reply, _opts);
 
-        _ = result.ConfirmEqual(EPingStatus.Success);
+        _ = result.ConfirmEqual(EConnectionStatus.Success);
         _ = reply.ConfirmNotNull();
         _ = reply!.Status.ConfirmEqual(IPStatus.Success);
     }
@@ -37,9 +37,9 @@ public class NetworkingTest
     [TestCase]
     public void Ping_WithInvalidHostname_ReturnsUnknown()
     {
-        EPingStatus result = Ping("invalid.host", out PingReply? reply, _opts);
+        EConnectionStatus result = Ping("invalid.host", out PingReply? reply, _opts);
 
-        _ = result.ConfirmEqual(EPingStatus.Unknown);
+        _ = result.ConfirmEqual(EConnectionStatus.Unknown);
         _ = reply.ConfirmNull();
     }
     #endregion Ping
