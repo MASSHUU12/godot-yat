@@ -1,4 +1,4 @@
-namespace YAT.Types;
+namespace YAT.Net;
 
 public record NetworkingOptions
 {

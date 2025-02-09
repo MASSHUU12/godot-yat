@@ -4,6 +4,7 @@ using System.Text;
 using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Net;
 using YAT.Types;
 
 namespace YAT.Commands;
