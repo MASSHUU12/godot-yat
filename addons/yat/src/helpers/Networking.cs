@@ -11,12 +11,16 @@ public static class Networking
 {
     public enum EPingStatus
     {
-        Success,
-        Unsupported,
-        Unknown
+        Success = 0,
+        Unsupported = 1,
+        Unknown = 2
     }
 
-    public static EPingStatus Ping(string hostname, out PingReply? reply, NetworkingOptions? options = null)
+    public static EPingStatus Ping(
+        string hostname,
+        out PingReply? reply,
+        NetworkingOptions? options = null
+    )
     {
         reply = null;
 
@@ -27,6 +31,8 @@ public static class Networking
 
         options ??= new();
 
+        // TODO: Handle running in non-privileged process.
+        //https://learn.microsoft.com/en-us/dotnet/core/compatibility/networking/7.0/ping-custom-payload-linux
         byte[] buffer = CreateBuffer(options.BufferSize);
 
         using Ping ping = new();
@@ -59,12 +65,8 @@ public static class Networking
     }
 
     /// <summary>
-    /// Returns a list of IP addresses that a packet would take to reach the specified host. <br />
     /// Inspired by https://stackoverflow.com/questions/142614/traceroute-and-ping-in-c-sharp/45565253#45565253
     /// </summary>
-    /// <param name="hostname"></param>
-    /// <param name="options"></param>
-    /// <param name="ct"></param>
     public static IEnumerable<IPAddress?> GetTraceRoute(
         string hostname,
         NetworkingOptions? options = null,
@@ -82,20 +84,23 @@ public static class Networking
 
         for (ushort ttl = 1; ttl <= options.TTL && !ct.IsCancellationRequested; ttl++)
         {
-            EPingStatus status = Ping(hostname, out var reply, new NetworkingOptions
-            {
-                Timeout = options.Timeout,
-                TTL = ttl,
-                BufferSize = options.BufferSize,
-                DontFragment = options.DontFragment
-            });
+            EPingStatus status = Ping(
+                hostname,
+                out PingReply? reply,
+                new()
+                {
+                    Timeout = options.Timeout,
+                    TTL = ttl,
+                    BufferSize = options.BufferSize,
+                    DontFragment = options.DontFragment
+                }
+            );
 
             if (status != EPingStatus.Success)
             {
                 break;
             }
 
-            // Route has been found
             if (reply?.Status is IPStatus.Success or IPStatus.TtlExpired)
             {
                 yield return reply.Address;
@@ -111,6 +116,11 @@ public static class Networking
 
     public static byte[] CreateBuffer(uint size)
     {
+        if (size == 0)
+        {
+            return [];
+        }
+
         byte[] buffer = new byte[size];
         new Random().NextBytes(buffer);
         return buffer;
