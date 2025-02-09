@@ -44,7 +44,11 @@ public static class Scene
     /// <param name="defaultNode">The default Node to return if the path is "." or "./".</param>
     /// <param name="newPath">The updated path of the retrieved Node.</param>
     /// <returns>The retrieved Node if it is a valid instance; otherwise, null.</returns>
-    public static Node? GetFromPathOrDefault(string path, Node defaultNode, out string newPath)
+    public static Node? GetFromPathOrDefault(
+        string path,
+        Node defaultNode,
+        out string newPath
+    )
     {
         Node node = (path is "." or "./")
             ? defaultNode
@@ -59,11 +63,15 @@ public static class Scene
     public static IEnumerator<Dictionary>? GetNodeMethods(Node node)
     {
         return !GodotObject.IsInstanceValid(node)
-            ? (IEnumerator<Dictionary>?)null
+            ? null
             : node.GetMethodList().GetEnumerator();
     }
 
-    public static bool TryFindNodeMethodInfo(Node node, string methodName, out NodeMethodInfo info)
+    public static bool TryFindNodeMethodInfo(
+        Node node,
+        string methodName,
+        out NodeMethodInfo info
+    )
     {
         info = default;
 
@@ -81,7 +89,10 @@ public static class Scene
 
         while (method.MoveNext())
         {
-            if (!method.Current.TryGetValue("name", out var value) || (string)value != methodName)
+            if (
+                !method.Current.TryGetValue("name", out Variant value)
+                || (string)value != methodName
+            )
             {
                 continue;
             }
@@ -96,22 +107,28 @@ public static class Scene
 
     public static NodeMethodInfo GetNodeMethodInfo(Dictionary method)
     {
-        StringName name = method.TryGetValue("name", out var value)
+        StringName name = method.TryGetValue("name", out Variant value)
             ? value.AsStringName()
             : (StringName)string.Empty;
-        var arguments = method.TryGetValue("args", out var args)
+
+        var arguments = method.TryGetValue("args", out Variant args)
             ? args.AsGodotArray<Godot.Collections.Dictionary<string, Variant>>()
-            : new Array<Godot.Collections.Dictionary<string, Variant>>();
-        Variant defaultArguments = method.TryGetValue("default_args", out Variant defaultArgs)
-            ? defaultArgs
-            : new Array<Variant>();
-        MethodFlags flags = method.TryGetValue("flags", out var f)
+            : [];
+
+        Variant defaultArguments = method.TryGetValue(
+            "default_args",
+            out Variant defaultArgs
+        ) ? defaultArgs : new Array<Variant>();
+
+        MethodFlags flags = method.TryGetValue("flags", out Variant f)
             ? (MethodFlags)(int)f
             : MethodFlags.Default;
-        int id = method.TryGetValue("id", out var i) ? (int)i : 0;
-        var @return = method.TryGetValue("return", out var r)
+
+        int id = method.TryGetValue("id", out Variant i) ? (int)i : 0;
+
+        var ret = method.TryGetValue("return", out Variant r)
             ? r.AsGodotDictionary<string, Variant>()
-            : new Godot.Collections.Dictionary<string, Variant>();
+            : [];
 
         return new(
             name,
@@ -119,11 +136,14 @@ public static class Scene
             defaultArguments.AsGodotArray<Variant>(),
             flags,
             id,
-            @return
+            ret
         );
     }
 
-    public static MethodValidationResult ValidateMethod(this Node node, StringName method)
+    public static MethodValidationResult ValidateMethod(
+        this Node node,
+        StringName method
+    )
     {
         if (!GodotObject.IsInstanceValid(node))
         {
@@ -135,7 +155,11 @@ public static class Scene
             : MethodValidationResult.InvalidMethod;
     }
 
-    public static Variant CallMethod(this Node node, StringName method, params Variant[] args)
+    public static Variant CallMethod(
+        this Node node,
+        StringName method,
+        params Variant[] args
+    )
     {
         return args.Length == 0 ? node.Call(method) : node.Call(method, args);
     }

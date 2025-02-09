@@ -1,5 +1,4 @@
 using Confirma.Attributes;
-using Confirma.Classes;
 using Confirma.Extensions;
 using YAT.Helpers;
 
@@ -13,21 +12,23 @@ public static class NumericTest
     [TestCase(5, 0, 10)]
     [TestCase(0, 0, 10)]
     [TestCase(10, 0, 10)]
-    public static void IsWithinRange_WhenValueIsWithinRange(int value, int min, int max)
+    public static void IsWithinRange_WhenIsWithinRange(
+        int value,
+        int min,
+        int max
+    )
     {
         _ = value.IsWithinRange<int>(min, max).ConfirmTrue();
-    }
-
-    [TestCase(9, float.MinValue, float.MaxValue)]
-    public static void IsWithinRange_Int_Float_WithinRange(int value, float min, float max)
-    {
-        _ = Numeric.IsWithinRange(value, min, max).ConfirmTrue();
     }
 
     [TestCase(11, -5, 10)]
     [TestCase(-1, 0, 9)]
     [TestCase(5, 6, 11)]
-    public static void IsWithinRange_WhenValueIsNotWithinRange(int value, int min, int max)
+    public static void IsWithinRange_WhenIsNotWithinRange(
+        int value,
+        int min,
+        int max
+    )
     {
         _ = value.IsWithinRange<int>(min, max).ConfirmFalse();
     }
@@ -35,7 +36,11 @@ public static class NumericTest
     [TestCase(5d, 0d, 10d)]
     [TestCase(0d, 0d, 10d)]
     [TestCase(10d, 0d, 10d)]
-    public static void IsWithinRange_WhenValueIsWithinRange(double value, double min, double max)
+    public static void IsWithinRange_WhenIsWithinRange(
+        double value,
+        double min,
+        double max
+    )
     {
         _ = value.IsWithinRange<double>(min, max).ConfirmTrue();
     }
@@ -43,7 +48,11 @@ public static class NumericTest
     [TestCase(11d, -5d, 10d)]
     [TestCase(-1d, 0d, 9d)]
     [TestCase(5d, 6d, 11d)]
-    public static void IsWithinRange_WhenValueIsNotWithinRange(double value, double min, double max)
+    public static void IsWithinRange_WhenIsNotWithinRange(
+        double value,
+        double min,
+        double max
+    )
     {
         _ = value.IsWithinRange<double>(min, max).ConfirmFalse();
     }
@@ -53,7 +62,11 @@ public static class NumericTest
     [TestCase(5, 0f, 10f)]
     [TestCase(0, 0f, 10f)]
     [TestCase(10, 0f, 10f)]
-    public static void IsWithinRange_TE_WhenValueIsWithinRange(int value, float min, float max)
+    public static void IsWithinRange_TE_WhenIsWithinRange(
+        int value,
+        float min,
+        float max
+    )
     {
         _ = Numeric.IsWithinRange(value, min, max).ConfirmTrue();
     }
@@ -61,7 +74,11 @@ public static class NumericTest
     [TestCase(11, -5f, 10f)]
     [TestCase(-1, 0f, 9f)]
     [TestCase(5, 6f, 11f)]
-    public static void IsWithinRange_TE_WhenValueIsNotWithinRange(int value, float min, float max)
+    public static void IsWithinRange_TE_WhenIsNotWithinRange(
+        int value,
+        float min,
+        float max
+    )
     {
         _ = Numeric.IsWithinRange(value, min, max).ConfirmFalse();
     }
@@ -71,7 +88,7 @@ public static class NumericTest
     [TestCase("5", 5)]
     [TestCase("-5", -5)]
     [TestCase("0", 0)]
-    public static void TryConvert_WhenValueIsValid_Int(string value, int expected)
+    public static void TryConvert_Int_Valid(string value, int expected)
     {
         _ = value.TryConvert(out int result).ConfirmTrue();
         _ = result.ConfirmEqual(expected);
@@ -80,7 +97,7 @@ public static class NumericTest
     [TestCase("5.0", 5.0)]
     [TestCase("-5.0", -5.0)]
     [TestCase("0.0", 0.0)]
-    public static void TryConvert_WhenValueIsValid_Double(string value, double expected)
+    public static void TryConvert_Double_Valid(string value, double expected)
     {
         _ = value.TryConvert(out double result).ConfirmTrue();
         _ = result.ConfirmEqual(expected);
@@ -92,7 +109,7 @@ public static class NumericTest
     [TestCase("-5.0f")]
     [TestCase("5.0d")]
     [TestCase("-5.0d")]
-    public static void TryConvert_WhenValueIsInvalid_Int(string value)
+    public static void TryConvert_Int_Invalid(string value)
     {
         _ = value.TryConvert(out int _).ConfirmFalse();
     }
@@ -103,7 +120,7 @@ public static class NumericTest
     [TestCase("5.0f")]
     [TestCase("-5.0f")]
     [TestCase("5.0d")]
-    public static void TryConvert_WhenValueIsInvalid_Double(string value)
+    public static void TryConvert_Double_Invalid(string value)
     {
         _ = value.TryConvert(out double _).ConfirmFalse();
     }

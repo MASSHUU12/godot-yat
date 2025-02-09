@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace YAT.Helpers;
 
@@ -75,17 +76,26 @@ public static class Numeric
         double kilobytes = bytes / byteConversion;
         if (kilobytes < byteConversion)
         {
-            return $"{kilobytes.ToString($"F{precision}")} KiB";
+            return $"{kilobytes.ToString(
+                $"F{precision}",
+                CultureInfo.InvariantCulture
+            )} KiB";
         }
 
         double megabytes = kilobytes / byteConversion;
         if (megabytes < byteConversion)
         {
-            return $"{megabytes.ToString($"F{precision}")} MiB";
+            return $"{megabytes.ToString(
+                $"F{precision}",
+                CultureInfo.InvariantCulture
+            )} MiB";
         }
 
         double gigabytes = megabytes / byteConversion;
 
-        return $"{gigabytes.ToString($"F{precision}")} GiB";
+        return $"{gigabytes.ToString(
+            $"F{precision}",
+            CultureInfo.InvariantCulture
+        )} GiB";
     }
 }
