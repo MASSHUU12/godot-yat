@@ -1,5 +1,5 @@
 using System.IO;
-using YAT.Update;
+using System.Runtime.InteropServices;
 using static YAT.Helpers.OS;
 
 namespace YAT.Classes;
@@ -10,18 +10,16 @@ public static class Clipboard
     {
         EExecutionResult result = EExecutionResult.Success;
 
-        if (Platform == EOperatingSystem.Windows)
-        {
+#if GODOT_WINDOWS
             _ = RunCommand($"echo {text} | clip", out result);
-        }
-        else if (Platform == EOperatingSystem.Linux)
-        {
-            _ = RunCommand($"echo {text} | xclip -selection clipboard", out result);
-        }
-        else if (Platform == EOperatingSystem.OSX)
-        {
-            _ = RunCommand($"echo {text} | pbcopy", out result);
-        }
+#else
+        _ = RunCommand(
+            RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
+                ? $"echo {text} | xclip -selection clipboard"
+                : $"echo {text} | pbcopy",
+            out result
+        );
+#endif
 
         return result;
     }
@@ -33,8 +31,7 @@ public static class Clipboard
         string tempFile = Path.GetTempFileName();
         File.WriteAllBytes(tempFile, data);
 
-        if (Platform == EOperatingSystem.Windows)
-        {
+#if GODOT_WINDOWS
             // ProjectSettings.GlobalizePath works only in the editor.
             // To get access to the PowerShell script,
             // we need to copy it to a temporary file where PowerShell can access it.
@@ -49,15 +46,14 @@ public static class Clipboard
             );
 
             File.Delete(path);
-        }
-        else if (Platform == EOperatingSystem.Linux)
-        {
-            _ = RunCommand($"xclip -selection clipboard -t image/png < {tempFile}", out result);
-        }
-        else if (Platform == EOperatingSystem.OSX)
-        {
-            _ = RunCommand($"cat {tempFile} | pbcopy", out result);
-        }
+#else
+        _ = RunCommand(
+            RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
+                ? $"xclip -selection clipboard -t image/png < {tempFile}"
+                : $"cat {tempFile} | pbcopy",
+            out result
+        );
+#endif
 
         File.Delete(tempFile);
 

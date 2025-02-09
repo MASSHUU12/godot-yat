@@ -37,6 +37,10 @@ doesn't like C# threads, or I'm just stupid.
 & extracted it from the `Networking` class.
 - [Dependencies] YAT needs to be compiled with 'AllowUnsafeBlocks' enabled.
 
+### Removed
+
+- `OS.EOperatingSystem` enum & `OS.Platform` field.
+
 ### Fixed
 
 - PowerShell script cannot be accessed when YAT is in custom location.
@@ -119,13 +123,13 @@ variables.
 - Improved terminal history.
 - Minor refactoring and optimizations.
 
-### Fixed
-
-- Bugs in TryParseTypeWithRange (#285).
-
 ### Removed
 
-- Removed unused EditorTerminal.
+- Removed unused `EditorTerminal`.
+
+### Fixed
+
+- Bugs in `TryParseTypeWithRange` (#285).
 
 ## [1.29.0-beta 2024-05-31]
 
