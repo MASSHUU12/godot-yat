@@ -3,8 +3,8 @@ using System.Net;
 using System.Net.NetworkInformation;
 using Confirma.Attributes;
 using Confirma.Extensions;
-using YAT.Types;
-using static YAT.Helpers.Networking;
+using YAT.Net;
+using static YAT.Net.Networking;
 
 namespace YAT.Test;
 

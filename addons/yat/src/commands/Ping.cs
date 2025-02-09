@@ -4,8 +4,9 @@ using System.Threading;
 using YAT.Attributes;
 using YAT.Helpers;
 using YAT.Interfaces;
+using YAT.Net;
 using YAT.Types;
-using static YAT.Helpers.Networking;
+using static YAT.Net.Networking;
 
 namespace YAT.Commands;
 
@@ -45,7 +46,7 @@ public sealed class Ping : ICommand
             && !data.CancellationToken.IsCancellationRequested
         )
         {
-            EPingStatus status = Networking.Ping(
+            EPingStatus status = Ping(
                 hostname,
                 out PingReply? reply,
                 options

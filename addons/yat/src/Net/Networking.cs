@@ -3,19 +3,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
-using YAT.Types;
 
-namespace YAT.Helpers;
+namespace YAT.Net;
 
 public static class Networking
 {
-    public enum EPingStatus
-    {
-        Success = 0,
-        Unsupported = 1,
-        Unknown = 2
-    }
-
     public static EPingStatus Ping(
         string hostname,
         out PingReply? reply,
