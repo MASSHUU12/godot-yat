@@ -29,6 +29,8 @@ culture.
 - Threaded commands are disabled, because it seems that Godot doesn't like C#
 threads, or I'm just stupid.
 - Minimum .NET version is now 8.
+- `Numeric.SizeToString` uses invariant culture.
+- Reworked `Scene.PrintChildren` method.
 
 ### Fixed
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
+using static System.StringSplitOptions;
+
 namespace YAT.Helpers;
 
 public static class Text
@@ -31,7 +33,7 @@ public static class Text
     /// <returns>An array of strings with concatenated sentences.</returns>
     public static string[] ConcatenateSentence(string[] strings)
     {
-        List<string> modifiedStrings = new();
+        List<string> modifiedStrings = [];
 
         for (ushort i = 0; i < strings.Length; i++)
         {
@@ -51,13 +53,18 @@ public static class Text
                 && !EndsWith(token, '"', '\'')
             )
             {
-                string sentence = token.Replace("\"", string.Empty).Replace("'", string.Empty);
+                string sentence = token
+                    .Replace("\"", string.Empty)
+                    .Replace("'", string.Empty);
 
                 // Concatenate the next strings until the end of the sentence is reached
                 while (!EndsWith(strings[i], '"', '\'') && i < strings.Length)
                 {
                     i++;
-                    if (i >= strings.Length) break;
+                    if (i >= strings.Length)
+                    {
+                        break;
+                    }
 
                     sentence += $" {strings[i]}";
                 }
@@ -93,7 +100,7 @@ public static class Text
             }
         }
 
-        return modifiedStrings.ToArray();
+        return [.. modifiedStrings];
     }
 
     public static bool StartsWith(this string text, params char[] value)
@@ -126,22 +133,22 @@ public static class Text
     /// <returns>An array of the resulting tokens.</returns>
     public static string[] SplitClean(string text, string separator)
     {
-        return text.Split(separator, System.StringSplitOptions.TrimEntries |
-                                System.StringSplitOptions.RemoveEmptyEntries)
-                    .Select(token => token.Trim())
-                    .Where(token => !string.IsNullOrEmpty(token))
-                    .ToArray();
+        return [..
+            text.Split(separator, TrimEntries | RemoveEmptyEntries)
+                .Select(static token => token.Trim())
+                .Where(static token => !string.IsNullOrEmpty(token))
+        ];
     }
 
     /// <summary>
-    /// <para>Shortens a file path to the specified length.</para>
-    /// <para>Adapted from https://stackoverflow.com/a/32664181</para>
+    /// Adapted from https://stackoverflow.com/a/32664181
     /// </summary>
-    /// <param name="path"></param>
-    /// <param name="maxLength"></param>
-    /// <param name="ellipsisChar"></param>
-    /// <param name="splitChar"></param>
-    public static string ShortenPath(string path, ushort maxLength, string ellipsisChar = "...", string splitChar = "/")
+    public static string ShortenPath(
+        string path,
+        ushort maxLength,
+        string ellipsisChar = "...",
+        string splitChar = "/"
+    )
     {
         if (string.IsNullOrEmpty(path) || maxLength <= ellipsisChar.Length)
         {

@@ -30,10 +30,16 @@ public static class ReflectionTest
 
     private class TestClassWithInterface : ITestInterface { }
 
-    [Extension("test", "Test extension.", "Test extension manual.", "test_alias", "test_alias2")]
+    [Extension(
+        "test",
+        "Test extension.",
+        "Test extension manual.",
+        "test_alias",
+        "test_alias2"
+    )]
     private class TestExtension : IExtension
     {
-        public CommandResult Execute(CommandData _)
+        public CommandResult Execute(CommandData args)
         {
             return ICommand.NotImplemented();
         }
@@ -57,7 +63,6 @@ public static class ReflectionTest
             BindingFlags.Instance | BindingFlags.Public
         );
 
-        _ = events.ConfirmNotNull();
         _ = events.Count().ConfirmIsPositive();
     }
 
@@ -66,8 +71,7 @@ public static class ReflectionTest
     {
         IEnumerable<EventInfo> events = Reflection.GetEvents(new TestClass());
 
-        _ = events.ConfirmNotNull();
-        _ = events.Any().ConfirmFalse();
+        _ = events.ConfirmEmpty();
     }
     #endregion GetEvents
 
@@ -75,7 +79,9 @@ public static class ReflectionTest
     [TestCase]
     public static void GetAttribute_AttributePresent()
     {
-        CommandAttribute? attribute = Reflection.GetAttribute<CommandAttribute>(new TestClass());
+        CommandAttribute? attribute = Reflection.GetAttribute<CommandAttribute>(
+            new TestClass()
+        );
 
         _ = attribute.ConfirmNotNull();
         _ = (attribute?.Name.ConfirmEqual("test"));
@@ -84,47 +90,51 @@ public static class ReflectionTest
     [TestCase]
     public static void GetAttribute_AttributeNotPresent()
     {
-        OptionAttribute? attribute = Reflection.GetAttribute<OptionAttribute>(new TestClass());
+        OptionAttribute? attribute = Reflection.GetAttribute<OptionAttribute>(
+            new TestClass()
+        );
 
         _ = attribute.ConfirmNull();
     }
+    #endregion GetAttribute
 
+    #region GetAttributes
     [TestCase]
-    public static void GetAttribute_AttributesPresent()
+    public static void GetAttributes_AttributesPresent()
     {
-        IEnumerable<ArgumentAttribute>? attributes = Reflection.GetAttributes<ArgumentAttribute>(new TestClass());
+        IEnumerable<ArgumentAttribute>? attributes = Reflection
+            .GetAttributes<ArgumentAttribute>(new TestClass());
 
         _ = attributes.ConfirmNotNull();
-        _ = (attributes?.Count().ConfirmEqual(3));
-        _ = (attributes?.ElementAt(0).Name.ConfirmEqual("arg1"));
-        _ = (attributes?.ElementAt(1).Name.ConfirmEqual("arg3"));
-        _ = (attributes?.ElementAt(2).Name.ConfirmEqual("arg3"));
+        _ = attributes!.ConfirmCount(3);
+        _ = attributes!.ElementAt(0).Name.ConfirmEqual("arg1");
+        _ = attributes!.ElementAt(1).Name.ConfirmEqual("arg3");
+        _ = attributes!.ElementAt(2).Name.ConfirmEqual("arg3");
     }
 
     [TestCase]
-    public static void GetAttribute_AttributesNotPresent()
+    public static void GetAttributes_AttributesNotPresent()
     {
-        IEnumerable<OptionAttribute>? attributes = Reflection.GetAttributes<OptionAttribute>(new TestClass());
+        IEnumerable<OptionAttribute>? attributes = Reflection
+            .GetAttributes<OptionAttribute>(new TestClass());
 
-        _ = (attributes?.ConfirmEmpty());
+        _ = attributes!.ConfirmEmpty();
     }
-    #endregion GetAttribute
+    #endregion GetAttributes
 
     #region HasAttribute
     [TestCase]
     public static void HasAttribute_AttributePresent()
     {
-        bool hasAttribute = Reflection.HasAttribute<CommandAttribute>(new TestClass());
-
-        _ = hasAttribute.ConfirmTrue();
+        _ = Reflection.HasAttribute<CommandAttribute>(new TestClass())
+            .ConfirmTrue();
     }
 
     [TestCase]
     public static void HasAttribute_AttributeNotPresent()
     {
-        bool hasAttribute = Reflection.HasAttribute<OptionAttribute>(new TestClass());
-
-        _ = hasAttribute.ConfirmFalse();
+        _ = Reflection.HasAttribute<OptionAttribute>(new TestClass())
+            .ConfirmFalse();
     }
     #endregion HasAttribute
 
@@ -132,7 +142,8 @@ public static class ReflectionTest
     [TestCase]
     public static void HasInterface_InterfacePresent()
     {
-        _ = new Cls().HasInterface<ICommand>().ConfirmTrue();
+        _ = new Cls().HasInterface<ICommand>()
+            .ConfirmTrue();
     }
 
     [TestCase]
@@ -145,6 +156,8 @@ public static class ReflectionTest
     public static void HasInterface_InterfaceNotPresent()
     {
         _ = new TestClass().HasInterface<ITestInterface>().ConfirmFalse();
+        _ = new TestClassWithInterface().HasInterface<IExtension>()
+            .ConfirmFalse();
     }
     #endregion HasInterface
 }
