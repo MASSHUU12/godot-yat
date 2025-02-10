@@ -12,6 +12,15 @@ public static partial class OS
     public const string DefaultTerminal = "cmd.exe";
 #else
     public const string DefaultTerminal = "/bin/bash";
+    public static readonly bool UsingWayland = true;
+
+    static OS()
+    {
+        UsingWayland = RunCommand(
+            "echo $XDG_SESSION_TYPE",
+            out EExecutionResult _
+        ).ToString().Trim() == "wayland";
+    }
 #endif
 
     public enum EExecutionResult
