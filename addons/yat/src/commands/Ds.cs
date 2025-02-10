@@ -27,7 +27,7 @@ public sealed class Ds : ICommand
         _debug ??= data.Yat.GetTree().Root.GetNode<DebugScreen>("/root/DebugScreen");
 
         _debug.UpdateInterval = interval == 0f
-            ? _debug.DefaultUpdateInterval
+            ? DebugScreen.DefaultUpdateInterval
             : interval;
 
         if (showHelp)
@@ -55,7 +55,7 @@ public sealed class Ds : ICommand
     {
         StringBuilder message = new("Registered debug items:\n");
 
-        foreach ((string uid, Type type) in DebugScreen.registeredItems.Values
+        foreach ((string uid, Type type) in DebugScreen.RegisteredItems.Values
             .SelectMany(static x => x)
         )
         {
