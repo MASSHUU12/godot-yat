@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://3avgdpuh3nap"]
 
-[ext_resource type="Theme" uid="uid://cymypue85kfr7" path="res://addons/yat/src/scenes/debug_screen/yat_debug_screen_theme.tres" id="2_hbjw0"]
-[ext_resource type="Script" uid="uid://2p66ke5dqtg3" path="res://addons/yat/src/scenes/debug_screen/DebugScreen.cs" id="3_odoyc"]
+[ext_resource type="Theme" uid="uid://cymypue85kfr7" path="res://addons/yat/src/Debug/yat_debug_screen_theme.tres" id="2_hbjw0"]
+[ext_resource type="Script" uid="uid://2p66ke5dqtg3" path="res://addons/yat/src/Debug/DebugScreen.cs" id="3_odoyc"]
 
 [node name="DebugScreen" type="Control"]
 process_mode = 3

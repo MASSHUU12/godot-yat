@@ -1,9 +1,8 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Interfaces;
 using YAT.Resources;
 
-namespace YAT.Scenes;
+namespace YAT.Debug;
 
 [Title("FPS")]
 public partial class FpsItem : PanelContainer, IDebugScreenItem

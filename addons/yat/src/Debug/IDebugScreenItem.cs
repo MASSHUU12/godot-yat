@@ -1,4 +1,4 @@
-namespace YAT.Interfaces;
+namespace YAT.Debug;
 
 public interface IDebugScreenItem
 {

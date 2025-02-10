@@ -20,7 +20,7 @@ config/icon="res://yat_icon.png"
 
 Confirma="*res://addons/confirma/src/scenes/confirma_autoload/ConfirmaAutoload.tscn"
 YAT="*res://addons/yat/src/YAT.tscn"
-DebugScreen="*res://addons/yat/src/scenes/debug_screen/DebugScreen.tscn"
+DebugScreen="*res://addons/yat/src/Debug/DebugScreen.tscn"
 
 [display]
 

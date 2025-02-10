@@ -1,7 +1,6 @@
 #if TOOLS
 using Godot;
 using YAT.Classes;
-using YAT.Helpers;
 using YAT.Types;
 using YAT.Update;
 
@@ -17,7 +16,7 @@ public partial class Plugin : EditorPlugin
         _version = GetPluginVersion();
 
         AddAutoloadSingleton("YAT", GetPluginPath() + "/src/YAT.tscn");
-        AddAutoloadSingleton("DebugScreen", GetPluginPath() + "/src/scenes/debug_screen/DebugScreen.tscn");
+        AddAutoloadSingleton("DebugScreen", GetPluginPath() + "/src/Debug/DebugScreen.tscn");
 
         GD.Print($"YAT {_version} loaded!");
         GD.PrintRich("Up to date information about YAT can be found at [url=https://github.com/MASSHUU12/godot-yat/tree/main]https://github.com/MASSHUU12/godot-yat/tree/main[/url].");

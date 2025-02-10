@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://lfgol2xetr88"]
 
-[ext_resource type="Script" uid="uid://cai5cv4rqlise" path="res://addons/yat/src/scenes/debug_screen/items/memory_info_item/MemoryInfoItem.cs" id="1_xchxp"]
+[ext_resource type="Script" uid="uid://cai5cv4rqlise" path="res://addons/yat/src/Debug/items/memory_info_item/MemoryInfoItem.cs" id="1_xchxp"]
 
 [node name="MemoryInfoItem" type="PanelContainer"]
 offset_right = 109.0

@@ -6,9 +6,8 @@ using Godot;
 using YAT.Attributes;
 using YAT.Enums;
 using YAT.Helpers;
-using YAT.Interfaces;
 
-namespace YAT.Scenes;
+namespace YAT.Debug;
 
 public partial class DebugScreen : Control
 {

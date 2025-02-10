@@ -1,8 +1,7 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Interfaces;
 
-namespace YAT.Scenes;
+namespace YAT.Debug;
 
 [Title("CPU")]
 public partial class CpuInfoItem : PanelContainer, IDebugScreenItem
