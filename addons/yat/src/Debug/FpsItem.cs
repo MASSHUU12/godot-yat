@@ -2,38 +2,42 @@ using Godot;
 using YAT.Attributes;
 using YAT.Resources;
 
+using static Godot.Performance;
+
 namespace YAT.Debug;
 
 [Title("FPS")]
-public partial class FpsItem : PanelContainer, IDebugScreenItem
+public partial class FpsItem : DebugScreenItem
 {
 #nullable disable
-    private YAT _yat;
-    private RichTextLabel
-        _label,
-        _times;
+    private RichTextLabel _label, _times;
 #nullable restore
 
     public override void _Ready()
     {
-        _yat = GetNode<YAT>("/root/YAT");
-        _label = GetNode<RichTextLabel>("./VBoxContainer/RichTextLabel");
-        _times = GetNode<RichTextLabel>("./VBoxContainer/Times");
+        base._Ready();
+
+        _label = CreateLabel();
+        VContainer.AddChild(_label);
+        _times = CreateLabel();
+        VContainer.AddChild(_times);
     }
 
-    public void Update()
+    public override void Update()
     {
-        double fps = Performance.GetMonitor(Performance.Monitor.TimeFps);
-        double process = Performance.GetMonitor(Performance.Monitor.TimeProcess) * 1000;
-        double physics = Performance.GetMonitor(Performance.Monitor.TimePhysicsProcess) * 1000;
-        YatPreferences pref = _yat.PreferencesManager.Preferences;
+        float fps = (float)GetMonitor(Monitor.TimeFps);
+        float process = (float)GetMonitor(Monitor.TimeProcess) * 1000;
+        float physics = (float)GetMonitor(Monitor.TimePhysicsProcess) * 1000;
+        YatPreferences pref = Yat.PreferencesManager.Preferences;
 
         _label.Clear();
+        _label.PushFontSize(24);
         _label.PushColor(fps < 30 ? pref.ErrorColor : pref.SuccessColor);
         _label.AppendText($"{fps} FPS");
-        _label.Pop();
+        _label.PopAll();
 
         _times.Clear();
+        _times.PushFontSize(12);
         _times.AppendText("Process: ");
         if (fps < 30)
         {
@@ -57,5 +61,6 @@ public partial class FpsItem : PanelContainer, IDebugScreenItem
         {
             _times.Pop();
         }
+        _times.Pop();
     }
 }

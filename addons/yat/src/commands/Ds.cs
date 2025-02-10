@@ -32,7 +32,7 @@ public sealed class Ds : ICommand
 
         if (showHelp)
         {
-            return ICommand.Success(message: Help());
+            return ICommand.Ok(message: Help());
         }
 
         switch (screens.ToLowerInvariant())
@@ -55,17 +55,14 @@ public sealed class Ds : ICommand
     {
         StringBuilder message = new("Registered debug items:\n");
 
-        foreach ((string uid, Type type) in DebugScreen.RegisteredItems.Values
+        foreach (Type type in DebugScreen.RegisteredItems.Values
             .SelectMany(static x => x)
         )
         {
             string title = type.GetAttribute<TitleAttribute>()?.Title ?? type.Name;
-            _ = message.AppendFormat(
+            _ = message.AppendLine(
                 CultureInfo.InvariantCulture,
-                "- [b]{0}[/b] ({1}): {2}\n",
-                title,
-                type.Name == title ? string.Empty : type.Name,
-                uid
+                $"- [b]{title}[/b]: {type.Name}"
             );
         }
 

@@ -6,11 +6,10 @@ using YAT.Helpers;
 namespace YAT.Debug;
 
 [Title("LookingAt")]
-public partial class LookingAtInfo : PanelContainer, IDebugScreenItem
+public partial class LookingAtInfo : DebugScreenItem
 {
 #nullable disable
-    private YAT _yat;
-    private Label _label;
+    private RichTextLabel _label;
 #nullable restore
     private const uint RAY_LENGTH = 1024;
 
@@ -20,13 +19,15 @@ public partial class LookingAtInfo : PanelContainer, IDebugScreenItem
 
     public override void _Ready()
     {
-        _yat = GetNode<YAT>("/root/YAT");
-        _label = GetNode<Label>("Label");
+        base._Ready();
+
+        _label = CreateLabel();
+        VContainer.AddChild(_label);
     }
 
-    public void Update()
+    public override void Update()
     {
-        Dictionary? result = World.RayCast(_yat.GetViewport(), RAY_LENGTH);
+        Dictionary? result = World.RayCast(Yat.GetViewport(), RAY_LENGTH);
 
         if (result is null)
         {

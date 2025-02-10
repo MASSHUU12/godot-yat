@@ -4,11 +4,10 @@ using YAT.Attributes;
 namespace YAT.Debug;
 
 [Title("CPU")]
-public partial class CpuInfoItem : PanelContainer, IDebugScreenItem
+public partial class CpuInfoItem : DebugScreenItem
 {
 #nullable disable
-    private Label _label;
-    private string _cpuInfo;
+    private RichTextLabel _label;
 #nullable restore
 
     private readonly string _arch = Engine.GetArchitectureName();
@@ -17,11 +16,12 @@ public partial class CpuInfoItem : PanelContainer, IDebugScreenItem
 
     public override void _Ready()
     {
-        _cpuInfo = $"{_cpuName} {_arch} ({_cpuCount} cores)";
+        base._Ready();
 
-        _label = GetNode<Label>("Label");
-        _label.Text = _cpuInfo;
+        LayoutDirection = LayoutDirectionEnum.Rtl;
+
+        _label = CreateLabel();
+        _label.Text = $"{_cpuName} {_arch} ({_cpuCount} cores)";
+        VContainer.AddChild(_label);
     }
-
-    public void Update() { }
 }
