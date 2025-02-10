@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - `Text.ToStringInvariant` extension method.
 - 'sleep' test command.
 - `OS.IsRunningAsAdmin` method & `OS.UsingWayland` field.
+- `DebugScreenItem` class.
 
 ### Changed
 
@@ -27,6 +28,7 @@ All notable changes to this project will be documented in this file.
   - `ICommand.GenerateManual`
   - [Commands] Built-in commands
   - `Numeric.SizeToString`
+  - `DebugScreen` and its items
 - [Commands] Built-in commands return data when applicable.
 - [Commands] Command 'ping' no longer returns with a success when ping failed.
 - [Commands] Threaded commands are disabled, because it seems that Godot
@@ -39,10 +41,17 @@ doesn't like C# threads, or I'm just stupid.
 - [Dependencies] YAT needs to be compiled with 'AllowUnsafeBlocks' enabled.
 - [Clipboard] `SetText` & `SetImageData` return bool instead of
 `EExecutionResult`.
+- [Debug] Moved `DebugScreen` & all of its items to the 'YAT.Debug' namespace.
+- [Debug] `DebugScreen.DefaultUpdateInterval` is a const member.
+- [Debug] Simplified registering & unregistering items in `DebugScreen`.
+- [Debug] Reworked way of creating debug screen items.
 
 ### Removed
 
 - `OS.EOperatingSystem` enum & `OS.Platform` field.
+- `IMonitorComponent` interface.
+- `*.tscn` files for `DebugScreen` items.
+- `IDebugScreenItem` interface.
 
 ### Fixed
 
