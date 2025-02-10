@@ -2,11 +2,11 @@ using System;
 using Godot;
 using YAT.Attributes;
 using YAT.Classes;
+using YAT.Enums;
 using YAT.Interfaces;
 using YAT.Scenes;
 using YAT.Types;
 using static Godot.GodotObject;
-using static YAT.Helpers.OS;
 
 namespace YAT.Commands;
 
@@ -123,15 +123,13 @@ public sealed class Ss : ICommand
                 break;
         }
 
-        EExecutionResult result = Clipboard.SetImageData(buffer);
+        bool result = Clipboard.SetImageData(buffer);
 
-        if (result != EExecutionResult.Success)
-        {
-            _terminal.Output.Error("Error saving the screenshot to the clipboard.");
-        }
-        else
-        {
-            _terminal.Output.Success("Screenshot saved to the clipboard.");
-        }
+        _terminal.Print(
+            result
+                ? "Screenshot saved to the clipboard."
+                : "Error saving the screenshot to the clipboard.",
+            result ? EPrintType.Success : EPrintType.Error
+        );
     }
 }

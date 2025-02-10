@@ -15,27 +15,30 @@ All notable changes to this project will be documented in this file.
 - '-s' option to the 'cat' command for silent file content output.
 - `Text.ToStringInvariant` extension method.
 - 'sleep' test command.
-- `OS.IsRunningAsAdmin` method.
+- `OS.IsRunningAsAdmin` method & `OS.UsingWayland` field.
 
 ### Changed
 
 - Reworked `OS.RunCommand`.
 - Renamed `OperatingSystem` enum to `EOperatingSystem` and
 `ExecutionResult` to `EExecutionResult`.
-- `ICommand.GenerateCommandManual` & `ICommand.GenerateManual` uses invariant
-culture.
-- [Commands] Built-in commands use invariant culture.
+- Use of invariant culture in:
+  - `ICommand.GenerateCommandManual`
+  - `ICommand.GenerateManual`
+  - [Commands] Built-in commands
+  - `Numeric.SizeToString`
 - [Commands] Built-in commands return data when applicable.
 - [Commands] Command 'ping' no longer returns with a success when ping failed.
 - [Commands] Threaded commands are disabled, because it seems that Godot
 doesn't like C# threads, or I'm just stupid.
 - [Dependencies] Minimum .NET version is now 8.
-- `Numeric.SizeToString` uses invariant culture.
 - Reworked `Scene.PrintChildren` method.
 - [Networking] Moved networking code to the 'YAT.Net' namespace.
 - [Networking] Renamed `EPingStatus` to `EConnectionStatus`
 & extracted it from the `Networking` class.
 - [Dependencies] YAT needs to be compiled with 'AllowUnsafeBlocks' enabled.
+- [Clipboard] `SetText` & `SetImageData` return bool instead of
+`EExecutionResult`.
 
 ### Removed
 
@@ -48,6 +51,7 @@ doesn't like C# threads, or I'm just stupid.
 - Cache in 'man' command is not saved between calls.
 - [Linux][Networking] A non-privileged process causes
 `PlatformNotSupportedException` to be thrown when the buffer is of non-zero size.
+- [Linux] Saving data to the clipboard doesn't work on Wayland.
 
 ## [1.31.1-beta 2024-07-24]
 
