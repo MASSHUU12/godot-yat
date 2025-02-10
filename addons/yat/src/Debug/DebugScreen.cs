@@ -12,21 +12,16 @@ namespace YAT.Debug;
 public partial class DebugScreen : Control
 {
     [Export(PropertyHint.Range, "0.05, 5, 0.1")]
-    public float UpdateInterval { get; set; } = 0.5f;
-
-    public float DefaultUpdateInterval { get; private set; } = 0.5f;
+    public float UpdateInterval { get; set; } = DefaultUpdateInterval;
+    public const float DefaultUpdateInterval = 0.5f;
 
 #nullable disable
     private Timer _timer;
-    private VBoxContainer
-        _topLeftContainer,
-        _topRightContainer,
-        _bottomLeftContainer,
-        _bottomRightContainer;
+    private Dictionary<EDebugScreenItemPosition, VBoxContainer> _containers;
 #nullable restore
 
     public static readonly Dictionary<EDebugScreenItemPosition, HashSet<Tuple<string, Type>>>
-    registeredItems = new()
+    RegisteredItems = new()
     {
         {
             EDebugScreenItemPosition.TopLeft,
@@ -48,27 +43,38 @@ public partial class DebugScreen : Control
                 new("uid://fcjyl1y5lo", typeof(EngineInfoItem)),
             }
         },
-        {
-            EDebugScreenItemPosition.BottomLeft,
-            new()
-        },
-        {
-            EDebugScreenItemPosition.BottomRight,
-            new()
-        }
+        { EDebugScreenItemPosition.BottomLeft, new() },
+        { EDebugScreenItemPosition.BottomRight, new() }
     };
 
     public override void _Ready()
     {
-        _topLeftContainer = GetNode<VBoxContainer>("%TopLeftContainer");
-        _topRightContainer = GetNode<VBoxContainer>("%TopRightContainer");
-        _bottomLeftContainer = GetNode<VBoxContainer>("%BottomLeftContainer");
-        _bottomRightContainer = GetNode<VBoxContainer>("%BottomRightContainer");
-
-        UpdateInterval = DefaultUpdateInterval;
-
+        InitializeContainers();
         RemoveAllChildren();
         InitializeTimer();
+    }
+
+    private void InitializeContainers()
+    {
+        _containers = new()
+        {
+            {
+                EDebugScreenItemPosition.TopLeft,
+                GetNode<VBoxContainer>("%TopLeftContainer")
+            },
+            {
+                EDebugScreenItemPosition.TopRight,
+                GetNode<VBoxContainer>("%TopRightContainer")
+            },
+            {
+                EDebugScreenItemPosition.BottomLeft,
+                GetNode<VBoxContainer>("%BottomLeftContainer")
+            },
+            {
+                EDebugScreenItemPosition.BottomRight,
+                GetNode<VBoxContainer>("%BottomRightContainer")
+            }
+        };
     }
 
     private void InitializeTimer()
@@ -87,30 +93,21 @@ public partial class DebugScreen : Control
 
     private VBoxContainer? GetContainer(EDebugScreenItemPosition position)
     {
-        return position switch
-        {
-            EDebugScreenItemPosition.TopLeft => _topLeftContainer,
-            EDebugScreenItemPosition.TopRight => _topRightContainer,
-            EDebugScreenItemPosition.BottomLeft => _bottomLeftContainer,
-            EDebugScreenItemPosition.BottomRight => _bottomRightContainer,
-            EDebugScreenItemPosition.None => throw new NotImplementedException(),
-            _ => null,
-        };
+        return _containers.TryGetValue(position, out VBoxContainer? container)
+            ? container
+            : null;
     }
 
     public void RunAll()
     {
         RemoveAllChildren();
 
-        foreach (var (position, container) in new[]
+        foreach (
+            (EDebugScreenItemPosition position, VBoxContainer container)
+            in _containers
+        )
         {
-            (EDebugScreenItemPosition.TopLeft, _topLeftContainer),
-            (EDebugScreenItemPosition.TopRight, _topRightContainer),
-            (EDebugScreenItemPosition.BottomLeft, _bottomLeftContainer),
-            (EDebugScreenItemPosition.BottomRight, _bottomRightContainer)
-        })
-        {
-            foreach (Tuple<string, Type> item in registeredItems[position])
+            foreach (Tuple<string, Type> item in RegisteredItems[position])
             {
                 AddItemToContainer(item.Item1, container);
             }
@@ -129,26 +126,18 @@ public partial class DebugScreen : Control
             return;
         }
 
-        IEnumerable<string> lowerTitles = titles.Select(t => t.ToLower());
+        IEnumerable<string> lowerTitles = titles.Select(
+            static t => t.ToLowerInvariant()
+        );
 
-        foreach (var position in new[]
+        foreach (
+            (EDebugScreenItemPosition position, VBoxContainer container)
+            in _containers
+        )
         {
-            EDebugScreenItemPosition.TopLeft,
-            EDebugScreenItemPosition.TopRight,
-            EDebugScreenItemPosition.BottomLeft,
-            EDebugScreenItemPosition.BottomRight
-        })
-        {
-            VBoxContainer? container = GetContainer(position);
-
-            if (container == null)
-            {
-                continue;
-            }
-
             foreach (string title in lowerTitles)
             {
-                _ = AddItemsToContainer(registeredItems[position], container, title);
+                _ = AddItemsToContainer(RegisteredItems[position], container, title);
             }
         }
 
@@ -163,7 +152,12 @@ public partial class DebugScreen : Control
     {
         foreach (Tuple<string, Type> item in items)
         {
-            if (GetTitle(item.Item2).ToLower() == lowerTitle)
+            if (
+                GetTitle(item.Item2).Equals(
+                    lowerTitle,
+                    StringComparison.OrdinalIgnoreCase
+                )
+            )
             {
                 AddItemToContainer(item.Item1, container);
                 return true;
@@ -190,20 +184,15 @@ public partial class DebugScreen : Control
 
     private void RemoveAllChildren()
     {
-        RemoveContainerChildren(_topLeftContainer);
-        RemoveContainerChildren(_topRightContainer);
-        RemoveContainerChildren(_bottomLeftContainer);
-        RemoveContainerChildren(_bottomRightContainer);
+        foreach (VBoxContainer container in _containers.Values)
+        {
+            RemoveContainerChildren(container);
+        }
     }
 
     private void OnTimerTimeout()
     {
-        foreach (VBoxContainer? container in new[] {
-            _topLeftContainer,
-            _topRightContainer,
-            _bottomLeftContainer,
-            _bottomRightContainer
-        })
+        foreach (VBoxContainer container in _containers.Values)
         {
             foreach (Node? child in container.GetChildren())
             {
@@ -221,24 +210,29 @@ public partial class DebugScreen : Control
         }
     }
 
-    public static bool RegisterItem(Type item, string path, EDebugScreenItemPosition position)
+    public static bool RegisterItem(
+        Type item,
+        string path,
+        EDebugScreenItemPosition position
+    )
     {
-        if (!item.HasInterface<IDebugScreenItem>())
+        if (
+            !item.HasInterface<IDebugScreenItem>()
+            || string.IsNullOrEmpty(GetTitle(item))
+        )
         {
             return false;
         }
 
-        if (item.GetAttribute<TitleAttribute>() is not TitleAttribute title)
-        {
-            return false;
-        }
-
-        return !string.IsNullOrEmpty(title.Title)
-            && registeredItems[position].Add(new(path, item));
+        return RegisteredItems[position].Add(new(path, item));
     }
 
-    public static bool UnregisterItem(Type item, string path, EDebugScreenItemPosition position)
+    public static bool UnregisterItem(
+        Type item,
+        string path,
+        EDebugScreenItemPosition position
+    )
     {
-        return registeredItems[position].Remove(new(path, item));
+        return RegisteredItems[position].Remove(new(path, item));
     }
 }
