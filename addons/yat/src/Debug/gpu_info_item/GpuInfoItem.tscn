@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c4f6crgbyioh1"]
 
-[ext_resource type="Script" uid="uid://g8rse8cbmmnl" path="res://addons/yat/src/scenes/debug_screen/items/gpu_info_item/GpuInfoItem.cs" id="1_jpn2i"]
+[ext_resource type="Script" uid="uid://g8rse8cbmmnl" path="res://addons/yat/src/Debug/items/gpu_info_item/GpuInfoItem.cs" id="1_jpn2i"]
 
 [node name="GpuInfoItem" type="PanelContainer"]
 layout_direction = 3

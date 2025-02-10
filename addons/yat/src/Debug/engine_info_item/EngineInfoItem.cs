@@ -1,8 +1,7 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Interfaces;
 
-namespace YAT.Scenes;
+namespace YAT.Debug;
 
 [Title("Engine")]
 public partial class EngineInfoItem : PanelContainer, IDebugScreenItem

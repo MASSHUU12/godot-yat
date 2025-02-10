@@ -2,9 +2,8 @@ using Godot;
 using Godot.Collections;
 using YAT.Attributes;
 using YAT.Helpers;
-using YAT.Interfaces;
 
-namespace YAT.Scenes;
+namespace YAT.Debug;
 
 [Title("Memory")]
 public partial class MemoryInfoItem : PanelContainer, IDebugScreenItem

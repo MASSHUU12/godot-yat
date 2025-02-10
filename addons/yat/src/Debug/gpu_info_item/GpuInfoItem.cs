@@ -1,8 +1,7 @@
 using Godot;
 using YAT.Attributes;
-using YAT.Interfaces;
 
-namespace YAT.Scenes;
+namespace YAT.Debug;
 
 [Title("GPU")]
 public partial class GpuInfoItem : PanelContainer, IDebugScreenItem

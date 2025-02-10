@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://0e2nft11f3h1"]
 
-[ext_resource type="Script" uid="uid://xdectly84vfa" path="res://addons/yat/src/scenes/debug_screen/items/fps_item/FpsItem.cs" id="1_n5iqm"]
+[ext_resource type="Script" uid="uid://xdectly84vfa" path="res://addons/yat/src/Debug/items/fps_item/FpsItem.cs" id="1_n5iqm"]
 
 [node name="FpsItem" type="PanelContainer"]
 script = ExtResource("1_n5iqm")

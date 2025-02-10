@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using YAT.Attributes;
+using YAT.Debug;
 using YAT.Helpers;
 using YAT.Interfaces;
-using YAT.Scenes;
 using YAT.Types;
 
 namespace YAT.Commands;

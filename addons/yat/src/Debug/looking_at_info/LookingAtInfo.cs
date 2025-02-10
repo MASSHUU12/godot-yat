@@ -2,9 +2,8 @@ using Godot;
 using Godot.Collections;
 using YAT.Attributes;
 using YAT.Helpers;
-using YAT.Interfaces;
 
-namespace YAT.Scenes;
+namespace YAT.Debug;
 
 [Title("LookingAt")]
 public partial class LookingAtInfo : PanelContainer, IDebugScreenItem
