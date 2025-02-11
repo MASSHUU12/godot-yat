@@ -5,21 +5,21 @@ namespace YAT.Helpers;
 
 public static class Keybindings
 {
-    public static readonly StringName ContextMenu = new("yat_context_menu");
-    public static readonly StringName TerminalToggle = new("yat_terminal_toggle");
-    public static readonly StringName TerminalInterrupt = new("yat_terminal_interrupt");
-    public static readonly StringName TerminalHistoryNext = new("yat_terminal_history_next");
-    public static readonly StringName TerminalHistoryPrevious = new("yat_terminal_history_previous");
-    public static readonly StringName TerminalAutocompletionNext = new("yat_terminal_autocompletion_next");
-    public static readonly StringName TerminalAutocompletionPrevious = new("yat_terminal_autocompletion_previous");
-    public static readonly StringName TerminalCloseFullWindowDisplay = new("yat_terminal_close_full_window_display");
+    public static readonly string ContextMenu = "yat_context_menu";
+    public static readonly string TerminalToggle = "yat_terminal_toggle";
+    public static readonly string TerminalInterrupt = "yat_terminal_interrupt";
+    public static readonly string TerminalHistoryNext = "yat_terminal_history_next";
+    public static readonly string TerminalHistoryPrevious = "yat_terminal_history_previous";
+    public static readonly string TerminalAutocompletionNext = "yat_terminal_autocompletion_next";
+    public static readonly string TerminalAutocompletionPrevious = "yat_terminal_autocompletion_previous";
+    public static readonly string TerminalCloseFullWindowDisplay = "yat_terminal_close_full_window_display";
 
-    public static readonly StringName ExamplePlayerMoveLeft = new("yat_example_player_move_left");
-    public static readonly StringName ExamplePlayerMoveRight = new("yat_example_player_move_right");
-    public static readonly StringName ExamplePlayerMoveForward = new("yat_example_player_move_forward");
-    public static readonly StringName ExamplePlayerMoveBackward = new("yat_example_player_move_backward");
+    public static readonly string ExamplePlayerMoveLeft = "yat_example_player_move_left";
+    public static readonly string ExamplePlayerMoveRight = "yat_example_player_move_right";
+    public static readonly string ExamplePlayerMoveForward = "yat_example_player_move_forward";
+    public static readonly string ExamplePlayerMoveBackward = "yat_example_player_move_backward";
 
-    private static readonly Tuple<StringName, InputEvent>[] _defaultActions = new Tuple<StringName, InputEvent>[]
+    private static readonly Tuple<string, InputEvent>[] _defaultActions = new Tuple<string, InputEvent>[]
     {
         new(TerminalToggle, new InputEventKey { PhysicalKeycode = Key.Quoteleft }),
         new(ContextMenu, new InputEventMouseButton {
@@ -46,15 +46,28 @@ public static class Keybindings
 
     public static void LoadDefaultActions()
     {
-        foreach (Tuple<StringName, InputEvent> action in _defaultActions)
+        foreach (Tuple<string, InputEvent> action in _defaultActions)
         {
-            if (InputMap.HasAction(action.Item1))
+            if (InputMap.Singleton.HasAction(action.Item1))
             {
                 continue;
             }
 
-            InputMap.AddAction(action.Item1);
-            InputMap.ActionAddEvent(action.Item1, action.Item2);
+            InputMap.Singleton.AddAction(action.Item1);
+            InputMap.Singleton.ActionAddEvent(action.Item1, action.Item2);
+        }
+    }
+
+    public static void RemoveDefaultActions()
+    {
+        foreach (Tuple<string, InputEvent> action in _defaultActions)
+        {
+            if (!InputMap.Singleton.HasAction(action.Item1))
+            {
+                continue;
+            }
+
+            InputMap.Singleton.EraseAction(action.Item1);
         }
     }
 }
