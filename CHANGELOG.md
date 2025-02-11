@@ -6,29 +6,33 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- 'locale' command.
-- `Timeout` value to `EExecutionResult` enum.
-- Timeout to `OS.RunCommand`.
-- `Pipeline` class.
-- `CommandResult` accepts command output data.
-- Result of the command can be passed using pipe ('|') to the next command.
-- '-s' option to the 'cat' command for silent file content output.
+- [Commands] 'locale' command.
+- [OS] `Timeout` value to `EExecutionResult` enum.
+- [OS] Timeout to `OS.RunCommand`.
+- [Commands] `Pipeline` class.
+- [Commands] `CommandResult` accepts command output data.
+- [Commands] Result of the command can be passed using pipe ('|') to the next
+command.
+- [Commands] '-s' option to the 'cat' command for silent file content output.
 - `Text.ToStringInvariant` extension method.
-- 'sleep' test command.
-- `OS.IsRunningAsAdmin` method & `OS.UsingWayland` field.
-- `DebugScreenItem` class.
+- [Commands] 'sleep' test command.
+- [OS] `OS.IsRunningAsAdmin` method & `OS.UsingWayland` field.
+- [Debug] `DebugScreenItem` class.
+- [Updater] Implemented `IComparable` interface in `SemanticVersion` class.
+- [Updater] Overloads for '<=' and '>=' operator in `SemanticVersion` class.
 
 ### Changed
 
-- Reworked `OS.RunCommand`.
-- Renamed `OperatingSystem` enum to `EOperatingSystem` and
+- [OS] Reworked `OS.RunCommand`.
+- [OS] Renamed `OperatingSystem` enum to `EOperatingSystem` and
 `ExecutionResult` to `EExecutionResult`.
 - Use of invariant culture in:
-  - `ICommand.GenerateCommandManual`
-  - `ICommand.GenerateManual`
+  - [Commands] `ICommand.GenerateCommandManual`
+  - [Commands] `ICommand.GenerateManual`
   - [Commands] Built-in commands
   - `Numeric.SizeToString`
-  - `DebugScreen` and its items
+  - [Debug] `DebugScreen` and its items
+  - [Updater] `SemanticVersion`
 - [Commands] Built-in commands return data when applicable.
 - [Commands] Command 'ping' no longer returns with a success when ping failed.
 - [Commands] Threaded commands are disabled, because it seems that Godot
@@ -45,19 +49,25 @@ doesn't like C# threads, or I'm just stupid.
 - [Debug] `DebugScreen.DefaultUpdateInterval` is a const member.
 - [Debug] Simplified registering & unregistering items in `DebugScreen`.
 - [Debug] Reworked way of creating debug screen items.
+- [Updater] Moved to 'YAT.Update' namespace:
+  - `Release`
+  - `Updater`
+  - `UpdaterInfo`
+  - `ReleaseTagInfo`
+  - `SemanticVersion`
 
 ### Removed
 
-- `OS.EOperatingSystem` enum & `OS.Platform` field.
-- `IMonitorComponent` interface.
-- `*.tscn` files for `DebugScreen` items.
-- `IDebugScreenItem` interface.
+- [OS] `OS.EOperatingSystem` enum & `OS.Platform` field.
+- [Debug] `IMonitorComponent` interface.
+- [Debug] `*.tscn` files for `DebugScreen` items.
+- [Debug] `IDebugScreenItem` interface.
 
 ### Fixed
 
-- PowerShell script cannot be accessed when YAT is in custom location.
+- [Clipboard] PowerShell script cannot be accessed when YAT is in custom location.
 - [Linux] `OS.RunCommand` hangs.
-- Cache in 'man' command is not saved between calls.
+- [Commands] Cache in 'man' command is not saved between calls.
 - [Linux][Networking] A non-privileged process causes
 `PlatformNotSupportedException` to be thrown when the buffer is of non-zero size.
 - [Linux] Saving data to the clipboard doesn't work on Wayland.
