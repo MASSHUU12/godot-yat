@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using YAT.Classes;
-using YAT.Types;
 
 namespace YAT.Update;
 
@@ -71,7 +69,7 @@ public static class Updater
         // because addons can be installed in various locations,
         // so it cannot be assumed that YAT will always be in the default location.
         string yatPath = Godot.ProjectSettings.GetSetting("autoload/YAT").AsString();
-        return yatPath[1..].Remove(yatPath.Length - 13);
+        return yatPath[1..][..(yatPath.Length - 13)];
     }
 
     public static SemanticVersion? GetCurrentVersion()

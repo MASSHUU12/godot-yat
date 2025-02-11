@@ -1,7 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace YAT.Classes;
+namespace YAT.Update;
 
 public partial class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>
 {

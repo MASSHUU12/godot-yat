@@ -2,8 +2,6 @@ using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using YAT.Classes;
-using YAT.Types;
 
 namespace YAT.Update;
 
@@ -31,15 +29,15 @@ public static class Release
             return (false, "Unavailable");
         }
 
-        if (!httpResponse.IsSuccessStatusCode)
-        {
-            return (false, httpResponse.ReasonPhrase ?? string.Empty);
-        }
-
-        return (true, await httpResponse.Content.ReadAsStringAsync());
+        return !httpResponse.IsSuccessStatusCode
+            ? (false, httpResponse.ReasonPhrase ?? string.Empty)
+            : (true, await httpResponse.Content.ReadAsStringAsync());
     }
 
-    public static bool TryExtractLatestReleaseTagInfo(JsonDocument document, out ReleaseTagInfo? tagInfo)
+    public static bool TryExtractLatestReleaseTagInfo(
+        JsonDocument document,
+        out ReleaseTagInfo? tagInfo
+    )
     {
         tagInfo = null;
 

@@ -1,9 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Godot;
-using YAT.Classes;
 using YAT.Helpers;
-using YAT.Types;
 
 namespace YAT.Update;
 

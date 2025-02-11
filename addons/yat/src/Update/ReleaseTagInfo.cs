@@ -1,6 +1,4 @@
-using YAT.Classes;
-
-namespace YAT.Types;
+namespace YAT.Update;
 
 public record ReleaseTagInfo(
     SemanticVersion Version,
